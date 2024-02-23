@@ -24,7 +24,7 @@ namespace dae
 	class PhysicsComponent;
 
 	// todo: this should become final.
-	class GameObject
+	class GameObject final
 	{
 
 	public:
