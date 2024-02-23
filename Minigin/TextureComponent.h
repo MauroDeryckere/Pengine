@@ -14,7 +14,7 @@ namespace dae
 	{
 	public:
 		TextureComponent(GameObject* pGameObj);
-		~TextureComponent() override;
+		~TextureComponent() override = default;
 
 		void Update(float) override; 
 		void Render() const override;

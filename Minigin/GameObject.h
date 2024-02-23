@@ -2,7 +2,9 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <unordered_set>
 #include <type_traits>
+#include <typeindex>
 
 #include "Transform.h"
 
@@ -31,9 +33,7 @@ namespace dae
 		void FixedUpdate(float timeStep);
 		virtual void Render() const;
 
-		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
-
 		const Transform& GetTransform() { return m_transform; };
 
 		template<typename T>
@@ -41,17 +41,22 @@ namespace dae
 		//requires IsRenderOrPhysicsComponent<T>
 		{
 			using ComponentType = std::decay_t<decltype(*component)>;
-
-			if constexpr (std::is_base_of_v<RenderComponent, ComponentType>)
+			if (m_AddedComponentsRegistry.insert(typeid(ComponentType)).second)
 			{
-				m_pRenderComponents.emplace_back(std::move(component));
+				if constexpr (std::is_base_of_v<RenderComponent, ComponentType>)
+				{
+					m_pRenderComponents.emplace_back(std::forward<T>(component));
+				}
+				else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentType>)
+				{
+					m_pPhysicsComponents.emplace_back(std::forward<T>(component));
+				}
 			}
-			else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentType>)
+			else
 			{
-				m_pPhysicsComponents.emplace_back(std::move(component));
+				std::cout << "trying to add twice \n";
 			}
 		};
-
 
 		void RemoveComponent();
 		void GetComponent() const;
@@ -65,10 +70,11 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		//std::vector<std::unique_ptr<Component>> m_pComponents;
+		std::unordered_set<std::type_index> m_AddedComponentsRegistry;
+
 		std::vector<std::unique_ptr<PhysicsComponent>> m_pPhysicsComponents;
 		std::vector<std::unique_ptr<RenderComponent>> m_pRenderComponents;
-
+		
 		Transform m_transform{};
 	};
 }
