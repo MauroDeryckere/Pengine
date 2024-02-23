@@ -1,20 +1,61 @@
 #pragma once
 #include <memory>
+#include <vector>
+#include <string>
+#include <type_traits>
+
 #include "Transform.h"
+
+#include "Component.h"
+#include "PhysicsComponent.h"
+#include "RenderComponent.h"
+#include "TextureComponent.h"
+
+#include <iostream>
 
 namespace dae
 {
 	class Texture2D;
 
+	template<typename T> //TODO
+	concept IsRenderOrPhysicsComponent = std::is_base_of_v<RenderComponent, std::remove_pointer_t<T>> ||
+										 std::is_base_of_v<PhysicsComponent, std::remove_pointer_t<T>> ||
+										 std::is_same_v<PhysicsComponent, std::remove_pointer_t<T>>;
+
 	// todo: this should become final.
-	class GameObject 
+	class GameObject
 	{
+
 	public:
-		virtual void Update();
+		virtual void Update(float deltaTime);
+		void FixedUpdate(float timeStep);
 		virtual void Render() const;
 
 		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
+
+		const Transform& GetTransform() { return m_transform; };
+
+		template<typename T>
+		void AddComponent(T&& component)
+		//requires IsRenderOrPhysicsComponent<T>
+		{
+			using ComponentType = std::decay_t<decltype(*component)>;
+
+			if constexpr (std::is_base_of_v<RenderComponent, ComponentType>)
+			{
+				m_pRenderComponents.emplace_back(std::move(component));
+			}
+			else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentType>)
+			{
+				m_pPhysicsComponents.emplace_back(std::move(component));
+			}
+		};
+
+
+		void RemoveComponent();
+		void GetComponent() const;
+		bool HasComponentBeenAdded() const;
 
 		GameObject() = default;
 		virtual ~GameObject();
@@ -24,8 +65,10 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
+		//std::vector<std::unique_ptr<Component>> m_pComponents;
+		std::vector<std::unique_ptr<PhysicsComponent>> m_pPhysicsComponents;
+		std::vector<std::unique_ptr<RenderComponent>> m_pRenderComponents;
+
 		Transform m_transform{};
-		// todo: mmm, every gameobject has a texture? Is that correct?
-		std::shared_ptr<Texture2D> m_texture{};
 	};
 }

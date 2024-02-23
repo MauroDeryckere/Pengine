@@ -15,5 +15,10 @@ namespace dae
 		Minigin(Minigin&& other) = delete;
 		Minigin& operator=(const Minigin& other) = delete;
 		Minigin& operator=(Minigin&& other) = delete;
+
+	private:
+		void FixedUpdate(float fixedTimeStep);
+		void Update(float deltaTime, auto& u);
+		void Render(auto& r) const;
 	};
 }

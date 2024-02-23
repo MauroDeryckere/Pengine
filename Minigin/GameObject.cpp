@@ -5,20 +5,51 @@
 
 dae::GameObject::~GameObject() = default;
 
-void dae::GameObject::Update(){}
+void dae::GameObject::Update(float deltaTime)
+{
+	deltaTime;
+}
+
+void dae::GameObject::FixedUpdate(float timeStep)
+{
+	for (auto& pPhysicsComp : m_pPhysicsComponents)
+	{
+		pPhysicsComp->FixedUpdate(timeStep);
+	}
+}
 
 void dae::GameObject::Render() const
 {
-	const auto& pos = m_transform.GetPosition();
-	Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
+	for (const auto& pRenderComp : m_pRenderComponents)
+	{
+		pRenderComp->Render();
+	}
 }
 
 void dae::GameObject::SetTexture(const std::string& filename)
 {
-	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
+	filename;
+	//m_texture = ResourceManager::GetInstance().LoadTexture(filename);
 }
 
 void dae::GameObject::SetPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
+}
+
+
+
+void dae::GameObject::RemoveComponent()
+{
+
+}
+
+void dae::GameObject::GetComponent() const
+{
+	return;
+}
+
+bool dae::GameObject::HasComponentBeenAdded() const
+{
+	return false;
 }
