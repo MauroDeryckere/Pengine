@@ -5,13 +5,12 @@
 #include <unordered_set>
 #include <type_traits>
 #include <typeindex>
+#include <typeinfo>
 
 #include "Transform.h"
-
 #include "Component.h"
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
-#include "TextureComponent.h"
 
 #include <iostream>
 
@@ -21,6 +20,8 @@ namespace dae
 	concept ComponentConcept = std::is_base_of_v<Component, T>;
 
 	class Texture2D;
+	class RenderComponent;
+	class PhysicsComponent;
 
 	// todo: this should become final.
 	class GameObject
@@ -34,6 +35,7 @@ namespace dae
 		void SetPosition(float x, float y);
 		const Transform& GetTransform() { return m_transform; };
 
+		//Components
 		template<typename T>
 		bool AddComponent(T&& component) requires ComponentConcept<std::decay_t<decltype(*component)>>;
 
@@ -49,6 +51,7 @@ namespace dae
 		{
 			return (m_AddedComponentsRegistry.find(typeIdx) != end(m_AddedComponentsRegistry));
 		};
+		//----------
 
 		GameObject() = default;
 		virtual ~GameObject();
@@ -156,6 +159,6 @@ namespace dae
 	template<typename ComponentT>
 	bool GameObject::HasComponentBeenAdded() const requires ComponentConcept<ComponentT>
 	{
-		return HasComponentBeenAdded(type_index(ComponentT));
-	}
+		return (m_AddedComponentsRegistry.find(typeid(ComponentT)) != m_AddedComponentsRegistry.end());
+	};
 }

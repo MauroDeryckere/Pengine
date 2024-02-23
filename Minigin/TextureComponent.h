@@ -9,15 +9,15 @@
 
 namespace dae
 {
-	class TextureComponent final :
+	class TextureComponent :
 		public RenderComponent
 	{
 	public:
 		TextureComponent(GameObject* pGameObj);
 		~TextureComponent() override = default;
 
-		void Update(float) override; 
-		void Render() const override;
+		virtual void Update(float) override; 
+		virtual void Render() const override;
 
 		void SetTexture(const std::string& filename);
 
@@ -26,8 +26,10 @@ namespace dae
 		TextureComponent& operator=(const TextureComponent& other) = delete;
 		TextureComponent& operator=(TextureComponent&& other) = delete;
 
+	protected:
+		std::shared_ptr<Texture2D> m_pTexture{};
+
 	private:
-		std::shared_ptr<Texture2D> m_texture{};
 
 	};
 }
