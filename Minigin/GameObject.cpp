@@ -30,18 +30,3 @@ void dae::GameObject::SetPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
 }
-
-void dae::GameObject::RemoveComponent()
-{
-
-}
-
-void dae::GameObject::GetComponent() const
-{
-	return;
-}
-
-bool dae::GameObject::HasComponentBeenAdded() const
-{
-	return false;
-}
