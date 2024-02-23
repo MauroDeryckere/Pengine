@@ -17,12 +17,10 @@
 
 namespace dae
 {
-	class Texture2D;
+	template<typename T>
+	concept ComponentConcept = std::is_base_of_v<Component, T>;
 
-	template<typename T> //TODO
-	concept IsRenderOrPhysicsComponent = std::is_base_of_v<RenderComponent, std::remove_pointer_t<T>> ||
-										 std::is_base_of_v<PhysicsComponent, std::remove_pointer_t<T>> ||
-										 std::is_same_v<PhysicsComponent, std::remove_pointer_t<T>>;
+	class Texture2D;
 
 	// todo: this should become final.
 	class GameObject
@@ -37,101 +35,16 @@ namespace dae
 		const Transform& GetTransform() { return m_transform; };
 
 		template<typename T>
-		bool AddComponent(T&& component)
-		//requires IsRenderOrPhysicsComponent<T>
-		{
-			using ComponentType = std::decay_t<decltype(*component)>;
-			if (m_AddedComponentsRegistry.insert(typeid(ComponentType)).second)
-			{
-				if constexpr (std::is_base_of_v<RenderComponent, ComponentType>)
-				{
-					m_pRenderComponents.emplace_back(std::forward<T>(component));
-				}
-				else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentType>)
-				{
-					m_pPhysicsComponents.emplace_back(std::forward<T>(component));
-				}
-
-				return true;
-			}
-			else
-			{
-				//could throw
-				return false;
-			}
-		};
+		bool AddComponent(T&& component) requires ComponentConcept<std::decay_t<decltype(*component)>>;
 
 		template<typename ComponentT>
-		bool RemoveComponent()
-		requires std::is_base_of_v<Component, ComponentT>
-		{
-			if constexpr (std::is_base_of_v<RenderComponent, ComponentT>)
-			{
-				auto it{ std::remove_if(begin(m_pRenderComponents), end(m_pRenderComponents),
-				[](const auto& ptr) 
-				{
-						return dynamic_cast<ComponentT*>(ptr.get()) != nullptr;
-				}) };
-
-				if (it != m_pRenderComponents.end())
-				{
-					m_pRenderComponents.erase(it);
-					return true;
-				}
-				return false;
-			}
-			else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentT>)
-			{
-				auto it{ std::remove_if(begin(m_pPhysicsComponents), end(m_pPhysicsComponents),
-				[](const auto& ptr) 
-				{
-					return dynamic_cast<ComponentT*>(ptr.get()) != nullptr;
-				}) };
-
-				if (it != m_pPhysicsComponents.end())
-				{
-					m_pPhysicsComponents.erase(it);
-					return true;
-				}
-				return false;
-			}
-			else
-			{
-				return false;
-			}
-		};
+		bool RemoveComponent() requires ComponentConcept<ComponentT>;
 
 		template<typename ComponentT>
-		ComponentT* GetComponent() const
-		requires std::is_base_of_v<Component, ComponentT>
-		{
-			if constexpr (std::is_base_of_v<RenderComponent, ComponentT>)
-			{
-				for (const auto& ptr : m_pRenderComponents)
-				{
-					if (auto* component = dynamic_cast<ComponentT*>(ptr.get()))
-						return component;
-				}
-			}
-			else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentT>)
-			{
-				for (const auto& ptr : m_pPhysicsComponents)
-				{
-					if (auto* component = dynamic_cast<ComponentT*>(ptr.get()))
-						return component;
-				}
-			}
-
-			return nullptr;
-		}
+		ComponentT* GetComponent() const requires ComponentConcept<ComponentT>;
 
 		template<typename ComponentT>
-		bool HasComponentBeenAdded() const
-		requires std::is_base_of_v<Component, ComponentT>
-		{
-			return HasComponentBeenAdded(type_index(ComponentT));
-		};
-
+		bool HasComponentBeenAdded() const requires ComponentConcept<ComponentT>;
 		bool HasComponentBeenAdded(const std::type_index& typeIdx) const
 		{
 			return (m_AddedComponentsRegistry.find(typeIdx) != end(m_AddedComponentsRegistry));
@@ -152,4 +65,97 @@ namespace dae
 		
 		Transform m_transform{};
 	};
+
+	template<typename T>
+	bool GameObject::AddComponent(T&& component)
+	requires ComponentConcept<std::decay_t<decltype(*component)>>
+	{
+		using ComponentType = std::decay_t<decltype(*component)>;
+		if (m_AddedComponentsRegistry.insert(typeid(ComponentType)).second)
+		{
+			if constexpr (std::is_base_of_v<RenderComponent, ComponentType>)
+			{
+				m_pRenderComponents.emplace_back(std::forward<T>(component));
+			}
+			else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentType>)
+			{
+				m_pPhysicsComponents.emplace_back(std::forward<T>(component));
+			}
+
+			return true;
+		}
+		else
+		{
+			//could throw
+			return false;
+		}
+	}
+
+	template<typename ComponentT>
+	bool GameObject::RemoveComponent() requires ComponentConcept<ComponentT>
+	{
+	if constexpr (std::is_base_of_v<RenderComponent, ComponentT>)
+		{
+			auto it{ std::remove_if(begin(m_pRenderComponents), end(m_pRenderComponents),
+			[](const auto& ptr)
+			{
+					return dynamic_cast<ComponentT*>(ptr.get()) != nullptr;
+			}) };
+
+			if (it != m_pRenderComponents.end())
+			{
+				m_pRenderComponents.erase(it);
+				return true;
+			}
+			return false;
+		}
+		else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentT>)
+		{
+			auto it{ std::remove_if(begin(m_pPhysicsComponents), end(m_pPhysicsComponents),
+			[](const auto& ptr)
+			{
+				return dynamic_cast<ComponentT*>(ptr.get()) != nullptr;
+			}) };
+
+			if (it != m_pPhysicsComponents.end())
+			{
+				m_pPhysicsComponents.erase(it);
+				return true;
+			}
+			return false;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	template<typename ComponentT>
+	ComponentT* GameObject::GetComponent() const requires ComponentConcept<ComponentT>
+	{
+		if constexpr (std::is_base_of_v<RenderComponent, ComponentT>)
+		{
+			for (const auto& ptr : m_pRenderComponents)
+			{
+				if (auto* component = dynamic_cast<ComponentT*>(ptr.get()))
+					return component;
+			}
+		}
+		else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentT>)
+		{
+			for (const auto& ptr : m_pPhysicsComponents)
+			{
+				if (auto* component = dynamic_cast<ComponentT*>(ptr.get()))
+					return component;
+			}
+		}
+
+		return nullptr;
+	}
+
+	template<typename ComponentT>
+	bool GameObject::HasComponentBeenAdded() const requires ComponentConcept<ComponentT>
+	{
+		return HasComponentBeenAdded(type_index(ComponentT));
+	}
 }
