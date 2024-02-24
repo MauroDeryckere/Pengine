@@ -131,8 +131,10 @@ namespace dae
             {
                 m_pFunctionalComponents.emplace_back(std::forward<T>(component));
             }
-
-            throw std::runtime_error("No valid comp Type");
+            else
+            {
+                throw std::runtime_error("No valid comp Type");
+            }
         }
         else
         {
