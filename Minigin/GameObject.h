@@ -134,7 +134,10 @@ namespace dae
 
             throw std::runtime_error("No valid comp Type");
         }
-        throw std::runtime_error("Component already added");
+        else
+        {
+            throw std::runtime_error("Component already added");
+        }
     }
 
     template<typename ComponentT>
