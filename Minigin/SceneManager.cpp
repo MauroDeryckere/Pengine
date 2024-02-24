@@ -9,7 +9,15 @@ void dae::SceneManager::Update(float deltaTime)
 	}
 }
 
-void dae::SceneManager::Render()
+void dae::SceneManager::FixedUpdate(float fixedTimeStep)
+{
+	for (const auto& scene : m_scenes)
+	{
+		scene->FixedUpdate(fixedTimeStep);
+	}
+}
+
+void dae::SceneManager::Render() const
 {
 	for (const auto& scene : m_scenes)
 	{

@@ -107,30 +107,15 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		doContinue = input.ProcessInput();
 		while (lag >= fixedTimeStep)
 		{
-			FixedUpdate(fixedTimeStep);
+			sceneManager.FixedUpdate(fixedTimeStep);
 			lag -= fixedTimeStep;
 		}
 
-		Update(deltaTime, sceneManager);
-		Render(renderer);
+		sceneManager.Update(deltaTime);
+		renderer.Render();
 
 		const auto sleep_time{ currentTime + std::chrono::milliseconds(static_cast<long>(msPerFrame)) - high_resolution_clock::now() };
 		std::this_thread::sleep_for(sleep_time);
 	}
 
-}
-
-void dae::Minigin::FixedUpdate(float fixedTimeStep)
-{
-	fixedTimeStep;
-}
-
-void dae::Minigin::Update(float deltaTime, auto& u)
-{
-	u.Update(deltaTime);
-}
-
-void dae::Minigin::Render(auto& r) const
-{
-	r.Render();
 }
