@@ -66,125 +66,140 @@ namespace dae
 		std::vector<std::unique_ptr<FunctionalComponent>> m_pFunctionalComponents;
 		
 		Transform m_transform{};
+
+		template<typename ComponentT, typename ContainerT>
+		bool RemoveComponent(ContainerT& container) requires ComponentConcept<ComponentT>;
+
+		template<typename ComponentT, typename ContainerT>
+		ComponentT* GetComponent(const ContainerT& container) const requires ComponentConcept<ComponentT>;
+
+		template<typename ComponentT, typename ContainerT>
+		bool HasComponentBeenAdded(const ContainerT& container) const requires ComponentConcept<ComponentT>;
 	};
 
-	template<typename T>
-	bool GameObject::AddComponent(T&& component)
-	requires ComponentConcept<std::decay_t<decltype(*component)>>
-	{
-		using ComponentType = std::decay_t<decltype(*component)>;
-		if (m_AddedComponentsRegistry.insert(typeid(ComponentType)).second)
-		{
-			if constexpr (std::is_base_of_v<RenderComponent, ComponentType>)
-			{
-				m_pRenderComponents.emplace_back(std::forward<T>(component));
-			}
-			else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentType>)
-			{
-				m_pPhysicsComponents.emplace_back(std::forward<T>(component));
-			}
-			else if constexpr (std::is_base_of_v<FunctionalComponent, ComponentType>)
-			{
-				m_pFunctionalComponents.emplace_back(std::forward<T>(component));
-			}
+    template<typename ComponentT, typename ContainerT>
+    bool GameObject::RemoveComponent(ContainerT& container) requires ComponentConcept<ComponentT>
+    {
+        auto it{ std::remove_if(std::begin(container), std::end(container),
+        [](const auto& ptr)
+        {
+            return dynamic_cast<ComponentT*>(ptr.get()) != nullptr;
+        }) };
 
-			return true;
-		}
-		else
-		{
-			//could throw
-			return false;
-		}
-	}
+        if (it != std::end(container))
+        {
+            container.erase(it);
+            return true;
+        }
+        return false;
+    }
 
-	template<typename ComponentT>
-	bool GameObject::RemoveComponent() requires ComponentConcept<ComponentT>
-	{
-	if constexpr (std::is_base_of_v<RenderComponent, ComponentT>)
-		{
-			auto it{ std::remove_if(begin(m_pRenderComponents), end(m_pRenderComponents),
-			[](const auto& ptr)
-			{
-					return dynamic_cast<ComponentT*>(ptr.get()) != nullptr;
-			}) };
+    template<typename ComponentT, typename ContainerT>
+    ComponentT* GameObject::GetComponent(const ContainerT& container) const requires ComponentConcept<ComponentT>
+    {
+        for (const auto& ptr : container)
+        {
+            if (auto* component = dynamic_cast<ComponentT*>(ptr.get()))
+                return component;
+        }
+        return nullptr;
+    }
 
-			if (it != m_pRenderComponents.end())
-			{
-				m_pRenderComponents.erase(it);
-				return true;
-			}
-			return false;
-		}
-		else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentT>)
-		{
-			auto it{ std::remove_if(begin(m_pPhysicsComponents), end(m_pPhysicsComponents),
-			[](const auto& ptr)
-			{
-				return dynamic_cast<ComponentT*>(ptr.get()) != nullptr;
-			}) };
+    template<typename ComponentT, typename ContainerT>
+    bool GameObject::HasComponentBeenAdded(const ContainerT& container) const requires ComponentConcept<ComponentT>
+    {
+        return (m_AddedComponentsRegistry.find(typeid(ComponentT)) != m_AddedComponentsRegistry.end());
+    }
 
-			if (it != m_pPhysicsComponents.end())
-			{
-				m_pPhysicsComponents.erase(it);
-				return true;
-			}
-			return false;
-		}
-		else if constexpr (std::is_base_of_v<FunctionalComponent, ComponentT>)
-		{
-			auto it{ std::remove_if(begin(m_pFunctionalComponents), end(m_pFunctionalComponents),
-			[](const auto& ptr)
-			{
-				return dynamic_cast<ComponentT*>(ptr.get()) != nullptr;
-			}) };
+    template<typename T>
+    bool GameObject::AddComponent(T&& component)
+        requires ComponentConcept<std::decay_t<decltype(*component)>>
+    {
+        using ComponentType = std::decay_t<decltype(*component)>;
+        if (m_AddedComponentsRegistry.insert(typeid(ComponentType)).second)
+        {
+            if constexpr (std::is_base_of_v<RenderComponent, ComponentType>)
+            {
+                m_pRenderComponents.emplace_back(std::forward<T>(component));
+            }
+            else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentType>)
+            {
+                m_pPhysicsComponents.emplace_back(std::forward<T>(component));
+            }
+            else if constexpr (std::is_base_of_v<FunctionalComponent, ComponentType>)
+            {
+                m_pFunctionalComponents.emplace_back(std::forward<T>(component));
+            }
 
-			if (it != m_pFunctionalComponents.end())
-			{
-				m_pFunctionalComponents.erase(it);
-				return true;
-			}
-			return false;
-		}
-		else
-		{
-			return false;
-		}
-	}
+            return true;
+        }
+        else
+        {
+            //could throw
+            return false;
+        }
+    }
 
-	template<typename ComponentT>
-	ComponentT* GameObject::GetComponent() const requires ComponentConcept<ComponentT>
-	{
-		if constexpr (std::is_base_of_v<RenderComponent, ComponentT>)
-		{
-			for (const auto& ptr : m_pRenderComponents)
-			{
-				if (auto* component = dynamic_cast<ComponentT*>(ptr.get()))
-					return component;
-			}
-		}
-		else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentT>)
-		{
-			for (const auto& ptr : m_pPhysicsComponents)
-			{
-				if (auto* component = dynamic_cast<ComponentT*>(ptr.get()))
-					return component;
-			}
-		}
-		else if constexpr (std::is_base_of_v<FunctionalComponent, ComponentT>)
-		{
-			for (const auto& ptr : m_pFunctionalComponents)
-			{
-				if (auto* component = dynamic_cast<ComponentT*>(ptr.get()))
-					return component;
-			}
-		}
+    template<typename ComponentT>
+    bool GameObject::RemoveComponent() requires ComponentConcept<ComponentT>
+    {
+        if constexpr (std::is_base_of_v<RenderComponent, ComponentT>)
+        {
+            return RemoveComponent<ComponentT>(m_pRenderComponents);
+        }
+        else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentT>)
+        {
+            return RemoveComponent<ComponentT>(m_pPhysicsComponents);
+        }
+        else if constexpr (std::is_base_of_v<FunctionalComponent, ComponentT>)
+        {
+            return RemoveComponent<ComponentT>(m_pFunctionalComponents);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-		return nullptr;
-	}
+    template<typename ComponentT>
+    ComponentT* GameObject::GetComponent() const requires ComponentConcept<ComponentT>
+    {
+        if constexpr (std::is_base_of_v<RenderComponent, ComponentT>)
+        {
+            return GetComponent<ComponentT>(m_pRenderComponents);
+        }
+        else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentT>)
+        {
+            return GetComponent<ComponentT>(m_pPhysicsComponents);
+        }
+        else if constexpr (std::is_base_of_v<FunctionalComponent, ComponentT>)
+        {
+            return GetComponent<ComponentT>(m_pFunctionalComponents);
+        }
+        else
+        {
+            return nullptr;
+        }
+    }
 
-	template<typename ComponentT>
-	bool GameObject::HasComponentBeenAdded() const requires ComponentConcept<ComponentT>
-	{
-		return (m_AddedComponentsRegistry.find(typeid(ComponentT)) != m_AddedComponentsRegistry.end());
-	};
+    template<typename ComponentT>
+    bool GameObject::HasComponentBeenAdded() const requires ComponentConcept<ComponentT>
+    {
+        if constexpr (std::is_base_of_v<RenderComponent, ComponentT>)
+        {
+            return HasComponentBeenAdded<ComponentT>(m_pRenderComponents);
+        }
+        else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentT>)
+        {
+            return HasComponentBeenAdded<ComponentT>(m_pPhysicsComponents);
+        }
+        else if constexpr (std::is_base_of_v<FunctionalComponent, ComponentT>)
+        {
+            return HasComponentBeenAdded<ComponentT>(m_pFunctionalComponents);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
