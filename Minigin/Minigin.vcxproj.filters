@@ -19,6 +19,15 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{05e0b076-af05-44d3-9e90-cd71dadbaf62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Physics">
+      <UniqueIdentifier>{3088f489-b8d0-4169-a57b-98c808650e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Render">
+      <UniqueIdentifier>{c339dacd-3731-4400-b9bc-de201d2dad04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Functional">
+      <UniqueIdentifier>{498ec2d1-ff53-4740-8cfd-2a90c7e2d015}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -57,17 +66,23 @@
     <ClInclude Include="Component.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="RenderComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsComponent.h">
-      <Filter>Header Files\Components</Filter>
+      <Filter>Header Files\Components\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="TextureComponent.h">
-      <Filter>Header Files\Components</Filter>
+    <ClInclude Include="RenderComponent.h">
+      <Filter>Header Files\Components\Render</Filter>
     </ClInclude>
     <ClInclude Include="TextComponent.h">
-      <Filter>Header Files\Components</Filter>
+      <Filter>Header Files\Components\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>Header Files\Components\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionalComponent.h">
+      <Filter>Header Files\Components\Functional</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSComponent.h">
+      <Filter>Header Files\Components\Functional</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +132,12 @@
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="TextComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="FPSComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionalComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>

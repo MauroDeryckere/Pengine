@@ -11,6 +11,7 @@
 #include "Component.h"
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
+#include "FunctionalComponent.h"
 
 #include <iostream>
 
@@ -20,10 +21,7 @@ namespace dae
 	concept ComponentConcept = std::is_base_of_v<Component, T>;
 
 	class Texture2D;
-	class RenderComponent;
-	class PhysicsComponent;
 
-	// todo: this should become final.
 	class GameObject final
 	{
 
@@ -65,6 +63,7 @@ namespace dae
 
 		std::vector<std::unique_ptr<PhysicsComponent>> m_pPhysicsComponents;
 		std::vector<std::unique_ptr<RenderComponent>> m_pRenderComponents;
+		std::vector<std::unique_ptr<FunctionalComponent>> m_pFunctionalComponents;
 		
 		Transform m_transform{};
 	};
@@ -83,6 +82,10 @@ namespace dae
 			else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentType>)
 			{
 				m_pPhysicsComponents.emplace_back(std::forward<T>(component));
+			}
+			else if constexpr (std::is_base_of_v<FunctionalComponent, ComponentType>)
+			{
+				m_pFunctionalComponents.emplace_back(std::forward<T>(component));
 			}
 
 			return true;
@@ -127,6 +130,21 @@ namespace dae
 			}
 			return false;
 		}
+		else if constexpr (std::is_base_of_v<FunctionalComponent, ComponentT>)
+		{
+			auto it{ std::remove_if(begin(m_pFunctionalComponents), end(m_pFunctionalComponents),
+			[](const auto& ptr)
+			{
+				return dynamic_cast<ComponentT*>(ptr.get()) != nullptr;
+			}) };
+
+			if (it != m_pFunctionalComponents.end())
+			{
+				m_pFunctionalComponents.erase(it);
+				return true;
+			}
+			return false;
+		}
 		else
 		{
 			return false;
@@ -147,6 +165,14 @@ namespace dae
 		else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentT>)
 		{
 			for (const auto& ptr : m_pPhysicsComponents)
+			{
+				if (auto* component = dynamic_cast<ComponentT*>(ptr.get()))
+					return component;
+			}
+		}
+		else if constexpr (std::is_base_of_v<FunctionalComponent, ComponentT>)
+		{
+			for (const auto& ptr : m_pFunctionalComponents)
 			{
 				if (auto* component = dynamic_cast<ComponentT*>(ptr.get()))
 					return component;

@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 #include <SDL_ttf.h>
-#include "TextObject.h"
+#include "GameObject.h"
 #include "Renderer.h"
 #include "Font.h"
 #include "Texture2D.h"
@@ -12,7 +12,7 @@ dae::TextComponent::TextComponent(GameObject* pGameObj, std::shared_ptr<Font> pF
 	TextureComponent(pGameObj),
 	m_NeedsUpdate{true},
 	m_pFont{std::move(pFont)},
-	m_Text{}
+	m_Text{""}
 {
 }
 
