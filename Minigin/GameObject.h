@@ -6,6 +6,7 @@
 #include <type_traits>
 #include <typeindex>
 #include <typeinfo>
+#include <stdexcept>
 
 #include "Transform.h"
 #include "Component.h"
@@ -35,10 +36,10 @@ namespace dae
 
 		//Components
 		template<typename T>
-		bool AddComponent(T&& component) requires ComponentConcept<std::decay_t<decltype(*component)>>;
+		void AddComponent(T&& component) requires ComponentConcept<std::decay_t<decltype(*component)>>;
 
 		template<typename ComponentT>
-		bool RemoveComponent() requires ComponentConcept<ComponentT>;
+		void RemoveComponent() requires ComponentConcept<ComponentT>;
 
 		template<typename ComponentT>
 		ComponentT* GetComponent() const requires ComponentConcept<ComponentT>;
@@ -68,7 +69,7 @@ namespace dae
 		Transform m_transform{};
 
 		template<typename ComponentT, typename ContainerT>
-		bool RemoveComponent(ContainerT& container) requires ComponentConcept<ComponentT>;
+		void RemoveComponent(ContainerT& container) requires ComponentConcept<ComponentT>;
 
 		template<typename ComponentT, typename ContainerT>
 		ComponentT* GetComponent(const ContainerT& container) const requires ComponentConcept<ComponentT>;
@@ -77,8 +78,9 @@ namespace dae
 		bool HasComponentBeenAdded(const ContainerT& container) const requires ComponentConcept<ComponentT>;
 	};
 
+#pragma region Template component functions
     template<typename ComponentT, typename ContainerT>
-    bool GameObject::RemoveComponent(ContainerT& container) requires ComponentConcept<ComponentT>
+    void GameObject::RemoveComponent(ContainerT& container) requires ComponentConcept<ComponentT>
     {
         auto it{ std::remove_if(std::begin(container), std::end(container),
         [](const auto& ptr)
@@ -89,9 +91,8 @@ namespace dae
         if (it != std::end(container))
         {
             container.erase(it);
-            return true;
         }
-        return false;
+        throw std::runtime_error("Component not found in container");
     }
 
     template<typename ComponentT, typename ContainerT>
@@ -112,7 +113,7 @@ namespace dae
     }
 
     template<typename T>
-    bool GameObject::AddComponent(T&& component)
+    void GameObject::AddComponent(T&& component)
         requires ComponentConcept<std::decay_t<decltype(*component)>>
     {
         using ComponentType = std::decay_t<decltype(*component)>;
@@ -131,33 +132,25 @@ namespace dae
                 m_pFunctionalComponents.emplace_back(std::forward<T>(component));
             }
 
-            return true;
+            throw std::runtime_error("No valid comp Type");
         }
-        else
-        {
-            //could throw
-            return false;
-        }
+        throw std::runtime_error("Component already added");
     }
 
     template<typename ComponentT>
-    bool GameObject::RemoveComponent() requires ComponentConcept<ComponentT>
+    void GameObject::RemoveComponent() requires ComponentConcept<ComponentT>
     {
         if constexpr (std::is_base_of_v<RenderComponent, ComponentT>)
         {
-            return RemoveComponent<ComponentT>(m_pRenderComponents);
+            RemoveComponent<ComponentT>(m_pRenderComponents);
         }
         else if constexpr (std::is_base_of_v<PhysicsComponent, ComponentT>)
         {
-            return RemoveComponent<ComponentT>(m_pPhysicsComponents);
+            RemoveComponent<ComponentT>(m_pPhysicsComponents);
         }
         else if constexpr (std::is_base_of_v<FunctionalComponent, ComponentT>)
         {
-            return RemoveComponent<ComponentT>(m_pFunctionalComponents);
-        }
-        else
-        {
-            return false;
+            RemoveComponent<ComponentT>(m_pFunctionalComponents);
         }
     }
 
@@ -202,4 +195,5 @@ namespace dae
             return false;
         }
     }
+#pragma endregion
 }
