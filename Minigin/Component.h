@@ -8,7 +8,6 @@ namespace dae
 	class Component
 	{
 	public:
-		Component(GameObject* pGameObj);
 		virtual ~Component() = default;
 
 		Component(const Component& other) = delete;
@@ -17,9 +16,12 @@ namespace dae
 		Component& operator=(Component&& other) = delete;
 
 	protected:
-		GameObject* m_pGameObject;
+		Component(GameObject* pGameObj);
+
+		GameObject* GetGameObj() const { return m_pGameObject; };
 
 	private:
+		GameObject* m_pGameObject;
 
 	};
 

@@ -28,6 +28,12 @@
     <Filter Include="Header Files\Components\Functional">
       <UniqueIdentifier>{498ec2d1-ff53-4740-8cfd-2a90c7e2d015}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ECS">
+      <UniqueIdentifier>{a72e4703-37c4-4d3f-a517-b5b3275b9821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ECS\ECS Components">
+      <UniqueIdentifier>{75ed3dd7-61ab-4fd4-bcec-2b33b4876c21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -84,6 +90,21 @@
     <ClInclude Include="FPSComponent.h">
       <Filter>Header Files\Components\Functional</Filter>
     </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>Header Files\ECS\ECS Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityStorage.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentStorage.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -139,6 +160,18 @@
     </ClCompile>
     <ClCompile Include="FunctionalComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ECS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityStorage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentStorage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

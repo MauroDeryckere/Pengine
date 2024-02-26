@@ -48,6 +48,6 @@ void dae::TextComponent::Render() const
 	if (m_pTexture)
 	{
 
-		Renderer::GetInstance().RenderTexture(*m_pTexture, m_pGameObject->GetTransform().GetPosition().x, m_pGameObject->GetTransform().GetPosition().y);
+		Renderer::GetInstance().RenderTexture(*m_pTexture, GetGameObj()->GetTransform().GetPosition().x, GetGameObj()->GetTransform().GetPosition().y);
 	}
 }

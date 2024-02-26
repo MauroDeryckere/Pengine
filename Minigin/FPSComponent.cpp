@@ -14,7 +14,7 @@ dae::FPSComponent::FPSComponent(GameObject* pGameObj):
 void dae::FPSComponent::Update(float deltaTime)
 {
     m_AccumulatedTime += deltaTime;
-    m_FrameCount++;
+    ++m_FrameCount;
 
     if (m_AccumulatedTime >= 1.0f)
     {
@@ -22,7 +22,7 @@ void dae::FPSComponent::Update(float deltaTime)
 
         m_FrameCount = 0;
         m_AccumulatedTime -= 1.f;
-
-        m_pTextComp->SetText(std::to_string(m_FPS));
+        //std::format("{;.1f}", m_count/m_delay)
+        m_pTextComp->SetText(std::to_string(m_FPS)); //dont need m_FPS
     }
 }

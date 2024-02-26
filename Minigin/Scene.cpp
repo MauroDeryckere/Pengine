@@ -40,6 +40,8 @@ void Scene::Update(float deltaTime)
 	{
 		object->Update(deltaTime);
 	}
+
+	//Dirty flag for removal loop
 }
 
 void Scene::Render() const

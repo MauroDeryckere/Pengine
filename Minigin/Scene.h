@@ -29,6 +29,8 @@ namespace dae
 		std::string m_name;
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
 
+		//scene == gameobj -> root of all objects
+
 		static unsigned int m_idCounter; 
 	};
 

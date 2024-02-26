@@ -27,9 +27,9 @@ namespace dae
 	{
 
 	public:
-		virtual void Update(float deltaTime);
+		void Update(float deltaTime);
 		void FixedUpdate(float timeStep);
-		virtual void Render() const;
+		void Render() const;
 
 		void SetPosition(float x, float y);
 		const Transform& GetTransform() { return m_transform; };
