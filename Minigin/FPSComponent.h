@@ -4,7 +4,6 @@
 #include "FunctionalComponent.h"
 
 #include <iostream>
-#include <chrono>
 
 namespace dae
 {
@@ -27,7 +26,6 @@ namespace dae
 
     private:
 		unsigned m_FrameCount;
-		float m_FPS;
 		float m_AccumulatedTime;
 
 		TextComponent* m_pTextComp;

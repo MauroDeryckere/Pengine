@@ -31,6 +31,13 @@ namespace dae
 		void FixedUpdate(float timeStep);
 		void Render() const;
 
+        //Scene graph
+        GameObject* GetParent() const;
+        void SetParent(GameObject* pParet);
+        size_t GetChildCount();
+        GameObject* GetChild(size_t idx);
+        //-----------
+
 		void SetPosition(float x, float y);
 		const Transform& GetTransform() { return m_transform; };
 
@@ -60,6 +67,9 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
+        GameObject* m_pParent;
+        std::vector<GameObject*> m_pChildren; //unique ptr?
+
 		std::unordered_set<std::type_index> m_AddedComponentsRegistry;
 
 		std::vector<std::unique_ptr<PhysicsComponent>> m_pPhysicsComponents;
@@ -67,6 +77,9 @@ namespace dae
 		std::vector<std::unique_ptr<FunctionalComponent>> m_pFunctionalComponents;
 		
 		Transform m_transform{};
+
+        void AddChild(GameObject* pChild);
+        void RemoveChild(GameObject* pChild);
 
 		template<typename ComponentT, typename ContainerT>
 		void RemoveComponent(ContainerT& container) requires ComponentConcept<ComponentT>;

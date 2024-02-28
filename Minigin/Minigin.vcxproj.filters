@@ -78,9 +78,6 @@
     <ClInclude Include="RenderComponent.h">
       <Filter>Header Files\Components\Render</Filter>
     </ClInclude>
-    <ClInclude Include="TextComponent.h">
-      <Filter>Header Files\Components\Render</Filter>
-    </ClInclude>
     <ClInclude Include="TextureComponent.h">
       <Filter>Header Files\Components\Render</Filter>
     </ClInclude>
@@ -104,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="TextComponent.h">
+      <Filter>Header Files\Components\Functional</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

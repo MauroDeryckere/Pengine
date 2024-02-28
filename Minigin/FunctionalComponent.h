@@ -2,6 +2,7 @@
 #define FUNCTIONALCOMPONENT
 
 #include "Component.h"
+
 namespace dae
 {
 	class GameObject;
@@ -19,6 +20,7 @@ namespace dae
 		FunctionalComponent(FunctionalComponent&& other) = delete;
 		FunctionalComponent& operator=(const FunctionalComponent& other) = delete;
 		FunctionalComponent& operator=(FunctionalComponent&& other) = delete;
+
 	private:
 
 	};

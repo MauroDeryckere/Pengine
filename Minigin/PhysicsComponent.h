@@ -8,7 +8,6 @@ namespace dae
         : public Component
     {
     public:
-        PhysicsComponent(GameObject* pGameObj);
         ~PhysicsComponent() = default;
 
         virtual void FixedUpdate(float fixedTimeStep) = 0;
@@ -17,6 +16,9 @@ namespace dae
         PhysicsComponent(PhysicsComponent&& other) = delete;
         PhysicsComponent& operator=(const PhysicsComponent& other) = delete;
         PhysicsComponent& operator=(PhysicsComponent&& other) = delete;
+
+    protected:
+        PhysicsComponent(GameObject* pGameObj);
 
     private:
 

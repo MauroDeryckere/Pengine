@@ -5,38 +5,74 @@
 #include "RenderComponent.h"
 #include "PhysicsComponent.h"
 
-dae::GameObject::~GameObject() = default;
-
-void dae::GameObject::Update(float deltaTime)
+namespace dae
 {
-	for (const auto& pFuncComp : m_pFunctionalComponents)
+	GameObject::~GameObject() = default;
+
+	void GameObject::AddChild(GameObject* pChild)
 	{
-		pFuncComp->Update(deltaTime);
+		pChild;
 	}
 
-	for (const auto& pRenderComp : m_pRenderComponents)
+	void GameObject::RemoveChild(GameObject* pChild)
 	{
-		pRenderComp->Update(deltaTime);
+		pChild;
 	}
-}
 
-void dae::GameObject::FixedUpdate(float timeStep)
-{
-	for (auto& pPhysicsComp : m_pPhysicsComponents)
+	void GameObject::Update(float deltaTime)
 	{
-		pPhysicsComp->FixedUpdate(timeStep);
-	}
-}
+		for (const auto& pFuncComp : m_pFunctionalComponents)
+		{
+			pFuncComp->Update(deltaTime);
+		}
 
-void dae::GameObject::Render() const
-{
-	for (const auto& pRenderComp : m_pRenderComponents)
+		for (const auto& pRenderComp : m_pRenderComponents)
+		{
+			pRenderComp->Update(deltaTime);
+		}
+	}
+
+	void GameObject::FixedUpdate(float timeStep)
 	{
-		pRenderComp->Render();
+		for (auto& pPhysicsComp : m_pPhysicsComponents)
+		{
+			pPhysicsComp->FixedUpdate(timeStep);
+		}
 	}
-}
 
-void dae::GameObject::SetPosition(float x, float y)
-{
-	m_transform.SetPosition(x, y, 0.0f);
+	void GameObject::Render() const
+	{
+		for (const auto& pRenderComp : m_pRenderComponents)
+		{
+			pRenderComp->Render();
+		}
+	}
+
+	GameObject* GameObject::GetParent() const
+	{
+		return m_pParent;
+	}
+
+	void GameObject::SetParent(GameObject* pParent)
+	{
+		pParent;
+	}
+
+	size_t GameObject::GetChildCount()
+	{
+		return m_pChildren.size();
+	}
+
+	GameObject* GameObject::GetChild(size_t idx)
+	{
+		assert(idx < GetChildCount());
+
+		return m_pChildren[idx];
+	}
+
+	void GameObject::SetPosition(float x, float y)
+	{
+		m_transform.SetPosition(x, y, 0.0f);
+	}
+
 }

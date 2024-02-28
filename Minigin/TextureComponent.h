@@ -9,7 +9,7 @@
 
 namespace dae
 {
-	class TextureComponent :
+	class TextureComponent final:
 		public RenderComponent
 	{
 	public:
@@ -20,16 +20,15 @@ namespace dae
 		virtual void Render() const override;
 
 		void SetTexture(const std::string& filename);
+		void SetTexture(std::shared_ptr<Texture2D> pTexture) { m_pTexture = std::move(pTexture); }
 
 		TextureComponent(const TextureComponent& other) = delete;
 		TextureComponent(TextureComponent&& other) = delete;
 		TextureComponent& operator=(const TextureComponent& other) = delete;
 		TextureComponent& operator=(TextureComponent&& other) = delete;
 
-	protected:
-		std::shared_ptr<Texture2D> m_pTexture{};
-
 	private:
+		std::shared_ptr<Texture2D> m_pTexture{};
 
 	};
 }

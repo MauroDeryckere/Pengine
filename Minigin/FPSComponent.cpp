@@ -2,12 +2,15 @@
 #include "GameObject.h"
 #include "TextComponent.h"
 #include <string>
+#include <format>
 #include <cassert>
 
-dae::FPSComponent::FPSComponent(GameObject* pGameObj):
-	FunctionalComponent(pGameObj)
+dae::FPSComponent::FPSComponent(GameObject* pGameObj) :
+    FunctionalComponent(pGameObj),
+    m_AccumulatedTime{ 0.f },
+    m_FrameCount{ 0 },
+    m_pTextComp{ pGameObj->GetComponent<dae::TextComponent>() }
 {
-    m_pTextComp = pGameObj->GetComponent<dae::TextComponent>();
     assert(m_pTextComp);
 }
 
@@ -18,11 +21,10 @@ void dae::FPSComponent::Update(float deltaTime)
 
     if (m_AccumulatedTime >= 1.0f)
     {
-        m_FPS = static_cast<float>(m_FrameCount) / m_AccumulatedTime;
+        const auto txt{ std::format("{:.1f}", m_FrameCount / m_AccumulatedTime) };
+        m_pTextComp->SetText(txt);
 
         m_FrameCount = 0;
-        m_AccumulatedTime -= 1.f;
-        //std::format("{;.1f}", m_count/m_delay)
-        m_pTextComp->SetText(std::to_string(m_FPS)); //dont need m_FPS
+        m_AccumulatedTime = 0.f;
     }
 }

@@ -9,7 +9,6 @@ namespace dae
 		: public Component
 	{
 	public:
-		RenderComponent(GameObject* pGameObj);
 		virtual ~RenderComponent() override = default;
 
 		virtual void Update(float) = 0;
@@ -20,6 +19,8 @@ namespace dae
 		RenderComponent& operator=(const RenderComponent& other) = delete;
 		RenderComponent& operator=(RenderComponent&& other) = delete;
 
+	protected:
+		RenderComponent(GameObject* pGameObj);
 	private:
 
 	};
