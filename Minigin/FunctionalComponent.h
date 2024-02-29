@@ -11,7 +11,6 @@ namespace dae
 		public Component
 	{
 	public:
-		FunctionalComponent(GameObject* pGameObj);
 		virtual ~FunctionalComponent() override = default;
 
 		virtual void Update(float deltaT) = 0;
@@ -20,6 +19,9 @@ namespace dae
 		FunctionalComponent(FunctionalComponent&& other) = delete;
 		FunctionalComponent& operator=(const FunctionalComponent& other) = delete;
 		FunctionalComponent& operator=(FunctionalComponent&& other) = delete;
+
+	protected:
+		FunctionalComponent(GameObject* pGameObj);
 
 	private:
 
