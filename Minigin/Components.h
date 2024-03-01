@@ -1,7 +1,7 @@
 #ifndef COMPONENTS
 #define COMPONENTS
 
-namespace dae
+namespace Pengin
 {
 	struct TestComponent
 	{

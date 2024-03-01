@@ -7,7 +7,7 @@
 #include <any>
 
 
-namespace dae
+namespace Pengin
 {
     template<typename ComponentType>
     class ComponentStorage

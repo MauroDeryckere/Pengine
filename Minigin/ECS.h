@@ -6,18 +6,12 @@
 #include "Components.h"
 #include "ComponentStorage.h"
 
-#include <unordered_map>
-#include <unordered_set>
 #include <vector>
-#include <memory>
-#include <typeindex>
-#include <any>
-#include <bitset>
 #include <cassert>
 #include <limits>
 
 #include <iostream>
-namespace dae
+namespace Pengin
 {
     using Entity = unsigned;
 
@@ -34,7 +28,6 @@ namespace dae
 
             test.Remove(1);
             std::cout << test.Contains(1) << "\n";
-
         };
 
         //Create Entity -- possible overload for entities within a range

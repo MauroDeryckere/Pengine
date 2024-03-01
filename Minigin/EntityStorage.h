@@ -7,7 +7,7 @@
 #include <vector>
 #include <typeindex>
 
-namespace dae
+namespace Pengin
 {
     class EntityStorage
     {
