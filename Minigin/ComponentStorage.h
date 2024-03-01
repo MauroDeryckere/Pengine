@@ -1,7 +1,10 @@
 #ifndef COMPONENTSTORAGE
 #define COMPONENTSTORAGE
 
+#include "Entity.h"
+
 #include "SparseSet.h"
+#include "ComponentWrapper.h"
 
 #include <memory>
 #include <cassert>
@@ -12,11 +15,7 @@
 
 namespace Pengin
 {
-    using EntityId = unsigned;
     using KeyType = EntityId;
-
-    static_assert(std::is_unsigned_v<EntityId>, "EntityId must be an unsigned integer type");
-
     class ComponentStorage final
     {
     public:
@@ -59,7 +58,8 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        const ComponentType& GetComponent(const EntityId& id)
+        ComponentType& GetComponent(const EntityId& id)
+        requires std::is_default_constructible_v<ComponentType>
         {
             SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
 
@@ -68,11 +68,16 @@ namespace Pengin
                 return compSet[id];
             }
 
-            throw std::runtime_error("Component not found for the given entity ID");
+            return m_ComponentSet.Emplace(id, ComponentType{});
         }
 
+        template<typename ComponentType>
+        ComponentWrapper<ComponentType> GetComponentWrapper()
+        {
+            SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
 
-
+            return ComponentWrapper<ComponentType>{ compSet };
+        }
 
     private:
         std::unordered_map<std::type_index, std::shared_ptr<void>> m_ComponentSetsMap;

@@ -1,10 +1,13 @@
 #ifndef ENTITYCOMPONENTSYSTEM
 #define ENTITYCOMPONENTSYSTEM
 
+#include "Entity.h"
+
 #include "SparseSet.h"
 
 #include "Components.h"
 #include "ComponentStorage.h"
+#include "ComponentWrapper.h"
 
 #include <vector>
 #include <cassert>
@@ -13,8 +16,6 @@
 #include <iostream>
 namespace Pengin
 {
-    using Entity = unsigned;
-
     class ECS
     {
     public:
@@ -22,13 +23,20 @@ namespace Pengin
             m_ComponentStorage{}
         {
 
-            m_ComponentStorage.AddComponent<TestComponent>(1);
-            std::cout << m_ComponentStorage.HasComponent<TestComponent>(1) << "\n";
-            m_ComponentStorage.AddComponent<TestComponent>(2, 4);
-            std::cout << m_ComponentStorage.HasComponent<TestComponent>(2) << "\n";
+            AddComponent<TestComponent>(1);
+            std::cout << HasComponent<TestComponent>(1) << "\n";
+            AddComponent<TestComponent>(2, 4);
+            std::cout << HasComponent<TestComponent>(2) << "\n";
 
-            auto& comp = m_ComponentStorage.GetComponent<TestComponent>(2);
+            auto& comp = GetComponent<TestComponent>(2);
             std::cout << comp.randomintfortesting << "\n";
+
+            auto componentWrapper(GetComponents<TestComponent>());
+
+            for (auto& component : componentWrapper) 
+            {
+                std::cout << component.randomintfortesting << "\n";
+            }
 
         };
 
@@ -38,11 +46,35 @@ namespace Pengin
 
         //IsValid(entity id)
 
-        //AddComponent<Type>(id)
-        //AddComponent<Type>(id, constructor) 
-        //RemoveComponent<Type>(id) 
-        //HasComponent<Type>(id)
-        //GetComponent<Type>(id)
+        template<typename ComponentType, typename... Args>
+        void AddComponent(const EntityId& id, Args&&... args)
+        {
+            m_ComponentStorage.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
+        }
+
+        template<typename ComponentType>
+        void RemoveComponent(const EntityId& id)
+        {
+            m_ComponentStorage.RemoveComponent<ComponentType>(id);
+        }
+
+        template<typename ComponentType>
+        bool HasComponent(const EntityId& id)
+        {
+            return m_ComponentStorage.HasComponent<ComponentType>(id);
+        }
+
+        template<typename ComponentType>
+        ComponentType& GetComponent(const EntityId& id)
+        {
+            return m_ComponentStorage.GetComponent<ComponentType>(id);
+        }
+
+        template<typename ComponentType>
+        auto GetComponents()
+        {
+            return m_ComponentStorage.GetComponentWrapper<ComponentType>();
+        }
 
         //HasAnyOf<Types>
         //HasAllOf<Types>
