@@ -72,10 +72,28 @@ namespace Pengin
             return compSet[id];
         }
 
+        //const ComponentType& GetComponent(const EntityId& id) const
+        //{
+        //    if (m_ComponentSet.Contains(id))
+        //    {
+        //        return m_ComponentSet[id];
+        //    }
+
+        //    throw std::out_of_range("Component not found for the given entity ID");
+        //}
+
         template<typename ComponentType>
         ComponentWrapper<ComponentType> GetComponentWrapper()
         {
             SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
+
+            return ComponentWrapper<ComponentType>{ compSet };
+        }
+
+        template<typename ComponentType>
+        const ComponentWrapper<ComponentType> GetComponentWrapper() const
+        {
+            const SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
 
             return ComponentWrapper<ComponentType>{ compSet };
         }
@@ -99,6 +117,23 @@ namespace Pengin
             auto set{ std::make_shared<SparseSet<ComponentType, KeyType>>() };
             m_ComponentSetsMap[compTypeIdx] = set;
             return *set;
+        }
+
+        template<typename ComponentType>
+        const SparseSet<ComponentType, KeyType>& GetComponentSet() const
+            requires std::is_constructible_v<ComponentType>&& std::is_default_constructible_v<KeyType>
+        {
+            const std::type_index compTypeIdx{ typeid(ComponentType) };
+
+            auto it{ m_ComponentSetsMap.find(compTypeIdx) };
+
+            if (it != m_ComponentSetsMap.end())
+            {
+                return *static_cast<const SparseSet<ComponentType, KeyType>*>(it->second.get());
+            }
+
+            // If the component set doesn't exist, you may throw an exception or handle the case differently based on your requirements.
+            throw std::runtime_error("Component set not found");
         }
 
         template<typename ComponentType>

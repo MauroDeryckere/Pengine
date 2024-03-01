@@ -27,6 +27,16 @@ namespace Pengin
             return m_ComponentSet.Emplace(id, ComponentType{});
         }
 
+        const ComponentType& GetComponent(const EntityId& id) const
+        {
+            if (m_ComponentSet.Contains(id))
+            {
+                return m_ComponentSet[id];
+            }
+
+            throw std::out_of_range("Component not found for the given entity ID");
+        }
+
         using iterator = typename SparseSet<ComponentType, KeyType>::iterator;
         using const_iterator = typename SparseSet<ComponentType, KeyType>::const_iterator;
 

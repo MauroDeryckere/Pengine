@@ -46,7 +46,7 @@ namespace Pengin
         //Destroy entity
 
         template<typename ComponentType, typename... Args>
-        bool AddComponent(const EntityId& id, Args&&... args)
+        bool AddComponent(const EntityId& id, Args&&... args) //return added component here TOOD
         {
             return m_ComponentStorage.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
         }
@@ -71,6 +71,12 @@ namespace Pengin
 
         template<typename ComponentType>
         auto GetComponents()
+        {
+            return m_ComponentStorage.GetComponentWrapper<ComponentType>();
+        }
+
+        template<typename ComponentType>
+        auto GetComponents() const
         {
             return m_ComponentStorage.GetComponentWrapper<ComponentType>();
         }
