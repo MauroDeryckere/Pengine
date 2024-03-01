@@ -77,9 +77,9 @@ namespace Pengin
         {
             const SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
 
-            if (m_ComponentSet.Contains(id))
+            if (compSet.Contains(id))
             {
-                return m_ComponentSet[id];
+                return compSet[id];
             }
 
             throw std::out_of_range("Component not found for the given entity ID");
