@@ -21,7 +21,7 @@ namespace Pengin
         ECS():
             m_ComponentStorage{}
         {
-            auto& test = *m_ComponentStorage.getComponentSet<TestComponent, unsigned>();
+            SparseSet<TestComponent, unsigned>& test = m_ComponentStorage.getComponentSet<TestComponent, unsigned>();
 
             test.Emplace(1);
 

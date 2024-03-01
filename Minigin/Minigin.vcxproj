@@ -175,7 +175,6 @@
   <ItemGroup>
     <ClInclude Include="Component.h" />
     <ClInclude Include="Components.h" />
-    <ClInclude Include="ComponentSetHandler.h" />
     <ClInclude Include="ComponentStorage.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="EntityStorage.h" />

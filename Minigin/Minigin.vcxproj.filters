@@ -111,9 +111,6 @@
     <ClInclude Include="ComponentStorage.h">
       <Filter>Header Files\ECS\ECS Components\Storage</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentSetHandler.h">
-      <Filter>Header Files\ECS\ECS Components\Storage</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
