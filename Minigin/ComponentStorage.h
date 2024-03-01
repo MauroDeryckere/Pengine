@@ -72,15 +72,18 @@ namespace Pengin
             return compSet[id];
         }
 
-        //const ComponentType& GetComponent(const EntityId& id) const
-        //{
-        //    if (m_ComponentSet.Contains(id))
-        //    {
-        //        return m_ComponentSet[id];
-        //    }
+        template<typename ComponentType>
+        const ComponentType& GetComponent(const EntityId& id) const
+        {
+            const SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
 
-        //    throw std::out_of_range("Component not found for the given entity ID");
-        //}
+            if (m_ComponentSet.Contains(id))
+            {
+                return m_ComponentSet[id];
+            }
+
+            throw std::out_of_range("Component not found for the given entity ID");
+        }
 
         template<typename ComponentType>
         ComponentWrapper<ComponentType> GetComponentWrapper()
