@@ -16,13 +16,15 @@ namespace dae
 
 		void FixedUpdate(float fixedTimeStep);
 		void Update(float deltaTime);
-		void Render() const;
+		void Render();
 
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
+
+		Pengin::ECS& GetEcs() { return ecs; };
 
 	private: 
 		explicit Scene(const std::string& name);

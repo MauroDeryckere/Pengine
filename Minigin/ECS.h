@@ -25,6 +25,8 @@ namespace Pengin
             m_ComponentStorage{},
             m_EntityStorage{}
         {
+
+
         };
 
         const EntityId& CreateEntity()
@@ -38,14 +40,15 @@ namespace Pengin
          
         bool DestroyEntity(const EntityId& id) //TODO
         {
+            id;
             return false;
         }
         //Destroy entity
 
         template<typename ComponentType, typename... Args>
-        void AddComponent(const EntityId& id, Args&&... args)
+        bool AddComponent(const EntityId& id, Args&&... args)
         {
-            m_ComponentStorage.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
+            return m_ComponentStorage.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
         }
 
         template<typename ComponentType>

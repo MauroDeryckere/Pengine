@@ -5,11 +5,12 @@ namespace Pengin
 {
 	const EntityId& Pengin::EntityStorage::CreateEntity()
 	{
-		const EntityId nextId{ CURRENT_ID_COUNT + 1 };
-
-		m_Entities.emplace(nextId);
-
 		++CURRENT_ID_COUNT;
+
+		m_Entities.emplace(CURRENT_ID_COUNT);
+
+		return CURRENT_ID_COUNT;
+
 	}
 	bool EntityStorage::HasEntity(const EntityId& id) const
 	{

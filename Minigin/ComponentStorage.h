@@ -68,7 +68,8 @@ namespace Pengin
                 return compSet[id];
             }
 
-            return m_ComponentSet.Emplace(id, ComponentType{});
+            compSet.Emplace(id, ComponentType{});
+            return compSet[id];
         }
 
         template<typename ComponentType>
