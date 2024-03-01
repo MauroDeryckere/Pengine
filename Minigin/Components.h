@@ -8,6 +8,7 @@ namespace Pengin
 		int randomintfortesting = 1;
 
 		TestComponent() = default;
+		TestComponent(int testConstructorArgs) : randomintfortesting{ testConstructorArgs } {}
 	};
 }
 

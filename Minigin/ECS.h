@@ -24,6 +24,12 @@ namespace Pengin
 
             m_ComponentStorage.AddComponent<TestComponent>(1);
             std::cout << m_ComponentStorage.HasComponent<TestComponent>(1) << "\n";
+            m_ComponentStorage.AddComponent<TestComponent>(2, 4);
+            std::cout << m_ComponentStorage.HasComponent<TestComponent>(2) << "\n";
+
+            auto& comp = m_ComponentStorage.GetComponent<TestComponent>(2);
+            std::cout << comp.randomintfortesting << "\n";
+
         };
 
         //Create Entity -- possible overload for entities within a range

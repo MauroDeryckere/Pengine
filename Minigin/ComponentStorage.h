@@ -58,6 +58,22 @@ namespace Pengin
             return false;
         }
 
+        template<typename ComponentType>
+        const ComponentType& GetComponent(const EntityId& id)
+        {
+            SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
+
+            if (compSet.Contains(id))
+            {
+                return compSet[id];
+            }
+
+            throw std::runtime_error("Component not found for the given entity ID");
+        }
+
+
+
+
     private:
         std::unordered_map<std::type_index, std::shared_ptr<void>> m_ComponentSetsMap;
 
