@@ -32,7 +32,7 @@ namespace dae
 
 		//scene == gameobj -> root of all objects
 
-		ECS ecs;
+		Pengin::ECS ecs;
 
 		static unsigned int m_idCounter; 
 	};

@@ -18,10 +18,13 @@ namespace Pengin
     class ECS
     {
     public:
-        ECS()
+        ECS():
+            m_ComponentStorage{}
         {
-           // test.Emplace(1,);
+            auto& test = *m_ComponentStorage.getComponentSet<TestComponent, unsigned>();
+
             test.Emplace(1);
+
             std::cout << test.Contains(1) << "\n";
 
             std::cout << test[1].randomintfortesting << "\n";
@@ -37,7 +40,7 @@ namespace Pengin
         //IsValid(entity id)
 
         //AddComponent<Type>(id)
-        //AddComponent<Type>(id, constructor)
+        //AddComponent<Type>(id, constructor) 
         //RemoveComponent<Type>(id) 
         //HasComponent<Type>(id)
         //GetComponent<Type>(id)
@@ -54,9 +57,7 @@ namespace Pengin
         
         
     private:
-        SparseSet<TestComponent, int> test;
-
-       
+        ComponentStorage m_ComponentStorage;
     };
 
 }
