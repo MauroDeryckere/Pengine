@@ -201,8 +201,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp" />
-    <ClCompile Include="ComponentStorage.cpp" />
-    <ClCompile Include="ECS.cpp" />
     <ClCompile Include="EntityStorage.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />

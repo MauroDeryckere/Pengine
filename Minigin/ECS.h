@@ -9,6 +9,8 @@
 #include "ComponentStorage.h"
 #include "ComponentWrapper.h"
 
+#include "EntityStorage.h"
+
 #include <vector>
 #include <cassert>
 #include <limits>
@@ -20,31 +22,25 @@ namespace Pengin
     {
     public:
         ECS():
-            m_ComponentStorage{}
+            m_ComponentStorage{},
+            m_EntityStorage{}
         {
-
-            AddComponent<TestComponent>(1);
-            std::cout << HasComponent<TestComponent>(1) << "\n";
-            AddComponent<TestComponent>(2, 4);
-            std::cout << HasComponent<TestComponent>(2) << "\n";
-
-            auto& comp = GetComponent<TestComponent>(2);
-            std::cout << comp.randomintfortesting << "\n";
-
-            auto componentWrapper(GetComponents<TestComponent>());
-
-            for (auto& component : componentWrapper) 
-            {
-                std::cout << component.randomintfortesting << "\n";
-            }
-
         };
 
-        //Create Entity -- possible overload for entities within a range
+        const EntityId& CreateEntity()
+        {
+            return m_EntityStorage.CreateEntity();
+        }
+        bool Exists(const EntityId& id)
+        {
+            return m_EntityStorage.HasEntity(id);
+        }
+         
+        bool DestroyEntity(const EntityId& id) //TODO
+        {
+            return false;
+        }
         //Destroy entity
-        //Release for entities that dont have any components - optional
-
-        //IsValid(entity id)
 
         template<typename ComponentType, typename... Args>
         void AddComponent(const EntityId& id, Args&&... args)
@@ -81,14 +77,13 @@ namespace Pengin
 
         //possibly allow for replacing components (updating with new component)
 
-        //GetAllComponents<Type>
-
         //GetAllEntitiesContaining<Type>()
         //GetAllEntitiesContaining<Type,Type>()
         
         
     private:
         ComponentStorage m_ComponentStorage;
+        EntityStorage m_EntityStorage;
     };
 
 }

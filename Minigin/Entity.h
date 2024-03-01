@@ -12,9 +12,18 @@ namespace Pengin
     struct Entity
     {
         Entity(const EntityId& id) : entityId{ id }{}
+        ~Entity() = default;
 
         EntityId entityId;
+
+        Entity(const Entity&) = delete;
+        Entity& operator=(const Entity&) = delete;
+        Entity(Entity&&) noexcept = delete;
+        Entity& operator=(Entity&&) noexcept = delete;
+
     };
+
+    static EntityId CURRENT_ID_COUNT{ 0 };
 }
 
 #endif

@@ -179,13 +179,7 @@
     <ClCompile Include="FunctionalComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="ECS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EntityStorage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ComponentStorage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
