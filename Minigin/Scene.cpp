@@ -48,7 +48,7 @@ void Scene::Update(float deltaTime)
 	//Dirty flag for removal loop
 }
 
-void Scene::Render()
+void Scene::Render() const
 {
 	for (const auto& object : m_objects)
 	{
