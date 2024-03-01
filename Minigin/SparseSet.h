@@ -13,8 +13,8 @@
 
 namespace Pengin
 {
-    template<typename Value, typename Key>
-        requires std::is_default_constructible_v<Key>
+    template<typename ValueType, typename Key>
+        requires std::is_constructible_v<ValueType> && std::is_default_constructible_v<Key>
     class SparseSet final
     {
     public:
@@ -45,7 +45,7 @@ namespace Pengin
             m_SparseMap.clear();
         };
 
-        Value& operator[](const Key& key)
+        ValueType& operator[](const Key& key)
         {
             assert(Contains(key) && "Invalid key");
 
@@ -53,7 +53,7 @@ namespace Pengin
             return m_DenseArray[index];
         }
 
-        const Value& operator[](const Key& key) const
+        const ValueType& operator[](const Key& key) const
         {
             assert(Contains(key) && "Invalid key");
 
@@ -62,7 +62,7 @@ namespace Pengin
         }
 
         template<typename... Args>
-        bool Emplace(const Key& key, Args&&... args) requires std::is_constructible_v<Value, Args...>
+        bool Emplace(const Key& key, Args&&... args) requires std::is_constructible_v<ValueType, Args...>
         {
             const auto [it, inserted] = m_SparseMap.emplace(key, m_DenseArray.size());
 
@@ -100,8 +100,8 @@ namespace Pengin
         }
 
         //Allow iteration over the dense array
-        using iterator = typename std::vector<Value>::iterator;
-        using const_iterator = typename std::vector<Value>::const_iterator;
+        using iterator = typename std::vector<ValueType>::iterator;
+        using const_iterator = typename std::vector<ValueType>::const_iterator;
 
         iterator begin() noexcept { return m_DenseArray.begin(); }
         iterator end() noexcept { return m_DenseArray.end(); }
@@ -110,7 +110,7 @@ namespace Pengin
 
     private:
         std::unordered_map<Key, size_t> m_SparseMap; //Map key to dense array index
-        std::vector<Value> m_DenseArray;
+        std::vector<ValueType> m_DenseArray;
     };
 }
 
