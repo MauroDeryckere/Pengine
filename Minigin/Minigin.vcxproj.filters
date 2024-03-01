@@ -93,9 +93,6 @@
     <ClInclude Include="FPSComponent.h">
       <Filter>Header Files\Components\Functional</Filter>
     </ClInclude>
-    <ClInclude Include="Components.h">
-      <Filter>Header Files\ECS\ECS Components</Filter>
-    </ClInclude>
     <ClInclude Include="ECS.h">
       <Filter>Header Files\ECS</Filter>
     </ClInclude>
@@ -109,6 +106,9 @@
       <Filter>Header Files\ECS\SparseSet</Filter>
     </ClInclude>
     <ClInclude Include="ComponentStorage.h">
+      <Filter>Header Files\ECS\ECS Components\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
       <Filter>Header Files\ECS\ECS Components\Storage</Filter>
     </ClInclude>
   </ItemGroup>

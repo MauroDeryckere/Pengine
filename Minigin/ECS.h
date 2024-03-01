@@ -21,16 +21,9 @@ namespace Pengin
         ECS():
             m_ComponentStorage{}
         {
-            SparseSet<TestComponent, unsigned>& test = m_ComponentStorage.getComponentSet<TestComponent, unsigned>();
 
-            test.Emplace(1);
-
-            std::cout << test.Contains(1) << "\n";
-
-            std::cout << test[1].randomintfortesting << "\n";
-
-            test.Remove(1);
-            std::cout << test.Contains(1) << "\n";
+            m_ComponentStorage.AddComponent<TestComponent>(1);
+            std::cout << m_ComponentStorage.HasComponent<TestComponent>(1) << "\n";
         };
 
         //Create Entity -- possible overload for entities within a range

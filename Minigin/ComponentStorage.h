@@ -2,65 +2,98 @@
 #define COMPONENTSTORAGE
 
 #include "SparseSet.h"
-#include "Components.h"
 
 #include <memory>
+#include <cassert>
 #include <unordered_map>
 #include <typeindex>
+#include <type_traits>
+#include <optional>
 
 namespace Pengin
 {
+    using EntityId = unsigned;
+    using KeyType = EntityId;
+
+    static_assert(std::is_unsigned_v<EntityId>, "EntityId must be an unsigned integer type");
+
     class ComponentStorage final
     {
     public:
-        ComponentStorage()
-        {
-            //using SetPtr = std::unique_ptr<void, void(*)(void*)>;
-
-
-            //auto deleter = [](void* ptr) { delete static_cast<SparseSet<TestComponent, unsigned>*>(ptr); };
-            //auto set = std::unique_ptr<void, decltype(deleter)>(new SparseSet<TestComponent, unsigned>(), deleter);
-            //m_componentStorage[typeid(TestComponent)] = std::move(set);
-        
-        };
+        ComponentStorage() = default;
         ~ComponentStorage() = default;
 
         ComponentStorage(const ComponentStorage&) = delete;
         ComponentStorage& operator=(const ComponentStorage&) = delete;
         ComponentStorage(ComponentStorage&&) noexcept = delete;
         ComponentStorage& operator=(ComponentStorage&&) noexcept = delete;
+        
+        template<typename ComponentType, typename... Args>
+        bool AddComponent(const EntityId& id, Args&&... args) 
+        requires std::is_constructible_v<ComponentType, Args...>
+        {
+            SparseSet<ComponentType, KeyType>& compSet{ GetComponentSet<ComponentType>() };
+                      
+            return compSet.Emplace(id, std::forward<Args>(args)...);
+        }
 
-        //template<typename ComponentType, typename Key>
-        //requires std::is_default_constructible_v<Key> && std::is_constructible_v<ComponentType>
-        //SparseSet<ComponentType, Key>* getComponentSet()  const //Private in future, just testing 
-        //{
-        //    const auto it{ m_componentStorage.find(typeid(ComponentType)) };
-        //    if (it != m_componentStorage.end()) 
-        //    {
-        //        const auto handler{ static_cast<TypedComponentSetHandler<ComponentType, Key>*>(it->second.get()) };
-        //        return &(handler->m_ComponentSet);
-        //    }
-        //    else 
-        //    {
-        //        return nullptr;
-        //    }
-        //}
+        template<typename ComponentType>
+        void RemoveComponent(const EntityId& id) requires std::is_constructible_v<ComponentType>
+        {
+            SparseSet<ComponentType, KeyType>& compSet{ GetComponentSet<ComponentType>() };
 
-        template<typename ComponentType, typename Key>
-        SparseSet<ComponentType, Key>& getComponentSet() {
-            auto it = m_componentStorage.find(typeid(ComponentType));
-            if (it != m_componentStorage.end()) {
-                return *static_cast<SparseSet<ComponentType, Key>*>(it->second.get());
+            compSet.Remove(id);
+        }
+
+        template<typename ComponentType>
+        bool HasComponent(const EntityId& id) const
+        {
+            std::optional<const SparseSet<ComponentType, KeyType>*> compSetOptional{ GetComponentSet<ComponentType>() };
+
+            if (compSetOptional.has_value()) 
+            {
+                return compSetOptional.value()->Contains(id);
             }
-            else {
-                auto set = std::make_shared<SparseSet<ComponentType, Key>>();
-                m_componentStorage[typeid(ComponentType)] = set;
-                return *set;
-            }
+
+            return false;
         }
 
     private:
-        std::unordered_map<std::type_index, std::shared_ptr<void>> m_componentStorage;
+        std::unordered_map<std::type_index, std::shared_ptr<void>> m_ComponentSetsMap;
+
+        template<typename ComponentType>
+        SparseSet<ComponentType, KeyType>& GetComponentSet()
+        requires std::is_constructible_v<ComponentType> && std::is_default_constructible_v<KeyType>
+        {
+            const std::type_index compTypeIdx{ typeid(ComponentType) };
+
+            auto it{ m_ComponentSetsMap.find(compTypeIdx) };
+
+            if (it != m_ComponentSetsMap.end())
+            {
+                return *static_cast<SparseSet<ComponentType, KeyType>*>(it->second.get());
+            }
+
+            auto set{ std::make_shared<SparseSet<ComponentType, KeyType>>() };
+            m_ComponentSetsMap[compTypeIdx] = set;
+            return *set;
+        }
+
+        template<typename ComponentType>
+        std::optional<const SparseSet<ComponentType, KeyType>*> GetComponentSet() const
+        requires std::is_constructible_v<ComponentType>&& std::is_default_constructible_v<KeyType>
+        {
+            const std::type_index compTypeIdx{ typeid(ComponentType) };
+
+            auto it{ m_ComponentSetsMap.find(compTypeIdx) };
+
+            if (it != m_ComponentSetsMap.end())
+            {
+                return static_cast<const SparseSet<ComponentType, KeyType>*>(it->second.get());
+            }
+
+            return std::nullopt;
+        }
     };
 }
 
