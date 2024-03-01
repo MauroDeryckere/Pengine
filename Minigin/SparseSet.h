@@ -66,6 +66,8 @@ namespace Pengin
         {
             const auto [it, inserted] = m_SparseMap.emplace(key, m_DenseArray.size());
 
+            assert(inserted && "Key already added");
+
             if (!inserted)
             {
                 return false;
