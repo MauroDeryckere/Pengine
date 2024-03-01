@@ -177,7 +177,6 @@
     <ClInclude Include="Components.h" />
     <ClInclude Include="ComponentStorage.h" />
     <ClInclude Include="ECS.h" />
-    <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityStorage.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
@@ -192,6 +191,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SparseSet.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TextureComponent.h" />
@@ -201,7 +201,6 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentStorage.cpp" />
     <ClCompile Include="ECS.cpp" />
-    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityStorage.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />

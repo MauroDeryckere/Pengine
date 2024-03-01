@@ -34,6 +34,9 @@
     <Filter Include="Header Files\ECS\ECS Components">
       <UniqueIdentifier>{75ed3dd7-61ab-4fd4-bcec-2b33b4876c21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ECS\SparseSet">
+      <UniqueIdentifier>{a648090b-0891-415c-9e0b-abf67a5037fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -99,11 +102,11 @@
     <ClInclude Include="ComponentStorage.h">
       <Filter>Header Files\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files\ECS</Filter>
-    </ClInclude>
     <ClInclude Include="TextComponent.h">
       <Filter>Header Files\Components\Functional</Filter>
+    </ClInclude>
+    <ClInclude Include="SparseSet.h">
+      <Filter>Header Files\ECS\SparseSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -168,9 +171,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ComponentStorage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
