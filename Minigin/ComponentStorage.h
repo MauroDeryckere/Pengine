@@ -47,7 +47,7 @@ namespace Pengin
         template<typename ComponentType>
         bool HasComponent(const EntityId& id) const
         {
-            std::optional<const SparseSet<ComponentType, KeyType>*> compSetOptional{ GetComponentSet<ComponentType>() };
+            std::optional<const SparseSet<ComponentType, KeyType>*> compSetOptional{ GetOptComponentSet<ComponentType>() };
 
             if (compSetOptional.has_value()) 
             {
@@ -140,7 +140,7 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        std::optional<const SparseSet<ComponentType, KeyType>*> GetComponentSet() const
+        std::optional<const SparseSet<ComponentType, KeyType>*> GetOptComponentSet() const
         requires std::is_constructible_v<ComponentType>&& std::is_default_constructible_v<KeyType>
         {
             const std::type_index compTypeIdx{ typeid(ComponentType) };

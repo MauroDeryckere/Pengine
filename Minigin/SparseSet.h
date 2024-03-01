@@ -57,8 +57,14 @@ namespace Pengin
         {
             assert(Contains(key) && "Invalid key");
 
-            const size_t index{ m_SparseMap[key] };
-            return m_DenseArray[index];
+            auto it{ m_SparseMap.find(key) };
+            if (it != m_SparseMap.end())
+            {
+                const size_t index{ it->second };
+                return m_DenseArray[index];
+            }
+            
+            throw std::out_of_range("Key not found in SparseSet");
         }
 
         template<typename... Args>

@@ -70,7 +70,7 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        ComponentType& GetComponent(const EntityId& id) const
+        const ComponentType& GetComponent(const EntityId& id) const
         {
             return m_ComponentStorage.GetComponent<ComponentType>(id);
         }
