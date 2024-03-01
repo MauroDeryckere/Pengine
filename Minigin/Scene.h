@@ -1,5 +1,6 @@
 #pragma once
 #include "SceneManager.h"
+#include "ECS.h"
 
 namespace dae
 {
@@ -30,6 +31,8 @@ namespace dae
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
 
 		//scene == gameobj -> root of all objects
+
+		ECS ecs;
 
 		static unsigned int m_idCounter; 
 	};

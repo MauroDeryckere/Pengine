@@ -5,7 +5,9 @@ namespace dae
 {
 	struct TestComponent
 	{
+		int randomintfortesting = 1;
 
+		TestComponent() = default;
 	};
 }
 
