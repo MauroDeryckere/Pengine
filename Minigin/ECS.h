@@ -24,10 +24,7 @@ namespace Pengin
         ECS():
             m_ComponentStorage{},
             m_EntityStorage{}
-        {
-
-
-        };
+        { }
 
         const EntityId& CreateEntity()
         {

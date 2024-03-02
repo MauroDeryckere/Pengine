@@ -14,28 +14,29 @@
 namespace Pengin
 {
     template<typename ValueType, typename Key>
-        requires std::is_constructible_v<ValueType> && std::is_default_constructible_v<Key>
+        requires std::is_constructible_v<ValueType>&& std::is_default_constructible_v<Key>
     class SparseSet final
     {
     public:
-        explicit SparseSet(size_t reserveSize) : m_DenseArray{} { m_DenseArray.reserve(reserveSize); }
+        explicit SparseSet(size_t reserveSize) : m_DenseArray{}, m_ReverseMapping{} { ReserveDense(reserveSize); }
         SparseSet() = default;
 
         ~SparseSet() = default;
 
         SparseSet(const SparseSet&) = delete;
         SparseSet& operator=(const SparseSet&) = delete;
-        SparseSet(SparseSet&& other) noexcept : m_SparseMap(std::move(other.m_SparseMap)), m_DenseArray(std::move(other.m_DenseArray)) {}
+        SparseSet(SparseSet&& other) noexcept : m_SparseMap(std::move(other.m_SparseMap)), m_DenseArray(std::move(other.m_DenseArray)), m_ReverseMapping(std::move(other.m_ReverseMapping)) {}
         SparseSet& operator=(SparseSet&& other) noexcept
         {
             if (this != &other)
             {
                 m_SparseMap = std::move(other.m_SparseMap);
                 m_DenseArray = std::move(other.m_DenseArray);
+                m_ReverseMapping = std::move(other.m_ReverseMapping);
             }
             return *this;
         }
-        void ReserveDense(size_t capacity) { m_DenseArray.reserve(capacity); }
+        void ReserveDense(size_t capacity) { m_DenseArray.reserve(capacity); m_ReverseMapping.reserve(capacity); }
         size_t DenseCapacity() { return m_DenseArray.capacity(); }
         size_t DenseSize() { return m_DenseArray.size(); }
 
@@ -43,6 +44,7 @@ namespace Pengin
         {
             m_DenseArray.clear();
             m_SparseMap.clear();
+            m_ReverseMapping.clear();
         };
 
         ValueType& operator[](const Key& key)
@@ -63,7 +65,7 @@ namespace Pengin
                 const size_t index{ it->second };
                 return m_DenseArray[index];
             }
-            
+
             throw std::out_of_range("Key not found in SparseSet");
         }
 
@@ -80,6 +82,8 @@ namespace Pengin
             }
 
             m_DenseArray.emplace_back(std::forward<Args>(args)...);
+            m_ReverseMapping.emplace_back(key);
+
             return true;
         }
 
@@ -92,11 +96,16 @@ namespace Pengin
             if (it != m_SparseMap.end())
             {
                 const size_t index{ it->second };
+                const Key lastKey{ m_ReverseMapping.back() };
+
+                m_SparseMap[lastKey] = index;
+                m_SparseMap.erase(it);
 
                 std::swap(m_DenseArray[index], m_DenseArray.back());
-                m_DenseArray.pop_back();
+                std::swap(m_ReverseMapping[index], m_ReverseMapping.back());
 
-                m_SparseMap.erase(it);
+                m_ReverseMapping.pop_back();
+                m_DenseArray.pop_back();
             }
         }
 
@@ -117,7 +126,8 @@ namespace Pengin
     private:
         std::unordered_map<Key, size_t> m_SparseMap; //Map key to dense array index
         std::vector<ValueType> m_DenseArray;
+
+        std::vector<Key> m_ReverseMapping; //Retrieve the key from the densearray using reverse mapping
     };
 }
-
 #endif
