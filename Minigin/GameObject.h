@@ -33,13 +33,20 @@ namespace dae
 
         //Scene graph
         GameObject* GetParent() const;
-        void SetParent(GameObject* pParet);
+        void SetParent(GameObject* pParent, bool keepWorldPos = true);
         size_t GetChildCount();
         GameObject* GetChild(size_t idx);
         //-----------
 
-		void SetPosition(float x, float y);
-		const Transform& GetTransform() { return m_transform; };
+        void SetPosition(float x, float y) { m_transform.SetPosition(x, y, 0); }
+
+		void SetLocalPosition(const glm::vec3& pos);
+        const glm::vec3& GetWorldPosition();
+
+        void UpdateWorldPosition();
+
+        const Transform& GetTransform() const { return m_transform; }
+        Transform& GetTransform() { return m_transform; }
 
 		//Components
 		template<typename T>
@@ -76,10 +83,17 @@ namespace dae
 		std::vector<std::unique_ptr<RenderComponent>> m_pRenderComponents;
 		std::vector<std::unique_ptr<FunctionalComponent>> m_pFunctionalComponents;
 		
+        bool m_PositionIsDirty = false;
+
+        glm::vec3 m_LocalPosition;
+        glm::vec3 m_WorldPosition;
+
 		Transform m_transform{};
 
         void AddChild(GameObject* pChild);
         void RemoveChild(GameObject* pChild);
+
+        bool IsChild(GameObject* pGameobj) const;
 
 		template<typename ComponentT, typename ContainerT>
 		void RemoveComponent(ContainerT& container) requires ComponentConcept<ComponentT>;

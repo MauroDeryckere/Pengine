@@ -123,6 +123,9 @@
     <ClInclude Include="EntityStorage.h">
       <Filter>Header Files\ECS\ECS Components\Entitiies</Filter>
     </ClInclude>
+    <ClInclude Include="RotatorComponent.h">
+      <Filter>Header Files\Components\Functional</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -180,6 +183,9 @@
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="EntityStorage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RotatorComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

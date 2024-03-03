@@ -43,7 +43,6 @@ void Scene::Update(float deltaTime)
 	{
 		object->Update(deltaTime);
 	}
-	
 
 	//Dirty flag for removal loop
 }
@@ -54,13 +53,5 @@ void Scene::Render() const
 	{
 		object->Render();
 	}	
-	
-	auto& posComp = ecs.GetComponent<Pengin::PositionComponent>(1);
-	auto& texturecomp = ecs.GetComponent<Pengin::TextureComponent>(1);
-	if (texturecomp.m_pTexture)
-	{
-		Renderer::GetInstance().RenderTexture(*texturecomp.m_pTexture, static_cast<float>(posComp.x), static_cast<float>(posComp.y));
-	}
-	
 }
 
