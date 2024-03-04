@@ -18,14 +18,15 @@ namespace Pengin
     class SparseSet final
     {
     public:
-        explicit SparseSet(size_t reserveSize) : m_DenseArray{}, m_ReverseMapping{} { ReserveDense(reserveSize); }
+        explicit SparseSet(size_t reserveSize) : m_DenseArray{}, m_ReverseMapping{} { DenseReserve(reserveSize); }
         SparseSet() = default;
 
         ~SparseSet() = default;
 
         SparseSet(const SparseSet&) = delete;
         SparseSet& operator=(const SparseSet&) = delete;
-        SparseSet(SparseSet&& other) noexcept : m_SparseMap(std::move(other.m_SparseMap)), m_DenseArray(std::move(other.m_DenseArray)), m_ReverseMapping(std::move(other.m_ReverseMapping)) {}
+        SparseSet(SparseSet&& other) noexcept : 
+            m_SparseMap(std::move(other.m_SparseMap)), m_DenseArray(std::move(other.m_DenseArray)), m_ReverseMapping(std::move(other.m_ReverseMapping)) {}
         SparseSet& operator=(SparseSet&& other) noexcept
         {
             if (this != &other)
@@ -36,9 +37,9 @@ namespace Pengin
             }
             return *this;
         }
-        void ReserveDense(size_t capacity) { m_DenseArray.reserve(capacity); m_ReverseMapping.reserve(capacity); }
-        size_t DenseCapacity() { return m_DenseArray.capacity(); }
-        size_t DenseSize() { return m_DenseArray.size(); }
+        void DenseReserve(size_t capacity) noexcept { m_DenseArray.reserve(capacity); m_ReverseMapping.reserve(capacity); }
+        size_t DenseCapacity() const noexcept { return m_DenseArray.capacity(); }
+        size_t DenseSize() const noexcept { return m_DenseArray.size(); }
 
         void Clear()
         {
@@ -70,7 +71,8 @@ namespace Pengin
         }
 
         template<typename... Args>
-        bool Emplace(const Key& key, Args&&... args) requires std::is_constructible_v<ValueType, Args...>
+        bool Emplace(const Key& key, Args&&... args) noexcept 
+            requires std::is_constructible_v<ValueType, Args...>
         {
             const auto [it, inserted] = m_SparseMap.emplace(key, m_DenseArray.size());
 
@@ -87,7 +89,7 @@ namespace Pengin
             return true;
         }
 
-        void Remove(const Key& key)
+        void Remove(const Key& key) noexcept
         {
             assert(Contains(key) && "Invalid key");
 
@@ -109,7 +111,7 @@ namespace Pengin
             }
         }
 
-        bool Contains(const Key& key) const noexcept
+        [[nodiscard]] bool Contains(const Key& key) const noexcept
         {
             return m_SparseMap.find(key) != m_SparseMap.end();
         }

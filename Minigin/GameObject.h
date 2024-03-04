@@ -56,7 +56,7 @@ namespace dae
         const Transform& GetTransform() const { return m_transform; }
         Transform& GetTransform() { return m_transform; }
 
-        bool SetDeleteFlag() 
+        void SetDeleteFlag() 
         {
             m_DeleteFlag = true;
         
@@ -66,7 +66,7 @@ namespace dae
             }
         }
 
-        bool GetDeleteFlag() const { return m_DeleteFlag; }
+        [[nodiscard]] bool GetDeleteFlag() const { return m_DeleteFlag; }
 
 		//Components
 		template<typename T>
@@ -76,7 +76,7 @@ namespace dae
 		void RemoveComponent() requires ComponentConcept<ComponentT>;
 
 		template<typename ComponentT>
-		ComponentT* GetComponent() const requires ComponentConcept<ComponentT>;
+		[[nodiscard]] ComponentT* GetComponent() const requires ComponentConcept<ComponentT>;
 
 		template<typename ComponentT>
 		bool HasComponentBeenAdded() const requires ComponentConcept<ComponentT>;
@@ -87,7 +87,7 @@ namespace dae
 		//----------
 
 		GameObject() = default;
-		virtual ~GameObject();
+		~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;

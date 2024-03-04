@@ -7,10 +7,6 @@
 
 namespace dae
 {
-	GameObject::~GameObject()
-	{
-	};
-
 	void GameObject::AddChild(GameObject* pChild)
 	{
 		m_pChildren.emplace_back(pChild);
