@@ -33,18 +33,26 @@ namespace dae
 
         //Scene graph
         GameObject* GetParent() const;
-        void SetParent(GameObject* pParent, bool keepWorldPos = true);
+        void SetParent(GameObject* pParent, bool keepWorldPos = false);
         size_t GetChildCount();
         GameObject* GetChild(size_t idx);
         //-----------
 
-        void SetPosition(float x, float y) { m_transform.SetPosition(x, y, 0); }
-
+        void SetWorldPosition(float x, float y);
 		void SetLocalPosition(const glm::vec3& pos);
+
         const glm::vec3& GetWorldPosition();
 
-        void UpdateWorldPosition();
+        void SetPosDirty() 
+        { 
+            m_PositionIsDirty = true;
 
+            for (auto& child : m_pChildren)
+            {
+                child->SetPosDirty();
+            }
+        }
+        
         const Transform& GetTransform() const { return m_transform; }
         Transform& GetTransform() { return m_transform; }
 
@@ -75,7 +83,7 @@ namespace dae
 
 	private:
         GameObject* m_pParent;
-        std::vector<GameObject*> m_pChildren; //unique ptr?
+        std::vector<GameObject*> m_pChildren;
 
 		std::unordered_set<std::type_index> m_AddedComponentsRegistry;
 
@@ -85,10 +93,11 @@ namespace dae
 		
         bool m_PositionIsDirty = false;
 
-        glm::vec3 m_LocalPosition;
-        glm::vec3 m_WorldPosition;
+        glm::vec3 m_WorldPosition{};
 
-		Transform m_transform{};
+		Transform m_transform{this};
+
+        void UpdateWorldPosition();
 
         void AddChild(GameObject* pChild);
         void RemoveChild(GameObject* pChild);

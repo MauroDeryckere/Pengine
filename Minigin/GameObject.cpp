@@ -11,12 +11,16 @@ namespace dae
 
 	void GameObject::AddChild(GameObject* pChild)
 	{
-		pChild;
+		m_pChildren.emplace_back(pChild);
 	}
 
 	void GameObject::RemoveChild(GameObject* pChild)
 	{
-		pChild;
+		auto it = std::find(m_pChildren.begin(), m_pChildren.end(), pChild);
+		if (it != m_pChildren.end())
+		{
+			m_pChildren.erase(it);
+		}
 	}
 
 	bool GameObject::IsChild(GameObject* pGameobj) const
@@ -74,14 +78,16 @@ namespace dae
 			if (keepWorldPos)
 			{
 				SetLocalPosition(GetWorldPosition() - pParent->GetWorldPosition());
-				m_PositionIsDirty = true;
+				SetPosDirty();
 			}
 		}
 		if (m_pParent)
 		{
 			m_pParent->RemoveChild(this);
 		}
+
 		m_pParent = pParent;
+		
 		if (m_pParent)
 		{
 			m_pParent->AddChild(this);
@@ -100,10 +106,21 @@ namespace dae
 		return m_pChildren[idx];
 	}
 
+	void GameObject::SetWorldPosition(float x, float y)
+	{
+		if (!m_pParent)
+		{
+			m_transform.SetPosition(x, y, 0);
+		}
+		
+		SetPosDirty();
+	}
+
 	void GameObject::SetLocalPosition(const glm::vec3& pos)
 	{
-		m_LocalPosition = pos;
-		m_PositionIsDirty = true;
+		m_transform.SetPosition(pos.x, pos.y, pos.z);
+
+		SetPosDirty();
 	}
 	const glm::vec3& GameObject::GetWorldPosition()
 	{
@@ -120,11 +137,11 @@ namespace dae
 		{
 			if (m_pParent == nullptr)
 			{
-				m_WorldPosition = m_LocalPosition;
+				m_WorldPosition = m_transform.GetPosition();
 			}
 			else
 			{
-				m_WorldPosition = m_pParent->GetWorldPosition() + m_LocalPosition;
+				m_WorldPosition = m_pParent->GetWorldPosition() + m_transform.GetPosition();
 			}
 		}
 		m_PositionIsDirty = false;

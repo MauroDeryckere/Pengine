@@ -18,10 +18,10 @@ void dae::TextureComponent::Update(float)
 
 void dae::TextureComponent::Render() const
 {
-	//const auto& pos = m_transform.GetPosition();
 	if (m_pTexture)
 	{
-		Renderer::GetInstance().RenderTexture(*m_pTexture, GetGameObj()->GetTransform().GetPosition().x, GetGameObj()->GetTransform().GetPosition().y);
+		auto& worldPos{ GetGameObj()->GetWorldPosition() };
+		Renderer::GetInstance().RenderTexture(*m_pTexture, worldPos.x, worldPos.y);
 	}
 }
 

@@ -12,8 +12,8 @@ namespace dae
 		public FunctionalComponent
 	{
 	public:
-		RotatorComponent(GameObject* pGameObj, float rotationSpeed);
-		~RotatorComponent() = default;
+		RotatorComponent(GameObject* pGameObj, float rotationSpeed, bool rotateAroundParent = true, const glm::vec3& rotPoint={});
+		~RotatorComponent() override = default;
 
 		virtual void Update(float deltaT) override;
 
@@ -26,6 +26,9 @@ namespace dae
 		Transform& m_ObjTransform;
 
 		float m_RotSpeed;
+
+		bool m_RotateAroundParent;
+		glm::vec3 m_RotPoint;
 	};
 }
 
