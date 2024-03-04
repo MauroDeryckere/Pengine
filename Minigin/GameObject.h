@@ -56,6 +56,18 @@ namespace dae
         const Transform& GetTransform() const { return m_transform; }
         Transform& GetTransform() { return m_transform; }
 
+        bool SetDeleteFlag() 
+        {
+            m_DeleteFlag = true;
+        
+            for (auto& child : m_pChildren)
+            {
+                child->SetDeleteFlag();
+            }
+        }
+
+        bool GetDeleteFlag() const { return m_DeleteFlag; }
+
 		//Components
 		template<typename T>
 		void AddComponent(T&& component) requires ComponentConcept<std::decay_t<decltype(*component)>>;
@@ -82,6 +94,8 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
+        bool m_DeleteFlag = false;
+        
         GameObject* m_pParent;
         std::vector<GameObject*> m_pChildren;
 

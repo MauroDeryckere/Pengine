@@ -43,8 +43,10 @@ void Scene::Update(float deltaTime)
 	{
 		object->Update(deltaTime);
 	}
-
-	//Dirty flag for removal loop
+	
+	m_objects.erase(std::remove_if(m_objects.begin(), m_objects.end(), [](const auto& obj) {
+		return obj->GetDeleteFlag();
+		}), m_objects.end());
 }
 
 void Scene::Render() const

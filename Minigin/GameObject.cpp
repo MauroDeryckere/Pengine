@@ -7,7 +7,9 @@
 
 namespace dae
 {
-	GameObject::~GameObject() = default;
+	GameObject::~GameObject()
+	{
+	};
 
 	void GameObject::AddChild(GameObject* pChild)
 	{
