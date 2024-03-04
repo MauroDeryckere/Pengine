@@ -74,7 +74,6 @@ namespace Pengin
 
         template<typename... Args>
         auto Emplace(const Key& key, Args&&... args) noexcept
-            -> decltype(m_DenseArray.end())
             requires std::is_constructible_v<ValueType, Args...>
         {
             const auto [it, inserted] = m_SparseMap.emplace(key, m_DenseArray.size());
