@@ -30,7 +30,8 @@ namespace Pengin
         {
             return m_EntityStorage.CreateEntity();
         }
-        bool Exists(const EntityId& id)
+
+        [[nodiscard]] bool Exists(const EntityId& id)
         {
             return m_EntityStorage.HasEntity(id);
         }
@@ -43,7 +44,7 @@ namespace Pengin
         //Destroy entity
 
         template<typename ComponentType, typename... Args>
-        bool AddComponent(const EntityId& id, Args&&... args) //return added component here TOOD
+        ComponentType& AddComponent(const EntityId& id, Args&&... args)
         {
             return m_ComponentStorage.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
         }
@@ -55,13 +56,13 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        bool HasComponent(const EntityId& id)
+        [[nodiscard]] bool HasComponent(const EntityId& id)
         {
             return m_ComponentStorage.HasComponent<ComponentType>(id);
         }
 
         template<typename ComponentType>
-        ComponentType& GetComponent(const EntityId& id)
+        [[nodiscard]] ComponentType& GetComponent(const EntityId& id)
         {
             return m_ComponentStorage.GetComponent<ComponentType>(id);
         }

@@ -69,9 +69,12 @@ namespace Pengin
 
             throw std::out_of_range("Key not found in SparseSet");
         }
+        
+        //GetFrom Dense Idx - TODO
 
         template<typename... Args>
-        bool Emplace(const Key& key, Args&&... args) noexcept 
+        auto Emplace(const Key& key, Args&&... args) noexcept
+            -> decltype(m_DenseArray.end())
             requires std::is_constructible_v<ValueType, Args...>
         {
             const auto [it, inserted] = m_SparseMap.emplace(key, m_DenseArray.size());
@@ -80,13 +83,13 @@ namespace Pengin
 
             if (!inserted)
             {
-                return false;
-            }
+                return m_DenseArray.end();
+            }    
 
             m_DenseArray.emplace_back(std::forward<Args>(args)...);
             m_ReverseMapping.emplace_back(key);
 
-            return true;
+            return std::prev(m_DenseArray.end());
         }
 
         void Remove(const Key& key) noexcept

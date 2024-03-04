@@ -17,7 +17,7 @@ namespace Pengin
     public:
         ComponentWrapper(SparseSet<ComponentType, KeyType>& set) : m_ComponentSet{ set } {}
 
-        ComponentType& GetComponent(const EntityId& id)
+        [[nodiscard]] ComponentType& GetComponent(const EntityId& id)
         {
             if (m_ComponentSet.Contains(id))
             {
@@ -27,7 +27,7 @@ namespace Pengin
             return m_ComponentSet.Emplace(id, ComponentType{});
         }
 
-        const ComponentType& GetComponent(const EntityId& id) const
+        [[nodiscard]] const ComponentType& GetComponent(const EntityId& id) const
         {
             if (m_ComponentSet.Contains(id))
             {

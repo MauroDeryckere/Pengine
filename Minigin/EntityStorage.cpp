@@ -12,7 +12,8 @@ namespace Pengin
 		return CURRENT_ID_COUNT;
 
 	}
-	bool EntityStorage::HasEntity(const EntityId& id) const
+
+	bool EntityStorage::HasEntity(const EntityId& id) const noexcept
 	{
 		return m_Entities.find(id) != m_Entities.end();
 	}

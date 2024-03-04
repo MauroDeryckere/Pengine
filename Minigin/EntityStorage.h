@@ -19,7 +19,7 @@ namespace Pengin
         EntityStorage& operator=(EntityStorage&&) noexcept = delete;
 
         const EntityId& CreateEntity();
-        bool HasEntity(const EntityId& id) const;
+        [[nodiscard]] bool HasEntity(const EntityId& id) const noexcept;
 
 
     private:

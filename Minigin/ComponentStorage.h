@@ -28,12 +28,19 @@ namespace Pengin
         ComponentStorage& operator=(ComponentStorage&&) noexcept = delete;
         
         template<typename ComponentType, typename... Args>
-        bool AddComponent(const EntityId& id, Args&&... args) 
+        ComponentType& AddComponent(const EntityId& id, Args&&... args)
         requires std::is_constructible_v<ComponentType, Args...>
         {
             SparseSet<ComponentType, KeyType>& compSet{ GetComponentSet<ComponentType>() };
                       
-            return compSet.Emplace(id, std::forward<Args>(args)...);
+            auto it{ compSet.Emplace(id, std::forward<Args>(args)...) };
+
+            if (it != compSet.end())
+            {
+                return *it;
+            }
+
+            throw std::runtime_error("Failed to add component");
         }
 
         template<typename ComponentType>
@@ -45,7 +52,7 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        bool HasComponent(const EntityId& id) const
+        [[nodiscard]] bool HasComponent(const EntityId& id) const
         {
             std::optional<const SparseSet<ComponentType, KeyType>*> compSetOptional{ GetOptComponentSet<ComponentType>() };
 
@@ -58,7 +65,7 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        ComponentType& GetComponent(const EntityId& id)
+        [[nodiscard]] ComponentType& GetComponent(const EntityId& id)
         requires std::is_default_constructible_v<ComponentType>
         {
             SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
@@ -73,7 +80,7 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        const ComponentType& GetComponent(const EntityId& id) const
+        [[nodiscard]] const ComponentType& GetComponent(const EntityId& id) const
         {
             const SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
 
@@ -86,7 +93,7 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        ComponentWrapper<ComponentType> GetComponentWrapper()
+        [[nodiscard]] ComponentWrapper<ComponentType> GetComponentWrapper()
         {
             SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
 
@@ -94,7 +101,7 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        const ComponentWrapper<ComponentType> GetComponentWrapper() const
+        [[nodiscard]] const ComponentWrapper<ComponentType> GetComponentWrapper() const
         {
             const SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
 
@@ -105,7 +112,7 @@ namespace Pengin
         std::unordered_map<std::type_index, std::shared_ptr<void>> m_ComponentSetsMap;
 
         template<typename ComponentType>
-        SparseSet<ComponentType, KeyType>& GetComponentSet()
+        [[nodiscard]] SparseSet<ComponentType, KeyType>& GetComponentSet()
         requires std::is_constructible_v<ComponentType> && std::is_default_constructible_v<KeyType>
         {
             const std::type_index compTypeIdx{ typeid(ComponentType) };
@@ -123,7 +130,7 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        const SparseSet<ComponentType, KeyType>& GetComponentSet() const
+        [[nodiscard]] const SparseSet<ComponentType, KeyType>& GetComponentSet() const
             requires std::is_constructible_v<ComponentType>&& std::is_default_constructible_v<KeyType>
         {
             const std::type_index compTypeIdx{ typeid(ComponentType) };
@@ -135,7 +142,6 @@ namespace Pengin
                 return *static_cast<const SparseSet<ComponentType, KeyType>*>(it->second.get());
             }
 
-            // If the component set doesn't exist, you may throw an exception or handle the case differently based on your requirements.
             throw std::runtime_error("Component set not found");
         }
 
