@@ -55,6 +55,15 @@ namespace Pengin
             m_ReverseMapping.clear();
         };
 
+        //Allow iteration over the dense array
+        using iterator = typename std::vector<ValueType>::iterator;
+        using const_iterator = typename std::vector<ValueType>::const_iterator;
+
+        iterator begin() noexcept { return m_DenseArray.begin(); }
+        iterator end() noexcept { return m_DenseArray.end(); }
+        const_iterator cbegin() const noexcept { return m_DenseArray.cbegin(); }
+        const_iterator cend() const noexcept { return m_DenseArray.cend(); }
+
         ValueType& operator[](const KeyType& key)
         {
             assert(Contains(key) && "Invalid key");
@@ -84,9 +93,15 @@ namespace Pengin
         }
         
         //GetFrom Dense Idx - TODO
+        const KeyType& GetKeyFromDenseIndex(size_t index) const
+        {
+            assert(index < DenseSize() && "Index out of bounds");
+
+            return m_ReverseMapping[index];
+        }
 
         template<typename... Args>
-        auto Emplace(const KeyType& key, Args&&... args) noexcept
+        iterator Emplace(const KeyType& key, Args&&... args) noexcept
             requires std::is_constructible_v<ValueType, Args...>
         {
             const auto [it, inserted] = m_SparseMap.emplace(key, m_DenseArray.size());
@@ -114,7 +129,7 @@ namespace Pengin
             {
                 const size_t index{ it->second };
                 const KeyType lastKey{ m_ReverseMapping.back() };
-
+                GetKeyFromDenseIndex
                 m_SparseMap[lastKey] = index;
                 m_SparseMap.erase(it);
 
@@ -130,15 +145,6 @@ namespace Pengin
         {
             return m_SparseMap.find(key) != m_SparseMap.end();
         }
-
-        //Allow iteration over the dense array
-        using iterator = typename std::vector<ValueType>::iterator;
-        using const_iterator = typename std::vector<ValueType>::const_iterator;
-
-        iterator begin() noexcept { return m_DenseArray.begin(); }
-        iterator end() noexcept { return m_DenseArray.end(); }
-        const_iterator cbegin() const noexcept { return m_DenseArray.cbegin(); }
-        const_iterator cend() const noexcept { return m_DenseArray.cend(); }
 
     private:
         std::unordered_map<KeyType, size_t> m_SparseMap; //Map key to dense array index
