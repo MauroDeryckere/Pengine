@@ -40,11 +40,11 @@ namespace Pengin
         using iterator = typename SparseSet<ComponentType, KeyType>::iterator;
         using const_iterator = typename SparseSet<ComponentType, KeyType>::const_iterator;
 
-        iterator begin() { return m_ComponentSet.begin(); }
-        iterator end() { return m_ComponentSet.end(); }
+        iterator begin() noexcept { return m_ComponentSet.begin(); }
+        iterator end() noexcept { return m_ComponentSet.end(); }
 
-        const_iterator cbegin() const { return m_ComponentSet.cbegin(); }
-        const_iterator cend() const { return m_ComponentSet.cend(); }
+        const_iterator cbegin() const noexcept { return m_ComponentSet.cbegin(); }
+        const_iterator cend() const noexcept { return m_ComponentSet.cend(); }
 
     private:
         SparseSet<ComponentType, KeyType>& m_ComponentSet;

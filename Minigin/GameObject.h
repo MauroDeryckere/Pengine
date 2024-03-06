@@ -16,6 +16,8 @@
 
 #include <iostream>
 
+//Gameobj raw ptr, vectors own it (oor sparse s) ?
+
 namespace dae
 {
 	template<typename T>

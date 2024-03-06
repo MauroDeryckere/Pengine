@@ -13,20 +13,26 @@
 
 namespace Pengin
 {
-    template<typename ValueType, typename Key>
-        requires std::is_constructible_v<ValueType>&& std::is_default_constructible_v<Key>
+    template<typename ValueType, typename KeyType>
+        requires std::is_constructible_v<ValueType> && std::is_default_constructible_v<KeyType>
     class SparseSet final
     {
     public:
-        explicit SparseSet(size_t reserveSize) : m_DenseArray{}, m_ReverseMapping{} { DenseReserve(reserveSize); }
-        SparseSet() = default;
+        explicit SparseSet(size_t reserveSize) noexcept 
+            : m_DenseArray{}, m_ReverseMapping{} 
+        { 
+            DenseReserve(reserveSize); 
+        }
+        SparseSet() noexcept = default;
 
         ~SparseSet() = default;
 
         SparseSet(const SparseSet&) = delete;
         SparseSet& operator=(const SparseSet&) = delete;
         SparseSet(SparseSet&& other) noexcept : 
-            m_SparseMap(std::move(other.m_SparseMap)), m_DenseArray(std::move(other.m_DenseArray)), m_ReverseMapping(std::move(other.m_ReverseMapping)) {}
+            m_SparseMap(std::move(other.m_SparseMap)), 
+            m_DenseArray(std::move(other.m_DenseArray)), 
+            m_ReverseMapping(std::move(other.m_ReverseMapping)) { }
         SparseSet& operator=(SparseSet&& other) noexcept
         {
             if (this != &other)
@@ -37,26 +43,33 @@ namespace Pengin
             }
             return *this;
         }
-        void DenseReserve(size_t capacity) noexcept { m_DenseArray.reserve(capacity); m_ReverseMapping.reserve(capacity); }
-        size_t DenseCapacity() const noexcept { return m_DenseArray.capacity(); }
-        size_t DenseSize() const noexcept { return m_DenseArray.size(); }
 
-        void Clear()
+        void DenseReserve(size_t capacity) noexcept { m_DenseArray.reserve(capacity); m_ReverseMapping.reserve(capacity); }
+        [[nodiscard]] size_t DenseCapacity() const noexcept { return m_DenseArray.capacity(); }
+        [[nodiscard]] size_t DenseSize() const noexcept { return m_DenseArray.size(); }
+
+        void Clear() noexcept
         {
             m_DenseArray.clear();
             m_SparseMap.clear();
             m_ReverseMapping.clear();
         };
 
-        ValueType& operator[](const Key& key)
+        ValueType& operator[](const KeyType& key)
         {
             assert(Contains(key) && "Invalid key");
 
-            const size_t index{ m_SparseMap[key] };
-            return m_DenseArray[index];
+            auto it{ m_SparseMap.find(key) };
+            if (it != m_SparseMap.end())
+            {
+                const size_t index{ it->second };
+                return m_DenseArray[index];
+            }
+
+            throw std::out_of_range("Key not found in SparseSet");
         }
 
-        const ValueType& operator[](const Key& key) const
+        const ValueType& operator[](const KeyType& key) const
         {
             assert(Contains(key) && "Invalid key");
 
@@ -73,7 +86,7 @@ namespace Pengin
         //GetFrom Dense Idx - TODO
 
         template<typename... Args>
-        auto Emplace(const Key& key, Args&&... args) noexcept
+        auto Emplace(const KeyType& key, Args&&... args) noexcept
             requires std::is_constructible_v<ValueType, Args...>
         {
             const auto [it, inserted] = m_SparseMap.emplace(key, m_DenseArray.size());
@@ -91,7 +104,7 @@ namespace Pengin
             return std::prev(m_DenseArray.end());
         }
 
-        void Remove(const Key& key) noexcept
+        void Remove(const KeyType& key) noexcept
         {
             assert(Contains(key) && "Invalid key");
 
@@ -100,7 +113,7 @@ namespace Pengin
             if (it != m_SparseMap.end())
             {
                 const size_t index{ it->second };
-                const Key lastKey{ m_ReverseMapping.back() };
+                const KeyType lastKey{ m_ReverseMapping.back() };
 
                 m_SparseMap[lastKey] = index;
                 m_SparseMap.erase(it);
@@ -113,7 +126,7 @@ namespace Pengin
             }
         }
 
-        [[nodiscard]] bool Contains(const Key& key) const noexcept
+        [[nodiscard]] bool Contains(const KeyType& key) const noexcept
         {
             return m_SparseMap.find(key) != m_SparseMap.end();
         }
@@ -128,10 +141,10 @@ namespace Pengin
         const_iterator cend() const noexcept { return m_DenseArray.cend(); }
 
     private:
-        std::unordered_map<Key, size_t> m_SparseMap; //Map key to dense array index
+        std::unordered_map<KeyType, size_t> m_SparseMap; //Map key to dense array index
         std::vector<ValueType> m_DenseArray;
 
-        std::vector<Key> m_ReverseMapping; //Retrieve the key from the densearray using reverse mapping
+        std::vector<KeyType> m_ReverseMapping; //Retrieve the key from the densearray using reverse mapping
     };
 }
 #endif

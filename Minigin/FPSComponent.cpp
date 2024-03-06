@@ -25,6 +25,6 @@ void dae::FPSComponent::Update(float deltaTime)
         m_pTextComp->SetText(txt);
 
         m_FrameCount = 0;
-        m_AccumulatedTime = 0.f;
+        m_AccumulatedTime -= 1.f;
     }
 }

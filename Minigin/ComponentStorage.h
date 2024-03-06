@@ -5,38 +5,47 @@
 
 #include "SparseSet.h"
 #include "ComponentWrapper.h"
+#include "UniqueTypeTracker.h"
 
 #include <memory>
 #include <cassert>
+#include <string>
 #include <unordered_map>
 #include <typeindex>
 #include <type_traits>
 #include <optional>
 
+#include <unordered_set>
+
 namespace Pengin
 {
     using KeyType = EntityId;
+
     class ComponentStorage final
     {
     public:
-        ComponentStorage() = default;
+        ComponentStorage()
+        {
+            std::cout << Pengin::GetGlobalUniqueTypesSet().size() << " types required \n";
+        }
+
         ~ComponentStorage() = default;
 
         ComponentStorage(const ComponentStorage&) = delete;
         ComponentStorage& operator=(const ComponentStorage&) = delete;
         ComponentStorage(ComponentStorage&&) noexcept = delete;
         ComponentStorage& operator=(ComponentStorage&&) noexcept = delete;
-        
+
         template<typename ComponentType, typename... Args>
-        ComponentType& AddComponent(const EntityId& id, Args&&... args)
-        requires std::is_constructible_v<ComponentType, Args...>
+        ComponentType& AddComponent(const EntityId& id, Args&&... args) 
         {
+            [[maybe_unused]] UniqueTypesTracker<ComponentType> tracker; //TODO Change this
+
             SparseSet<ComponentType, KeyType>& compSet{ GetComponentSet<ComponentType>() };
-                      
+
             auto it{ compSet.Emplace(id, std::forward<Args>(args)...) };
 
-            if (it != compSet.end())
-            {
+            if (it != compSet.end()) {
                 return *it;
             }
 
@@ -125,6 +134,7 @@ namespace Pengin
             }
 
             auto set{ std::make_shared<SparseSet<ComponentType, KeyType>>() };
+
             m_ComponentSetsMap[compTypeIdx] = set;
             return *set;
         }

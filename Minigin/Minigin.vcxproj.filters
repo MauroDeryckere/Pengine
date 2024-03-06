@@ -37,14 +37,14 @@
     <Filter Include="Header Files\ECS\SparseSet">
       <UniqueIdentifier>{a648090b-0891-415c-9e0b-abf67a5037fd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ECS\ECS Components\Storage">
-      <UniqueIdentifier>{a4375382-b3b2-491c-a84f-0f14b20c2d55}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\ECS\ECS Components\ECS">
       <UniqueIdentifier>{9a81b5d0-729a-446f-8a99-9248ab0b01d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\ECS\ECS Components\Entitiies">
       <UniqueIdentifier>{a6c5146d-ce25-40be-afc1-30f8229be3f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ECS\ECS Components\Components">
+      <UniqueIdentifier>{a4375382-b3b2-491c-a84f-0f14b20c2d55}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -103,16 +103,16 @@
       <Filter>Header Files\Components\Functional</Filter>
     </ClInclude>
     <ClInclude Include="ComponentStorage.h">
-      <Filter>Header Files\ECS\ECS Components\Storage</Filter>
+      <Filter>Header Files\ECS\ECS Components\Components</Filter>
     </ClInclude>
     <ClInclude Include="Components.h">
-      <Filter>Header Files\ECS\ECS Components\Storage</Filter>
+      <Filter>Header Files\ECS\ECS Components\Components</Filter>
     </ClInclude>
     <ClInclude Include="SparseSet.h">
       <Filter>Header Files\ECS\SparseSet</Filter>
     </ClInclude>
     <ClInclude Include="ComponentWrapper.h">
-      <Filter>Header Files\ECS\ECS Components\Storage</Filter>
+      <Filter>Header Files\ECS\ECS Components\Components</Filter>
     </ClInclude>
     <ClInclude Include="ECS.h">
       <Filter>Header Files\ECS\ECS Components\ECS</Filter>
@@ -125,6 +125,9 @@
     </ClInclude>
     <ClInclude Include="RotatorComponent.h">
       <Filter>Header Files\Components\Functional</Filter>
+    </ClInclude>
+    <ClInclude Include="UniqueTypeTracker.h">
+      <Filter>Header Files\ECS\ECS Components\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +189,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RotatorComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UniqueTypesTracker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
