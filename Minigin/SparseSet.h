@@ -91,13 +91,12 @@ namespace Pengin
 
             throw std::out_of_range("Key not found in SparseSet");
         }
-        
-        //GetFrom Dense Idx - TODO
-        const KeyType& GetKeyFromDenseIndex(size_t index) const
-        {
-            assert(index < DenseSize() && "Index out of bounds");
 
-            return m_ReverseMapping[index];
+        [[nodiscard]] const KeyType& GetKeyFromIterator(const_iterator it) const noexcept
+        {
+            const size_t index{ std::distance(cbegin(), it) };
+            
+            return GetKeyFromDenseIndex(index);
         }
 
         template<typename... Args>
@@ -129,7 +128,7 @@ namespace Pengin
             {
                 const size_t index{ it->second };
                 const KeyType lastKey{ m_ReverseMapping.back() };
-                GetKeyFromDenseIndex
+
                 m_SparseMap[lastKey] = index;
                 m_SparseMap.erase(it);
 
@@ -151,6 +150,13 @@ namespace Pengin
         std::vector<ValueType> m_DenseArray;
 
         std::vector<KeyType> m_ReverseMapping; //Retrieve the key from the densearray using reverse mapping
+
+        [[nodiscard]] inline const KeyType& GetKeyFromDenseIndex(size_t index) const noexcept
+        {
+            assert(index < DenseSize() && "Index out of bounds");
+
+            return m_ReverseMapping[index];
+        };
     };
 }
 #endif

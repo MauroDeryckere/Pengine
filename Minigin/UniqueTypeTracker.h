@@ -9,7 +9,7 @@
 
 namespace Pengin
 {
-    inline std::unordered_set<std::type_index>& GetGlobalUniqueTypesSet()
+    inline std::unordered_set<std::type_index>& GetUniqueTypesSet()
     {
         static std::unordered_set<std::type_index> uniqueTypesSet;
         return uniqueTypesSet;
@@ -21,8 +21,10 @@ namespace Pengin
     {
         inline static bool tracked = [] 
         {
-            std::cout << "Tracking unique type: " << typeid(T).name() << "\n\n";
-            GetGlobalUniqueTypesSet().insert(typeid(T));
+            const auto& tyepId{ typeid(T) };
+
+            std::cout << "Tracking unique type: " << tyepId.name() << "\n";
+            GetUniqueTypesSet().insert(tyepId);
 
             return true;
         }();
