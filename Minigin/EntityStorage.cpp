@@ -1,15 +1,11 @@
-#include "EntityStorage.h"
+#include "EntityManager.h"
 #include <algorithm>
-
-#include "ComponentBitSet.h"
 
 namespace Pengin
 {
-	EntityStorage::EntityStorage()
+	EntityManager::EntityManager()
 	{
-		//int* testArr = new int[UniqueTypes::GetConstSet().size()];
-
-		ComponentBitSet bs{6};
+		Bitset bs{6};
 		bs.PrintBitSet();
 
 		bs.Set(0);
@@ -21,7 +17,7 @@ namespace Pengin
 		bool test = bs.Test(0);
 		std::cout << test << "\n";
 		
-		ComponentBitSet bs2{ 6 };
+		Bitset bs2{ 6 };
 
 		auto bs3 = bs & bs2;
 		bs3.PrintBitSet();
@@ -36,7 +32,7 @@ namespace Pengin
 		}
 	}
 
-	const EntityId& Pengin::EntityStorage::CreateEntity()
+	const EntityId& Pengin::EntityManager::CreateEntity()
 	{
 		++CURRENT_ID_COUNT;
 
@@ -46,7 +42,7 @@ namespace Pengin
 
 	}
 
-	bool EntityStorage::HasEntity(const EntityId& id) const noexcept
+	bool EntityManager::HasEntity(const EntityId& id) const noexcept
 	{
 		return m_Entities.find(id) != m_Entities.end();
 	}

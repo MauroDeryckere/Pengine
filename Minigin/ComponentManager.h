@@ -21,22 +21,22 @@ namespace Pengin
 {
     using KeyType = EntityId;
 
-    class ComponentStorage final
+    class ComponentManager final
     {
     public:
-        ComponentStorage()
+        ComponentManager()
         {
             std::cout << UniqueTypes::GetConstSet().size() << " types required \n";
 
             //Using the set, create component flag system
         }
 
-        ~ComponentStorage() = default;
+        ~ComponentManager() = default;
 
-        ComponentStorage(const ComponentStorage&) = delete;
-        ComponentStorage& operator=(const ComponentStorage&) = delete;
-        ComponentStorage(ComponentStorage&&) noexcept = delete;
-        ComponentStorage& operator=(ComponentStorage&&) noexcept = delete;
+        ComponentManager(const ComponentManager&) = delete;
+        ComponentManager& operator=(const ComponentManager&) = delete;
+        ComponentManager(ComponentManager&&) noexcept = delete;
+        ComponentManager& operator=(ComponentManager&&) noexcept = delete;
 
         template<typename ComponentType, typename... Args>
         ComponentType& AddComponent(const EntityId& id, Args&&... args) 

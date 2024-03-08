@@ -6,10 +6,10 @@
 #include "SparseSet.h"
 
 #include "Components.h"
-#include "ComponentStorage.h"
+#include "ComponentManager.h"
 #include "ComponentWrapper.h"
 
-#include "EntityStorage.h"
+#include "EntityManager.h"
 
 #include <vector>
 #include <cassert>
@@ -22,18 +22,18 @@ namespace Pengin
     {
     public:
         ECS():
-            m_ComponentStorage{},
-            m_EntityStorage{}
+            m_ComponentManager{},
+            m_EntityManager{}
         { }
 
         const EntityId& CreateEntity()
         {
-            return m_EntityStorage.CreateEntity();
+            return m_EntityManager.CreateEntity();
         }
 
         [[nodiscard]] bool Exists(const EntityId& id)
         {
-            return m_EntityStorage.HasEntity(id);
+            return m_EntityManager.HasEntity(id);
         }
          
         bool DestroyEntity(const EntityId& id) //TODO
@@ -46,57 +46,48 @@ namespace Pengin
         template<typename ComponentType, typename... Args>
         ComponentType& AddComponent(const EntityId& id, Args&&... args)
         {
-            return m_ComponentStorage.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
+            return m_ComponentManager.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
         }
 
         template<typename ComponentType>
         void RemoveComponent(const EntityId& id)
         {
-            m_ComponentStorage.RemoveComponent<ComponentType>(id);
+            m_ComponentManager.RemoveComponent<ComponentType>(id);
         }
 
         template<typename ComponentType>
         [[nodiscard]] bool HasComponent(const EntityId& id)
         {
-            return m_ComponentStorage.HasComponent<ComponentType>(id);
+            return m_ComponentManager.HasComponent<ComponentType>(id);
         }
 
         template<typename ComponentType>
         [[nodiscard]] ComponentType& GetComponent(const EntityId& id)
         {
-            return m_ComponentStorage.GetComponent<ComponentType>(id);
+            return m_ComponentManager.GetComponent<ComponentType>(id);
         }
 
         template<typename ComponentType>
         const ComponentType& GetComponent(const EntityId& id) const
         {
-            return m_ComponentStorage.GetComponent<ComponentType>(id);
+            return m_ComponentManager.GetComponent<ComponentType>(id);
         }
 
         template<typename ComponentType>
         auto GetComponents()
         {
-            return m_ComponentStorage.GetComponentWrapper<ComponentType>();
+            return m_ComponentManager.GetComponentWrapper<ComponentType>();
         }
 
         template<typename ComponentType>
         auto GetComponents() const
         {
-            return m_ComponentStorage.GetComponentWrapper<ComponentType>();
+            return m_ComponentManager.GetComponentWrapper<ComponentType>();
         }
-
-        //HasAnyOf<Types>
-        //HasAllOf<Types>
-
-        //possibly allow for replacing components (updating with new component)
-
-        //GetAllEntitiesContaining<Type>()
-        //GetAllEntitiesContaining<Type,Type>()
-        
         
     private:
-        ComponentStorage m_ComponentStorage;
-        EntityStorage m_EntityStorage;
+        ComponentManager m_ComponentManager;
+        EntityManager m_EntityManager;
     };
 
 }

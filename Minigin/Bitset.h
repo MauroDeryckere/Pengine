@@ -1,5 +1,5 @@
-#ifndef COMPONENTBITSET
-#define COMPONENTBITSET
+#ifndef BITSET
+#define BITSET
 
 #include <vector>
 #include <climits>
@@ -10,17 +10,17 @@
 
 namespace Pengin
 {
-    class ComponentBitSet final
+    class Bitset final
     {
     public:
-        explicit ComponentBitSet(size_t amtOfBits) noexcept :
+        explicit Bitset(size_t amtOfBits) noexcept :
             m_AmountOfBits{ amtOfBits },
             m_Bits(static_cast<unsigned>((amtOfBits + BITS_PER_UINT - 1) / BITS_PER_UINT))
         {
             m_Bits.shrink_to_fit();
         }
 
-        ComponentBitSet() = default;
+        Bitset() = default;
 
         size_t Size() const noexcept
         {
@@ -60,9 +60,9 @@ namespace Pengin
             }
         }
 
-        ComponentBitSet operator&(const ComponentBitSet& other) const noexcept
+        Bitset operator&(const Bitset& other) const noexcept
         {
-            ComponentBitSet result(m_AmountOfBits);
+            Bitset result(m_AmountOfBits);
 
             for (size_t i{ 0 }; i < m_Bits.size(); ++i) 
             {

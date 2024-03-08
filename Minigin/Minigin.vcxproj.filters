@@ -105,7 +105,7 @@
     <ClInclude Include="TextComponent.h">
       <Filter>Header Files\Components\Functional</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentStorage.h">
+    <ClInclude Include="ComponentManager.h">
       <Filter>Header Files\ECS\ECS Components\Components</Filter>
     </ClInclude>
     <ClInclude Include="Components.h">
@@ -123,7 +123,7 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files\ECS\ECS Components\Entitiies</Filter>
     </ClInclude>
-    <ClInclude Include="EntityStorage.h">
+    <ClInclude Include="EntityManager.h">
       <Filter>Header Files\ECS\ECS Components\Entitiies</Filter>
     </ClInclude>
     <ClInclude Include="RotatorComponent.h">
@@ -132,7 +132,7 @@
     <ClInclude Include="UniqueTypeTracker.h">
       <Filter>Header Files\ECS\ECS Components\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentBitSet.h">
+    <ClInclude Include="Bitset.h">
       <Filter>Header Files\ECS\BitSet</Filter>
     </ClInclude>
   </ItemGroup>

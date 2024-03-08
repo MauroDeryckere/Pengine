@@ -174,13 +174,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
-    <ClInclude Include="ComponentBitSet.h" />
+    <ClInclude Include="Bitset.h" />
     <ClInclude Include="ComponentWrapper.h" />
     <ClInclude Include="Components.h" />
-    <ClInclude Include="ComponentStorage.h" />
+    <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityStorage.h" />
+    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="FunctionalComponent.h" />
