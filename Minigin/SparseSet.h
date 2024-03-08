@@ -14,7 +14,7 @@
 namespace Pengin
 {
     template<typename ValueType, typename KeyType>
-        requires std::is_constructible_v<ValueType> && std::is_default_constructible_v<KeyType>
+        requires std::is_default_constructible_v<KeyType>
     class SparseSet final
     {
     public:
@@ -23,6 +23,9 @@ namespace Pengin
         { 
             DenseReserve(reserveSize); 
         }
+
+
+
         SparseSet() noexcept = default;
 
         ~SparseSet() = default;

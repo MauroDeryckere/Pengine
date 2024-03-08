@@ -2,8 +2,11 @@
 #define ENTITYSTORAGE
 
 #include "Entity.h"
-
 #include "SparseSet.h"
+
+#include "UniqueTypeTracker.h"
+#include "ComponentBitSet.h"
+
 #include <unordered_set>
 
 namespace Pengin
@@ -11,7 +14,7 @@ namespace Pengin
     class EntityStorage 
     {
     public:
-        EntityStorage() = default;
+        EntityStorage();
 
         EntityStorage(const EntityStorage&) = delete;
         EntityStorage& operator=(const EntityStorage&) = delete;
@@ -24,7 +27,8 @@ namespace Pengin
 
     private:
         std::unordered_set<EntityId> m_Entities;
-        //TODO; Map to bind component flags to entity id 
+
+        SparseSet<ComponentBitSet, EntityId> m_EntityCompFlags;
     };
 }
 

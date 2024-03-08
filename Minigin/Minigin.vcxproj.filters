@@ -46,6 +46,9 @@
     <Filter Include="Header Files\ECS\ECS Components\Components">
       <UniqueIdentifier>{a4375382-b3b2-491c-a84f-0f14b20c2d55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ECS\BitSet">
+      <UniqueIdentifier>{be3fc76b-0a34-4c8a-a412-c286e5a50cad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -128,6 +131,9 @@
     </ClInclude>
     <ClInclude Include="UniqueTypeTracker.h">
       <Filter>Header Files\ECS\ECS Components\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentBitSet.h">
+      <Filter>Header Files\ECS\BitSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

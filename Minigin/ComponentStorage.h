@@ -26,7 +26,7 @@ namespace Pengin
     public:
         ComponentStorage()
         {
-            std::cout << Pengin::GetUniqueTypesSet().size() << " types required \n";
+            std::cout << UniqueTypes::GetConstSet().size() << " types required \n";
 
             //Using the set, create component flag system
         }

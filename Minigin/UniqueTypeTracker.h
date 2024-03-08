@@ -9,12 +9,18 @@
 
 namespace Pengin
 {
-    inline std::unordered_set<std::type_index>& GetUniqueTypesSet()
-    {
-        static std::unordered_set<std::type_index> uniqueTypesSet;
-        return uniqueTypesSet;
-    }
-
+    class UniqueTypes {
+    public:
+        static std::unordered_set<std::type_index>& GetSet() 
+        {
+            static std::unordered_set<std::type_index> uniqueTypesSet;
+            return uniqueTypesSet;
+        }
+        static const std::unordered_set<std::type_index>& GetConstSet()
+        {
+            return GetSet();
+        }
+    };
 
     template<typename T>
     struct UniqueTypesTracker
@@ -24,7 +30,7 @@ namespace Pengin
             const auto& tyepId{ typeid(T) };
 
             std::cout << "Tracking unique type: " << tyepId.name() << "\n";
-            GetUniqueTypesSet().insert(tyepId);
+            UniqueTypes::GetSet().insert(tyepId);
 
             return true;
         }();

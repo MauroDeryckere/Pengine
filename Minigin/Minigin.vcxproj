@@ -174,6 +174,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentBitSet.h" />
     <ClInclude Include="ComponentWrapper.h" />
     <ClInclude Include="Components.h" />
     <ClInclude Include="ComponentStorage.h" />
