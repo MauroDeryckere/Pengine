@@ -25,6 +25,14 @@ void dae::SceneManager::Render() const
 	}
 }
 
+void dae::SceneManager::RenderTrashCache() const
+{
+	for (const auto& scene : m_scenes)
+	{
+		scene->RenderTrashCache();
+	}
+}
+
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));

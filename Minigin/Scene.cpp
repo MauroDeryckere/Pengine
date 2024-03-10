@@ -10,7 +10,9 @@ using namespace dae;
 
 unsigned int Scene::m_idCounter = 0;
 
-Scene::Scene(const std::string& name) : m_name(name) {}
+Scene::Scene(const std::string& name) : m_name(name) 
+{
+}
 
 Scene::~Scene() = default;
 
@@ -54,6 +56,11 @@ void Scene::Render() const
 	for (const auto& object : m_objects)
 	{
 		object->Render();
-	}	
+	}
+}
+
+void dae::Scene::RenderTrashCache() const
+{
+	m_TrashCache.Render();
 }
 

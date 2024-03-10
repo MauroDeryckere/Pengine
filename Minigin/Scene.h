@@ -1,10 +1,13 @@
 #pragma once
 #include "SceneManager.h"
+#include "TrashCacheExercise.h"
 #include "ECS.h"
 
 namespace dae
 {
 	class GameObject;
+	class TrashCacheExercise;
+
 	class Scene final
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
@@ -17,6 +20,8 @@ namespace dae
 		void FixedUpdate(float fixedTimeStep);
 		void Update(float deltaTime);
 		void Render() const;
+
+		void RenderTrashCache() const;
 
 		~Scene();
 		Scene(const Scene& other) = delete;
@@ -35,6 +40,7 @@ namespace dae
 		//scene == gameobj -> root of all objects - TOOD
 
 		Pengin::ECS ecs;
+		TrashCacheExercise m_TrashCache{};
 
 		static unsigned int m_idCounter; 
 	};
