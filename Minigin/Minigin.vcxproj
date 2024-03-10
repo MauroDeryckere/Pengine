@@ -173,8 +173,10 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BaseComponentStorage.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Bitset.h" />
+    <ClInclude Include="ComponentStorage.h" />
     <ClInclude Include="ComponentWrapper.h" />
     <ClInclude Include="Components.h" />
     <ClInclude Include="ComponentManager.h" />
@@ -204,7 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp" />
-    <ClCompile Include="EntityStorage.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="FunctionalComponent.cpp" />

@@ -24,10 +24,7 @@ namespace Pengin
             DenseReserve(reserveSize); 
         }
 
-
-
         SparseSet() noexcept = default;
-
         ~SparseSet() = default;
 
         SparseSet(const SparseSet&) = delete;

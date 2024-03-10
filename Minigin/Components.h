@@ -17,6 +17,7 @@ namespace Pengin
 	struct PositionComponent
 	{
 		PositionComponent() = default;
+		PositionComponent(int xx, int yy) : x{ xx }, y{ yy } {}
 
 		int x, y;
 	};

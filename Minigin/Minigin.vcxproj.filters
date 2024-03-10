@@ -49,6 +49,9 @@
     <Filter Include="Header Files\ECS\BitSet">
       <UniqueIdentifier>{be3fc76b-0a34-4c8a-a412-c286e5a50cad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ECS\ECS Components\Components\ComponentManager">
+      <UniqueIdentifier>{15a1b111-36e8-4b3e-9004-fb5f0421d025}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -105,16 +108,7 @@
     <ClInclude Include="TextComponent.h">
       <Filter>Header Files\Components\Functional</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentManager.h">
-      <Filter>Header Files\ECS\ECS Components\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Components.h">
-      <Filter>Header Files\ECS\ECS Components\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SparseSet.h">
-      <Filter>Header Files\ECS\SparseSet</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentWrapper.h">
       <Filter>Header Files\ECS\ECS Components\Components</Filter>
     </ClInclude>
     <ClInclude Include="ECS.h">
@@ -123,17 +117,32 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files\ECS\ECS Components\Entitiies</Filter>
     </ClInclude>
-    <ClInclude Include="EntityManager.h">
-      <Filter>Header Files\ECS\ECS Components\Entitiies</Filter>
-    </ClInclude>
     <ClInclude Include="RotatorComponent.h">
       <Filter>Header Files\Components\Functional</Filter>
     </ClInclude>
-    <ClInclude Include="UniqueTypeTracker.h">
-      <Filter>Header Files\ECS\ECS Components\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Bitset.h">
       <Filter>Header Files\ECS\BitSet</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentWrapper.h">
+      <Filter>Header Files\ECS\ECS Components\Entitiies</Filter>
+    </ClInclude>
+    <ClInclude Include="SparseSet.h">
+      <Filter>Header Files\ECS\SparseSet</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseComponentStorage.h">
+      <Filter>Header Files\ECS\ECS Components\Components\ComponentManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentManager.h">
+      <Filter>Header Files\ECS\ECS Components\Components\ComponentManager</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Header Files\ECS\ECS Components\Entitiies</Filter>
+    </ClInclude>
+    <ClInclude Include="UniqueTypeTracker.h">
+      <Filter>Header Files\ECS\ECS Components\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentStorage.h">
+      <Filter>Header Files\ECS\ECS Components\Components\ComponentManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -152,13 +161,7 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Font.cpp">
@@ -191,7 +194,7 @@
     <ClCompile Include="FunctionalComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="EntityStorage.cpp">
+    <ClCompile Include="EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RotatorComponent.cpp">
@@ -199,6 +202,12 @@
     </ClCompile>
     <ClCompile Include="UniqueTypesTracker.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,19 +3,16 @@
 
 #include "Entity.h"
 
-#include "SparseSet.h"
-
 #include "Components.h"
 #include "ComponentManager.h"
 #include "ComponentWrapper.h"
 
 #include "EntityManager.h"
 
-#include <vector>
-#include <cassert>
-#include <limits>
+/*ECS Documentation
+* The templated functions that do not cast down to a typeid are templated because the return type is required. The others for uniformity
+*/
 
-#include <iostream>
 namespace Pengin
 {
     class ECS
@@ -23,43 +20,45 @@ namespace Pengin
     public:
         ECS():
             m_ComponentManager{},
-            m_EntityManager{}
+            m_EntityManager{m_ComponentManager}
         { }
 
-        const EntityId& CreateEntity()
+        const EntityId& CreateEntity() noexcept
         {
             return m_EntityManager.CreateEntity();
         }
 
-        [[nodiscard]] bool Exists(const EntityId& id)
+        [[nodiscard]] bool Exists(const EntityId& id) noexcept
         {
             return m_EntityManager.HasEntity(id);
         }
          
-        bool DestroyEntity(const EntityId& id) //TODO
+        bool DestroyEntity(const EntityId& id)
         {
-            id;
-            return false;
+            return m_EntityManager.DestroyEntity(id);
         }
-        //Destroy entity
 
         template<typename ComponentType, typename... Args>
         ComponentType& AddComponent(const EntityId& id, Args&&... args)
         {
+            m_EntityManager.AddComponent(typeid(ComponentType), id);
             return m_ComponentManager.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
         }
 
         template<typename ComponentType>
         void RemoveComponent(const EntityId& id)
         {
-            m_ComponentManager.RemoveComponent<ComponentType>(id);
+            m_EntityManager.RemoveComponent(typeid(ComponentType), id);
+            m_ComponentManager.RemoveComponent(typeid(ComponentType), id);
         }
 
         template<typename ComponentType>
         [[nodiscard]] bool HasComponent(const EntityId& id)
         {
-            return m_ComponentManager.HasComponent<ComponentType>(id);
+            return m_ComponentManager.HasComponent(typeid(ComponentType), id); 
         }
+
+        //TODO  entitymanager for multiple types
 
         template<typename ComponentType>
         [[nodiscard]] ComponentType& GetComponent(const EntityId& id)

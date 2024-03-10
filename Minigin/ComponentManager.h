@@ -1,11 +1,15 @@
-#ifndef COMPONENTSTORAGE
-#define COMPONENTSTORAGE
+#ifndef COMPONENTMANAGER
+#define COMPONENTMANAGER
 
 #include "Entity.h"
-
 #include "SparseSet.h"
-#include "ComponentWrapper.h"
+
+#include "BaseComponentStorage.h"
+#include "ComponentStorage.h"
+
 #include "UniqueTypeTracker.h"
+
+#include "ComponentWrapper.h"
 
 #include <memory>
 #include <cassert>
@@ -15,20 +19,18 @@
 #include <type_traits>
 #include <optional>
 
-#include <unordered_set>
-
 namespace Pengin
 {
     using KeyType = EntityId;
-
+    
     class ComponentManager final
     {
     public:
-        ComponentManager()
+        ComponentManager() :
+            m_TypeBitMap{ InitTypeBitMapping() },
+            m_TypeBitVector{ InitTypeBitVector() }
         {
-            std::cout << UniqueTypes::GetConstSet().size() << " types required \n";
-
-            //Using the set, create component flag system
+            m_ComponentStorage.resize(m_TypeBitVector.size());
         }
 
         ~ComponentManager() = default;
@@ -39,138 +41,224 @@ namespace Pengin
         ComponentManager& operator=(ComponentManager&&) noexcept = delete;
 
         template<typename ComponentType, typename... Args>
-        ComponentType& AddComponent(const EntityId& id, Args&&... args) 
+        ComponentType& AddComponent(const EntityId& id, Args&&... args)
         {
             [[maybe_unused]] UniqueTypesTracker<ComponentType> tracker; //TODO Change this
 
-            SparseSet<ComponentType, KeyType>& compSet{ GetComponentSet<ComponentType>() };
+            const size_t idx{ m_TypeBitMap.at(typeid(ComponentType))};
 
-            auto it{ compSet.Emplace(id, std::forward<Args>(args)...) };
+            auto* basePtr{ m_ComponentStorage[idx].get()};
 
-            if (it != compSet.end()) {
-                return *it;
+            if (!basePtr)
+            {
+                m_ComponentStorage[idx].reset(static_cast<BaseComponentStorage*>(new ComponentStorage<ComponentType>{}));
+                basePtr = m_ComponentStorage[idx].get();
+            }
+
+            ComponentStorage<ComponentType>* storage{ dynamic_cast<ComponentStorage<ComponentType>*>(basePtr) };
+
+            assert(storage);
+
+            auto& set{ storage->GetSet() };
+            auto it{ set.Emplace(id, std::forward<Args>(args)...) };
+            if (it != set.end())
+            {
+                return *it; 
             }
 
             throw std::runtime_error("Failed to add component");
         }
 
-        template<typename ComponentType>
-        void RemoveComponent(const EntityId& id) requires std::is_constructible_v<ComponentType>
+        bool RemoveComponent(std::type_index typeIdx, const EntityId& id) noexcept
         {
-            SparseSet<ComponentType, KeyType>& compSet{ GetComponentSet<ComponentType>() };
+            const auto it{ m_TypeBitMap.find(typeIdx) };
 
-            compSet.Remove(id);
-        }
-
-        template<typename ComponentType>
-        [[nodiscard]] bool HasComponent(const EntityId& id) const
-        {
-            std::optional<const SparseSet<ComponentType, KeyType>*> compSetOptional{ GetOptComponentSet<ComponentType>() };
-
-            if (compSetOptional.has_value()) 
+            if (it == m_TypeBitMap.end())
             {
-                return compSetOptional.value()->Contains(id);
+                std::cerr << "Checking for a component that is not ever added to the typeTracker \n";
+                return false;
             }
 
-            return false;
+            const size_t idx{ it->second };
+
+            auto* basePtr{ m_ComponentStorage[idx].get() };
+            if (!basePtr)
+            {
+                return false;
+            }
+
+            basePtr->RemoveComponent(id);
+            return true;
+        }
+
+        [[nodiscard]] bool HasComponent(std::type_index typeIdx, const EntityId& id) const
+        {
+            const auto it{ m_TypeBitMap.find(typeIdx) };
+
+            if (it == m_TypeBitMap.end())
+            {
+                std::cerr << "Checking for a component that is not ever added to the typeTracker \n";
+                return false;
+            }
+
+            const size_t idx{ it->second };
+
+            auto* const basePtr{ m_ComponentStorage[idx].get() };
+
+            if (!basePtr)
+            {
+                return false;
+            }
+            
+            return basePtr->HasComponent(id);
         }
 
         template<typename ComponentType>
         [[nodiscard]] ComponentType& GetComponent(const EntityId& id)
-        requires std::is_default_constructible_v<ComponentType>
+            requires std::is_default_constructible_v<ComponentType>
         {
-            SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
+            const auto typeIt{ m_TypeBitMap.find(typeid(ComponentType)) };
 
-            if (compSet.Contains(id))
+            if (typeIt == m_TypeBitMap.end())
             {
-                return compSet[id];
+                throw std::out_of_range("Checking for a component that is not ever added to the typeTracker");
             }
 
-            compSet.Emplace(id, ComponentType{});
-            return compSet[id];
+            const size_t idx{ typeIt->second };
+
+            auto* basePtr{ m_ComponentStorage[idx].get() };
+
+            if (!basePtr)
+            {
+                m_ComponentStorage[idx].reset(static_cast<BaseComponentStorage*>(new ComponentStorage<ComponentType>{}));
+                basePtr = m_ComponentStorage[idx].get();
+
+                ComponentStorage<ComponentType>* const storage{ dynamic_cast<ComponentStorage<ComponentType>*>(basePtr) };
+                auto& set{ storage->GetSet() };
+
+                auto it{ set.Emplace(id) };
+
+                return *it;
+            }
+
+            ComponentStorage<ComponentType>* storage{ dynamic_cast<ComponentStorage<ComponentType>*>(basePtr) };
+            auto& set{ storage->GetSet() };
+
+            if (!set.Contains(id))
+            {
+                auto it{ set.Emplace(id) };
+
+                if (it != set.end())
+                {
+                    return *it;
+                }
+            }
+
+            return set[id];
         }
 
         template<typename ComponentType>
         [[nodiscard]] const ComponentType& GetComponent(const EntityId& id) const
         {
-            const SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
+            const auto it{ m_TypeBitMap.find(typeid(ComponentType)) };
 
-            if (compSet.Contains(id))
+            if (it == m_TypeBitMap.end())
             {
-                return compSet[id];
+                throw std::out_of_range("Checking for a component that is not ever added to the typeTracker");
             }
 
+            const size_t idx{ it->second };
+            auto* basePtr{ m_ComponentStorage[idx].get() };
+
+            if (!basePtr)
+            {
+                throw std::out_of_range("Component not found for the given entity ID");
+            }
+
+            ComponentStorage<ComponentType>* const storage{ dynamic_cast<ComponentStorage<ComponentType>*>(basePtr) };
+            const auto& set{ storage->GetSet() };
+
+            if (set.Contains(id))
+            {
+                return set[id];
+            }
             throw std::out_of_range("Component not found for the given entity ID");
         }
 
         template<typename ComponentType>
         [[nodiscard]] ComponentWrapper<ComponentType> GetComponentWrapper()
         {
-            SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
+            const auto it{ m_TypeBitMap.find(typeid(ComponentType)) };
 
-            return ComponentWrapper<ComponentType>{ compSet };
+            if (it == m_TypeBitMap.end())
+            {
+                throw std::out_of_range("Checking for a component that is not ever added to the typeTracker");
+            }
+
+            const size_t idx{ it->second };
+            auto* basePtr{ m_ComponentStorage[idx].get() };
+
+            ComponentStorage<ComponentType>* storage{ dynamic_cast<ComponentStorage<ComponentType>*>(basePtr) };
+
+            auto& set{ storage->GetSet() };
+            return ComponentWrapper<ComponentType>{ set };
         }
 
         template<typename ComponentType>
         [[nodiscard]] const ComponentWrapper<ComponentType> GetComponentWrapper() const
         {
-            const SparseSet<ComponentType, KeyType>& compSet = GetComponentSet<ComponentType>();
+            const auto it{ m_TypeBitMap.find(typeid(ComponentType)) };
 
-            return ComponentWrapper<ComponentType>{ compSet };
+            if (it == m_TypeBitMap.end())
+            {
+                throw std::out_of_range("Checking for a component that is not ever added to the typeTracker");
+            }
+
+            const size_t idx{ it->second };
+
+            auto* basePtr{ m_ComponentStorage[idx].get() };
+
+            ComponentStorage<ComponentType>* storage{ dynamic_cast<ComponentStorage<ComponentType>*>(basePtr) };
+
+            const auto& set{ storage->GetSet() };
+            return ComponentWrapper<ComponentType>{ set };
         }
 
     private:
-        std::unordered_map<std::type_index, std::shared_ptr<void>> m_ComponentSetsMap;
+        std::vector<std::unique_ptr<BaseComponentStorage>> m_ComponentStorage;
 
-        template<typename ComponentType>
-        [[nodiscard]] SparseSet<ComponentType, KeyType>& GetComponentSet()
-        requires std::is_constructible_v<ComponentType> && std::is_default_constructible_v<KeyType>
+        const std::unordered_map<std::type_index, size_t> m_TypeBitMap;
+        const std::vector<std::type_index> m_TypeBitVector; //rev mapping
+
+        [[nodiscard]] const std::unordered_map<std::type_index, size_t> InitTypeBitMapping() noexcept
         {
-            const std::type_index compTypeIdx{ typeid(ComponentType) };
+            size_t bit{ 0 };
+            std::unordered_map<std::type_index, size_t> typeBitMap;
 
-            auto it{ m_ComponentSetsMap.find(compTypeIdx) };
-
-            if (it != m_ComponentSetsMap.end())
+            for (const auto& type : UniqueTypes::GetConstSet())
             {
-                return *static_cast<SparseSet<ComponentType, KeyType>*>(it->second.get());
+                typeBitMap.insert({ type, bit });
+                ++bit;
             }
 
-            auto set{ std::make_shared<SparseSet<ComponentType, KeyType>>() };
+            return typeBitMap;
 
-            m_ComponentSetsMap[compTypeIdx] = set;
-            return *set;
         }
-
-        template<typename ComponentType>
-        [[nodiscard]] const SparseSet<ComponentType, KeyType>& GetComponentSet() const
-            requires std::is_constructible_v<ComponentType>&& std::is_default_constructible_v<KeyType>
+        [[nodiscard]] const std::vector<std::type_index> InitTypeBitVector() noexcept
         {
-            const std::type_index compTypeIdx{ typeid(ComponentType) };
+            const auto& uniqueTypeSet{ UniqueTypes::GetConstSet() };
 
-            auto it{ m_ComponentSetsMap.find(compTypeIdx) };
+            std::vector<std::type_index> typeBitVec{};
+            typeBitVec.reserve(uniqueTypeSet.size());
 
-            if (it != m_ComponentSetsMap.end())
+            for (const auto& type : uniqueTypeSet)
             {
-                return *static_cast<const SparseSet<ComponentType, KeyType>*>(it->second.get());
+                typeBitVec.emplace_back(type);
             }
 
-            throw std::runtime_error("Component set not found");
-        }
+            typeBitVec.shrink_to_fit();
 
-        template<typename ComponentType>
-        std::optional<const SparseSet<ComponentType, KeyType>*> GetOptComponentSet() const
-        requires std::is_constructible_v<ComponentType>&& std::is_default_constructible_v<KeyType>
-        {
-            const std::type_index compTypeIdx{ typeid(ComponentType) };
-
-            auto it{ m_ComponentSetsMap.find(compTypeIdx) };
-
-            if (it != m_ComponentSetsMap.end())
-            {
-                return static_cast<const SparseSet<ComponentType, KeyType>*>(it->second.get());
-            }
-
-            return std::nullopt;
+            return typeBitVec;
         }
     };
 }
