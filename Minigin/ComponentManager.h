@@ -13,24 +13,19 @@
 
 #include <memory>
 #include <cassert>
-#include <string>
 #include <unordered_map>
 #include <typeindex>
 #include <type_traits>
-#include <optional>
 
 namespace Pengin
-{
-    using KeyType = EntityId;
-    
+{    
     class ComponentManager final
     {
     public:
         ComponentManager() :
-            m_TypeBitMap{ InitTypeBitMapping() },
-            m_TypeBitVector{ InitTypeBitVector() }
+            m_TypeBitMap{ InitTypeBitMapping() }
         {
-            m_ComponentStorage.resize(m_TypeBitVector.size());
+            m_ComponentStorage.resize(m_TypeBitMap.size());
         }
 
         ~ComponentManager() = default;
@@ -228,7 +223,6 @@ namespace Pengin
         std::vector<std::unique_ptr<BaseComponentStorage>> m_ComponentStorage;
 
         const std::unordered_map<std::type_index, size_t> m_TypeBitMap;
-        const std::vector<std::type_index> m_TypeBitVector; //rev mapping
 
         [[nodiscard]] const std::unordered_map<std::type_index, size_t> InitTypeBitMapping() noexcept
         {
@@ -242,23 +236,6 @@ namespace Pengin
             }
 
             return typeBitMap;
-
-        }
-        [[nodiscard]] const std::vector<std::type_index> InitTypeBitVector() noexcept
-        {
-            const auto& uniqueTypeSet{ UniqueTypes::GetConstSet() };
-
-            std::vector<std::type_index> typeBitVec{};
-            typeBitVec.reserve(uniqueTypeSet.size());
-
-            for (const auto& type : uniqueTypeSet)
-            {
-                typeBitVec.emplace_back(type);
-            }
-
-            typeBitVec.shrink_to_fit();
-
-            return typeBitVec;
         }
     };
 }
