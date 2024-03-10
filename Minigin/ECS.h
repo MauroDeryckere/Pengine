@@ -11,6 +11,16 @@
 
 /*ECS Documentation
 * The templated functions that do not cast down to a typeid are templated because the return type is required. The others for uniformity
+* 
+* TODO: 
+* HasComponent<Types ...>()
+* GetComponents<Type, Type>()  - return All entities with 2 given componennts
+* 
+* Use flags to remove components and entities, ensure no dependencies are a problem
+* 
+* Other communication methods (?)
+* 
+* Serialization
 */
 
 namespace Pengin

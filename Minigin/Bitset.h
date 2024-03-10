@@ -71,47 +71,67 @@ namespace Pengin
             return result;
         }
 
-    /*
-    // Bitwise OR operator
-    MyBitset operator|(const MyBitset& other) const {
-        MyBitset result(m_size);
-        for (size_t i = 0; i < m_bits.size(); ++i) {
-            result.m_bits[i] = m_bits[i] | other.m_bits[i];
-        }
-        return result;
-    }
+        Bitset operator|(const Bitset& other) const noexcept
+        {
+            Bitset result{m_AmountOfBits};
 
-    // Bitwise XOR operator
-    MyBitset operator^(const MyBitset& other) const {
-        MyBitset result(m_size);
-        for (size_t i = 0; i < m_bits.size(); ++i) {
-            result.m_bits[i] = m_bits[i] ^ other.m_bits[i];
+            for (size_t i{ 0 }; i < m_Bits.size(); ++i)
+            {
+                result.m_Bits[i] = m_Bits[i] | other.m_Bits[i];
+            }
+            return result;
         }
-        return result;
-    }
 
-    // Bitwise complement operator
-    MyBitset operator~() const {
-        MyBitset result(m_size);
-        for (size_t i = 0; i < m_bits.size(); ++i) {
-            result.m_bits[i] = ~m_bits[i];
+        Bitset operator^(const Bitset& other) const noexcept
+        {
+            Bitset result{ m_AmountOfBits };
+
+            for (size_t i{ 0 }; i < m_Bits.size(); ++i)
+            {
+                result.m_Bits[i] = m_Bits[i] ^ other.m_Bits[i];
+            }
+            return result;
         }
-        return result;
-    }*/
+        Bitset operator~() const noexcept
+        {
+            Bitset result{ m_AmountOfBits };
 
-
-        /*
-            // Bitwise AND assignment operator
-    MyBitset& operator&=(const MyBitset& other) {
-        for (size_t i = 0; i < m_bits.size(); ++i) {
-            m_bits[i] &= other.m_bits[i];
+            for (size_t i{ 0 }; i < m_Bits.size(); ++i)
+            {
+                result.m_Bits[i] = ~m_Bits[i];
+            }
+            return result;
         }
-        return *this;
-    }
-        */
+
+        Bitset& operator&=(const Bitset& other) noexcept
+        {
+            for (size_t i = 0; i < m_Bits.size(); ++i)
+            {
+                m_Bits[i] &= other.m_Bits[i];
+            }
+            return *this;
+        }
+
+        Bitset& operator|=(const Bitset& other) noexcept
+        {
+            for (size_t i = 0; i < m_Bits.size(); ++i)
+            {
+                m_Bits[i] |= other.m_Bits[i];
+            }
+            return *this;
+        }
+
+        Bitset& operator^=(const Bitset& other) noexcept
+        {
+            for (size_t i = 0; i < m_Bits.size(); ++i)
+            {
+                m_Bits[i] ^= other.m_Bits[i];
+            }
+            return *this;
+        }
 
 	private:
-		size_t m_AmountOfBits;
+		const size_t m_AmountOfBits;
 		std::vector<unsigned> m_Bits;
 
         static constexpr size_t BITS_PER_UINT{ sizeof(int) * CHAR_BIT };
