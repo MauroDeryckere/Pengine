@@ -99,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl3.h;$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl3.cpp;$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.h;$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl3.h;$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl3.cpp;$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.h;$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -139,7 +139,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl3.h;$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl3.cpp;$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.h;$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -162,7 +162,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl3.h;$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl3.cpp;$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.h;$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -177,6 +177,8 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl2.h" />
+    <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imconfig.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_internal.h" />
@@ -215,6 +217,8 @@
     <ClInclude Include="UniqueTypeTracker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_demo.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_draw.cpp" />

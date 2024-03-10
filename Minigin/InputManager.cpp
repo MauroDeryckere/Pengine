@@ -1,6 +1,8 @@
 #include <SDL.h>
 #include "InputManager.h"
 
+#include <backends/imgui_impl_sdl2.h>
+
 bool dae::InputManager::ProcessInput()
 {
 	SDL_Event e;
@@ -8,13 +10,15 @@ bool dae::InputManager::ProcessInput()
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
-		if (e.type == SDL_KEYDOWN) {
+
+		ImGui_ImplSDL2_ProcessEvent(&e);
+
+		/*if (e.type == SDL_KEYDOWN) {
 			
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
 			
-		}
-		// etc...
+		}*/
 	}
 
 	return true;
