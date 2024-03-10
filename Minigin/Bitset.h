@@ -22,6 +22,52 @@ namespace Pengin
 
         Bitset() = default;
 
+        Bitset(const Bitset& other) noexcept :
+            m_AmountOfBits{ other.m_AmountOfBits },
+            m_Bits{ other.m_Bits }
+        {
+        }
+
+        Bitset(Bitset&& other) noexcept :
+            m_AmountOfBits{ other.m_AmountOfBits },
+            m_Bits{ std::move(other.m_Bits) }
+        {
+        }
+
+
+        Bitset& operator=(Bitset&& other) noexcept
+        {
+            try
+            {
+                if (this != &other) 
+                {
+                    if (m_AmountOfBits != other.m_AmountOfBits)
+                    {
+                        throw std::invalid_argument("Bitset sizes do not match");
+                    }
+                    m_Bits = std::move(other.m_Bits);
+                }
+            }
+            catch (const std::exception&)
+            {
+                //Handle exception if needed, or just let it propagate
+            }
+            return *this;
+        }
+
+        Bitset& operator=(const Bitset& other)
+        {
+            if (this != &other)
+            {
+                if (m_AmountOfBits != other.m_AmountOfBits)
+                {
+                    throw std::invalid_argument("Bitset sizes do not match");
+                }
+                m_Bits = other.m_Bits;
+            }
+            return *this;
+        }
+
         size_t Size() const noexcept
         {
             return m_AmountOfBits;
@@ -64,10 +110,11 @@ namespace Pengin
         {
             Bitset result(m_AmountOfBits);
 
-            for (size_t i{ 0 }; i < m_Bits.size(); ++i) 
+            for (size_t i{ 0 }; i < m_Bits.size(); ++i)
             {
                 result.m_Bits[i] = m_Bits[i] & other.m_Bits[i];
             }
+
             return result;
         }
 
