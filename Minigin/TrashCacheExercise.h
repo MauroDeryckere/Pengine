@@ -19,7 +19,7 @@ namespace dae {
         {
             delete[] arrGameobj;
             delete[] arrGameobjAlt;
-            delete[] arrInt;            
+            delete[] arrInt;
         }
     private:
         static constexpr size_t arrSize{ 50'000'00 }; //Much larger wont work in debug
@@ -38,7 +38,7 @@ namespace dae {
             Transform local{};
             int id{ 1 };
         };
-        
+
         class GameObjectAlt {
         public:
             Transform* local;
@@ -59,6 +59,6 @@ namespace dae {
         void CalculateAverages(int* arr, int numRuns, std::vector<float>& averageTimes) const;
 
         void DisplayPlot(const char* title, const std::vector<float>& data) const;
-        void DisplayCombinedPlot(const char* title, const std::vector<float>& data) const;
+        void DisplayCombinedPlot(const char* title, const std::vector<float>& data1, const std::vector<float>& data2) const;
     };
 }

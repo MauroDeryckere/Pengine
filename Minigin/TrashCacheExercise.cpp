@@ -47,12 +47,8 @@ namespace dae
         DisplayPlot("Average Times (GameObjectAlt Array)", averageTimesGameObjectAlt);
 
         if (!averageTimesGameObject.empty() && !averageTimesGameObjectAlt.empty()) {
-            std::vector<float> combinedData;
-            combinedData.reserve(averageTimesGameObject.size() + averageTimesGameObjectAlt.size());
-            combinedData.insert(combinedData.end(), averageTimesGameObject.begin(), averageTimesGameObject.end());
-            combinedData.insert(combinedData.end(), averageTimesGameObjectAlt.begin(), averageTimesGameObjectAlt.end());
 
-            DisplayCombinedPlot("Average Times (Combined)", combinedData);
+            DisplayCombinedPlot("Average Times (Combined)", averageTimesGameObject, averageTimesGameObjectAlt);
         }
 
         ImGui::End();
@@ -154,21 +150,28 @@ namespace dae
         }
     }
 
-    void TrashCacheExercise::DisplayCombinedPlot(const char* title, const std::vector<float>& data) const {
-        if (!data.empty()) {
+    void TrashCacheExercise::DisplayCombinedPlot(const char* title, const std::vector<float>& data1, const std::vector<float>& data2) const {
+        if (!data1.empty() && !data2.empty()) {
             ImGui::PlotConfig combinedPlotConf;
-            combinedPlotConf.values.ys_list = new const float* [1] { data.data() };
-            combinedPlotConf.values.count = static_cast<int>(data.size());
-            combinedPlotConf.values.ys_count = 1;
+            combinedPlotConf.values.ys_list = new const float* [2] { data1.data(), data2.data() };
+            combinedPlotConf.values.count = static_cast<int>(std::min(data1.size(), data2.size()));
+            combinedPlotConf.values.ys_count = 2;
             combinedPlotConf.scale.min = 0.0f;
-            combinedPlotConf.scale.max = *std::max_element(data.begin(), data.end()) + 100.0f;
+            combinedPlotConf.scale.max = std::max(*std::max_element(data1.begin(), data1.end()), *std::max_element(data2.begin(), data2.end())) + 100.0f;
             combinedPlotConf.tooltip.show = true;
             combinedPlotConf.grid_x.show = true;
             combinedPlotConf.grid_y.show = true;
             combinedPlotConf.frame_size = ImVec2(500, 200);
+
+            ImU32 color1 = IM_COL32(255, 0, 0, 255);
+            ImU32 color2 = IM_COL32(0, 255, 0, 255);
+
+            combinedPlotConf.values.colors = new const ImU32[2]{ color1, color2 };
+
             ImGui::Plot(title, combinedPlotConf);
 
             delete[] combinedPlotConf.values.ys_list;
+            delete[] combinedPlotConf.values.colors;
         }
     }
 
