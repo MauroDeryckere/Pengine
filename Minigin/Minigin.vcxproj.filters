@@ -64,8 +64,11 @@
     <Filter Include="Source Files\ImGui">
       <UniqueIdentifier>{a93af61a-9c83-448c-94e7-b7c3ada23cbb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Game\TrashCache">
-      <UniqueIdentifier>{e4050a30-93dc-43b5-a6f4-62bb52ad51c3}</UniqueIdentifier>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{8b62cf3b-514f-4e65-9b34-08d404af42d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input\InputCommand">
+      <UniqueIdentifier>{d929aba0-ad92-47f3-8119-6557860ed60e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -129,9 +132,6 @@
     <ClInclude Include="Renderer.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
@@ -185,6 +185,15 @@
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_plot.h">
       <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="InputCommand.h">
+      <Filter>Header Files\Input\InputCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="InputCommands.h">
+      <Filter>Header Files\Input\InputCommand</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -274,6 +283,9 @@
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_plot.cpp">
       <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="InputCommand.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

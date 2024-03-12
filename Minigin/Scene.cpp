@@ -61,6 +61,6 @@ void Scene::Render() const
 
 void dae::Scene::RenderTrashCache() const
 {
-	m_TrashCache.Render();
+	//m_TrashCache.Render();
 }
 

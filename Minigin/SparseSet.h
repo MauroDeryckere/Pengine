@@ -13,6 +13,7 @@
 
 namespace Pengin
 {
+    //TODO Valuetype moveable or else copy, or only allow moveable types. (Remove func)
     template<typename ValueType, typename KeyType>
         requires std::is_default_constructible_v<KeyType>
     class SparseSet final

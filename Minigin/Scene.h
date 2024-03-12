@@ -1,12 +1,10 @@
 #pragma once
 #include "SceneManager.h"
-#include "TrashCacheExercise.h"
 #include "ECS.h"
 
 namespace dae
 {
 	class GameObject;
-	class TrashCacheExercise;
 
 	class Scene final
 	{
@@ -40,7 +38,6 @@ namespace dae
 		//scene == gameobj -> root of all objects - TOOD
 
 		Pengin::ECS ecs;
-		TrashCacheExercise m_TrashCache{};
 
 		static unsigned int m_idCounter; 
 	};

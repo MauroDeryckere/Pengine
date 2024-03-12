@@ -5,7 +5,7 @@
 
 namespace Pengin
 {
-    class BaseComponentStorage
+    class BaseComponentStorage abstract
     {
     public:
         virtual void RemoveComponent(const EntityId& id) noexcept = 0;

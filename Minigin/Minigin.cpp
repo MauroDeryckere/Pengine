@@ -7,6 +7,7 @@
 
 #include <chrono>
 #include <thread>
+#include <iostream>
 
 #include "Minigin.h"
 #include "InputManager.h"
@@ -85,7 +86,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 	auto& renderer{ Renderer::GetInstance() };
 	auto& sceneManager{ SceneManager::GetInstance() };
-	auto& input{ InputManager::GetInstance() };
+	auto& input{ Pengin::InputManager::GetInstance() };
 	
 	using std::chrono::high_resolution_clock;
 	using std::chrono::duration;
@@ -105,6 +106,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		lag += deltaTime;
 
 		doContinue = input.ProcessInput();
+
 		while (lag >= fixedTimeStep)
 		{
 			sceneManager.FixedUpdate(fixedTimeStep);
