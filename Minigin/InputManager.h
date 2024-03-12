@@ -35,13 +35,20 @@ namespace Pengin
             Y
         };
 
+        enum class InputCommandType
+        {
+            DownThisFrame,
+            UpThisFrame,
+            Pressed
+        };
+
         [[nodiscard]] bool ProcessInput();
 
         [[nodiscard]] bool IsDownThisFrame(InputCode button) const;
         [[nodiscard]] bool IsUpThisFrame(InputCode button) const;
         [[nodiscard]] bool IsPressed(InputCode button) const;
 
-        void RegisterActionMapping(InputCode button, std::unique_ptr<InputCommand> pAction);
+        void RegisterActionMapping(InputCode button, InputCommandType type, std::unique_ptr<InputCommand> pAction);
 
     private:
         XINPUT_STATE m_CurrentState;
@@ -49,7 +56,27 @@ namespace Pengin
         unsigned m_ButtonsPressedThisFrame;
         unsigned m_ButtonsReleasedThisFrame;
 
-        std::unordered_map<InputCode, std::unique_ptr<InputCommand>> m_InputActionMapping;
+        struct InputCommandInfo
+        {
+            bool operator==(const InputCommandInfo& other) const
+            {
+                return code == other.code && type == other.type;
+            }
+
+            InputCode code;
+            InputCommandType type;
+        };
+
+        struct InputCommandInfoHash
+        {
+            std::size_t operator()(const InputCommandInfo& info) const
+            {
+                // Combine the hash values of code and type using bitwise XOR
+                return std::hash<InputCode>{}(info.code) ^ std::hash<InputCommandType>{}(info.type);
+            }
+        };
+
+        std::unordered_map<InputCommandInfo, std::unique_ptr<InputCommand>, InputCommandInfoHash> m_InputActionMapping;
 
         enum class ConsoleButton : unsigned
         {

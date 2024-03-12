@@ -8,6 +8,7 @@
 #include "Windows.h"
 #include "XInput.h"
 
+
 namespace Pengin
 {
 	bool InputManager::ProcessInput() //Handles components TODO
@@ -24,11 +25,13 @@ namespace Pengin
 		m_ButtonsPressedThisFrame = buttonChanges & m_CurrentState.Gamepad.wButtons;
 		m_ButtonsReleasedThisFrame = buttonChanges & (~m_CurrentState.Gamepad.wButtons);
 
-		for (auto& command : m_InputActionMapping)
+		for (auto& event : m_InputActionMapping)
 		{
-			if (IsPressed(command.first))
+			if ((event.first.type == InputCommandType::Pressed && IsPressed(event.first.code)) ||
+				(event.first.type == InputCommandType::UpThisFrame && IsUpThisFrame(event.first.code)) || 
+				(event.first.type == InputCommandType::DownThisFrame && IsDownThisFrame(event.first.code)))
 			{
-				command.second->Execute();
+				event.second->Execute();
 			}
 		}
 
@@ -59,9 +62,10 @@ namespace Pengin
 	{
 		return m_CurrentState.Gamepad.wButtons & static_cast<unsigned>(m_InputCodeToConsoleButtonMapping[static_cast<size_t>(button)]);
 	}
-	void InputManager::RegisterActionMapping(InputCode button, std::unique_ptr<InputCommand> pAction)
+	void InputManager::RegisterActionMapping(InputCode button, InputCommandType type, std::unique_ptr<InputCommand> pAction)
 	{
-		m_InputActionMapping[button] = std::move(pAction);
+		
+		m_InputActionMapping[InputCommandInfo{button, type}] = std::move(pAction);
 	}
 }
 
