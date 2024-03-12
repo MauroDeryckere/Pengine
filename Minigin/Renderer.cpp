@@ -43,22 +43,19 @@ void dae::Renderer::Render() const
 
 	SceneManager::GetInstance().Render();
 	
+	SDL_RenderFlush(m_renderer);
+
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
-	RenderTrashCacheExercise();
+	SceneManager::GetInstance().RenderGUI();
 
 	//ImGui::ShowDemoWindow();
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
 	SDL_RenderPresent(m_renderer);
-}
-
-void dae::Renderer::RenderTrashCacheExercise() const
-{
-	SceneManager::GetInstance().RenderTrashCache();
 }
 
 void dae::Renderer::Destroy()

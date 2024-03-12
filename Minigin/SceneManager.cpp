@@ -25,12 +25,12 @@ void dae::SceneManager::Render() const
 	}
 }
 
-void dae::SceneManager::RenderTrashCache() const
+void dae::SceneManager::RenderGUI()
 {
-	for (const auto& scene : m_scenes)
-	{
-		scene->RenderTrashCache();
-	}
+	//for (const auto& scene : m_scenes)
+	//{
+		//scene->RenderTrashCache();
+	//}
 }
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
