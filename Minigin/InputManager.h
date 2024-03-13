@@ -8,6 +8,7 @@
 
 #include "InputCommand.h"
 #include "InputController.h"
+#include "InputKeyboard.h"
 
 #include <unordered_map>
 #include <vector>
@@ -28,7 +29,7 @@ namespace Pengin
 
     enum class KeyBoardKey : unsigned
     {
-        A = 0x41
+        A
     };
 
     enum class MouseButton : unsigned
@@ -80,17 +81,12 @@ namespace Pengin
 
     private:
         std::unique_ptr<InputController> m_Controller;
+        std::unique_ptr<InputKeyboard> m_Keyboard;
         //m_..
 
         //Vector idx == InputState
-        std::vector<std::unordered_map<KeyBoardKey, std::unique_ptr<InputCommand>>> m_KeyboardActionMapping;
         std::vector<std::unordered_map<MouseButton, std::unique_ptr<InputCommand>>> m_MouseActionMapping;
 
-        //Keyboard
-        BYTE m_CurrentKBState[256];
-        BYTE m_KBButtonsPressedThisFrame[256];
-        BYTE m_KBButtonsReleasedThisFrame[256];
-        //-------------
 
         enum class Devices : char
         {
