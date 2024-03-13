@@ -202,7 +202,10 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputCommand.h" />
     <ClInclude Include="InputCommands.h" />
+    <ClInclude Include="InputController.h" />
+    <ClInclude Include="InputKeyboard.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="InputMouse.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="RenderComponent.h" />
@@ -235,7 +238,10 @@
     <ClCompile Include="FunctionalComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputCommand.cpp" />
+    <ClCompile Include="InputController.cpp" />
+    <ClCompile Include="InputKeyboard.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="InputMouse.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />

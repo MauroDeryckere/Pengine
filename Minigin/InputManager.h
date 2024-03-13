@@ -7,6 +7,7 @@
 #include "XInput.h"
 
 #include "InputCommand.h"
+#include "InputController.h"
 
 #include <unordered_map>
 #include <vector>
@@ -14,8 +15,17 @@
 #include <array>
 #include <functional>
 
+
+//MapAction(ungsigned key, inputState, ptr)
+
+//In the class 
+//  static_cast<ControllerButton>(key)
+//  Button --> Button 
+
+
 namespace Pengin
 {
+
     enum class KeyBoardKey : unsigned
     {
         A = 0x41
@@ -28,23 +38,23 @@ namespace Pengin
 
     enum class ControllerButton : unsigned
     {
-        DPadUp = 0x0001,
-        DPadDown = 0x0002,
-        DPadLeft = 0x0004,
-        DPadRight = 0x0008,
+        DPadUp,
+        DPadDown,
+        DPadLeft,
+        DPadRight,
 
-        Start = 0x0010,
-        Back = 0x0020,
+        Start,
+        Back,
 
-        LeftThumb = 0x0040,
-        RightThumb = 0x0080,
-        LeftShoulder = 0x0100,
-        RightShoulder = 0x0200,
+        LeftThumb,
+        RightThumb,
+        LeftShoulder,
+        RightShoulder,
 
-        A = 0x1000,
-        B = 0x2000,
-        X = 0x4000,
-        Y = 0x8000,
+        A,
+        B,
+        X,
+        Y,
     };
 
     enum class InputState
@@ -69,24 +79,18 @@ namespace Pengin
         void MapMouseAction(MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
 
     private:
+        std::unique_ptr<InputController> m_Controller;
+        //m_..
+
         //Vector idx == InputState
         std::vector<std::unordered_map<KeyBoardKey, std::unique_ptr<InputCommand>>> m_KeyboardActionMapping;
         std::vector<std::unordered_map<MouseButton, std::unique_ptr<InputCommand>>> m_MouseActionMapping;
-        std::vector<std::unordered_map<ControllerButton, std::unique_ptr<InputCommand>>> m_ControllerActionMapping;
 
         //Keyboard
         BYTE m_CurrentKBState[256];
         BYTE m_KBButtonsPressedThisFrame[256];
         BYTE m_KBButtonsReleasedThisFrame[256];
-
         //-------------
-
-        //Controller
-        XINPUT_STATE m_CurrentState;
-
-        unsigned m_ButtonsPressedThisFrame;
-        unsigned m_ButtonsReleasedThisFrame;
-        //-----------------------------------
 
         enum class Devices : char
         {

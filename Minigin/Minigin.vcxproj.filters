@@ -70,6 +70,12 @@
     <Filter Include="Header Files\Input\InputCommand">
       <UniqueIdentifier>{d929aba0-ad92-47f3-8119-6557860ed60e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input\InputDevices">
+      <UniqueIdentifier>{ce06775f-3b6d-409d-82bc-602adc0e461b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input\InputDevices\Devices">
+      <UniqueIdentifier>{2b424b2c-450d-4066-86ed-27bd885822fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -195,6 +201,15 @@
     <ClInclude Include="InputCommands.h">
       <Filter>Header Files\Input\InputCommand</Filter>
     </ClInclude>
+    <ClInclude Include="InputController.h">
+      <Filter>Header Files\Input\InputDevices\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="InputKeyboard.h">
+      <Filter>Header Files\Input\InputDevices\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="InputMouse.h">
+      <Filter>Header Files\Input\InputDevices\Devices</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -285,6 +300,15 @@
       <Filter>Source Files\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="InputCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputKeyboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputMouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

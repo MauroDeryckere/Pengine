@@ -8,7 +8,6 @@
 #include "Windows.h"
 #include "XInput.h"
 
-
 /*
 - InputManager
 	Enum device
@@ -30,13 +29,10 @@
 namespace Pengin
 {
 	InputManager::InputManager() :
-		m_KeyboardActionMapping(static_cast<size_t>(InputState::STATE_COUNT)),
-		m_MouseActionMapping(static_cast<size_t>(InputState::STATE_COUNT)),
-		m_ControllerActionMapping(static_cast<size_t>(InputState::STATE_COUNT)),
+		m_Controller{ std::make_unique<InputController>() },
 
-		m_CurrentState{},
-		m_ButtonsPressedThisFrame{},
-		m_ButtonsReleasedThisFrame{}
+		m_KeyboardActionMapping(static_cast<size_t>(InputState::STATE_COUNT)),
+		m_MouseActionMapping(static_cast<size_t>(InputState::STATE_COUNT))
 
 	{
 		std::cout << "test\n";
@@ -44,24 +40,10 @@ namespace Pengin
 
 	bool InputManager::ProcessInput()
 	{
-		DWORD userIdx{ };
+		//m_Keyboard->GetState();
 
-		XINPUT_STATE previousState{};
+		m_Controller->ProcessInputState();
 
-		CopyMemory(&previousState, &m_CurrentState, sizeof(XINPUT_STATE));
-		ZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
-		XInputGetState(userIdx, &m_CurrentState);
-
-		//if (result == ERROR_SUCCESS)
-		//{
-			//Controller connectted
-		//}
-
-		auto buttonChanges = m_CurrentState.Gamepad.wButtons ^ previousState.Gamepad.wButtons;
-		m_ButtonsPressedThisFrame = buttonChanges & m_CurrentState.Gamepad.wButtons;
-		m_ButtonsReleasedThisFrame = buttonChanges & (~m_CurrentState.Gamepad.wButtons);
-
-		//Keybaord
 		BYTE previousKeyboardState[256];
 		memcpy(previousKeyboardState, m_CurrentKBState, sizeof(previousKeyboardState));
 
@@ -72,6 +54,9 @@ namespace Pengin
 			m_KBButtonsPressedThisFrame[i] = (m_CurrentKBState[i] & ~previousKeyboardState[i]) & 0x80;
 			m_KBButtonsReleasedThisFrame[i] = (~m_CurrentKBState[i] & previousKeyboardState[i]) & 0x80;
 		}
+
+
+		m_Controller->ProcessMappedActions();
 
 		ProcessInputActions();
 
@@ -90,11 +75,12 @@ namespace Pengin
 
 	void InputManager::MapControllerAction(ControllerButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
 	{
-		m_ControllerActionMapping[static_cast<size_t>(inputState)][button] = std::move(pInputAction);
+		m_Controller->MapControllerAction(button, inputState, std::move(pInputAction));
 	}
 
 	void InputManager::MapKeyboardAction(KeyBoardKey key, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
 	{
+		//m_Keyboard->MapAction
 		m_KeyboardActionMapping[static_cast<size_t>(inputState)][key] = std::move(pInputAction);
 	}
 
@@ -121,13 +107,6 @@ namespace Pengin
 					pair.second->Execute();
 				}
 			}
-
-			for (auto& pair : m_ControllerActionMapping[i]) {
-				if (stateFunctions[i](Devices::Controller, static_cast<unsigned>(pair.first)))
-				{
-					pair.second->Execute();
-				}
-			}
 		}
 	}
 
@@ -135,9 +114,9 @@ namespace Pengin
 	{
 		switch (device)
 		{
+			btn;
 			case Pengin::InputManager::Devices::Keyboard: return false;
 			case Pengin::InputManager::Devices::Mouse: return false;
-			case Pengin::InputManager::Devices::Controller: return m_ButtonsPressedThisFrame & btn;
 
 			default: return false;
 		}
@@ -147,9 +126,9 @@ namespace Pengin
 	{
 		switch (device)
 		{
+			btn;
 			case Pengin::InputManager::Devices::Keyboard: return false;
 			case Pengin::InputManager::Devices::Mouse: return false;
-			case Pengin::InputManager::Devices::Controller: return m_ButtonsPressedThisFrame & btn;
 
 			default: return false;
 		}
@@ -159,9 +138,9 @@ namespace Pengin
 	{
 		switch (device)
 		{
+			btn;
 			case Pengin::InputManager::Devices::Keyboard: return m_CurrentKBState[static_cast<unsigned>(KeyBoardKey::A)] & 0x80;
 			case Pengin::InputManager::Devices::Mouse: return false;
-			case Pengin::InputManager::Devices::Controller: return m_CurrentState.Gamepad.wButtons & btn;
 
 			default: return false;
 		}
