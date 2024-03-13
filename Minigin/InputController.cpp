@@ -5,9 +5,15 @@
 namespace Pengin
 {
 	InputController::InputController():
-		m_ControllerActionMapping(static_cast<size_t>(InputState::STATE_COUNT))
-	{
-	}
+		InputDevice{},
+
+		m_CurrentState{},
+
+		m_ButtonsPressedThisFrame{},
+		m_ButtonsReleasedThisFrame{},
+
+		m_ControllerActionMapping(static_cast<size_t>(InputState::STATE_COUNT)) {}
+
 	void InputController::ProcessInputState()
 	{
 		DWORD userIdx{ };
@@ -31,23 +37,25 @@ namespace Pengin
 	void InputController::ProcessMappedActions()
 	{
 		for (auto& pair : m_ControllerActionMapping[0]) {
-			if (IsUpThisFrame(GetCodeFromEnum(pair.first))) pair.second->Execute();
+			if (IsUpThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first)))) pair.second->Execute();
 		}
 		for (auto& pair : m_ControllerActionMapping[1]) {
-			if (IsDownThisFrame(GetCodeFromEnum(pair.first))) pair.second->Execute();
+			if (IsDownThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first)))) pair.second->Execute();
 		}
 		for (auto& pair : m_ControllerActionMapping[2]) {
-			if (IsPressed(GetCodeFromEnum(pair.first))) pair.second->Execute();
+			if (IsPressed(GetCodeFromKey(static_cast<unsigned>(pair.first)))) pair.second->Execute();
 		}
 	}
 
-	void InputController::MapControllerAction(ControllerButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
+	void InputController::MapActionToInput(unsigned key, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
 	{
-		m_ControllerActionMapping[static_cast<size_t>(inputState)][button] = std::move(pInputAction);
+		m_ControllerActionMapping[static_cast<size_t>(inputState)][static_cast<ControllerButton>(key)] = std::move(pInputAction);
 	}
 
-	unsigned InputController::GetCodeFromEnum(ControllerButton button) const
+	unsigned InputController::GetCodeFromKey(unsigned key) const
 	{
+		ControllerButton button{ static_cast<ControllerButton>(key) };
+
 		switch (button)
 		{
 			case ControllerButton::DPadUp: return 0x0001;

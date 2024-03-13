@@ -8,45 +8,26 @@
 #include "Windows.h"
 #include "XInput.h"
 
-/*
-- InputManager
-	Enum device
-	Enum inputcode
-
-	- WindowsInputManager
-	- <OS>InputManager
-
-	Interacts with: 
-	- Mouse
-	- Keyboard
-	- Controler
-	- ...
-
-	- InputCommand
-		- InputCommands
-*/
+#include "InputDevice.h"
+#include "InputController.h"
+#include "InputKeyboard.h"
 
 namespace Pengin
 {
 	InputManager::InputManager() :
-		m_Controller{ std::make_unique<InputController>() },
-		m_Keyboard{ std::make_unique<InputKeyboard>() },
-
-		m_MouseActionMapping(static_cast<size_t>(InputState::STATE_COUNT))
-
+		m_InputDevices(static_cast<size_t>(Devices::DEVICE_COUNT))
 	{
-		std::cout << "test\n";
+		m_InputDevices[static_cast<size_t>(Devices::Keyboard)].reset(new InputKeyboard{});
+		m_InputDevices[static_cast<size_t>(Devices::Controller)].reset(new InputController{});
 	}
 
 	bool InputManager::ProcessInput()
 	{
-		m_Controller->ProcessInputState();
-		m_Keyboard->ProcessInputState();
-
-		m_Controller->ProcessMappedActions();
-		m_Keyboard->ProcessMappedActions();
-
-		ProcessInputActions();
+		for (auto& device : m_InputDevices)
+		{
+			device->ProcessInputState();
+			device->ProcessMappedActions();
+		}
 
 		SDL_Event e;
 		while (SDL_PollEvent(&e))
@@ -63,64 +44,18 @@ namespace Pengin
 
 	void InputManager::MapControllerAction(ControllerButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
 	{
-		m_Controller->MapControllerAction(button, inputState, std::move(pInputAction));
+		m_InputDevices[static_cast<size_t>(Devices::Controller)]->MapActionToInput(static_cast<unsigned>(button), inputState, std::move(pInputAction));
 	}
 
 	void InputManager::MapKeyboardAction(KeyBoardKey key, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
 	{
-		m_Keyboard->MapKeyboardAction(key, inputState, std::move(pInputAction));
+		m_InputDevices[static_cast<size_t>(Devices::Keyboard)]->MapActionToInput(static_cast<unsigned>(key), inputState, std::move(pInputAction));
 	}
 
-	void InputManager::MapMouseAction(MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
-	{
-		m_MouseActionMapping[static_cast<size_t>(inputState)][button] = std::move(pInputAction);
-	}
-
-	void InputManager::ProcessInputActions()
-	{
-		for (size_t i{0}; i < static_cast<size_t>(InputState::STATE_COUNT); ++i)
-		{
-			for (auto& pair : m_MouseActionMapping[i]) {
-				if (stateFunctions[i](Devices::Mouse, static_cast<unsigned>(pair.first)))
-				{
-					pair.second->Execute();
-				}
-			}
-		}
-	}
-
-	bool InputManager::IsDownThisFrame(Devices device, unsigned btn) const
-	{
-		switch (device)
-		{
-			btn;
-			case Pengin::InputManager::Devices::Mouse: return false;
-
-			default: return false;
-		}
-	}
-
-	bool InputManager::IsUpThisFrame(Devices device, unsigned btn) const
-	{
-		switch (device)
-		{
-			btn;
-			case Pengin::InputManager::Devices::Mouse: return false;
-
-			default: return false;
-		}
-	}
-
-	bool InputManager::IsPressed(Devices device, unsigned btn) const
-	{
-		switch (device)
-		{
-			btn;
-			case Pengin::InputManager::Devices::Mouse: return false;
-
-			default: return false;
-		}
-	}
+	//void InputManager::MapMouseAction(MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
+	//{
+		//m_InputDevices[static_cast<size_t>(Devices::Mouse)]->MapActionToInput(static_cast<unsigned>(button), inputState, std::move(pInputAction));
+	//}
 }
 
 

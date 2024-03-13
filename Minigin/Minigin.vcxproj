@@ -203,6 +203,7 @@
     <ClInclude Include="InputCommand.h" />
     <ClInclude Include="InputCommands.h" />
     <ClInclude Include="InputController.h" />
+    <ClInclude Include="InputDevice.h" />
     <ClInclude Include="InputKeyboard.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InputMouse.h" />

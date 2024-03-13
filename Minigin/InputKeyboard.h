@@ -1,10 +1,10 @@
 #ifndef INPUTKEYBOARD
 #define INPUTKEYBOARD
 
-#include <memory>
 #include <vector>
 #include <unordered_map>
 
+#include "InputDevice.h"
 #include "InputCommand.h"
 
 #include "Windows.h"
@@ -14,15 +14,16 @@ namespace Pengin
 	enum class KeyBoardKey : unsigned;
 	enum class InputState;
 
-	class InputKeyboard
+	class InputKeyboard final : public InputDevice
 	{
 	public:
 		InputKeyboard();
+		virtual ~InputKeyboard() override = default;
 
-		void ProcessInputState();
-		void ProcessMappedActions();
+		virtual void ProcessInputState() override;
+		virtual void ProcessMappedActions() override;
 
-		void MapKeyboardAction(KeyBoardKey key, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
+		virtual void MapActionToInput(unsigned key, InputState inputState, std::unique_ptr<InputCommand> pInputAction) override;
 
 	private:
 		std::vector<std::unordered_map<KeyBoardKey, std::unique_ptr<InputCommand>>> m_KeyboardActionMapping;
@@ -31,11 +32,11 @@ namespace Pengin
 		BYTE m_KBButtonsPressedThisFrame[256];
 		BYTE m_KBButtonsReleasedThisFrame[256];
 
-		[[nodiscard]] unsigned GetCodeFromEnum(KeyBoardKey key) const;
+		virtual [[nodiscard]] unsigned GetCodeFromKey(unsigned key) const override;
 
-		[[nodiscard]] bool IsDownThisFrame(unsigned btn) const;
-		[[nodiscard]] bool IsUpThisFrame(unsigned btn) const;
-		[[nodiscard]] bool IsPressed(unsigned btn) const;
+		virtual [[nodiscard]] bool IsDownThisFrame(unsigned btn) const override;
+		virtual [[nodiscard]] bool IsUpThisFrame(unsigned btn) const override;
+		virtual [[nodiscard]] bool IsPressed(unsigned btn) const override;
 	};
 }
 

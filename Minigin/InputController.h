@@ -1,10 +1,11 @@
 #ifndef INPUTCONTROLLER
 #define INPUTCONTROLLER
 
+#include "InputDevice.h"
+
 #include <unordered_map>
 #include <vector>
-#include <memory>
-#include "InputCommand.h"
+
 #include "windows.h"
 #include "Xinput.h"
 
@@ -13,15 +14,16 @@ namespace Pengin
 	enum class ControllerButton : unsigned;
 	enum class InputState;
 
-	class InputController
+	class InputController final : public InputDevice
 	{
 	public:
 		InputController();
+		virtual ~InputController() override = default;
 
-		void ProcessInputState();
-		void ProcessMappedActions();
+		virtual void ProcessInputState() override;
+		virtual void ProcessMappedActions() override;
 
-		void MapControllerAction(ControllerButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
+		virtual void MapActionToInput(unsigned key, InputState inputState, std::unique_ptr<InputCommand> pInputAction) override;
 
 	private:
 		XINPUT_STATE m_CurrentState;
@@ -31,11 +33,11 @@ namespace Pengin
 
 		std::vector<std::unordered_map<ControllerButton, std::unique_ptr<InputCommand>>> m_ControllerActionMapping;
 
-		[[nodiscard]] unsigned GetCodeFromEnum(ControllerButton button) const;
+		virtual [[nodiscard]] unsigned GetCodeFromKey(unsigned key) const override;
 
-		[[nodiscard]] bool IsDownThisFrame(unsigned btn) const;
-		[[nodiscard]] bool IsUpThisFrame(unsigned btn) const;
-		[[nodiscard]] bool IsPressed(unsigned btn) const;
+		virtual [[nodiscard]] bool IsDownThisFrame(unsigned btn) const override;
+		virtual [[nodiscard]] bool IsUpThisFrame(unsigned btn) const override;
+		virtual [[nodiscard]] bool IsPressed(unsigned btn) const override;
 	};
 }
 

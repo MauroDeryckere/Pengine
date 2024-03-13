@@ -7,22 +7,12 @@
 #include "XInput.h"
 
 #include "InputCommand.h"
-#include "InputController.h"
-#include "InputKeyboard.h"
+#include "InputDevice.h"
 
 #include <unordered_map>
 #include <vector>
 #include <memory>
-#include <array>
 #include <functional>
-
-
-//MapAction(ungsigned key, inputState, ptr)
-
-//In the class 
-//  static_cast<ControllerButton>(key)
-//  Button --> Button 
-
 
 namespace Pengin
 {
@@ -32,10 +22,10 @@ namespace Pengin
         A
     };
 
-    enum class MouseButton : unsigned
-    {
-        Left
-    };
+    //enum class MouseButton : unsigned
+    //{
+     //   Left
+    //};
 
     enum class ControllerButton : unsigned
     {
@@ -77,38 +67,19 @@ namespace Pengin
 
         void MapControllerAction(ControllerButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
         void MapKeyboardAction(KeyBoardKey key, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
-        void MapMouseAction(MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
+        //void MapMouseAction(MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
 
     private:
-        std::unique_ptr<InputController> m_Controller;
-        std::unique_ptr<InputKeyboard> m_Keyboard;
-        //m_..
-
-        //Vector idx == InputState
-        std::vector<std::unordered_map<MouseButton, std::unique_ptr<InputCommand>>> m_MouseActionMapping;
-
+        std::vector<std::unique_ptr<InputDevice>> m_InputDevices;
 
         enum class Devices : char
         {
             Keyboard,
-            Mouse,
-            Controller
+            //Mouse,
+            Controller,
+
+            DEVICE_COUNT
         };
-
-        typedef std::function<bool(Devices, unsigned)> StateFunction;
-
-        [[nodiscard]] bool IsDownThisFrame(Devices device, unsigned btn) const;
-        [[nodiscard]] bool IsUpThisFrame(Devices device, unsigned btn) const;
-        [[nodiscard]] bool IsPressed(Devices device, unsigned btn) const;
-
-        StateFunction stateFunctions[static_cast<size_t>(InputState::STATE_COUNT)] = 
-        {
-            [this](Devices device, unsigned btn) { return IsDownThisFrame(device, btn); },
-            [this](Devices device, unsigned btn) { return IsUpThisFrame(device, btn); },
-            [this](Devices device, unsigned btn) { return IsPressed(device, btn); }
-        };
-
-        void ProcessInputActions();
     };
 }
 
