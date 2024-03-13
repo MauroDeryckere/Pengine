@@ -9,9 +9,40 @@
 #include "XInput.h"
 
 
+/*
+- InputManager
+	Enum device
+	Enum inputcode
+
+	- WindowsInputManager
+	- <OS>InputManager
+
+	Interacts with: 
+	- Mouse
+	- Keyboard
+	- Controler
+	- ...
+
+	- InputCommand
+		- InputCommands
+*/
+
 namespace Pengin
 {
-	bool InputManager::ProcessInput() //Handles components TODO
+	InputManager::InputManager() :
+		m_KeyboardActionMapping(static_cast<size_t>(InputState::STATE_COUNT)),
+		m_MouseActionMapping(static_cast<size_t>(InputState::STATE_COUNT)),
+		m_ControllerActionMapping(static_cast<size_t>(InputState::STATE_COUNT)),
+
+		m_CurrentState{},
+		m_ButtonsPressedThisFrame{},
+		m_ButtonsReleasedThisFrame{}
+
+	{
+		std::cout << "test\n";
+	}
+
+	bool InputManager::ProcessInput()
 	{
 		DWORD userIdx{ };
 
@@ -21,19 +52,28 @@ namespace Pengin
 		ZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
 		XInputGetState(userIdx, &m_CurrentState);
 
+		//if (result == ERROR_SUCCESS)
+		//{
+			//Controller connectted
+		//}
+
 		auto buttonChanges = m_CurrentState.Gamepad.wButtons ^ previousState.Gamepad.wButtons;
 		m_ButtonsPressedThisFrame = buttonChanges & m_CurrentState.Gamepad.wButtons;
 		m_ButtonsReleasedThisFrame = buttonChanges & (~m_CurrentState.Gamepad.wButtons);
 
-		for (auto& event : m_InputActionMapping)
-		{
-			if ((event.first.type == InputCommandType::Pressed && IsPressed(event.first.code)) ||
-				(event.first.type == InputCommandType::UpThisFrame && IsUpThisFrame(event.first.code)) || 
-				(event.first.type == InputCommandType::DownThisFrame && IsDownThisFrame(event.first.code)))
-			{
-				event.second->Execute();
-			}
+		//Keybaord
+		BYTE previousKeyboardState[256];
+		memcpy(previousKeyboardState, m_CurrentKBState, sizeof(previousKeyboardState));
+
+		GetKeyboardState(m_CurrentKBState);
+
+		// Determine which keys were pressed and released
+		for (int i = 0; i < 256; ++i) {
+			m_KBButtonsPressedThisFrame[i] = (m_CurrentKBState[i] & ~previousKeyboardState[i]) & 0x80;
+			m_KBButtonsReleasedThisFrame[i] = (~m_CurrentKBState[i] & previousKeyboardState[i]) & 0x80;
 		}
+
+		ProcessInputActions();
 
 		SDL_Event e;
 		while (SDL_PollEvent(&e))
@@ -48,24 +88,83 @@ namespace Pengin
 		return true;
 	}
 
-	bool InputManager::IsDownThisFrame(InputCode button) const
+	void InputManager::MapControllerAction(ControllerButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
 	{
-		return m_ButtonsPressedThisFrame & static_cast<unsigned>(m_InputCodeToConsoleButtonMapping[static_cast<size_t>(button)]);
+		m_ControllerActionMapping[static_cast<size_t>(inputState)][button] = std::move(pInputAction);
 	}
 
-	bool InputManager::IsUpThisFrame(InputCode button) const
+	void InputManager::MapKeyboardAction(KeyBoardKey key, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
 	{
-		return m_ButtonsReleasedThisFrame & static_cast<unsigned>(m_InputCodeToConsoleButtonMapping[static_cast<size_t>(button)]);
+		m_KeyboardActionMapping[static_cast<size_t>(inputState)][key] = std::move(pInputAction);
 	}
 
-	bool InputManager::IsPressed(InputCode button) const
+	void InputManager::MapMouseAction(MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
 	{
-		return m_CurrentState.Gamepad.wButtons & static_cast<unsigned>(m_InputCodeToConsoleButtonMapping[static_cast<size_t>(button)]);
+		m_MouseActionMapping[static_cast<size_t>(inputState)][button] = std::move(pInputAction);
 	}
-	void InputManager::RegisterActionMapping(InputCode button, InputCommandType type, std::unique_ptr<InputCommand> pAction)
+
+	void InputManager::ProcessInputActions()
 	{
-		
-		m_InputActionMapping[InputCommandInfo{button, type}] = std::move(pAction);
+		for (size_t i{0}; i < static_cast<size_t>(InputState::STATE_COUNT); ++i)
+		{
+			for (auto& pair : m_KeyboardActionMapping[i]) {
+				
+				if (stateFunctions[i](Devices::Keyboard, static_cast<unsigned>(pair.first)))
+				{
+					pair.second->Execute();
+				}
+			}
+
+			for (auto& pair : m_MouseActionMapping[i]) {
+				if (stateFunctions[i](Devices::Mouse, static_cast<unsigned>(pair.first)))
+				{
+					pair.second->Execute();
+				}
+			}
+
+			for (auto& pair : m_ControllerActionMapping[i]) {
+				if (stateFunctions[i](Devices::Controller, static_cast<unsigned>(pair.first)))
+				{
+					pair.second->Execute();
+				}
+			}
+		}
+	}
+
+	bool InputManager::IsDownThisFrame(Devices device, unsigned btn) const
+	{
+		switch (device)
+		{
+			case Pengin::InputManager::Devices::Keyboard: return false;
+			case Pengin::InputManager::Devices::Mouse: return false;
+			case Pengin::InputManager::Devices::Controller: return m_ButtonsPressedThisFrame & btn;
+
+			default: return false;
+		}
+	}
+
+	bool InputManager::IsUpThisFrame(Devices device, unsigned btn) const
+	{
+		switch (device)
+		{
+			case Pengin::InputManager::Devices::Keyboard: return false;
+			case Pengin::InputManager::Devices::Mouse: return false;
+			case Pengin::InputManager::Devices::Controller: return m_ButtonsPressedThisFrame & btn;
+
+			default: return false;
+		}
+	}
+
+	bool InputManager::IsPressed(Devices device, unsigned btn) const
+	{
+		switch (device)
+		{
+			case Pengin::InputManager::Devices::Keyboard: return m_CurrentKBState[static_cast<unsigned>(KeyBoardKey::A)] & 0x80;
+			case Pengin::InputManager::Devices::Mouse: return false;
+			case Pengin::InputManager::Devices::Controller: return m_CurrentState.Gamepad.wButtons & btn;
+
+			default: return false;
+		}
 	}
 }
 
