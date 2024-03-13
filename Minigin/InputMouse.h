@@ -1,10 +1,13 @@
 #ifndef INPUTMOUSE
 #define INPUTMOUSE
 
-class InputMouse
+namespace Pengin
 {
+	class InputMouse
+	{
 
-};
+	};
+}
 
 #endif
 
