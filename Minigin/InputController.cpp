@@ -36,13 +36,13 @@ namespace Pengin
 
 	void InputController::ProcessMappedActions()
 	{
-		for (auto& pair : m_ControllerActionMapping[0]) {
-			if (IsUpThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first)))) pair.second->Execute();
-		}
-		for (auto& pair : m_ControllerActionMapping[1]) {
+		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::DownThisFrame)]) {
 			if (IsDownThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first)))) pair.second->Execute();
 		}
-		for (auto& pair : m_ControllerActionMapping[2]) {
+		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::UpThisFrame)]) {
+			if (IsUpThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first)))) pair.second->Execute();
+		}
+		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::Pressed)]) {
 			if (IsPressed(GetCodeFromKey(static_cast<unsigned>(pair.first)))) pair.second->Execute();
 		}
 	}
