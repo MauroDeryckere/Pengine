@@ -213,6 +213,9 @@
     <ClInclude Include="InputDevice.h">
       <Filter>Header Files\Input\InputDevices</Filter>
     </ClInclude>
+    <ClInclude Include="CharacterMovementComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -313,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="InputMouse.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterMovementComponent.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

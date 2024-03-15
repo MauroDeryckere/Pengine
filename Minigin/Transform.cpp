@@ -15,6 +15,8 @@ void dae::Transform::SetPosition(const float x, const float y, const float z)
 	m_position.x = x;
 	m_position.y = y;
 	m_position.z = z;
+
+    m_pGameObj->SetPosDirty();
 }
 
 void dae::Transform::Rotate(float angle, const glm::vec3& axis, bool rotateAroundParent, const glm::vec3& rotPoint)

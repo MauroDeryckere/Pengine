@@ -52,7 +52,7 @@ namespace Pengin
 		m_ControllerActionMapping[static_cast<size_t>(inputState)][static_cast<ControllerButton>(key)] = std::move(pInputAction);
 	}
 
-	unsigned InputController::GetCodeFromKey(unsigned key) const
+	unsigned InputController::GetCodeFromKey(unsigned key ) const
 	{
 		ControllerButton button{ static_cast<ControllerButton>(key) };
 
