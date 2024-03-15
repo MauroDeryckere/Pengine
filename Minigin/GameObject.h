@@ -29,8 +29,8 @@ namespace dae
 	{
 
 	public:
-		void Update(float deltaTime);
-		void FixedUpdate(float timeStep);
+		void Update();
+		void FixedUpdate();
 		void Render() const;
 
         //Scene graph

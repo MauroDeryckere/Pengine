@@ -26,24 +26,24 @@ namespace dae
 		return std::find(m_pChildren.begin(), m_pChildren.end(), pGameobj) != end(m_pChildren);
 	}
 
-	void GameObject::Update(float deltaTime)
+	void GameObject::Update()
 	{
 		for (const auto& pFuncComp : m_pFunctionalComponents)
 		{
-			pFuncComp->Update(deltaTime);
+			pFuncComp->Update();
 		}
 
 		for (const auto& pRenderComp : m_pRenderComponents)
 		{
-			pRenderComp->Update(deltaTime);
+			pRenderComp->Update();
 		}
 	}
 
-	void GameObject::FixedUpdate(float timeStep)
+	void GameObject::FixedUpdate()
 	{
 		for (auto& pPhysicsComp : m_pPhysicsComponents)
 		{
-			pPhysicsComp->FixedUpdate(timeStep);
+			pPhysicsComp->FixedUpdate();
 		}
 	}
 

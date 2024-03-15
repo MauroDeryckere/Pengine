@@ -12,8 +12,8 @@ namespace dae
 	public:
 		Scene& CreateScene(const std::string& name);
 
-		void Update(float deltaTime);
-		void FixedUpdate(float fixedTimeStep);
+		void Update();
+		void FixedUpdate();
 		void Render() const;
 
 		void RenderGUI();

@@ -13,7 +13,7 @@ namespace dae
 	public:
 		virtual ~FunctionalComponent() override = default;
 
-		virtual void Update(float deltaT) = 0;
+		virtual void Update() = 0;
 
 		FunctionalComponent(const FunctionalComponent& other) = delete;
 		FunctionalComponent(FunctionalComponent&& other) = delete;

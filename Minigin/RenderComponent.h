@@ -11,7 +11,7 @@ namespace dae
 	public:
 		virtual ~RenderComponent() override = default;
 
-		virtual void Update(float) = 0;
+		virtual void Update() = 0;
 		virtual void Render() const = 0;
 
 		RenderComponent(const RenderComponent& other) = delete;

@@ -15,7 +15,7 @@ namespace dae
 		RotatorComponent(GameObject* pGameObj, float rotationSpeed, bool rotateAroundParent = true, const glm::vec3& rotPoint={});
 		~RotatorComponent() override = default;
 
-		virtual void Update(float deltaT) override;
+		virtual void Update() override;
 
 		RotatorComponent(const RotatorComponent& other) = delete;
 		RotatorComponent(RotatorComponent&& other) = delete;

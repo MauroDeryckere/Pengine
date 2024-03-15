@@ -14,7 +14,7 @@ namespace dae
 		CharacterMovementComponent(GameObject* pGameObj);
 		~CharacterMovementComponent() override = default;
 
-		virtual void Update(float deltaTime) override { deltaTime; };
+		virtual void Update() override { };
 
 		void TriggerMovement(const glm::vec3& dir, float movementSpeed);
 

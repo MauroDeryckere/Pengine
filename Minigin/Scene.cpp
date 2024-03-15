@@ -31,19 +31,19 @@ void Scene::RemoveAll()
 	m_objects.clear();
 }
 
-void dae::Scene::FixedUpdate(float fixedTimeStep)
+void dae::Scene::FixedUpdate()
 {
 	for (auto& object : m_objects)
 	{
-		object->FixedUpdate(fixedTimeStep);
+		object->FixedUpdate();
 	}
 }
 
-void Scene::Update(float deltaTime)
+void Scene::Update()
 {
 	for(auto& object : m_objects)
 	{
-		object->Update(deltaTime);
+		object->Update();
 	}
 	
 	m_objects.erase(std::remove_if(m_objects.begin(), m_objects.end(), [](const auto& obj) {

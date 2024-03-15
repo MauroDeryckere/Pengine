@@ -17,7 +17,7 @@ namespace dae
 		FPSComponent(GameObject* pGameObj);
 		~FPSComponent() override = default;
 
-		virtual void Update(float deltaTime) override;
+		virtual void Update() override;
 
 		FPSComponent(const FPSComponent& other) = delete;
 		FPSComponent(FPSComponent&& other) = delete;

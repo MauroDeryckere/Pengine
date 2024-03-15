@@ -5,8 +5,3 @@ dae::PhysicsComponent::PhysicsComponent(GameObject* pGameObj) :
 {
 
 }
-
-void dae::PhysicsComponent::FixedUpdate(float fixedTimeStep)
-{
-	fixedTimeStep;
-}

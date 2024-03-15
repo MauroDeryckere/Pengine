@@ -16,7 +16,7 @@ namespace dae
 		TextureComponent(GameObject* pGameObj);
 		~TextureComponent() override = default;
 
-		virtual void Update(float) override; 
+		virtual void Update() override; 
 		virtual void Render() const override;
 
 		void SetTexture(const std::string& filename);

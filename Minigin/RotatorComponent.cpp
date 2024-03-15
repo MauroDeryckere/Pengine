@@ -1,6 +1,7 @@
 #include "RotatorComponent.h"
 #include <glm/glm.hpp>
 #include "GameObject.h"
+#include "Time.h"
 #include <cassert>
 
 dae::RotatorComponent::RotatorComponent(GameObject* pGameObj, float rotationSpeed, bool rotateAroundParent, const glm::vec3& rotPoint):
@@ -10,9 +11,9 @@ dae::RotatorComponent::RotatorComponent(GameObject* pGameObj, float rotationSpee
 
 }
 
-void dae::RotatorComponent::Update(float deltaT)
+void dae::RotatorComponent::Update()
 {
 	assert(GetGameObj());
 
-	m_ObjTransform.Rotate(m_RotSpeed * deltaT, glm::vec3(0.0f, 0.0f, 1.0f), m_RotateAroundParent, m_RotPoint);
+	m_ObjTransform.Rotate(m_RotSpeed * Pengin::Time::GetInstance().GetElapsedSec(), glm::vec3(0.0f, 0.0f, 1.0f), m_RotateAroundParent, m_RotPoint);
 }

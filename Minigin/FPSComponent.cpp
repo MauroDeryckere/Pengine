@@ -4,6 +4,7 @@
 #include <string>
 #include <format>
 #include <cassert>
+#include "Time.h"
 
 dae::FPSComponent::FPSComponent(GameObject* pGameObj) :
     FunctionalComponent(pGameObj),
@@ -14,9 +15,10 @@ dae::FPSComponent::FPSComponent(GameObject* pGameObj) :
     assert(m_pTextComp);
 }
 
-void dae::FPSComponent::Update(float deltaTime)
+void dae::FPSComponent::Update()
 {
-    m_AccumulatedTime += deltaTime;
+    m_AccumulatedTime += Pengin::Time::GetInstance().GetElapsedSec();
+
     ++m_FrameCount;
 
     if (m_AccumulatedTime >= 1.0f)

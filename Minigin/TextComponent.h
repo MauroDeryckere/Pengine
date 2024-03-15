@@ -19,7 +19,7 @@ namespace dae
 		TextComponent(GameObject* pGameObj, std::shared_ptr<Font> font);
 		~TextComponent() override = default;
 
-		virtual void Update(float) override;
+		virtual void Update() override;
 
 		void SetText(const std::string& text);
 

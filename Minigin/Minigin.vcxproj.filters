@@ -214,7 +214,10 @@
       <Filter>Header Files\Input\InputDevices</Filter>
     </ClInclude>
     <ClInclude Include="CharacterMovementComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Components\Functional</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +322,9 @@
     </ClCompile>
     <ClCompile Include="CharacterMovementComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

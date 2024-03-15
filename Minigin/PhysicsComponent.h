@@ -10,7 +10,7 @@ namespace dae
     public:
         ~PhysicsComponent() = default;
 
-        virtual void FixedUpdate(float fixedTimeStep) = 0;
+        virtual void FixedUpdate() = 0;
 
         PhysicsComponent(const PhysicsComponent& other) = delete;
         PhysicsComponent(PhysicsComponent&& other) = delete;

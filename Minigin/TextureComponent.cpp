@@ -11,7 +11,7 @@ dae::TextureComponent::TextureComponent(GameObject* pGameObj):
 {
 }
 
-void dae::TextureComponent::Update(float)
+void dae::TextureComponent::Update()
 {
 
 }
