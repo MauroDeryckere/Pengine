@@ -19,7 +19,7 @@ namespace dae
 		void Update();
 		void Render() const;
 
-		void RenderTrashCache() const;
+		void RenderGUI() const;
 
 		~Scene();
 		Scene(const Scene& other) = delete;

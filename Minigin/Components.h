@@ -3,33 +3,41 @@
 
 #include "Texture2D.h"
 #include "ResourceManager.h"
+#include "Renderer.h"
+
+#include "glm/glm.hpp"
 
 namespace Pengin
 {
-	struct TestComponent
+	struct TransformComponent 
 	{
-		int randomintfortesting = 1;
+		TransformComponent() = default;
+		TransformComponent(const glm::vec3& pos) : m_Position{ pos } {}
 
-		TestComponent() = default;
-		TestComponent(int testConstructorArgs) : randomintfortesting{ testConstructorArgs } {}
-	};
-
-	struct PositionComponent
-	{
-		PositionComponent() = default;
-		PositionComponent(int xx, int yy) : x{ xx }, y{ yy } {}
-
-		int x, y;
+		glm::vec3 m_Position;
 	};
 
 	struct TextureComponent
 	{
-		TextureComponent() = default;
-		TextureComponent(const std::string& texturePath) : m_pTexture{ m_pTexture = dae::ResourceManager::GetInstance().LoadTexture(texturePath) } {}
+		TextureComponent(TransformComponent& transform) :
+			m_Transform{ transform } {}
+
+		TextureComponent(const std::string& texturePath, TransformComponent& transform) :
+			m_pTexture{ dae::ResourceManager::GetInstance().LoadTexture(texturePath) },
+			m_Transform{ transform } {}
 
 		void SetTexture(const std::string& texturePath) { m_pTexture = dae::ResourceManager::GetInstance().LoadTexture(texturePath); }
 
-		std::shared_ptr<dae::Texture2D> m_pTexture{};
+		void Render() const
+		{
+			if (m_pTexture)
+			{
+				dae::Renderer::GetInstance().RenderTexture(*m_pTexture, m_Transform.get().m_Position.x, m_Transform.get().m_Position.y);
+			}
+		}
+
+		std::shared_ptr<dae::Texture2D> m_pTexture;
+		std::reference_wrapper<TransformComponent> m_Transform;
 	};
 }
 

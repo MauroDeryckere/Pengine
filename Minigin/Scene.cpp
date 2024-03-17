@@ -3,6 +3,7 @@
 #include "ECS.h"
 #include "Components.h"
 #include "Renderer.h"
+#include "ComponentWrapper.h"
 
 #include <algorithm>
 
@@ -53,13 +54,21 @@ void Scene::Update()
 
 void Scene::Render() const
 {
+	//const auto& textureComps = ecs.GetComponents<Pengin::TextureComponent>();
+
+	//for (auto entity : textureComps)
+	//{
+		//Renderer::GetInstance().RenderTexture(entity., 1, 1);
+	//}
+
+
 	for (const auto& object : m_objects)
 	{
 		object->Render();
 	}
 }
 
-void dae::Scene::RenderTrashCache() const
+void Scene::RenderGUI() const
 {
 	//m_TrashCache.Render();
 }

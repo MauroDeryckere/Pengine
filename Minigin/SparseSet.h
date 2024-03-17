@@ -9,12 +9,15 @@
 
 #include <unordered_map>
 #include <vector>
+#include <algorithm>
 #include <iostream>
 
 namespace Pengin
 {
     template<typename ValueType, typename KeyType>
-        requires std::is_default_constructible_v<KeyType> && std::is_move_constructible_v<ValueType>
+        requires std::is_default_constructible_v<KeyType> && std::is_move_constructible_v<KeyType> && (std::is_move_constructible_v<ValueType> || 
+                                                                                                       std::is_copy_constructible_v<ValueType> ||
+                                                                                                       std::is_move_assignable_v<ValueType>)
     class SparseSet final
     {
     public:
@@ -132,8 +135,19 @@ namespace Pengin
                 m_SparseMap[lastKey] = index;
                 m_SparseMap.erase(it);
 
-                std::swap(m_DenseArray[index], m_DenseArray.back());
-                std::swap(m_ReverseMapping[index], m_ReverseMapping.back());
+                std::vector<ValueType> test;
+
+                if constexpr (std::is_move_constructible_v<ValueType> || std::is_move_assignable_v<ValueType>)
+                {
+                    m_DenseArray[index] = std::move(m_DenseArray.back());
+                }
+                else
+                {
+                   m_DenseArray[index] = m_DenseArray.back();
+                }
+
+                m_ReverseMapping[index] = m_ReverseMapping.back();
+
 
                 m_ReverseMapping.pop_back();
                 m_DenseArray.pop_back();
