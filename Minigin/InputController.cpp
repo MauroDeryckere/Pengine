@@ -2,13 +2,39 @@
 
 #include "InputManager.h"
 #include "InputBuffer.h"
-#include <iostream>
+
+#include "Windows.h"
+#include "Xinput.h"
+
+#include <unordered_map>
+#include <vector>
 
 namespace Pengin
 {
-	InputController::InputController():
-		InputDevice{},
+	class WindowsInputControllerImpl
+	{
+	public:
+		WindowsInputControllerImpl();
+		~WindowsInputControllerImpl() = default;
 
+		void ProcessInputState();
+		void ProcessMappedActions();
+		void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
+
+		//Pivate in InputController
+		unsigned GetCodeFromKey(unsigned key) const;
+		bool IsDownThisFrame(unsigned btn) const;
+		bool IsUpThisFrame(unsigned btn) const;
+		bool IsPressed(unsigned btn) const;
+	private:
+		XINPUT_STATE m_CurrentState;
+		unsigned m_ButtonsPressedThisFrame;
+		unsigned m_ButtonsReleasedThisFrame;
+		std::vector<std::unordered_map<ControllerButton, std::shared_ptr<InputCommand>>> m_ControllerActionMapping;
+
+	};
+
+	WindowsInputControllerImpl::WindowsInputControllerImpl():
 		m_CurrentState{},
 
 		m_ButtonsPressedThisFrame{},
@@ -16,7 +42,7 @@ namespace Pengin
 
 		m_ControllerActionMapping(static_cast<size_t>(InputState::STATE_COUNT)) {}
 
-	void InputController::ProcessInputState()
+	void WindowsInputControllerImpl::ProcessInputState()
 	{
 		DWORD userIdx{ };
 
@@ -36,7 +62,7 @@ namespace Pengin
 		m_ButtonsReleasedThisFrame = buttonChanges & (~m_CurrentState.Gamepad.wButtons);
 	}
 
-	void InputController::ProcessMappedActions()
+	void WindowsInputControllerImpl::ProcessMappedActions()
 	{
 		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::DownThisFrame)]) {
 			if (IsDownThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
@@ -61,12 +87,12 @@ namespace Pengin
 		}
 	}
 
-	void InputController::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
+	void WindowsInputControllerImpl::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
 		m_ControllerActionMapping[static_cast<size_t>(inputState)][static_cast<ControllerButton>(key)] = std::move(pInputAction);
 	}
 
-	unsigned InputController::GetCodeFromKey(unsigned key ) const
+	unsigned WindowsInputControllerImpl::GetCodeFromKey(unsigned key) const
 	{
 		ControllerButton button{ static_cast<ControllerButton>(key) };
 
@@ -93,18 +119,59 @@ namespace Pengin
 			default: return 0x0000;
 		}
 	}
-	bool InputController::IsDownThisFrame(unsigned btn) const
+	bool WindowsInputControllerImpl::IsDownThisFrame(unsigned btn) const
 	{
 		return m_ButtonsPressedThisFrame & btn;
 	}
-	bool InputController::IsUpThisFrame(unsigned btn) const
+	bool WindowsInputControllerImpl::IsUpThisFrame(unsigned btn) const
 	{
 		return m_ButtonsReleasedThisFrame & btn;
 	}
-	bool InputController::IsPressed(unsigned btn) const
+	bool WindowsInputControllerImpl::IsPressed(unsigned btn) const
 	{
 		return m_CurrentState.Gamepad.wButtons & btn;
 	}
+
+	InputController::InputController() :
+		InputDevice{},
+		m_WinImpl(std::make_unique<WindowsInputControllerImpl>())
+	{
+
+	}
+
+	void InputController::ProcessInputState()
+	{
+		m_WinImpl->ProcessInputState();
+	}
+
+	void InputController::ProcessMappedActions()
+	{
+		m_WinImpl->ProcessMappedActions();
+	}
+
+	void InputController::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
+	{
+		m_WinImpl->MapActionToInput(key, inputState, pInputAction);
+	}
+
+	unsigned InputController::GetCodeFromKey(unsigned key) const
+	{
+		return m_WinImpl->GetCodeFromKey(key);
+	}
+
+	bool InputController::IsDownThisFrame(unsigned btn) const
+	{
+		return m_WinImpl->IsDownThisFrame(btn);
+	}
+
+	bool InputController::IsUpThisFrame(unsigned btn) const
+	{
+		return m_WinImpl->IsUpThisFrame(btn);
+	}
+
+	bool InputController::IsPressed(unsigned btn) const
+	{
+		return m_WinImpl->IsPressed(btn);
+	}
+
 }
-
-

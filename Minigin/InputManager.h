@@ -169,12 +169,15 @@ namespace Pengin
         void MapKeyboardAction(KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
         //void MapMouseAction(MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
 
+
+        //unmapping TODO
+
         void MapCombo(const InputCombo& combo);
 
     private:
         std::vector<std::unique_ptr<InputDevice>> m_InputDevices;
 
-        std::vector<InputCombo> m_Combos; //TODO -move all combo logic to inputManager level.
+        std::vector<InputCombo> m_Combos;
 
         enum class Devices : char
         {
