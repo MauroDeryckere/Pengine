@@ -31,18 +31,18 @@ namespace Pengin
 	class CharacterMovement final : public InputCommand
 	{
 	public:
-		CharacterMovement(const glm::vec3& direction, float movementSpeed, dae::CharacterMovementComponent* characterMovement) : 
+		CharacterMovement(const glm::vec3& direction, dae::CharacterMovementComponent* characterMovement) : 
 			InputCommand{},
 			m_Direction{direction},
-			m_MovementSpeed{movementSpeed},
 			m_CharacterMovement{characterMovement}
 		{
 		}
 
 		virtual void Execute() override 
 		{ 
-			m_CharacterMovement->TriggerMovement(m_Direction, m_MovementSpeed);
+			m_CharacterMovement->Move(m_Direction);
 		}
+
 		virtual ~CharacterMovement() override = default;
 
 		CharacterMovement(const CharacterMovement&) = delete;
@@ -52,7 +52,6 @@ namespace Pengin
 
 
 	private:
-		float m_MovementSpeed;
 		glm::vec3 m_Direction;
 
 		dae::CharacterMovementComponent* m_CharacterMovement;

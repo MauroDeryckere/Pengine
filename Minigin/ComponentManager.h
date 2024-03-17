@@ -56,6 +56,7 @@ namespace Pengin
             assert(storage);
 
             auto& set{ storage->GetSet() };
+
             auto it{ set.Emplace(id, std::forward<Args>(args)...) };
             if (it != set.end())
             {

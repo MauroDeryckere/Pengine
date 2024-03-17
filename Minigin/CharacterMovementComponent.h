@@ -11,17 +11,19 @@ namespace dae
 		public FunctionalComponent
 	{
 	public:
-		CharacterMovementComponent(GameObject* pGameObj);
+		CharacterMovementComponent(GameObject* pGameObj, float movementSpeed);
 		~CharacterMovementComponent() override = default;
 
 		virtual void Update() override { };
 
-		void TriggerMovement(const glm::vec3& dir, float movementSpeed);
+		void Move(const glm::vec3& dir);
 
 		CharacterMovementComponent(const CharacterMovementComponent& other) = delete;
 		CharacterMovementComponent(CharacterMovementComponent&& other) = delete;
 		CharacterMovementComponent& operator=(const CharacterMovementComponent& other) = delete;
 		CharacterMovementComponent& operator=(CharacterMovementComponent&& other) = delete;
+	private:
+		float m_MovementSpeed;
 	};
 }
 

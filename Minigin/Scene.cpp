@@ -53,12 +53,12 @@ void Scene::Update()
 
 void Scene::Render() const
 {
-	auto textureComps = m_Ecs.GetComponents<Pengin::TextureComponent>();
+	/*auto textureComps = m_Ecs.GetComponents<Pengin::TextureComponent>();
 	
 	for (const auto& entity : textureComps)
 	{
 		entity.Render();
-	}
+	}*/
 	
 
 	for (const auto& object : m_objects)
