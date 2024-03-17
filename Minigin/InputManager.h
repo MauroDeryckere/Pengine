@@ -3,20 +3,11 @@
 
 #include "Singleton.h"
 
-#include "Windows.h"
-#include "XInput.h"
-
 #include "InputCommand.h"
 #include "InputDevice.h"
 
-#include <unordered_map>
 #include <vector>
 #include <memory>
-#include <functional>
-
-//64 uint
-//device >> inputCode
-//Take device out --> send code to right device as size_t --> convert
 
 namespace Pengin
 {
@@ -159,6 +150,14 @@ namespace Pengin
         STATE_COUNT
     };
 
+    struct InputCombo
+    {
+        std::vector<std::shared_ptr<InputCommand>> pComboActions;
+        std::shared_ptr<InputCommand> pResultingAction;
+
+        std::vector<float> allowedDelay;
+    }; 
+
     class InputManager final : public dae::Singleton<InputManager>
     {
     public:
@@ -166,12 +165,18 @@ namespace Pengin
 
         [[nodiscard]] bool ProcessInput();
 
-        void MapControllerAction(ControllerButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
-        void MapKeyboardAction(KeyBoardKey key, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
+        void MapControllerAction(ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
+        void MapKeyboardAction(KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
         //void MapMouseAction(MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
 
+        void MapCombo(const InputCombo& combo);
+
+        [[nodiscard]] bool IsTriggered(InputCommand* pAction);
+        
     private:
         std::vector<std::unique_ptr<InputDevice>> m_InputDevices;
+
+        std::vector<InputCombo> m_Combos; //TODO -move all combo logic to inputManager level.
 
         enum class Devices : char
         {

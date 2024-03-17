@@ -201,6 +201,7 @@
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="FunctionalComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="InputBuffer.h" />
     <ClInclude Include="InputCommand.h" />
     <ClInclude Include="InputCommands.h" />
     <ClInclude Include="InputController.h" />
@@ -241,6 +242,7 @@
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="FunctionalComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="InputBuffer.cpp" />
     <ClCompile Include="InputCommand.cpp" />
     <ClCompile Include="InputController.cpp" />
     <ClCompile Include="InputKeyboard.cpp" />

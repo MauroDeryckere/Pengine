@@ -1,6 +1,8 @@
 #include "InputController.h"
 
 #include "InputManager.h"
+#include "InputBuffer.h"
+#include <iostream>
 
 namespace Pengin
 {
@@ -37,20 +39,60 @@ namespace Pengin
 	void InputController::ProcessMappedActions()
 	{
 		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::DownThisFrame)]) {
-			if (IsDownThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first)))) pair.second->Execute();
+			if (IsDownThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
+			{
+				pair.second->Execute();
+				InputBuffer::GetInstance().RecordInput(pair.second);
+			}
 		}
 		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::UpThisFrame)]) {
-			if (IsUpThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first)))) pair.second->Execute();
+			if (IsUpThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
+			{
+				pair.second->Execute();
+				InputBuffer::GetInstance().RecordInput(pair.second);
+			}
 		}
 		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::Pressed)]) {
-			if (IsPressed(GetCodeFromKey(static_cast<unsigned>(pair.first)))) pair.second->Execute();
+			if (IsPressed(GetCodeFromKey(static_cast<unsigned>(pair.first))))
+			{
+				pair.second->Execute();
+				InputBuffer::GetInstance().RecordInput(pair.second);
+			}
 		}
+
+		/*for (const InputRecord& command : InputBuffer::GetInstance().GetBuffer())
+		{
+			auto newTimestamp = std::chrono::high_resolution_clock::now();
+			std::cout << "Action: " << typeid(command.pAction.get()).name() << ", Timestamp: " << std::chrono::duration_cast<std::chrono::milliseconds>(newTimestamp - command.timestamp).count() / 1000.f << "\t";
+		}
+
+		std::cout << "\n";*/
 	}
 
-	void InputController::MapActionToInput(unsigned key, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
+	void InputController::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
 		m_ControllerActionMapping[static_cast<size_t>(inputState)][static_cast<ControllerButton>(key)] = std::move(pInputAction);
 	}
+
+	void InputController::MapCombo(const InputCombo& combo)
+	{
+		m_Combos.push_back(combo);
+		//no unqiue ptrs, need the specific ptrs
+
+
+
+		//vector<Combo>;
+		// 
+		// 
+		// FSM
+		// Update()
+		// 
+		// Evaluate: --> IsTriggered
+		// 
+		// ChangeState()		
+	}
+
+
 
 	unsigned InputController::GetCodeFromKey(unsigned key ) const
 	{

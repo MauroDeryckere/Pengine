@@ -11,6 +11,7 @@
 
 namespace Pengin
 {
+	struct InputCombo;
 	enum class KeyBoardKey : unsigned;
 	enum class InputState;
 
@@ -23,10 +24,12 @@ namespace Pengin
 		virtual void ProcessInputState() override;
 		virtual void ProcessMappedActions() override;
 
-		virtual void MapActionToInput(unsigned key, InputState inputState, std::unique_ptr<InputCommand> pInputAction) override;
+		virtual void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) override;
+
+		virtual void MapCombo(const InputCombo& combo) override { combo; };
 
 	private:
-		std::vector<std::unordered_map<KeyBoardKey, std::unique_ptr<InputCommand>>> m_KeyboardActionMapping;
+		std::vector<std::unordered_map<KeyBoardKey, std::shared_ptr<InputCommand>>> m_KeyboardActionMapping;
 
 		BYTE m_CurrentKBState[256];
 		BYTE m_KBButtonsPressedThisFrame[256];

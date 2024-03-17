@@ -4,6 +4,7 @@
 #include <backends/imgui_impl_sdl2.h>
 
 #include <iostream>
+#include <algorithm>
 
 #include "Windows.h"
 #include "XInput.h"
@@ -11,6 +12,8 @@
 #include "InputDevice.h"
 #include "InputController.h"
 #include "InputKeyboard.h"
+
+#include "InputBuffer.h"
 
 namespace Pengin
 {
@@ -29,6 +32,13 @@ namespace Pengin
 			device->ProcessMappedActions();
 		}
 
+		bool test = InputBuffer::GetInstance().CheckCombo(m_Combos[0]);
+		if (test)
+		{
+			InputBuffer::GetInstance().ClearBuffer();
+			m_Combos[0].pResultingAction->Execute();
+		}
+
 		SDL_Event e;
 		while (SDL_PollEvent(&e))
 		{
@@ -39,17 +49,33 @@ namespace Pengin
 
 			ImGui_ImplSDL2_ProcessEvent(&e);
 		}
+
+
 		return true;
 	}
 
-	void InputManager::MapControllerAction(ControllerButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
+	void InputManager::MapControllerAction(ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
 		m_InputDevices[static_cast<size_t>(Devices::Controller)]->MapActionToInput(static_cast<unsigned>(button), inputState, std::move(pInputAction));
 	}
 
-	void InputManager::MapKeyboardAction(KeyBoardKey key, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
+	void InputManager::MapKeyboardAction(KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
 		m_InputDevices[static_cast<size_t>(Devices::Keyboard)]->MapActionToInput(static_cast<unsigned>(key), inputState, std::move(pInputAction));
+	}
+
+	void InputManager::MapCombo(const InputCombo& combo)
+	{
+		assert(combo.pComboActions.size() > 1);
+		assert(combo.pComboActions.size() >= combo.allowedDelay.size());
+
+		m_Combos.emplace_back(combo);
+	}
+
+	bool InputManager::IsTriggered(InputCommand* pAction)
+	{
+		pAction;
+		return false;
 	}
 
 	//void InputManager::MapMouseAction(MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction)

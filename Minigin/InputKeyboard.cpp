@@ -1,5 +1,6 @@
 #include "InputKeyboard.h"
 #include "InputManager.h"
+#include "InputBuffer.h"
 
 namespace Pengin
 {
@@ -27,17 +28,29 @@ namespace Pengin
 	void InputKeyboard::ProcessMappedActions()
 	{
 		for (auto& pair : m_KeyboardActionMapping[static_cast<size_t>(InputState::DownThisFrame)]) {
-			if (IsDownThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first)))) pair.second->Execute();
+			if (IsDownThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
+			{
+				pair.second->Execute();
+				InputBuffer::GetInstance().RecordInput(pair.second);
+			}
 		}
 		for (auto& pair : m_KeyboardActionMapping[static_cast<size_t>(InputState::UpThisFrame)]) {
-			if (IsUpThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first)))) pair.second->Execute();
+			if (IsUpThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
+			{
+				pair.second->Execute();
+				InputBuffer::GetInstance().RecordInput(pair.second);
+			}			
 		}
 		for (auto& pair : m_KeyboardActionMapping[static_cast<size_t>(InputState::Pressed)]) {
-			if (IsPressed(GetCodeFromKey(static_cast<unsigned>(pair.first)))) pair.second->Execute();
+			if (IsPressed(GetCodeFromKey(static_cast<unsigned>(pair.first))))
+			{
+				pair.second->Execute();
+				InputBuffer::GetInstance().RecordInput(pair.second);
+			}
 		}
 	}
 
-	void InputKeyboard::MapActionToInput(unsigned key, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
+	void InputKeyboard::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
 		m_KeyboardActionMapping[static_cast<size_t>(inputState)][static_cast<KeyBoardKey>(key)] = std::move(pInputAction);
 	}
