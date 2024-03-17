@@ -25,7 +25,6 @@ namespace Pengin
 		virtual void ProcessMappedActions() override;
 
 		virtual void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) override;
-		virtual void MapCombo(const InputCombo& combo) override;
 
 	private:
 		XINPUT_STATE m_CurrentState;
@@ -34,10 +33,6 @@ namespace Pengin
 		unsigned m_ButtonsReleasedThisFrame;
 
 		std::vector<std::unordered_map<ControllerButton, std::shared_ptr<InputCommand>>> m_ControllerActionMapping;
-
-		std::unordered_map<InputCommand*, bool> m_TriggeredCommands;
-
-		std::vector<InputCombo> m_Combos;
 
 		virtual [[nodiscard]] unsigned GetCodeFromKey(unsigned key) const override;
 

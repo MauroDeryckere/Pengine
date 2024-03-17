@@ -20,31 +20,8 @@ namespace Pengin
 		virtual void ProcessMappedActions() = 0;
 
 		virtual void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) = 0;
-		virtual void MapCombo(const InputCombo& combo) = 0;
-
-		[[nodiscard]] bool IsTriggered(InputCommand* pAction)
-		{
-			pAction;
-			return false; //TODO implement
-		}
-		/*
-			bool InputController::IsTriggered(InputCommand* command)
-			{
-				const auto it{ m_TriggeredCommands.find(command) };
-
-				if (it != m_TriggeredCommands.end())
-				{
-					return true;
-				}
-
-				return false;
-			}
-		*/
 
 	protected:
-
-		//m_Triggered ...
-
 		virtual [[nodiscard]] unsigned GetCodeFromKey(unsigned key) const = 0;
 
 		virtual [[nodiscard]] bool IsDownThisFrame(unsigned btn) const = 0;

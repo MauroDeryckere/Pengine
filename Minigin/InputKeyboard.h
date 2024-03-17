@@ -26,8 +26,6 @@ namespace Pengin
 
 		virtual void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) override;
 
-		virtual void MapCombo(const InputCombo& combo) override { combo; };
-
 	private:
 		std::vector<std::unordered_map<KeyBoardKey, std::shared_ptr<InputCommand>>> m_KeyboardActionMapping;
 

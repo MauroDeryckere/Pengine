@@ -22,18 +22,20 @@ bool Pengin::InputBuffer::CheckCombo(const InputCombo& combo) const
     }
 
     size_t comboIdx { 0 };
+    auto lastActionTime{ m_Buffer[0].timestamp };
 
     for (size_t bufferIdx{ 0 }; bufferIdx < m_Buffer.size(); ++bufferIdx)
     {
+        const auto currentActionTime{ m_Buffer[bufferIdx].timestamp };
+        const auto timeDiff { currentActionTime - lastActionTime };
+        const auto secTimeDiff{ std::chrono::duration_cast<std::chrono::seconds>(timeDiff).count() };
+
         if (m_Buffer[bufferIdx].pAction == combo.pComboActions[comboIdx])
         {
-            if (bufferIdx > 0 && comboIdx > 0)
+            if (comboIdx > 0)
             {
-                auto timeDiff = m_Buffer[bufferIdx].timestamp - m_Buffer[bufferIdx - 1].timestamp;
-                auto allowedTimeDiff = combo.allowedDelay[comboIdx - 1];
-
-                auto secTimeDiff = std::chrono::duration_cast<std::chrono::seconds>(timeDiff).count();
-
+                const auto allowedTimeDiff{ combo.allowedDelay[comboIdx - 1] };
+                
                 if (secTimeDiff >= allowedTimeDiff)
                 {
                     comboIdx = 0;
@@ -45,8 +47,14 @@ bool Pengin::InputBuffer::CheckCombo(const InputCombo& combo) const
 
             if (comboIdx == combo.pComboActions.size())
             {
-                return true; 
+                return true;
             }
+
+            lastActionTime = currentActionTime;
+        }
+        else if(secTimeDiff > ERROR_MARGIN_TIME)
+        {
+            comboIdx = 0;
         }
     }
 

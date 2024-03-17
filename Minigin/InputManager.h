@@ -171,8 +171,6 @@ namespace Pengin
 
         void MapCombo(const InputCombo& combo);
 
-        [[nodiscard]] bool IsTriggered(InputCommand* pAction);
-        
     private:
         std::vector<std::unique_ptr<InputDevice>> m_InputDevices;
 

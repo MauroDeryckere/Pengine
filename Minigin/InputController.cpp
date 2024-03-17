@@ -28,7 +28,7 @@ namespace Pengin
 
 		//if (result == ERROR_SUCCESS)
 		//{
-			//Controller connectted
+			//Controller connected
 		//}
 
 		auto buttonChanges = m_CurrentState.Gamepad.wButtons ^ previousState.Gamepad.wButtons;
@@ -59,40 +59,12 @@ namespace Pengin
 				InputBuffer::GetInstance().RecordInput(pair.second);
 			}
 		}
-
-		/*for (const InputRecord& command : InputBuffer::GetInstance().GetBuffer())
-		{
-			auto newTimestamp = std::chrono::high_resolution_clock::now();
-			std::cout << "Action: " << typeid(command.pAction.get()).name() << ", Timestamp: " << std::chrono::duration_cast<std::chrono::milliseconds>(newTimestamp - command.timestamp).count() / 1000.f << "\t";
-		}
-
-		std::cout << "\n";*/
 	}
 
 	void InputController::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
 		m_ControllerActionMapping[static_cast<size_t>(inputState)][static_cast<ControllerButton>(key)] = std::move(pInputAction);
 	}
-
-	void InputController::MapCombo(const InputCombo& combo)
-	{
-		m_Combos.push_back(combo);
-		//no unqiue ptrs, need the specific ptrs
-
-
-
-		//vector<Combo>;
-		// 
-		// 
-		// FSM
-		// Update()
-		// 
-		// Evaluate: --> IsTriggered
-		// 
-		// ChangeState()		
-	}
-
-
 
 	unsigned InputController::GetCodeFromKey(unsigned key ) const
 	{

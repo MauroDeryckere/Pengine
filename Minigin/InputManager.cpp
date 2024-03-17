@@ -1,13 +1,10 @@
-#include <SDL.h>
 #include "InputManager.h"
 
+#include <SDL.h>
 #include <backends/imgui_impl_sdl2.h>
 
 #include <iostream>
 #include <algorithm>
-
-#include "Windows.h"
-#include "XInput.h"
 
 #include "InputDevice.h"
 #include "InputController.h"
@@ -70,12 +67,6 @@ namespace Pengin
 		assert(combo.pComboActions.size() >= combo.allowedDelay.size());
 
 		m_Combos.emplace_back(combo);
-	}
-
-	bool InputManager::IsTriggered(InputCommand* pAction)
-	{
-		pAction;
-		return false;
 	}
 
 	//void InputManager::MapMouseAction(MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
