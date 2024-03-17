@@ -7,21 +7,25 @@
 #include "glm/vec3.hpp"
 
 #include <iostream>
+#include <string>
 
 namespace Pengin
 {
-	class PrintTest final : public InputCommand
+	class ConsolePrint final : public InputCommand
 	{
 	public:
-		PrintTest() : InputCommand{} {}
+		ConsolePrint(const std::string& message) : InputCommand{}, m_Message{message} {}
 
-		virtual void Execute() override { std::cout << "executed \n"; };
-		virtual ~PrintTest() override = default;
+		virtual void Execute() override { std::cout << m_Message << "\n"; }
+		virtual ~ConsolePrint() override = default;
 
-		PrintTest(const PrintTest&) = delete;
-		PrintTest& operator=(const PrintTest&) = delete;
-		PrintTest(PrintTest&&) noexcept = delete;
-		PrintTest& operator=(PrintTest&&) noexcept = delete;
+		ConsolePrint(const ConsolePrint&) = delete;
+		ConsolePrint& operator=(const ConsolePrint&) = delete;
+		ConsolePrint(ConsolePrint&&) noexcept = delete;
+		ConsolePrint& operator=(ConsolePrint&&) noexcept = delete;
+
+	private:
+		const std::string m_Message;
 	};
 
 	class CharacterMovement final : public InputCommand

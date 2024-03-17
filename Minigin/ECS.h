@@ -16,8 +16,6 @@
 * HasComponent<Types ...>()
 * GetComponents<Type, Type>()  - return All entities with 2 given componennts
 * 
-* Use flags to remove components and entities, ensure no dependencies are a problem
-* 
 * Other communication methods (?)
 * 
 * Serialization
@@ -101,19 +99,3 @@ namespace Pengin
 
 }
 #endif
-
-//struct relationship {
-//std::size_t children{};
-//entt::entity first{ entt::null };
-//entt::entity prev{ entt::null };
-//entt::entity next{ entt::null };
-//entt::entity parent{ entt::null };
-// ... other data members ...
-//};
-//struct transform {
-//    static constexpr auto in_place_delete = true;
-//
-//    transform* parent;
-//    // ... other data members ...
-//};
-

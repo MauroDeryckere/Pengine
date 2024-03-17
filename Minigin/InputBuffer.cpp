@@ -28,15 +28,15 @@ bool Pengin::InputBuffer::CheckCombo(const InputCombo& combo) const
     {
         const auto currentActionTime{ m_Buffer[bufferIdx].timestamp };
         const auto timeDiff { currentActionTime - lastActionTime };
-        const auto secTimeDiff{ std::chrono::duration_cast<std::chrono::seconds>(timeDiff).count() };
+        const auto msTimeDif{ std::chrono::duration_cast<std::chrono::milliseconds>(timeDiff).count() };
 
         if (m_Buffer[bufferIdx].pAction == combo.pComboActions[comboIdx])
         {
             if (comboIdx > 0)
             {
-                const auto allowedTimeDiff{ combo.allowedDelay[comboIdx - 1] };
+                const auto allowedTimeDiff{ combo.allowedDelay[comboIdx - 1] * 1000.f };
                 
-                if (secTimeDiff >= allowedTimeDiff)
+                if (msTimeDif >= allowedTimeDiff)
                 {
                     comboIdx = 0;
                     continue;
@@ -52,7 +52,7 @@ bool Pengin::InputBuffer::CheckCombo(const InputCombo& combo) const
 
             lastActionTime = currentActionTime;
         }
-        else if(secTimeDiff > ERROR_MARGIN_TIME)
+        else if(msTimeDif > ERROR_MARGIN_TIME)
         {
             comboIdx = 0;
         }
