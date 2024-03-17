@@ -1,16 +1,44 @@
 #include "InputKeyboard.h"
 #include "InputManager.h"
 #include "InputBuffer.h"
+#include "Windows.h"
+
+#include <vector>
+#include <unordered_map>
 
 namespace Pengin
 {
-	InputKeyboard::InputKeyboard() :
+	class WindowsKeyboardImpl
+	{
+	public:
+		WindowsKeyboardImpl();
+		~WindowsKeyboardImpl() = default;
+
+		void ProcessInputState();
+		void ProcessMappedActions();
+		void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
+
+		//Pivate in InputKeyboard
+		unsigned GetCodeFromKey(unsigned key) const;
+		bool IsDownThisFrame(unsigned btn) const;
+		bool IsUpThisFrame(unsigned btn) const;
+		bool IsPressed(unsigned btn) const;
+
+	private:
+		std::vector<std::unordered_map<KeyBoardKey, std::shared_ptr<InputCommand>>> m_KeyboardActionMapping;
+
+		BYTE m_CurrentKBState[256];
+		BYTE m_KBButtonsPressedThisFrame[256];
+		BYTE m_KBButtonsReleasedThisFrame[256];
+
+	};
+
+	WindowsKeyboardImpl::WindowsKeyboardImpl() :
 		m_KeyboardActionMapping(static_cast<size_t>(InputState::STATE_COUNT))	
 	{
-
 	}
 
-	void InputKeyboard::ProcessInputState()
+	void WindowsKeyboardImpl::ProcessInputState()
 	{
 		BYTE previousKeyboardState[256];
 		memcpy(previousKeyboardState, m_CurrentKBState, sizeof(previousKeyboardState));
@@ -25,7 +53,7 @@ namespace Pengin
 
 	}
 
-	void InputKeyboard::ProcessMappedActions()
+	void WindowsKeyboardImpl::ProcessMappedActions()
 	{
 		for (auto& pair : m_KeyboardActionMapping[static_cast<size_t>(InputState::DownThisFrame)]) {
 			if (IsDownThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
@@ -50,11 +78,11 @@ namespace Pengin
 		}
 	}
 
-	void InputKeyboard::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
+	void WindowsKeyboardImpl::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
 		m_KeyboardActionMapping[static_cast<size_t>(inputState)][static_cast<KeyBoardKey>(key)] = std::move(pInputAction);
 	}
-	unsigned InputKeyboard::GetCodeFromKey(unsigned key) const
+	unsigned WindowsKeyboardImpl::GetCodeFromKey(unsigned key) const
 	{
 		KeyBoardKey keyEnum{ static_cast<KeyBoardKey>(key) };
 		
@@ -155,19 +183,60 @@ namespace Pengin
 		}
 	}
 
-	bool InputKeyboard::IsDownThisFrame(unsigned btn) const
+	bool WindowsKeyboardImpl::IsDownThisFrame(unsigned btn) const
 	{
 		return m_KBButtonsPressedThisFrame[btn] & 0x80;
 	}
 
-	bool InputKeyboard::IsUpThisFrame(unsigned btn) const
+	bool WindowsKeyboardImpl::IsUpThisFrame(unsigned btn) const
 	{
 		return m_KBButtonsReleasedThisFrame[btn] & 0x80;
 	}
 
-	bool InputKeyboard::IsPressed(unsigned btn) const
+	bool WindowsKeyboardImpl::IsPressed(unsigned btn) const
 	{
 		return m_CurrentKBState[btn] & 0x80;
+	}
+
+	InputKeyboard::InputKeyboard() :
+		InputDevice{},
+		m_WinImpl(std::make_unique<WindowsKeyboardImpl>())
+	{
+	}
+
+	void InputKeyboard::ProcessInputState()
+	{
+		m_WinImpl->ProcessInputState();
+	}
+
+	void InputKeyboard::ProcessMappedActions()
+	{
+		m_WinImpl->ProcessMappedActions();
+	}
+
+	void InputKeyboard::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
+	{
+		m_WinImpl->MapActionToInput(key, inputState, pInputAction);
+	}
+
+	unsigned InputKeyboard::GetCodeFromKey(unsigned key) const
+	{
+		return m_WinImpl->GetCodeFromKey(key);
+	}
+
+	bool InputKeyboard::IsDownThisFrame(unsigned btn) const
+	{
+		return m_WinImpl->IsDownThisFrame(btn);
+	}
+
+	bool InputKeyboard::IsUpThisFrame(unsigned btn) const
+	{
+		return m_WinImpl->IsUpThisFrame(btn);
+	}
+
+	bool InputKeyboard::IsPressed(unsigned btn) const
+	{
+		return m_WinImpl->IsPressed(btn);
 	}
 }
 
