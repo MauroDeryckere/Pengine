@@ -6,6 +6,7 @@
 #include "Components.h"
 #include "ComponentManager.h"
 #include "ComponentWrapper.h"
+#include "ConstComponentWrapper.h"
 
 #include "EntityManager.h"
 
@@ -77,19 +78,20 @@ namespace Pengin
         template<typename ComponentType>
         const ComponentType& GetComponent(const EntityId& id) const
         {
+
             return m_ComponentManager.GetComponent<ComponentType>(id);
         }
 
         template<typename ComponentType>
-        auto GetComponents()
+        ComponentWrapper<ComponentType> GetComponents()
         {
             return m_ComponentManager.GetComponentWrapper<ComponentType>();
         }
 
         template<typename ComponentType>
-        auto GetComponents() const
+        const ConstComponentWrapper<ComponentType> GetComponents() const
         {
-            return m_ComponentManager.GetComponentWrapper<ComponentType>();
+            return m_ComponentManager.GetConstComponentWrapper<ComponentType>();
         }
         
     private:

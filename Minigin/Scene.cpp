@@ -3,7 +3,6 @@
 #include "ECS.h"
 #include "Components.h"
 #include "Renderer.h"
-#include "ComponentWrapper.h"
 
 #include <algorithm>
 
@@ -54,13 +53,13 @@ void Scene::Update()
 
 void Scene::Render() const
 {
-	//const auto& textureComps = ecs.GetComponents<Pengin::TextureComponent>();
-
-	//for (auto entity : textureComps)
-	//{
-		//Renderer::GetInstance().RenderTexture(entity., 1, 1);
-	//}
-
+	auto textureComps = m_Ecs.GetComponents<Pengin::TextureComponent>();
+	
+	for (const auto& entity : textureComps)
+	{
+		entity.Render();
+	}
+	
 
 	for (const auto& object : m_objects)
 	{

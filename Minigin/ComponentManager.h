@@ -10,6 +10,7 @@
 #include "UniqueTypeTracker.h"
 
 #include "ComponentWrapper.h"
+#include "ConstComponentWrapper.h"
 
 #include <memory>
 #include <cassert>
@@ -200,7 +201,7 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        [[nodiscard]] const ComponentWrapper<ComponentType> GetComponentWrapper() const
+        [[nodiscard]] const ConstComponentWrapper<ComponentType> GetConstComponentWrapper() const
         {
             const auto it{ m_TypeBitMap.find(typeid(ComponentType)) };
 
@@ -216,8 +217,10 @@ namespace Pengin
             ComponentStorage<ComponentType>* storage{ dynamic_cast<ComponentStorage<ComponentType>*>(basePtr) };
 
             const auto& set{ storage->GetSet() };
-            return ComponentWrapper<ComponentType>{ set };
+            
+            return ConstComponentWrapper<ComponentType>{set};
         }
+
 
     private:
         std::vector<std::unique_ptr<BaseComponentStorage>> m_ComponentStorage;

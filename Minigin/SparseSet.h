@@ -17,7 +17,8 @@ namespace Pengin
     template<typename ValueType, typename KeyType>
         requires std::is_default_constructible_v<KeyType> && std::is_move_constructible_v<KeyType> && (std::is_move_constructible_v<ValueType> || 
                                                                                                        std::is_copy_constructible_v<ValueType> ||
-                                                                                                       std::is_move_assignable_v<ValueType>)
+                                                                                                       std::is_move_assignable_v<ValueType> ||
+                                                                                                       std::is_copy_assignable_v<ValueType>)
     class SparseSet final
     {
     public:
@@ -141,13 +142,12 @@ namespace Pengin
                 {
                     m_DenseArray[index] = std::move(m_DenseArray.back());
                 }
-                else
+                else 
                 {
                    m_DenseArray[index] = m_DenseArray.back();
                 }
 
                 m_ReverseMapping[index] = m_ReverseMapping.back();
-
 
                 m_ReverseMapping.pop_back();
                 m_DenseArray.pop_back();

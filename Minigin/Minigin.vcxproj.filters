@@ -76,6 +76,9 @@
     <Filter Include="Header Files\Input\InputDevices\Devices">
       <UniqueIdentifier>{2b424b2c-450d-4066-86ed-27bd885822fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ECS\ECS Components\Components\ComponentManager\Wrapper">
+      <UniqueIdentifier>{da6db303-8f28-4f1a-98a6-70ba84e80f0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -113,9 +116,6 @@
     </ClInclude>
     <ClInclude Include="Bitset.h">
       <Filter>Header Files\ECS\BitSet</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentWrapper.h">
-      <Filter>Header Files\ECS\ECS Components\Entitiies</Filter>
     </ClInclude>
     <ClInclude Include="SparseSet.h">
       <Filter>Header Files\ECS\SparseSet</Filter>
@@ -221,6 +221,12 @@
     </ClInclude>
     <ClInclude Include="InputController.h">
       <Filter>Header Files\Input\InputDevices\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstComponentWrapper.h">
+      <Filter>Header Files\ECS\ECS Components\Components\ComponentManager\Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentWrapper.h">
+      <Filter>Header Files\ECS\ECS Components\Components\ComponentManager\Wrapper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
