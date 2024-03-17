@@ -29,11 +29,18 @@ namespace Pengin
 			device->ProcessMappedActions();
 		}
 
-		bool test = InputBuffer::GetInstance().CheckCombo(m_Combos[0]);
-		if (test)
+		auto& inputBuffer{ InputBuffer::GetInstance() };
+
+		for (const auto& combo : m_Combos)
 		{
-			InputBuffer::GetInstance().ClearBuffer();
-			m_Combos[0].pResultingAction->Execute();
+			if (inputBuffer.CheckCombo(combo)) 
+			//This takes the first possible combo, in future it might be necessary to handle all found combos and let a state machine decides which one(s) are valid and should be recorded to the buffe
+			{
+				inputBuffer.ClearBuffer();
+
+				combo.pResultingAction->Execute();
+				inputBuffer.RecordInput(combo.pResultingAction);
+			}
 		}
 
 		SDL_Event e;
@@ -46,7 +53,6 @@ namespace Pengin
 
 			ImGui_ImplSDL2_ProcessEvent(&e);
 		}
-
 
 		return true;
 	}
