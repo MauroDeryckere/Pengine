@@ -231,6 +231,9 @@
     <ClInclude Include="ComponentManager.h">
       <Filter>Header Files\ECS\ECS Components\ComponentManager</Filter>
     </ClInclude>
+    <ClInclude Include="InputKeys.h">
+      <Filter>Header Files\Input\InputDevices</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">

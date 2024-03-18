@@ -33,8 +33,8 @@ namespace Pengin
 
 		for (const auto& combo : m_Combos)
 		{
-			if (inputBuffer.CheckCombo(combo)) 
-			//This takes the first possible combo, in future it might be necessary to handle all found combos and let a state machine decides which one(s) are valid and should be recorded to the buffe
+			if (inputBuffer.CheckCombo(combo))
+				//This takes the first possible combo, in future it might be necessary to handle all found combos and let a state machine decides which one(s) are valid and should be recorded to the buffe
 			{
 				inputBuffer.ClearBuffer();
 
@@ -74,11 +74,6 @@ namespace Pengin
 
 		m_Combos.emplace_back(combo);
 	}
-
-	//void InputManager::MapMouseAction(MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction)
-	//{
-		//m_InputDevices[static_cast<size_t>(Devices::Mouse)]->MapActionToInput(static_cast<unsigned>(button), inputState, std::move(pInputAction));
-	//}
 }
 
 
