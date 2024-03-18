@@ -52,9 +52,6 @@
     <Filter Include="Header Files\ECS\ECS Components\Components\ComponentManager">
       <UniqueIdentifier>{15a1b111-36e8-4b3e-9004-fb5f0421d025}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Game">
-      <UniqueIdentifier>{21cac00d-f9ca-47b4-8a88-f29b7b579806}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Resource">
       <UniqueIdentifier>{001430b0-a41f-41b3-b21e-027c1c844598}</UniqueIdentifier>
     </Filter>
@@ -78,6 +75,9 @@
     </Filter>
     <Filter Include="Header Files\ECS\ECS Components\Components\ComponentManager\Wrapper">
       <UniqueIdentifier>{da6db303-8f28-4f1a-98a6-70ba84e80f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core">
+      <UniqueIdentifier>{21cac00d-f9ca-47b4-8a88-f29b7b579806}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -136,22 +136,22 @@
       <Filter>Header Files\ECS\ECS Components\Components\ComponentManager</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>Header Files\Game</Filter>
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Header Files\Game</Filter>
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
-      <Filter>Header Files\Game</Filter>
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
-      <Filter>Header Files\Game</Filter>
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Header Files\Game</Filter>
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="Minigin.h">
-      <Filter>Header Files\Game</Filter>
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="Texture2D.h">
       <Filter>Header Files\Resource</Filter>
@@ -214,7 +214,7 @@
       <Filter>Header Files\Components\Functional</Filter>
     </ClInclude>
     <ClInclude Include="Time.h">
-      <Filter>Header Files\Game</Filter>
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="InputBuffer.h">
       <Filter>Header Files\Input</Filter>

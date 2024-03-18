@@ -4,6 +4,9 @@
 #include "InputCommand.h"
 #include "CharacterMovementComponent.h"
 
+#include "ECS.h"
+#include "Components.h"
+
 #include "glm/vec3.hpp"
 
 #include <iostream>
@@ -31,16 +34,17 @@ namespace Pengin
 	class CharacterMovement final : public InputCommand
 	{
 	public:
-		CharacterMovement(const glm::vec3& direction, dae::CharacterMovementComponent* characterMovement) : 
+		CharacterMovement(const glm::vec3& direction, EntityId id) :
 			InputCommand{},
 			m_Direction{direction},
-			m_CharacterMovement{characterMovement}
+			m_Id{ id }
 		{
 		}
 
 		virtual void Execute() override 
 		{ 
-			m_CharacterMovement->Move(m_Direction);
+			auto& characterMovement{ ECS::GetInstance().GetComponent<CharacterMovementComponent>(m_Id) };
+			characterMovement.Move(m_Direction);
 		}
 
 		virtual ~CharacterMovement() override = default;
@@ -50,11 +54,9 @@ namespace Pengin
 		CharacterMovement(CharacterMovement&&) noexcept = delete;
 		CharacterMovement& operator=(CharacterMovement&&) noexcept = delete;
 
-
 	private:
-		glm::vec3 m_Direction;
-
-		dae::CharacterMovementComponent* m_CharacterMovement;
+		const glm::vec3 m_Direction;
+		const EntityId m_Id;
 	};
 }
 

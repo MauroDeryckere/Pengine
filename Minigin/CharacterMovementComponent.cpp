@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Time.h"
 
-dae::CharacterMovementComponent::CharacterMovementComponent(GameObject* pGameObj, float movementSpeed):
+/*dae::CharacterMovementComponent::CharacterMovementComponent(GameObject* pGameObj, float movementSpeed) :
 	FunctionalComponent{ pGameObj },
 	m_MovementSpeed{movementSpeed}
 {
@@ -17,4 +17,4 @@ void dae::CharacterMovementComponent::Move(const glm::vec3& dir)
 	auto movement = dir * m_MovementSpeed * Pengin::Time::GetInstance().GetElapsedSec() + currPos;
 
 	transform.SetPosition(movement.x, movement.y, movement.z);
-}
+}*/

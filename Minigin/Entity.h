@@ -2,6 +2,7 @@
 #define ENTITY
 
 #include <type_traits>
+#include <functional>
 
 namespace Pengin
 {

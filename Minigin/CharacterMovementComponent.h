@@ -7,7 +7,7 @@
 
 namespace dae
 {
-	class CharacterMovementComponent final :
+	/*class CharacterMovementComponent final :
 		public FunctionalComponent
 	{
 	public:
@@ -24,7 +24,7 @@ namespace dae
 		CharacterMovementComponent& operator=(CharacterMovementComponent&& other) = delete;
 	private:
 		float m_MovementSpeed;
-	};
+	};*/
 }
 
 #endif
