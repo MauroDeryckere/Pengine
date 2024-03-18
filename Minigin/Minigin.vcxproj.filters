@@ -13,21 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Components">
-      <UniqueIdentifier>{6b653f1f-15df-46d1-b493-244b8eaccbc5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Components">
-      <UniqueIdentifier>{05e0b076-af05-44d3-9e90-cd71dadbaf62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Components\Physics">
-      <UniqueIdentifier>{3088f489-b8d0-4169-a57b-98c808650e65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Components\Render">
-      <UniqueIdentifier>{c339dacd-3731-4400-b9bc-de201d2dad04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Components\Functional">
-      <UniqueIdentifier>{498ec2d1-ff53-4740-8cfd-2a90c7e2d015}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\ECS">
       <UniqueIdentifier>{a72e4703-37c4-4d3f-a517-b5b3275b9821}</UniqueIdentifier>
     </Filter>
@@ -48,9 +33,6 @@
     </Filter>
     <Filter Include="Header Files\ECS\BitSet">
       <UniqueIdentifier>{be3fc76b-0a34-4c8a-a412-c286e5a50cad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\ECS\ECS Components\Components\ComponentManager">
-      <UniqueIdentifier>{15a1b111-36e8-4b3e-9004-fb5f0421d025}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Resource">
       <UniqueIdentifier>{001430b0-a41f-41b3-b21e-027c1c844598}</UniqueIdentifier>
@@ -73,34 +55,55 @@
     <Filter Include="Header Files\Input\InputDevices\Devices">
       <UniqueIdentifier>{2b424b2c-450d-4066-86ed-27bd885822fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ECS\ECS Components\Components\ComponentManager\Wrapper">
-      <UniqueIdentifier>{da6db303-8f28-4f1a-98a6-70ba84e80f0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Core">
       <UniqueIdentifier>{21cac00d-f9ca-47b4-8a88-f29b7b579806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components_Gameobj">
+      <UniqueIdentifier>{05e0b076-af05-44d3-9e90-cd71dadbaf62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components_GameObj">
+      <UniqueIdentifier>{6b653f1f-15df-46d1-b493-244b8eaccbc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components_GameObj\Physics">
+      <UniqueIdentifier>{3088f489-b8d0-4169-a57b-98c808650e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components_GameObj\Render">
+      <UniqueIdentifier>{c339dacd-3731-4400-b9bc-de201d2dad04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components_GameObj\Functional">
+      <UniqueIdentifier>{498ec2d1-ff53-4740-8cfd-2a90c7e2d015}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ECS\ECS Components\ComponentManager">
+      <UniqueIdentifier>{15a1b111-36e8-4b3e-9004-fb5f0421d025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ECS\ECS Components\ComponentManager\Wrapper">
+      <UniqueIdentifier>{da6db303-8f28-4f1a-98a6-70ba84e80f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ECS\ECS Components\ComponentManager\Storage">
+      <UniqueIdentifier>{3c92caa7-33eb-4eb0-beb1-31163432bdc5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
-      <Filter>Header Files\Components</Filter>
+      <Filter>Header Files\Components_GameObj</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsComponent.h">
-      <Filter>Header Files\Components\Physics</Filter>
+      <Filter>Header Files\Components_GameObj\Physics</Filter>
     </ClInclude>
     <ClInclude Include="RenderComponent.h">
-      <Filter>Header Files\Components\Render</Filter>
+      <Filter>Header Files\Components_GameObj\Render</Filter>
     </ClInclude>
     <ClInclude Include="TextureComponent.h">
-      <Filter>Header Files\Components\Render</Filter>
+      <Filter>Header Files\Components_GameObj\Render</Filter>
     </ClInclude>
     <ClInclude Include="FunctionalComponent.h">
-      <Filter>Header Files\Components\Functional</Filter>
+      <Filter>Header Files\Components_GameObj\Functional</Filter>
     </ClInclude>
     <ClInclude Include="FPSComponent.h">
-      <Filter>Header Files\Components\Functional</Filter>
+      <Filter>Header Files\Components_GameObj\Functional</Filter>
     </ClInclude>
     <ClInclude Include="TextComponent.h">
-      <Filter>Header Files\Components\Functional</Filter>
+      <Filter>Header Files\Components_GameObj\Functional</Filter>
     </ClInclude>
     <ClInclude Include="Components.h">
       <Filter>Header Files\ECS\ECS Components\Components</Filter>
@@ -112,7 +115,7 @@
       <Filter>Header Files\ECS\ECS Components\Entitiies</Filter>
     </ClInclude>
     <ClInclude Include="RotatorComponent.h">
-      <Filter>Header Files\Components\Functional</Filter>
+      <Filter>Header Files\Components_GameObj\Functional</Filter>
     </ClInclude>
     <ClInclude Include="Bitset.h">
       <Filter>Header Files\ECS\BitSet</Filter>
@@ -120,20 +123,11 @@
     <ClInclude Include="SparseSet.h">
       <Filter>Header Files\ECS\SparseSet</Filter>
     </ClInclude>
-    <ClInclude Include="BaseComponentStorage.h">
-      <Filter>Header Files\ECS\ECS Components\Components\ComponentManager</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentManager.h">
-      <Filter>Header Files\ECS\ECS Components\Components\ComponentManager</Filter>
-    </ClInclude>
     <ClInclude Include="EntityManager.h">
       <Filter>Header Files\ECS\ECS Components\Entitiies</Filter>
     </ClInclude>
     <ClInclude Include="UniqueTypeTracker.h">
       <Filter>Header Files\ECS\ECS Components\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentStorage.h">
-      <Filter>Header Files\ECS\ECS Components\Components\ComponentManager</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Header Files\Core</Filter>
@@ -163,7 +157,7 @@
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Header Files\Components</Filter>
+      <Filter>Header Files\Components_GameObj</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imstb_truetype.h">
       <Filter>Header Files\ImGui</Filter>
@@ -211,7 +205,7 @@
       <Filter>Header Files\Input\InputDevices</Filter>
     </ClInclude>
     <ClInclude Include="CharacterMovementComponent.h">
-      <Filter>Header Files\Components\Functional</Filter>
+      <Filter>Header Files\Components_GameObj\Functional</Filter>
     </ClInclude>
     <ClInclude Include="Time.h">
       <Filter>Header Files\Core</Filter>
@@ -223,10 +217,19 @@
       <Filter>Header Files\Input\InputDevices\Devices</Filter>
     </ClInclude>
     <ClInclude Include="ConstComponentWrapper.h">
-      <Filter>Header Files\ECS\ECS Components\Components\ComponentManager\Wrapper</Filter>
+      <Filter>Header Files\ECS\ECS Components\ComponentManager\Wrapper</Filter>
     </ClInclude>
     <ClInclude Include="ComponentWrapper.h">
-      <Filter>Header Files\ECS\ECS Components\Components\ComponentManager\Wrapper</Filter>
+      <Filter>Header Files\ECS\ECS Components\ComponentManager\Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseComponentStorage.h">
+      <Filter>Header Files\ECS\ECS Components\ComponentManager\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentStorage.h">
+      <Filter>Header Files\ECS\ECS Components\ComponentManager\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentManager.h">
+      <Filter>Header Files\ECS\ECS Components\ComponentManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -258,25 +261,25 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
-      <Filter>Source Files\Components</Filter>
+      <Filter>Source Files\Components_Gameobj</Filter>
     </ClCompile>
     <ClCompile Include="RenderComponent.cpp">
-      <Filter>Source Files\Components</Filter>
+      <Filter>Source Files\Components_Gameobj</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsComponent.cpp">
-      <Filter>Source Files\Components</Filter>
+      <Filter>Source Files\Components_Gameobj</Filter>
     </ClCompile>
     <ClCompile Include="TextureComponent.cpp">
-      <Filter>Source Files\Components</Filter>
+      <Filter>Source Files\Components_Gameobj</Filter>
     </ClCompile>
     <ClCompile Include="TextComponent.cpp">
-      <Filter>Source Files\Components</Filter>
+      <Filter>Source Files\Components_Gameobj</Filter>
     </ClCompile>
     <ClCompile Include="FPSComponent.cpp">
-      <Filter>Source Files\Components</Filter>
+      <Filter>Source Files\Components_Gameobj</Filter>
     </ClCompile>
     <ClCompile Include="FunctionalComponent.cpp">
-      <Filter>Source Files\Components</Filter>
+      <Filter>Source Files\Components_Gameobj</Filter>
     </ClCompile>
     <ClCompile Include="EntityManager.cpp">
       <Filter>Source Files</Filter>
@@ -285,13 +288,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files\Components</Filter>
+      <Filter>Source Files\Components_Gameobj</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Source Files\Components</Filter>
+      <Filter>Source Files\Components_Gameobj</Filter>
     </ClCompile>
     <ClCompile Include="RotatorComponent.cpp">
-      <Filter>Source Files\Components</Filter>
+      <Filter>Source Files\Components_Gameobj</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_widgets.cpp">
       <Filter>Source Files\ImGui</Filter>
@@ -330,7 +333,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CharacterMovementComponent.cpp">
-      <Filter>Source Files\Components</Filter>
+      <Filter>Source Files\Components_Gameobj</Filter>
     </ClCompile>
     <ClCompile Include="Time.cpp">
       <Filter>Source Files</Filter>

@@ -9,6 +9,8 @@
 #include "SceneManager.h"
 #include "Time.h"
 #include "Font.h"
+#include <string>
+#include <format>
 
 #include "glm/glm.hpp"
 
@@ -19,6 +21,8 @@
 #include <functional>
 #include <memory>
 
+//TODO - move to separate files
+
 namespace Pengin
 {
 	struct TransformComponent 
@@ -27,7 +31,7 @@ namespace Pengin
 		TransformComponent(const glm::vec3& pos) : m_Position{ pos } 
 		{}
 		
-		glm::vec3 m_Position;
+		glm::vec3 m_Position{ 0, 0, 0};
 	};
 
 	class TextureComponent final
@@ -64,12 +68,7 @@ namespace Pengin
 	class TextComponent final 
 	{
 	public:
-		TextComponent(EntityId id, const std::string& fontPath, unsigned fontSize) :
-			m_Id{ id },
-			m_pFont{ dae::ResourceManager::GetInstance().LoadFont(fontPath, fontSize) }
-		{}
-
-		TextComponent(EntityId id, const std::string& fontPath, unsigned fontSize, const std::string& text) :
+		TextComponent(EntityId id, const std::string& fontPath, unsigned fontSize, const std::string& text = "<EMPTY STRING>") :
 			m_Id{ id },
 			m_pFont{ dae::ResourceManager::GetInstance().LoadFont(fontPath, fontSize) },
 			m_Text{ text }
@@ -113,6 +112,40 @@ namespace Pengin
 		std::string m_Text;
 
 		std::shared_ptr<dae::Font> m_pFont;
+		const EntityId m_Id;
+	};
+
+	class FPSComponent final 
+	{
+	public:
+		FPSComponent(EntityId id) :
+			m_Id{ id }
+		{}
+
+		~FPSComponent() = default;
+
+		void Update()
+		{
+			m_AccumulatedTime += Pengin::Time::GetInstance().GetElapsedSec();
+
+			++m_FrameCount;
+
+			if (m_AccumulatedTime >= 1.0f)
+			{
+				const auto txt{ std::format("{:.1f}", m_FrameCount / m_AccumulatedTime) };
+
+				auto& textComp{ Pengin::ECS::GetInstance().GetComponent<TextComponent>(m_Id) };
+				textComp.SetText(txt);
+
+				m_FrameCount = 0;
+				m_AccumulatedTime -= 1.f;
+			}
+		}
+
+	private:
+		unsigned m_FrameCount{0};
+		float m_AccumulatedTime{0.f};
+		
 		const EntityId m_Id;
 	};
 
