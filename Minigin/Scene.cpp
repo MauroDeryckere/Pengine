@@ -41,14 +41,21 @@ void dae::Scene::FixedUpdate()
 
 void Scene::Update()
 {
-	for(auto& object : m_objects)
+	auto textComps = Pengin::ECS::GetInstance().GetComponents<Pengin::TextComponent>();
+
+	for (auto& entity : textComps)
 	{
-		object->Update();
+		entity.Update();
 	}
+
+	//for(auto& object : m_objects)
+	//{
+		//object->Update();
+	//}
 	
-	m_objects.erase(std::remove_if(m_objects.begin(), m_objects.end(), [](const auto& obj) {
-		return obj->GetDeleteFlag();
-		}), m_objects.end());
+	//m_objects.erase(std::remove_if(m_objects.begin(), m_objects.end(), [](const auto& obj) {
+		//return obj->GetDeleteFlag();
+		//}), m_objects.end());
 }
 
 void Scene::Render() const
