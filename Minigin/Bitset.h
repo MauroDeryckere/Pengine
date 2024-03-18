@@ -181,7 +181,7 @@ namespace Pengin
 		const size_t m_AmountOfBits;
 		std::vector<unsigned> m_Bits;
 
-        static constexpr size_t BITS_PER_UINT{ sizeof(int) * CHAR_BIT };
+        constinit static const size_t BITS_PER_UINT{ sizeof(int) * CHAR_BIT };
 	};
 }
 

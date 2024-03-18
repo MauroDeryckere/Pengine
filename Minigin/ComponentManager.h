@@ -112,6 +112,34 @@ namespace Pengin
 
         template<typename ComponentType>
         [[nodiscard]] ComponentType& GetComponent(const EntityId& id)
+        {
+            const auto it{ m_TypeBitMap.find(typeid(ComponentType)) };
+
+            if (it == m_TypeBitMap.end())
+            {
+                throw std::out_of_range("Checking for a component that is not ever added to the typeTracker");
+            }
+
+            const size_t idx{ it->second };
+            auto* basePtr{ m_ComponentStorage[idx].get() };
+
+            if (!basePtr)
+            {
+                throw std::out_of_range("Component not found for the given entity ID");
+            }
+
+            ComponentStorage<ComponentType>* const storage{ dynamic_cast<ComponentStorage<ComponentType>*>(basePtr) };
+            auto& set{ storage->GetSet() };
+
+            if (set.Contains(id))
+            {
+                return set[id];
+            }
+            throw std::out_of_range("Component not found for the given entity ID");
+        }
+
+        template<typename ComponentType>
+        [[nodiscard]] ComponentType& GetOrEmplaceComponent(const EntityId& id)
             requires std::is_default_constructible_v<ComponentType>
         {
             const auto typeIt{ m_TypeBitMap.find(typeid(ComponentType)) };
@@ -155,7 +183,7 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        [[nodiscard]] const ComponentType& GetComponent(const EntityId& id) const
+        [[nodiscard]] const ComponentType& GetConstComponent(const EntityId& id) const
         {
             const auto it{ m_TypeBitMap.find(typeid(ComponentType)) };
 

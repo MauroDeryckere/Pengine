@@ -15,10 +15,11 @@
 namespace Pengin
 {
     template<typename ValueType, typename KeyType>
-        requires std::is_default_constructible_v<KeyType> && std::is_move_constructible_v<KeyType> && (std::is_move_constructible_v<ValueType> || 
-                                                                                                       std::is_copy_constructible_v<ValueType> ||
-                                                                                                       std::is_move_assignable_v<ValueType> ||
-                                                                                                       std::is_copy_assignable_v<ValueType>)
+        requires std::is_default_constructible_v<KeyType> && 
+                 std::is_move_constructible_v<KeyType> &&
+                
+                (std::is_move_constructible_v <ValueType> || std::is_move_assignable_v<ValueType>) &&
+                (std::is_copy_constructible_v<ValueType> || std::is_copy_assignable_v<ValueType>) 
     class SparseSet final
     {
     public:
@@ -37,6 +38,7 @@ namespace Pengin
             m_SparseMap(std::move(other.m_SparseMap)), 
             m_DenseArray(std::move(other.m_DenseArray)), 
             m_ReverseMapping(std::move(other.m_ReverseMapping)) { }
+
         SparseSet& operator=(SparseSet&& other) noexcept
         {
             if (this != &other)
@@ -135,16 +137,14 @@ namespace Pengin
 
                 m_SparseMap[lastKey] = index;
                 m_SparseMap.erase(it);
-
-                std::vector<ValueType> test;
-
-                if constexpr (std::is_move_constructible_v<ValueType> || std::is_move_assignable_v<ValueType>)
+                
+                if constexpr(std::is_move_assignable_v<ValueType>)
                 {
                     m_DenseArray[index] = std::move(m_DenseArray.back());
                 }
-                else 
+                else if constexpr(std::is_move_constructible_v<ValueType>)
                 {
-                   m_DenseArray[index] = m_DenseArray.back();
+                    new (&m_DenseArray[index]) ValueType(std::move(m_DenseArray.back()));
                 }
 
                 m_ReverseMapping[index] = m_ReverseMapping.back();
