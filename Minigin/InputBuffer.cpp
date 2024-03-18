@@ -10,7 +10,7 @@ void Pengin::InputBuffer::RecordInput(std::shared_ptr<InputCommand> pAction)
 
     if (m_Buffer.size() > MAX_BUFFER_SIZE)
     {
-        m_Buffer.erase(m_Buffer.begin());
+        m_Buffer.pop_front();
     }
 }
 

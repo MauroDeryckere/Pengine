@@ -1,6 +1,8 @@
 #ifndef ENTITYCOMPONENTSYSTEM
 #define ENTITYCOMPONENTSYSTEM
 
+#include "Singleton.h"
+
 #include "Entity.h"
 
 #include "Components.h"
@@ -25,15 +27,10 @@
 */
 
 namespace Pengin
-{
-    class ECS final  // : Singleton<ECS> TODO
+{   
+    class ECS final : public dae::Singleton<ECS>
     {
     public:
-        ECS():
-            m_ComponentManager{},
-            m_EntityManager{m_ComponentManager}
-        { }
-
         const EntityId& CreateEntity() noexcept
         {
             return m_EntityManager.CreateEntity();
@@ -69,8 +66,6 @@ namespace Pengin
             return m_ComponentManager.HasComponent(typeid(ComponentType), id); 
         }
 
-        //TODO  entitymanager for multiple types
-
         template<typename ComponentType>
         [[nodiscard]] ComponentType& GetComponent(const EntityId& id)
         {
@@ -96,7 +91,22 @@ namespace Pengin
             return m_ComponentManager.GetConstComponentWrapper<ComponentType>();
         }
         
+        //TODO Clear
+
+        ECS(const ECS&) = delete;
+        ECS(ECS&&) = delete;
+        ECS& operator=(const ECS&) = delete;
+        ECS& operator=(ECS&&) = delete;
+
     private:
+        ECS() :
+            m_ComponentManager{},
+            m_EntityManager{ m_ComponentManager }
+        { }
+        ~ECS() = default;
+
+        friend class dae::Singleton<ECS>;
+
         ComponentManager m_ComponentManager;
         EntityManager m_EntityManager;
     };

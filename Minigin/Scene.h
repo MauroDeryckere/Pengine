@@ -26,9 +26,6 @@ namespace dae
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
-
-		Pengin::ECS& GetEcs() { return m_Ecs; };
-
 	private: 
 		explicit Scene(const std::string& name);
 
@@ -36,8 +33,6 @@ namespace dae
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
 
 		//scene == gameobj -> root of all objects - TOOD
-
-		Pengin::ECS m_Ecs;
 
 		static unsigned int m_idCounter; 
 	};

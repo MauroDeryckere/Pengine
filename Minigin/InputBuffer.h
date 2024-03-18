@@ -10,6 +10,7 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <deque>
 
 namespace Pengin
 {
@@ -35,9 +36,10 @@ namespace Pengin
     private:
         friend class dae::Singleton<InputBuffer>;
         InputBuffer() = default;
+
         ~InputBuffer() = default;
 
-        std::vector<InputRecord> m_Buffer;
+        std::deque<InputRecord> m_Buffer;
 
         constinit static const int MAX_BUFFER_SIZE{ 20 };
         static constexpr float ERROR_MARGIN_TIME{ 200.f }; //ms
