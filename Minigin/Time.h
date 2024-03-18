@@ -25,10 +25,16 @@ namespace Pengin
 			return sleepTime;
 		}
 
+		Time(const Time&) = delete;
+		Time(Time&&) = delete;
+		Time& operator=(const Time&) = delete;
+		Time& operator=(const Time&&) = delete;
+
 	private:
 		friend class dae::Singleton<Time>;
 		Time() = default;
-		
+		~Time() = default;
+
 		std::chrono::steady_clock::time_point m_LastTime{ std::chrono::high_resolution_clock::now() };
 
 		const float m_MsPerFrame{ 16.7f };
