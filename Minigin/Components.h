@@ -1,6 +1,9 @@
 #ifndef COMPONENTS
 #define COMPONENTS
 
+#include "TransformComponent.h"
+//TODO move all componnts out
+
 #include "ECS.h"
 
 #include "Texture2D.h"
@@ -22,19 +25,8 @@
 #include <functional>
 #include <memory>
 
-//TODO - move to separate files
-
 namespace Pengin
 {
-	struct TransformComponent 
-	{
-		TransformComponent() = default;
-		TransformComponent(const glm::vec3& pos) : m_Position{ pos } 
-		{}
-		
-		glm::vec3 m_Position{ 0, 0, 0};
-	};
-
 	class TextureComponent final
 	{
 	public:
@@ -169,25 +161,6 @@ namespace Pengin
 	private:
 		const float m_MovementSpeed;
 		const EntityId m_Id;
-	};
-
-	struct TestingAnEvent
-	{
-		TestingAnEvent():
-			pObserver{ std::make_shared<Observer>("testObs") }
-		{
-			auto functioCallback = [](const void*)
-				{
-					std::cout << "Callback executed\n";
-				};
-
-			pObserver->RegisterForEvent("test", functioCallback);
-		}
-
-
-		std::shared_ptr<Observer> pObserver;
-
-		std::string test{ "testing the evet class" };
 	};
 }
 

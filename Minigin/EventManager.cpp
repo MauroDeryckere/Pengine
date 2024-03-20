@@ -1,18 +1,15 @@
 #include "EventManager.h"
-#include "EventQueue.h"
-
 #include <iostream>
+
 namespace Pengin
 {
-	EventManager::EventManager() :
-		m_EventQueue{ std::make_unique<EventQueue>() },
-		m_Observers{}
-	{
-
-	}
 	void EventManager::ProcessEvents()
 	{
-		m_EventQueue->ProcessEvents();
+		while (!m_EventQueue.empty())
+		{
+			ProcessEvent(m_EventQueue.front());
+			m_EventQueue.pop();
+		}
 	}
 
 	void EventManager::BroadcastBlockingEvent(const Event& event)
@@ -20,9 +17,9 @@ namespace Pengin
 		ProcessEvent(event);
 	}
 
-	void EventManager::BroadcastEvent(const Event& event)
+	void EventManager::EnqueueEvent(const Event& event)
 	{
-		m_EventQueue->AddEvent(event);
+		m_EventQueue.push(event);
 	}
 
 	void EventManager::RegisterObserver(const std::string& eventName, std::pair<std::shared_ptr<Observer>, fEventCallback> observer)

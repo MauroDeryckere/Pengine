@@ -3,12 +3,12 @@
 
 #include "Singleton.h"
 
-#include "EventQueue.h" //can we move this?
 #include "Observer.h"
 #include "Event.h"
 
 #include <string>
 #include <memory>
+#include <queue>
 #include <unordered_map>
 #include <vector>
 
@@ -33,13 +33,12 @@ namespace Pengin
 		friend class Observer;
 		void RegisterObserver(const std::string& eventName, std::pair<std::shared_ptr<Observer>, fEventCallback> observer);
 
-		friend class EventQueue;
 		void ProcessEvent(const Event& event);
 
-		EventManager();
+		EventManager() = default;
 		~EventManager() = default;
 
-		std::unique_ptr<EventQueue> m_EventQueue;
+		std::queue<Event> m_EventQueue;
 
 		using EventListener = std::pair<std::weak_ptr<Observer>, fEventCallback>;
 		std::unordered_map<std::string, std::vector<EventListener>> m_Observers; //since using strings here and likely larger map in big games, consider a map inst of uno map (monitor performance 1st) TODO
