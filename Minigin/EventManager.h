@@ -19,7 +19,8 @@ namespace Pengin
 	public:
 		void ProcessEvents();
 
-		void BroadcastEvent(const Event& event);
+		void BroadcastBlockingEvent(const Event& event);
+		void EnqueueEvent(const Event& event);
 
 		EventManager(const EventManager&) = delete;
 		EventManager(EventManager&&) = delete;

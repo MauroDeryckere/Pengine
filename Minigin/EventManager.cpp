@@ -15,6 +15,11 @@ namespace Pengin
 		m_EventQueue->ProcessEvents();
 	}
 
+	void EventManager::BroadcastBlockingEvent(const Event& event)
+	{
+		ProcessEvent(event);
+	}
+
 	void EventManager::BroadcastEvent(const Event& event)
 	{
 		m_EventQueue->AddEvent(event);
