@@ -204,6 +204,7 @@
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="FunctionalComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="InputBuffer.h" />
     <ClInclude Include="InputCommand.h" />
     <ClInclude Include="InputCommands.h" />
