@@ -3,11 +3,11 @@
 
 #include "InputCommand.h"
 #include "EventManager.h"
-#include "CharacterMovementComponent.h"
 
 #include "ECS.h"
-#include "HealthComponent.h"
+
 #include "Components.h"
+#include "HealthComponent.h"
 
 #include "glm/vec3.hpp"
 
