@@ -243,13 +243,13 @@
     <ClInclude Include="EventManager.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
     <ClInclude Include="Observer.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
     <ClInclude Include="EventQueue.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
   </ItemGroup>

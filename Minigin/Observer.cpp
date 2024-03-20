@@ -5,6 +5,6 @@ namespace Pengin
 {
 	void Observer::RegisterForEvent(const std::string& eventName, fEventCallback fCallBack)
 	{
-		EventManager::GetInstance().RegisterObserver(eventName, { weak_from_this(), fCallBack });
+		EventManager::GetInstance().RegisterObserver(eventName, { shared_from_this(), fCallBack });
 	}
 }

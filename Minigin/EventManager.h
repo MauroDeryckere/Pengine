@@ -30,7 +30,7 @@ namespace Pengin
 		friend class dae::Singleton<EventManager>;
 		
 		friend class Observer;
-		void RegisterObserver(const std::string& eventName, std::pair<std::weak_ptr<Observer>, fEventCallback> observer);
+		void RegisterObserver(const std::string& eventName, std::pair<std::shared_ptr<Observer>, fEventCallback> observer);
 
 		friend class EventQueue;
 		void ProcessEvent(const Event& event);
@@ -40,7 +40,8 @@ namespace Pengin
 
 		std::unique_ptr<EventQueue> m_EventQueue;
 
-		std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>> m_Observers; //since using strings here and likely larger map in big games, consider a map inst of uno map (monitor performance 1st) TODO
+		using EventListener = std::pair<std::weak_ptr<Observer>, fEventCallback>;
+		std::unordered_map<std::string, std::vector<EventListener>> m_Observers; //since using strings here and likely larger map in big games, consider a map inst of uno map (monitor performance 1st) TODO
 	};
 }
 

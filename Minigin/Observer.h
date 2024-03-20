@@ -15,9 +15,16 @@ namespace Pengin
 		Observer(const std::string& name = "") :
 			m_Name{ name } {}
 
+		~Observer() = default;
+
 		void RegisterForEvent(const std::string& eventName, fEventCallback fCallBack);
 
 		const std::string& GetName() const { return m_Name; }
+
+		Observer(const Observer&) = delete;
+		Observer(Observer&&) = delete;
+		Observer& operator=(const Observer&) = delete;
+		Observer& operator=(const Observer&&) = delete;
 
 	private:
 		//Name can be useful for debugging purposes but isn't used past that

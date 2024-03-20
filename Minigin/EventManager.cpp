@@ -20,7 +20,7 @@ namespace Pengin
 		m_EventQueue->AddEvent(event);
 	}
 
-	void EventManager::RegisterObserver(const std::string& eventName, std::pair<std::weak_ptr<Observer>, fEventCallback> observer)
+	void EventManager::RegisterObserver(const std::string& eventName, std::pair<std::shared_ptr<Observer>, fEventCallback> observer)
 	{
 		m_Observers[eventName].emplace_back(observer);
 	}
@@ -31,20 +31,19 @@ namespace Pengin
 
 		if (it != end(m_Observers))
 		{
-			auto [evName, observers] {*it};
-			
+			auto& observers{ it->second };
+
+			std::erase_if(observers, [](const auto& observerPair) 
+			{
+				return observerPair.first.expired();
+			});
+
 			for (auto& [observer ,fCallback] : observers)
 			{
-				if (auto pObserver{ observer.lock() }; pObserver)
-				{
-					fCallback(event.GetData());
-				}
-				else
-				{
-					std::cout << "weakptr  cant lock for " << event.GetName() << "\n";
-				}
+				fCallback(event.GetData());
 			}
 		}
+		//No listeners
 	}
 }
 
