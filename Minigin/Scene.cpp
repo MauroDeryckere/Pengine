@@ -25,7 +25,7 @@ void dae::Scene::FixedUpdate()
 
 void Scene::Update()
 {
-	auto fpsComps = Pengin::ECS::GetInstance().GetComponents<Pengin::FPSComponent>();
+	auto fpsComps = Pengin::ECS::GetInstance().GetComponents<Pengin::FPSCounterComponent>();
 
 	for (auto& entity : fpsComps)
 	{

@@ -28,9 +28,6 @@
     <Filter Include="Header Files\ECS\ECS Components\Entitiies">
       <UniqueIdentifier>{a6c5146d-ce25-40be-afc1-30f8229be3f7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ECS\ECS Components\Components">
-      <UniqueIdentifier>{a4375382-b3b2-491c-a84f-0f14b20c2d55}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\ECS\BitSet">
       <UniqueIdentifier>{be3fc76b-0a34-4c8a-a412-c286e5a50cad}</UniqueIdentifier>
     </Filter>
@@ -73,10 +70,16 @@
     <Filter Include="Header Files\Events">
       <UniqueIdentifier>{8972368e-7b72-4b31-b2b4-c48b615851a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{a4375382-b3b2-491c-a84f-0f14b20c2d55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{51cf14ff-9c89-448c-af00-9a68f8609969}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
-      <Filter>Header Files\ECS\ECS Components\Components</Filter>
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="ECS.h">
       <Filter>Header Files\ECS\ECS Components\ECS</Filter>
@@ -96,13 +99,7 @@
     <ClInclude Include="UniqueTypeTracker.h">
       <Filter>Header Files\ECS\ECS Components\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Singleton.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="Minigin.h">
@@ -202,10 +199,31 @@
       <Filter>Header Files\Events</Filter>
     </ClInclude>
     <ClInclude Include="TransformComponent.h">
-      <Filter>Header Files\ECS\ECS Components\Components</Filter>
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="HealthComponent.h">
-      <Filter>Header Files\ECS\ECS Components\Components</Filter>
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TextComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSCounterComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterMovementComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplayComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -291,6 +309,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FPSCounterComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterMovementComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
