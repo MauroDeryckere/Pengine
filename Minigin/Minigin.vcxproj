@@ -198,6 +198,9 @@
     <ClInclude Include="ECS.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="EventManager.h" />
+    <ClInclude Include="EventQueue.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="FunctionalComponent.h" />
@@ -212,6 +215,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InputMouse.h" />
     <ClInclude Include="Minigin.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
@@ -240,6 +244,9 @@
     <ClCompile Include="CharacterMovementComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="Event.cpp" />
+    <ClCompile Include="EventManager.cpp" />
+    <ClCompile Include="EventQueue.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="FunctionalComponent.cpp" />
@@ -252,6 +259,7 @@
     <ClCompile Include="InputMouse.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
+    <ClCompile Include="Observer.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />

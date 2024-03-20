@@ -6,6 +6,7 @@
 #include "Texture2D.h"
 #include "ResourceManager.h"
 #include "Renderer.h"
+#include "EventManager.h"
 #include "SceneManager.h"
 #include "Time.h"
 #include "Font.h"
@@ -168,6 +169,25 @@ namespace Pengin
 	private:
 		const float m_MovementSpeed;
 		const EntityId m_Id;
+	};
+
+	struct TestingAnEvent
+	{
+		TestingAnEvent():
+			pObserver{ std::make_shared<Observer>("testObs") }
+		{
+			auto functioCallback = [](const void*)
+				{
+					std::cout << "Callback executed\n";
+				};
+
+			pObserver->RegisterForEvent("testEvent", functioCallback);
+		}
+
+
+		std::shared_ptr<Observer> pObserver;
+
+		std::string test{ "testing the evet class" };
 	};
 }
 

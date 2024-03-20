@@ -4,6 +4,8 @@
 #include "Components.h"
 #include "Renderer.h"
 
+#include "EventManager.h"
+
 #include <algorithm>
 
 using namespace dae;
@@ -63,6 +65,7 @@ void Scene::Update()
 	//m_objects.erase(std::remove_if(m_objects.begin(), m_objects.end(), [](const auto& obj) {
 		//return obj->GetDeleteFlag();
 		//}), m_objects.end());
+	Pengin::EventManager::GetInstance().ProcessEvents();
 }
 
 void Scene::Render() const

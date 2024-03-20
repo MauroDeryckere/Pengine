@@ -6,6 +6,7 @@
 
 namespace Pengin
 {
+	//TODO pimpl in the class 'space'
 	class WindowsKeyboardImpl;
 
 	class InputKeyboard final : public InputDevice

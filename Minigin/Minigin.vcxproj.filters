@@ -82,6 +82,12 @@
     <Filter Include="Header Files\ECS\ECS Components\ComponentManager\Storage">
       <UniqueIdentifier>{3c92caa7-33eb-4eb0-beb1-31163432bdc5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Rendering">
+      <UniqueIdentifier>{f4f1c3be-24b6-4a77-82c0-7920db232d07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{8972368e-7b72-4b31-b2b4-c48b615851a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -128,9 +134,6 @@
     </ClInclude>
     <ClInclude Include="UniqueTypeTracker.h">
       <Filter>Header Files\ECS\ECS Components\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Header Files\Core</Filter>
@@ -232,7 +235,22 @@
       <Filter>Header Files\ECS\ECS Components\ComponentManager</Filter>
     </ClInclude>
     <ClInclude Include="InputKeys.h">
-      <Filter>Header Files\Input\InputDevices</Filter>
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventQueue.h">
+      <Filter>Header Files\Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -342,6 +360,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InputBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EventQueue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
