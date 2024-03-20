@@ -19,15 +19,10 @@ namespace Pengin
 	class EventManager final : public dae::Singleton<EventManager>
 	{
 	public:
-		//ProcessEvents;
 		void ProcessEvents();
-		
+
 		void BroadcastEvent(const std::string& eventName, const void* eventData);
 
-		void RegisterObserver(const std::string& eventName, std::pair<std::weak_ptr<Observer>, std::function<void(const void*)>> observer);
-		
-		void ProcessEvent(const std::string& eventName, const void* eventData); //Event data could be inside Event object in future, simplifies this area slightly, just Event.naame orGetName and data 
-		
 		EventManager(const EventManager&) = delete;
 		EventManager(EventManager&&) = delete;
 		EventManager& operator=(const EventManager&) = delete;
@@ -35,10 +30,15 @@ namespace Pengin
 
 	private:
 		friend class dae::Singleton<EventManager>;
+		
+		friend class Observer;
+		void RegisterObserver(const std::string& eventName, std::pair<std::weak_ptr<Observer>, std::function<void(const void* eventData)>> observer);
+
+		friend class EventQueue;
+		void ProcessEvent(const std::string& eventName, const void* eventData);
 
 		EventManager();
 		~EventManager() = default;
-
 
 		std::unique_ptr<EventQueue> m_EventQueue;
 

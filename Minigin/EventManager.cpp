@@ -9,7 +9,6 @@ namespace Pengin
 	{
 
 	}
-
 	void EventManager::ProcessEvents()
 	{
 		m_EventQueue->ProcessEvents();

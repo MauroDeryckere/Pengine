@@ -1,13 +1,30 @@
 #ifndef EVENT
 #define EVENT
 
+#include <string>
+
 namespace Pengin
 {
 	class Event final
 	{
-		Event();
+	public:
+		Event(const std::string& eventName, const void* eventData = nullptr) :
+			m_Name{ eventName },
+			m_EventData{ eventData }
+		{}
 
+		~Event() = default;
 
+		const std::string& GetName() const { return m_Name; }
+
+		Event(const Event&) = delete;
+		Event(Event&&) = delete;
+		Event& operator=(const Event&) = delete;
+		Event& operator=(const Event&&) = delete;
+
+	private:
+		std::string m_Name;
+		const void* m_EventData;
 	};
 }
 
