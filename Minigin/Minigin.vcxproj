@@ -243,6 +243,7 @@
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSCounterComponent.cpp" />
+    <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="InputBuffer.cpp" />
     <ClCompile Include="InputCommand.cpp" />
     <ClCompile Include="InputController.cpp" />

@@ -2,6 +2,7 @@
 #define DISPLAYCOMPONENT
 
 #include "ECS.h"
+
 #include "EventManager.h"
 #include "TextComponent.h"
 #include "HealthComponent.h"
@@ -18,8 +19,8 @@ namespace Pengin
 			m_PlayerId{ playerId },
 			m_Observer{ std::make_shared<Observer>("DisplayComponent") }
 		{
-			auto& textComp{ Pengin::ECS::GetInstance().GetComponent<TextComponent>(m_ThisId) };
-			auto& healthComp{ Pengin::ECS::GetInstance().GetComponent<HealthComponent>(m_PlayerId) };
+			auto& textComp{ ECS::GetInstance().GetComponent<TextComponent>(m_ThisId) };
+			auto& healthComp{ ECS::GetInstance().GetComponent<HealthComponent>(m_PlayerId) };
 
 			const std::string displayText = "Player: " + playerName + " Health: " + std::to_string(healthComp.GetHealth());
 
@@ -36,12 +37,12 @@ namespace Pengin
 
 		void OnPlayerDeath(const void*) const
 		{
-			auto& textComp{ Pengin::ECS::GetInstance().GetComponent<TextComponent>(m_ThisId) };
+			auto& textComp{ ECS::GetInstance().GetComponent<TextComponent>(m_ThisId) };
 			const auto& text = textComp.GetText();
 
 			std::string newText = text;
 
-			auto& healthComp{ Pengin::ECS::GetInstance().GetComponent<HealthComponent>(m_PlayerId) };
+			auto& healthComp{ ECS::GetInstance().GetComponent<HealthComponent>(m_PlayerId) };
 			size_t digitPos = newText.find_first_of("0123456789");
 			if (digitPos != std::string::npos)
 			{

@@ -2,12 +2,12 @@
 #define CHARACTERMOVEMENTCOMPONENT
 
 #include "ECS.h"
-#include "TransformComponent.h"
-#include "Time.h"
+
+#include "glm/glm.hpp"
 
 namespace Pengin
 {
-	class CharacterMovementComponent final //Separate class because we can handle directions this way (mutliple binds, diagonal 'boosting')
+	class CharacterMovementComponent final
 	{
 	public:
 		CharacterMovementComponent(float movementSpeed, EntityId id) :
@@ -15,13 +15,7 @@ namespace Pengin
 			m_Id{ id }
 		{}
 
-		void Move(const glm::vec3& dir) const
-		{
-			//In future: move ID out, create view for comp types
-			auto& tranform{ Pengin::ECS::GetInstance().GetComponent<TransformComponent>(m_Id) };
-			auto vel = dir * m_MovementSpeed;
-			tranform.m_Position += (vel * Time::GetInstance().GetElapsedSec());
-		}
+		void Move(const glm::vec3& dir) const;
 
 	private:
 		const float m_MovementSpeed;

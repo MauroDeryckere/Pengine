@@ -1,1 +1,20 @@
 #include "TextureComponent.h"
+
+#include "TransformComponent.h"
+
+#include "Renderer.h"
+
+namespace Pengin
+{
+	void TextureComponent::Render() const
+	{
+		//In future: move ID out, create view for comp types (?)
+		if (m_pTexture)
+		{
+			auto& ecs = ECS::GetInstance();
+			const auto& tranform{ ecs.GetComponent<TransformComponent>(m_Id) };
+
+			dae::Renderer::GetInstance().RenderTexture(*m_pTexture, tranform.m_Position.x, tranform.m_Position.y);
+		}
+	}
+}

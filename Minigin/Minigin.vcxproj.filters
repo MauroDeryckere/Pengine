@@ -52,9 +52,6 @@
     <Filter Include="Header Files\Input\InputDevices\Devices">
       <UniqueIdentifier>{2b424b2c-450d-4066-86ed-27bd885822fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Core">
-      <UniqueIdentifier>{21cac00d-f9ca-47b4-8a88-f29b7b579806}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\ECS\ECS Components\ComponentManager">
       <UniqueIdentifier>{15a1b111-36e8-4b3e-9004-fb5f0421d025}</UniqueIdentifier>
     </Filter>
@@ -75,6 +72,9 @@
     </Filter>
     <Filter Include="Header Files\Scene">
       <UniqueIdentifier>{51cf14ff-9c89-448c-af00-9a68f8609969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core">
+      <UniqueIdentifier>{21cac00d-f9ca-47b4-8a88-f29b7b579806}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -324,6 +324,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DisplayComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
