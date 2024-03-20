@@ -2,7 +2,7 @@
 #define EVENTQUEUE
 
 #include <queue>
-#include <string>
+#include "Event.h"
 
 namespace Pengin
 {
@@ -14,10 +14,10 @@ namespace Pengin
 
 		void ProcessEvents();
 
-		void AddEvent(const std::string& eventName, const void* eventData);
+		void AddEvent(const Event& event);
 	
 	private:
-		std::queue<std::pair<std::string, const void*>> m_Queue;
+		std::queue<Event> m_Queue;
 	};
 }
 

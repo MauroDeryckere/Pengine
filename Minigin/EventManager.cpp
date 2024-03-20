@@ -1,4 +1,5 @@
 #include "EventManager.h"
+#include "EventQueue.h"
 
 #include <iostream>
 namespace Pengin
@@ -14,19 +15,19 @@ namespace Pengin
 		m_EventQueue->ProcessEvents();
 	}
 
-	void EventManager::BroadcastEvent(const std::string& eventName, const void* eventData)
+	void EventManager::BroadcastEvent(const Event& event)
 	{
-		m_EventQueue->AddEvent(eventName, eventData);
+		m_EventQueue->AddEvent(event);
 	}
 
-	void EventManager::RegisterObserver(const std::string& eventName, std::pair<std::weak_ptr<Observer>, std::function<void(const void*)>> observer)
+	void EventManager::RegisterObserver(const std::string& eventName, std::pair<std::weak_ptr<Observer>, fEventCallback> observer)
 	{
 		m_Observers[eventName].emplace_back(observer);
 	}
 
-	void EventManager::ProcessEvent(const std::string& eventName, const void* eventData)
+	void EventManager::ProcessEvent(const Event& event)
 	{
-		auto it { m_Observers.find(eventName) };
+		auto it { m_Observers.find(event.GetName()) };
 
 		if (it != end(m_Observers))
 		{
@@ -36,11 +37,11 @@ namespace Pengin
 			{
 				if (auto pObserver{ observer.lock() }; pObserver)
 				{
-					fCallback(eventData);
+					fCallback(event.GetData());
 				}
 				else
 				{
-					std::cout << "weakptr  cant lock for " << eventName << "\n";
+					std::cout << "weakptr  cant lock for " << event.GetName() << "\n";
 				}
 			}
 		}

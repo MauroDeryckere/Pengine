@@ -8,13 +8,13 @@ namespace Pengin
 	{
 		while (!m_Queue.empty())
 		{
-			EventManager::GetInstance().ProcessEvent(m_Queue.front().first, m_Queue.front().second);
+			EventManager::GetInstance().ProcessEvent(m_Queue.front());
 			m_Queue.pop();
 		}
 	}
 
-	void EventQueue::AddEvent(const std::string& eventName, const void* eventData)
+	void EventQueue::AddEvent(const Event& event)
 	{
-		m_Queue.push({ eventName, eventData });
+		m_Queue.push(event);
 	}
 }

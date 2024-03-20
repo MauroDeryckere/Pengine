@@ -16,14 +16,10 @@ namespace Pengin
 		~Event() = default;
 
 		const std::string& GetName() const { return m_Name; }
-
-		Event(const Event&) = delete;
-		Event(Event&&) = delete;
-		Event& operator=(const Event&) = delete;
-		Event& operator=(const Event&&) = delete;
+		const void* GetData() const { return m_EventData; }
 
 	private:
-		std::string m_Name;
+		const std::string m_Name;
 		const void* m_EventData;
 	};
 }

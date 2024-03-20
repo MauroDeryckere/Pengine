@@ -2,8 +2,8 @@
 #define EVENTMANAGER
 
 #include "Singleton.h"
-#include "EventQueue.h"
 
+#include "EventQueue.h" //can we move this?
 #include "Observer.h"
 #include "Event.h"
 
@@ -14,14 +14,12 @@
 
 namespace Pengin
 {
-	class Observer;
-
 	class EventManager final : public dae::Singleton<EventManager>
 	{
 	public:
 		void ProcessEvents();
 
-		void BroadcastEvent(const std::string& eventName, const void* eventData);
+		void BroadcastEvent(const Event& event);
 
 		EventManager(const EventManager&) = delete;
 		EventManager(EventManager&&) = delete;
@@ -32,17 +30,17 @@ namespace Pengin
 		friend class dae::Singleton<EventManager>;
 		
 		friend class Observer;
-		void RegisterObserver(const std::string& eventName, std::pair<std::weak_ptr<Observer>, std::function<void(const void* eventData)>> observer);
+		void RegisterObserver(const std::string& eventName, std::pair<std::weak_ptr<Observer>, fEventCallback> observer);
 
 		friend class EventQueue;
-		void ProcessEvent(const std::string& eventName, const void* eventData);
+		void ProcessEvent(const Event& event);
 
 		EventManager();
 		~EventManager() = default;
 
 		std::unique_ptr<EventQueue> m_EventQueue;
 
-		std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<Observer>, std::function<void(const void*)>>>> m_Observers; //since using strings here and likely larger map in big games, consider a map inst of uno map (monitor performance 1st) TODO
+		std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>> m_Observers; //since using strings here and likely larger map in big games, consider a map inst of uno map (monitor performance 1st) TODO
 	};
 }
 

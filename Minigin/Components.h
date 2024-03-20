@@ -181,7 +181,7 @@ namespace Pengin
 					std::cout << "Callback executed\n";
 				};
 
-			pObserver->RegisterForEvent("testEvent", functioCallback);
+			pObserver->RegisterForEvent("test", functioCallback);
 		}
 
 
