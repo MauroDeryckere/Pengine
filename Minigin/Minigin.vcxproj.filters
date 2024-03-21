@@ -222,7 +222,7 @@
     <ClInclude Include="CharacterMovementComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="DisplayComponent.h">
+    <ClInclude Include="UIDisplayComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>

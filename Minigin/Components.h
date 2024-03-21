@@ -2,7 +2,7 @@
 #define COMPONENTS
 
 #include "CharacterMovementComponent.h"
-#include "DisplayComponent.h"
+#include "UIDisplayComponent.h"
 #include "FPSCounterComponent.h"
 #include "HealthComponent.h"
 #include "TextComponent.h"

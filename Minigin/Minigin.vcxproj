@@ -194,7 +194,7 @@
     <ClInclude Include="Components.h" />
     <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="ConstComponentWrapper.h" />
-    <ClInclude Include="DisplayComponent.h" />
+    <ClInclude Include="UIDisplayComponent.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />

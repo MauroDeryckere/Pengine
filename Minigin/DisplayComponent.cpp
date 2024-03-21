@@ -1,1 +1,1 @@
-#include "DisplayComponent.h"
+#include "UIDisplayComponent.h"

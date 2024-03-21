@@ -12,10 +12,7 @@ namespace Pengin
 		int newHp = m_Health - damage;
 		m_Health = std::max(0, newHp);
 
-
-		Event diedEvent{ "PlayerDied" };
+		Event diedEvent{ "OnHealthChange", &m_Health };
 		EventManager::GetInstance().EnqueueEvent(diedEvent);
-
-		std::cout << "health: " << m_Health << "\n";
 	}
 }
