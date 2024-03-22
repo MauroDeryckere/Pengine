@@ -42,7 +42,14 @@ namespace Pengin
 
 			for (auto& [observer ,fCallback] : observers)
 			{
-				fCallback(event.GetData());
+				if (fCallback)
+				{
+					fCallback(event.GetData());
+				}
+				else
+				{
+					std::cout << "Im fucked \n";
+				}
 			}
 		}
 		//No listeners

@@ -156,9 +156,6 @@
     <ClInclude Include="InputMouse.h">
       <Filter>Header Files\Input\InputDevices\Devices</Filter>
     </ClInclude>
-    <ClInclude Include="InputDevice.h">
-      <Filter>Header Files\Input\InputDevices</Filter>
-    </ClInclude>
     <ClInclude Include="Time.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
@@ -222,8 +219,29 @@
     <ClInclude Include="CharacterMovementComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="UIDisplayComponent.h">
+    <ClInclude Include="UIDisplayHealthComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="UIDisplayScoreComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDevice.h">
+      <Filter>Header Files\Input\InputDevices</Filter>
+    </ClInclude>
+    <ClInclude Include="ECSTestingComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ObserverTestComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager_.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer_.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="TypedObserver.h">
+      <Filter>Header Files\Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -323,10 +341,19 @@
     <ClCompile Include="CharacterMovementComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DisplayComponent.cpp">
+    <ClCompile Include="HealthComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HealthComponent.cpp">
+    <ClCompile Include="UIDisplayScoreComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager_.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer_.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TypedObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

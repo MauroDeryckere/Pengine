@@ -2,7 +2,8 @@
 #define COMPONENTS
 
 #include "CharacterMovementComponent.h"
-#include "UIDisplayComponent.h"
+#include "UIDisplayHealthComponent.h"
+#include "UIDisplayScoreComponent.h"
 #include "FPSCounterComponent.h"
 #include "HealthComponent.h"
 #include "TextComponent.h"

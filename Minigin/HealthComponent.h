@@ -1,6 +1,8 @@
 #ifndef HEALTHCOMPONENT
 #define HEALTHCOMPONENT
 
+#include <string>
+
 namespace Pengin
 {
 	class HealthComponent final
@@ -12,9 +14,7 @@ namespace Pengin
 
 		~HealthComponent() = default; 
 
-		[[nodiscard]] unsigned GetHealth() const { return m_Health; }
-
-		void TakeDamage(unsigned damage);
+		void TakeDamage(unsigned damage, const std::string& event);
 
 	private:
 		unsigned m_Health;

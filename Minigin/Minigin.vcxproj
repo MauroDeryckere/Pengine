@@ -194,7 +194,12 @@
     <ClInclude Include="Components.h" />
     <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="ConstComponentWrapper.h" />
-    <ClInclude Include="UIDisplayComponent.h" />
+    <ClInclude Include="ECSTestingComponent.h" />
+    <ClInclude Include="EventManager_.h" />
+    <ClInclude Include="ObserverTestComponent.h" />
+    <ClInclude Include="Observer_.h" />
+    <ClInclude Include="TypedObserver.h" />
+    <ClInclude Include="UIDisplayHealthComponent.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
@@ -225,6 +230,7 @@
     <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="TransformComponent.h" />
+    <ClInclude Include="UIDisplayScoreComponent.h" />
     <ClInclude Include="UniqueTypeTracker.h" />
   </ItemGroup>
   <ItemGroup>
@@ -237,10 +243,10 @@
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_widgets.cpp" />
     <ClCompile Include="CharacterMovementComponent.cpp" />
-    <ClCompile Include="DisplayComponent.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="EventManager.cpp" />
+    <ClCompile Include="EventManager_.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSCounterComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
@@ -253,6 +259,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="Observer_.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -261,6 +268,8 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="Time.cpp" />
+    <ClCompile Include="TypedObserver.cpp" />
+    <ClCompile Include="UIDisplayScoreComponent.cpp" />
     <ClCompile Include="UniqueTypesTracker.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

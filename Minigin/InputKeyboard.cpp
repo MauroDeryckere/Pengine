@@ -36,6 +36,7 @@ namespace Pengin
 	WindowsKeyboardImpl::WindowsKeyboardImpl() :
 		m_KeyboardActionMapping(static_cast<size_t>(InputState::STATE_COUNT))	
 	{
+		m_KeyboardActionMapping.resize(static_cast<size_t>(InputState::STATE_COUNT));
 	}
 
 	void WindowsKeyboardImpl::ProcessInputState()

@@ -3,6 +3,7 @@
 
 #include "InputCommand.h"
 #include "EventManager.h"
+#include "EventManager_.h"
 
 #include "ECS.h"
 
@@ -61,31 +62,13 @@ namespace Pengin
 		const EntityId m_Id;
 	};
 
-	class ScorePickup final : public InputCommand //bound to input for now
-	{
-	public:
-		ScorePickup() = default;
-
-		virtual void Execute() override
-		{
-			Event scoroepickUp{"ScorePickup"};
-			EventManager::GetInstance().EnqueueEvent(scoroepickUp);
-		}
-
-		virtual ~ScorePickup() override = default;
-
-		ScorePickup(const ScorePickup&) = delete;
-		ScorePickup& operator=(const ScorePickup&) = delete;
-		ScorePickup(ScorePickup&&) noexcept = delete;
-		ScorePickup& operator=(ScorePickup&&) noexcept = delete;
-	};
-
 	class AttackPlayer final : public InputCommand //bound to input for now
 	{
 	public:
-		AttackPlayer(EntityId id, unsigned attackDamage = 1) :
+		AttackPlayer(EntityId id, const std::string& event, unsigned attackDamage = 1) :
 			m_Id{ id },
-			m_AttackDamage{ attackDamage }
+			m_AttackDamage{ attackDamage },
+			m_Event{event}
 		{
 			assert(ECS::GetInstance().HasComponent<HealthComponent>(m_Id));
 		}
@@ -93,7 +76,7 @@ namespace Pengin
 		virtual void Execute() override
 		{
 			auto& playerHealth{ ECS::GetInstance().GetComponent<HealthComponent>(m_Id) };
-			playerHealth.TakeDamage(m_AttackDamage);
+			playerHealth.TakeDamage(m_AttackDamage, m_Event);
 		}
 
 		virtual ~AttackPlayer() override = default;
@@ -106,6 +89,33 @@ namespace Pengin
 	private:
 		const EntityId m_Id;
 		const unsigned m_AttackDamage;
+		const std::string m_Event;
+	};
+
+	class CollectScore final : public InputCommand //bound to input for now
+	{
+	public:
+		CollectScore(EntityId id, unsigned score = 10) :
+			m_Id{ id },
+			m_Score{ score }
+		{ }
+
+		virtual void Execute() override
+		{
+			Event scoreEvent{"OnScoreCollect", &m_Score};
+			EventManager::GetInstance().EnqueueEvent(scoreEvent);
+		}
+
+		virtual ~CollectScore() override = default;
+
+		CollectScore(const CollectScore&) = delete;
+		CollectScore& operator=(const CollectScore&) = delete;
+		CollectScore(CollectScore&&) noexcept = delete;
+		CollectScore& operator=(CollectScore&&) noexcept = delete;
+
+	private:
+		const EntityId m_Id;
+		const unsigned m_Score;
 	};
 
 }

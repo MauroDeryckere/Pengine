@@ -14,6 +14,7 @@
 
 namespace Pengin
 {
+    //TODO, expand conceppts, mayb provide a 'stable' sparse set where we use erase
     template<typename ValueType, typename KeyType>
         requires std::is_default_constructible_v<KeyType> && 
                  std::is_move_constructible_v<KeyType> &&
@@ -29,7 +30,12 @@ namespace Pengin
             DenseReserve(reserveSize); 
         }
 
-        SparseSet() noexcept = default;
+        SparseSet() noexcept
+        {
+            //Temp, sparse testing
+            //m_DenseArray.reserve(3);
+            //std::cout << "sparse cap: " << m_DenseArray.capacity() << "\n";
+        };
         ~SparseSet() = default;
 
         SparseSet(const SparseSet&) = delete;
@@ -144,6 +150,7 @@ namespace Pengin
                 }
                 else if constexpr(std::is_move_constructible_v<ValueType>)
                 {
+                    std::cout << "moveconstruct \n";
                     new (&m_DenseArray[index]) ValueType(std::move(m_DenseArray.back()));
                 }
 

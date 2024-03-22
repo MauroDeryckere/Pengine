@@ -6,6 +6,7 @@
 #include "Renderer.h"
 
 #include "EventManager.h"
+#include "EventManager_.h"
 
 #include <algorithm>
 
@@ -25,6 +26,8 @@ void dae::Scene::FixedUpdate()
 
 void Scene::Update()
 {
+	Pengin::EventManager_::GetInstance().ProcessEventQueue();
+
 	auto fpsComps = Pengin::ECS::GetInstance().GetComponents<Pengin::FPSCounterComponent>();
 
 	for (auto& entity : fpsComps)
@@ -40,6 +43,12 @@ void Scene::Update()
 	}
 
 	Pengin::EventManager::GetInstance().ProcessEvents();
+	/*auto hUI = Pengin::ECS::GetInstance().GetComponents<Pengin::UIDisplayHealthComponent>();
+
+	for (auto& entity : hUI) //id remains valid, it is only when executing the lambda and only then, tempoorarily !!
+	{
+		entity.PrintId();
+	}*/
 }
 
 void Scene::Render() const
