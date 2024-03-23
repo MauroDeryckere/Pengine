@@ -1,17 +1,18 @@
 #include "EventManager_.h"
 #include <algorithm>
 #include <cassert>
+#include <ranges>
 
 namespace Pengin
 {
 	void EventManager_::ProcessEventQueue()
 	{
-		//For now set all dirty
+		//For now set all dirty - this logic has to be inside ECS later - TODO
 		SetObserverDirty(); 
 
 		while (!m_EventQueue.empty())
 		{
-			ProcessEvent(m_EventQueue.front()); //br here
+			ProcessEvent(m_EventQueue.front());
 			m_EventQueue.pop();
 		}
 	}
@@ -28,9 +29,9 @@ namespace Pengin
 	
 	void EventManager_::ProcessEvent(const std::string& event)
 	{
-		auto it{ m_Callbacks.find(event) };
+		auto it{ m_EventCallbacks.find(event) };
 
-		if (it != end(m_Callbacks))
+		if (it != end(m_EventCallbacks))
 		{
 			auto& observers{ it->second };
 
@@ -38,49 +39,44 @@ namespace Pengin
 				{
 					return observerPair.first.expired();
 				});
-			//TODO cleanup
-
-
-			for (size_t i = 0; i < observers.size(); i++)
-			{
-				auto pObs{ observers[i].first.lock()};
-				pObs->RegisterCallbacks(); //some breaking error in here - inf loop, obv need to erase first... dumbass
-;			}
 
 			for (auto& [observer, fCallback] : observers)
 			{
+				auto pObs{ observer.lock() };
+
+				if (pObs->IsDirty())
+				{
+					pObs->RegisterCallbacks();
+				}
 				fCallback();
 			}
 		}
-	
 	}
-	void EventManager_::RegisterObserver(std::shared_ptr<Observer_> pObserver, std::function<void()> fCallback, const std::string& event)
+
+	void EventManager_::RegisterObserver(std::shared_ptr<Observer_> pObserver, fEventCallback fCallback, const std::string& event)
 	{
 		const ObserverIdentifier identifier{ pObserver->GetEntityId(), pObserver->GetTypeIdx() };
-
 		m_Observers[identifier] = pObserver;
-		auto& vec = m_Callbacks[event];
+		
+		auto& ObserverVec{ m_EventCallbacks[event] };
 
-		bool found = false;
-
-		for (int i = 0; i < vec.size(); ++i)
-		{
-			if (vec[i].first.lock() == pObserver)
+		auto it = std::ranges::find_if(ObserverVec, [pObserver](const auto& pair) 
 			{
-				vec[i] = { pObserver, fCallback };
-				found = true;
-			}
+				return pair.first.lock() == pObserver;
+			});
+
+		if (it != ObserverVec.end())
+		{
+			*it = { pObserver, fCallback };
+			return;
 		}
 
-		if (!found)
-		{
-			m_Callbacks[event].emplace_back(pObserver, fCallback);
-		}
+		ObserverVec.emplace_back(pObserver, fCallback);
 	}
 
 	void EventManager_::SetObserverDirty()
 	{
-		for (auto& obsPair : m_Observers)
+		for (auto& obsPair : m_Observers) //Set specific obs dirty
 		{
 			obsPair.second.lock()->SetDirty();
 		}

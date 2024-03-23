@@ -24,7 +24,7 @@ namespace Pengin
 		Observer_(EntityId entityId, std::type_index typeIdx) :
 			m_EntityId{ entityId },
 			m_TypeIdx{ typeIdx },
-			m_IsDirty{ true }
+			m_IsDirty{ false }
 		{}
 
 		void SetIsDirtyFalse() { m_IsDirty = false; }

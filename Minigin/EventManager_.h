@@ -30,7 +30,7 @@ namespace Pengin
 		void BroadcastBlockingEvent(const std::string& event);
 
 		template<typename ComponentType>
-		//requires ObserverConcept<ComponentType>
+		requires ObserverConcept<ComponentType>
 		std::shared_ptr<Observer_> CreateObserver(EntityId entityId) const
 		{
 			static_assert(ObserverConcept<ComponentType>, "Must provide a valid function in the component class");
@@ -44,12 +44,14 @@ namespace Pengin
 		EventManager_& operator=(const EventManager_&&) = delete;
 
 	private:
+		using fEventCallback = std::function<void()>;
+
 		friend class dae::Singleton<EventManager_>;
 		EventManager_() = default;
 		~EventManager_() = default;
 
 		friend class Observer_;
-		void RegisterObserver(std::shared_ptr<Observer_> pObserver, std::function<void()> fCallback, const std::string& event);
+		void RegisterObserver(std::shared_ptr<Observer_> pObserver, fEventCallback fCallback, const std::string& event);
 
 		void SetObserverDirty();
 		
@@ -58,17 +60,17 @@ namespace Pengin
 		using ObserverIdentifier = std::pair<EntityId, std::type_index>;
 		struct ObserverIdentifierHash 
 		{
-			std::size_t operator()(const ObserverIdentifier& identifier) const 
+			size_t operator()(const ObserverIdentifier& identifier) const 
 			{
-				const std::size_t hash1 = std::hash<unsigned>{}(identifier.first);
-				const std::size_t hash2 = identifier.second.hash_code();
+				const size_t hash1 = std::hash<unsigned>{}(identifier.first);
+				const size_t hash2 = identifier.second.hash_code();
 
 				return hash1 ^ hash2;
 			}
 		};
 
 		std::unordered_map<ObserverIdentifier, std::weak_ptr<Observer_>, ObserverIdentifierHash> m_Observers;
-		std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<Observer_>, std::function<void()>>>> m_Callbacks;
+		std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<Observer_>, fEventCallback>>> m_EventCallbacks;
 
 		std::queue<std::string> m_EventQueue;
 	};

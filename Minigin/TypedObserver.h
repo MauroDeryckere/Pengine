@@ -13,6 +13,8 @@ namespace Pengin
 		{
 			auto& component = ECS::GetInstance().GetComponent<ComponentType>(Observer_::GetEntityId());
 			component.RegisterObservers();
+
+			Observer_::SetIsDirtyFalse();
 		}
 
 		virtual ~TypedObserver() override = default;
