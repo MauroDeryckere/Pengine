@@ -1,7 +1,6 @@
 #ifndef EVENTMANAGER
 #define EVENTMANAGER
 
-#include "ECS.h"
 #include "Singleton.h"
 
 #include "Event.h"
@@ -16,6 +15,8 @@
 
 namespace Pengin
 {
+	using EntityId = unsigned;
+
 	template<typename ComponentType>
 	concept ObserverConcept = requires(ComponentType component)
 	{
@@ -39,6 +40,8 @@ namespace Pengin
 			return std::make_shared<TypedObserver<ComponentType>>(entityId);
 		}
 
+		void SetObserverDirty(EntityId entiyId, std::type_index typeIdx);
+
 		EventManager(const EventManager&) = delete;
 		EventManager(EventManager&&) = delete;
 		EventManager& operator=(const EventManager&) = delete;
@@ -54,8 +57,6 @@ namespace Pengin
 		friend class Observer;
 		void RegisterObserver(std::shared_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event);
 
-		void SetObserverDirty();
-		
 		void ProcessEvent(const std::string& event);
 
 		using ObserverIdentifier = std::pair<EntityId, std::type_index>;

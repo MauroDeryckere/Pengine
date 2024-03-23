@@ -30,12 +30,7 @@ namespace Pengin
             DenseReserve(reserveSize); 
         }
 
-        SparseSet() noexcept
-        {
-            //Temp, sparse testing
-            //m_DenseArray.reserve(3);
-            //std::cout << "sparse cap: " << m_DenseArray.capacity() << "\n";
-        };
+        SparseSet() noexcept = default;
         ~SparseSet() = default;
 
         SparseSet(const SparseSet&) = delete;
@@ -112,7 +107,7 @@ namespace Pengin
         }
 
         template<typename... Args>
-        iterator Emplace(const KeyType& key, Args&&... args) noexcept
+        std::pair<iterator, bool> Emplace(const KeyType& key, Args&&... args) noexcept
             requires std::is_constructible_v<ValueType, Args...>
         {
             const auto [it, inserted] = m_SparseMap.emplace(key, m_DenseArray.size());
@@ -121,13 +116,15 @@ namespace Pengin
 
             if (!inserted)
             {
-                return m_DenseArray.end();
+                return { m_DenseArray.end(), false };
             }    
+
+            const size_t oldCapacity{ m_DenseArray.capacity() };
 
             m_DenseArray.emplace_back(std::forward<Args>(args)...);
             m_ReverseMapping.emplace_back(key);
 
-            return std::prev(m_DenseArray.end());
+            return { std::prev(m_DenseArray.end()), (oldCapacity <= m_DenseArray.capacity()) };
         }
 
         void Remove(const KeyType& key) noexcept

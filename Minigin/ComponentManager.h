@@ -37,7 +37,7 @@ namespace Pengin
         ComponentManager& operator=(ComponentManager&&) noexcept = delete;
 
         template<typename ComponentType, typename... Args>
-        ComponentType& AddComponent(const EntityId& id, Args&&... args)
+        std::pair<ComponentType&, bool> AddComponent(const EntityId& id, Args&&... args)
         {
             [[maybe_unused]] UniqueTypesTracker<ComponentType> tracker; //TODO Change this
 
@@ -57,10 +57,10 @@ namespace Pengin
 
             auto& set{ storage->GetSet() };
 
-            auto it{ set.Emplace(id, std::forward<Args>(args)...) };
-            if (it != set.end())
+            auto pair{ set.Emplace(id, std::forward<Args>(args)...) };
+            if (pair.first != set.end())
             {
-                return *it; 
+                return {*pair.first, pair.second};
             }
 
             throw std::runtime_error("Failed to add component");

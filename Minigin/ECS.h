@@ -15,13 +15,12 @@
 * The templated functions that do not cast down to a typeid are templated because the return type is required. The others for uniformity
 * It is recommended to use the Get function whenever you need to acces a specific component because references could become invalid frame - frame as the container changes
 * 
-* 
 * TODO: 
 * HasComponent<Types ...>()
 * GetComponents<Type, Type>()  - return All entities with 2 given componennts
 * 
 * Other communication methods (?) Get might not be the most optimal in all scenarios, oother methods could be nice (lower prio)
-* 
+*   -> messaging system
 * Serialization
 */
 
@@ -49,7 +48,14 @@ namespace Pengin
         ComponentType& AddComponent(const EntityId& id, Args&&... args)
         {
             m_EntityManager.AddComponent(typeid(ComponentType), id);
-            return m_ComponentManager.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
+            auto pair = m_ComponentManager.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
+
+            if (pair.second)
+            {
+               //Need access to the EventManager here.
+            }
+
+            return pair.first;
         }
 
         template<typename ComponentType>

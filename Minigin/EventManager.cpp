@@ -8,7 +8,7 @@ namespace Pengin
 	void EventManager::ProcessEventQueue()
 	{
 		//For now set all dirty - this logic has to be inside ECS later - TODO
-		SetObserverDirty(); 
+		SetObserverDirty(1, typeid(EventManager));
 
 		while (!m_EventQueue.empty())
 		{
@@ -74,8 +74,11 @@ namespace Pengin
 		ObserverVec.emplace_back(pObserver, fCallback);
 	}
 
-	void EventManager::SetObserverDirty()
+	void EventManager::SetObserverDirty(EntityId entiyId, std::type_index typeIdx)
 	{
+		entiyId;
+		typeIdx;
+
 		for (auto& obsPair : m_Observers) //Set specific obs dirty
 		{
 			obsPair.second.lock()->SetDirty();
