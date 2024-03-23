@@ -11,6 +11,8 @@
 
 #include "EntityManager.h"
 
+#include "EcsEventInter.h"
+
 /*ECS Documentation
 * The templated functions that do not cast down to a typeid are templated because the return type is required. The others for uniformity
 * It is recommended to use the Get function whenever you need to acces a specific component because references could become invalid frame - frame as the container changes
@@ -50,10 +52,10 @@ namespace Pengin
             m_EntityManager.AddComponent(typeid(ComponentType), id);
             auto pair = m_ComponentManager.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
 
-            if (pair.second)
+            /*if (pair.second)
             {
-               //Need access to the EventManager here.
-            }
+                m_ECSEventInter.SetObserverDirty(id, typeid(ComponentType));
+            }*/
 
             return pair.first;
         }
@@ -61,8 +63,17 @@ namespace Pengin
         template<typename ComponentType>
         void RemoveComponent(const EntityId& id)
         {
+            auto wrapper = m_ComponentManager.GetComponentWrapper<ComponentType>();
+            auto it = std::prev(wrapper.end());
+
+            EntityId lastId = wrapper.GetIdFromIterator(it);
+            lastId;
+
             m_EntityManager.RemoveComponent(typeid(ComponentType), id);
             m_ComponentManager.RemoveComponent(typeid(ComponentType), id);
+
+           // m_ECSEventInter.SetObserverDirty(lastId, typeid(ComponentType));
+            //m_ECSEventInter.SetObserverDirty(id, typeid(ComponentType));
         }
 
         template<typename ComponentType>
@@ -72,7 +83,7 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        [[nodiscard]] ComponentType& GetOrEmplaceComponent(const EntityId& id)
+        [[nodiscard]] ComponentType& GetOrEmplaceComponent(const EntityId& id) //TODO
         {
             return m_ComponentManager.GetOrEmplaceComponent<ComponentType>(id);
         }
@@ -119,6 +130,8 @@ namespace Pengin
 
         ComponentManager m_ComponentManager;
         EntityManager m_EntityManager;
+
+        EcsEventInter m_ECSEventInter;
     };
 
 }

@@ -12,7 +12,7 @@ namespace Pengin
 		int newHp = m_Health - damage;
 		m_Health = std::max(0, newHp);
 
-		Event diedEvent{ event, &m_Health };
-		EventManager::GetInstance().BroadcoastEvent(diedEvent.GetName());
+		auto diedEvent{ event };
+		EventManager::GetInstance().BroadcoastEvent(diedEvent);
 	}
 }

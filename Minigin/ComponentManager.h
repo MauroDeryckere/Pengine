@@ -250,7 +250,6 @@ namespace Pengin
             return ConstComponentWrapper<ComponentType>{set};
         }
 
-
     private:
         std::vector<std::unique_ptr<BaseComponentStorage>> m_ComponentStorage;
 

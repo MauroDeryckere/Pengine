@@ -33,29 +33,34 @@ namespace Pengin
 
 		void RegisterObservers()
 		{
-			auto callback = [this]()
+			auto callback = [&id = m_Id, &test = test]()
 				{
 					//const unsigned health{ (*static_cast<const unsigned*>(eventData)) };
 
-					auto& textComp{ ECS::GetInstance().GetComponent<TextComponent>(m_Id) };
+					auto& textComp{ ECS::GetInstance().GetComponent<TextComponent>(id) };
 					const std::string displayText{ "Player: Health: " + std::to_string(test) };
-
+					
 					++test;
 
 					textComp.SetText(displayText);
 				};
 
-			m_Observer->RegisterForEvent(m_EventName, callback);
+			m_Observer->RegisterForEvent(m_Observer, m_EventName, callback);
 		}
-
+		~UIDisplayHealthComponent()
+		{
+			m_Observer = nullptr;
+		 }
 	private:
-		const EntityId m_Id;
-		std::shared_ptr<Observer> m_Observer;
+
+		//A move construct here breaks the program, holds an "extra" strong reference to the m_Obs
+		EntityId m_Id;
+		std::shared_ptr<Observer> m_Observer; //Problem that this captures the weak ptr?
 
 		int test = 0;
 
-		const std::string m_PlayerName;
-		const std::string m_EventName;
+		std::string m_PlayerName;
+		std::string m_EventName;
 	};
 }
 

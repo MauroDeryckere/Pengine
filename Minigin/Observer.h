@@ -8,12 +8,12 @@
 
 namespace Pengin
 {
-	class Observer abstract : public std::enable_shared_from_this<Observer>
+	class Observer abstract
 	{
 	public:
 		virtual void RegisterCallbacks() = 0;
 
-		void RegisterForEvent(const std::string& eventName, std::function<void()> fCallback);
+		void RegisterForEvent(std::weak_ptr<Observer> pObs, const std::string& eventName, std::function<void()> fCallback);
 
 		[[nodiscard]] EntityId GetEntityId() const { return m_EntityId; }
 		[[nodiscard]] const std::type_index GetTypeIdx() const { return m_TypeIdx; }
@@ -21,16 +21,21 @@ namespace Pengin
 		[[nodiscard]] bool IsDirty() const { return m_IsDirty; }
 		void SetDirty() { m_IsDirty = true; }
 
+		virtual ~Observer()
+		{
+			std::cout << "Obs deleted for id: " << m_EntityId << "\n\n\n";
+		};
 	protected:
 		Observer(EntityId entityId, std::type_index typeIdx) :
 			m_EntityId{ entityId },
 			m_TypeIdx{ typeIdx },
 			m_IsDirty{ false }
-		{}
+		{
+			std::cout << "Obs created for id: "<< m_EntityId << "\n\n\n";
+		}
 
 		void SetIsDirtyFalse() { m_IsDirty = false; }
 
-		virtual ~Observer() = default;
 
 		Observer(const Observer&) = delete;
 		Observer(Observer&&) = delete;

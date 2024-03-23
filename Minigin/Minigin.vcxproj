@@ -194,6 +194,7 @@
     <ClInclude Include="Components.h" />
     <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="ConstComponentWrapper.h" />
+    <ClInclude Include="EcsEventInter.h" />
     <ClInclude Include="ECSTestingComponent.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="Observer.h" />
@@ -202,7 +203,6 @@
     <ClInclude Include="ECS.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
-    <ClInclude Include="Event.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSCounterComponent.h" />
     <ClInclude Include="HealthComponent.h" />
@@ -240,8 +240,8 @@
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_widgets.cpp" />
     <ClCompile Include="CharacterMovementComponent.cpp" />
+    <ClCompile Include="EcsEventInter.cpp" />
     <ClCompile Include="EntityManager.cpp" />
-    <ClCompile Include="Event.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSCounterComponent.cpp" />
@@ -263,7 +263,6 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="Time.cpp" />
-    <ClCompile Include="TypedObserver.cpp" />
     <ClCompile Include="UIDisplayScoreComponent.cpp" />
     <ClCompile Include="UniqueTypesTracker.cpp" />
   </ItemGroup>

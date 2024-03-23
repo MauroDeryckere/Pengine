@@ -101,7 +101,7 @@ namespace Pengin
 
         [[nodiscard]] const KeyType& GetKeyFromIterator(const_iterator it) const noexcept
         {
-            const size_t index{ std::distance(cbegin(), it) };
+            const size_t index{ static_cast<size_t>(std::distance(cbegin(), it)) };
             
             return GetKeyFromDenseIndex(index);
         }
@@ -147,12 +147,12 @@ namespace Pengin
                 }
                 else if constexpr(std::is_move_constructible_v<ValueType>)
                 {
-                    std::cout << "moveconstruct \n";
+                    std::cout << "moveconstruct on id: "<< key << " -> " << lastKey << " \n";
                     new (&m_DenseArray[index]) ValueType(std::move(m_DenseArray.back()));
                 }
 
                 m_ReverseMapping[index] = m_ReverseMapping.back();
-
+                std::cout << "popped back (id: " << m_ReverseMapping.back() << " ) \n";
                 m_ReverseMapping.pop_back();
                 m_DenseArray.pop_back();
             }

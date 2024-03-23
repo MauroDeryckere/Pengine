@@ -101,8 +101,8 @@ namespace Pengin
 
 		virtual void Execute() override
 		{
-			Event scoreEvent{"OnScoreCollect", &m_Score};
-			EventManager::GetInstance().BroadcoastEvent(scoreEvent.GetName());
+			auto scoreEvent{"OnScoreCollect"};
+			EventManager::GetInstance().BroadcoastEvent(scoreEvent);
 		}
 
 		virtual ~CollectScore() override = default;

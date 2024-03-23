@@ -4,9 +4,9 @@
 
 namespace Pengin
 {
-	void Observer::RegisterForEvent(const std::string& eventName, std::function<void()> fCallback)
+	void Observer::RegisterForEvent(std::weak_ptr<Observer> pObs, const std::string& eventName, std::function<void()> fCallback)
 	{
-		EventManager::GetInstance().RegisterObserver(shared_from_this(), fCallback, eventName);
+		EventManager::GetInstance().RegisterObserver(pObs, fCallback, eventName);
 	}
 }
 

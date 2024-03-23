@@ -189,9 +189,6 @@
     <ClInclude Include="Renderer.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
     <ClInclude Include="TransformComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -236,6 +233,9 @@
     </ClInclude>
     <ClInclude Include="TypedObserver.h">
       <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EcsEventInter.h">
+      <Filter>Header Files\ECS\ECS Components\ECS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -311,9 +311,6 @@
     <ClCompile Include="InputBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Event.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -321,9 +318,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Observer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TypedObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CharacterMovementComponent.cpp">
@@ -343,6 +337,9 @@
     </ClCompile>
     <ClCompile Include="UIDisplayScoreComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EcsEventInter.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

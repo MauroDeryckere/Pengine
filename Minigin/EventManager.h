@@ -3,7 +3,6 @@
 
 #include "Singleton.h"
 
-#include "Event.h"
 #include "TypedObserver.h"
 
 #include <unordered_map>
@@ -35,6 +34,8 @@ namespace Pengin
 		requires ObserverConcept<ComponentType>
 		std::shared_ptr<Observer> CreateObserver(EntityId entityId) const
 		{
+			std::cout << "create obs caled for id: " << entityId << "\n";
+
 			static_assert(ObserverConcept<ComponentType>, "Must provide a valid function in the component class");
 
 			return std::make_shared<TypedObserver<ComponentType>>(entityId);
@@ -55,7 +56,7 @@ namespace Pengin
 		~EventManager() = default;
 
 		friend class Observer;
-		void RegisterObserver(std::shared_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event);
+		void RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event);
 
 		void ProcessEvent(const std::string& event);
 

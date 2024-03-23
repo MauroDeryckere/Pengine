@@ -7,9 +7,16 @@ namespace Pengin
 {
 	void EventManager::ProcessEventQueue()
 	{
-		//For now set all dirty - this logic has to be inside ECS later - TODO
-		SetObserverDirty(1, typeid(EventManager));
+		for (auto& obs: m_Observers)
+		{
+			auto ptr = obs.second.lock();
+			if (ptr)
+			{
+				ptr->SetDirty();
+			}
+		}
 
+		
 		while (!m_EventQueue.empty())
 		{
 			ProcessEvent(m_EventQueue.front());
@@ -29,6 +36,9 @@ namespace Pengin
 	
 	void EventManager::ProcessEvent(const std::string& event)
 	{
+		//1 strong , 
+
+
 		auto it{ m_EventCallbacks.find(event) };
 
 		if (it != end(m_EventCallbacks))
@@ -39,7 +49,7 @@ namespace Pengin
 				{
 					return observerPair.first.expired();
 				});
-
+			//A strong ref somewhere tht shouldnt exist, need to fix.
 			for (auto& [observer, fCallback] : observers)
 			{
 				auto pObs{ observer.lock() };
@@ -53,16 +63,24 @@ namespace Pengin
 		}
 	}
 
-	void EventManager::RegisterObserver(std::shared_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event)
+	void EventManager::RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event)
 	{
-		const ObserverIdentifier identifier{ pObserver->GetEntityId(), pObserver->GetTypeIdx() };
+		auto obs = pObserver.lock();
+
+		if (!obs)
+		{
+			std::cerr << "ERROR IN REGOBS \n";
+			return;
+		}
+
+		const ObserverIdentifier identifier{ obs->GetEntityId(), obs->GetTypeIdx() };
 		m_Observers[identifier] = pObserver;
 		
 		auto& ObserverVec{ m_EventCallbacks[event] };
 
-		auto it = std::ranges::find_if(ObserverVec, [pObserver](const auto& pair) 
+		auto it = std::ranges::find_if(ObserverVec, [obs](const auto& pair)
 			{
-				return pair.first.lock() == pObserver;
+				return pair.first.lock() == obs;
 			});
 
 		if (it != ObserverVec.end())
@@ -78,11 +96,23 @@ namespace Pengin
 	{
 		entiyId;
 		typeIdx;
+		/*auto it = m_Observers.find({entiyId, typeIdx});
 
-		for (auto& obsPair : m_Observers) //Set specific obs dirty
+		if (it == m_Observers.end())
 		{
-			obsPair.second.lock()->SetDirty();
+			std::cerr << "trying to set obs dirty that isnt in observer map \n";
+			return;
 		}
+
+		auto pObs = it->second.lock();
+		
+		if (pObs)
+		{
+			pObs->SetDirty();
+			return;
+		}
+
+		m_Observers.erase(it);*/
 	}
 }
 

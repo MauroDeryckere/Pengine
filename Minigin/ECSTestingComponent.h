@@ -7,28 +7,25 @@ namespace Pengin
 	struct TestComponent
 	{
 		TestComponent(int testInt_) : 
-			testInt{ testInt_ }
+			testInt{ testInt_ },
+			t{0}
 		{
 			InitCallback();
 		};
 
 		void InitCallback()
 		{
-			m_std_funcTest = [this]()
-				{
-					Test();
-				};
 		}
 
 		void Test()
 		{
 			std::cout << " testInt:" << testInt << "\n";
-
 		}
 
 		int testInt;
+		const int t;
 		//Using std function ptr
-		std::function<void()> m_std_funcTest;
+		//std::function<void()> m_std_funcTest;
 
 	};
 }

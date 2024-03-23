@@ -30,7 +30,7 @@ namespace Pengin
 		void RegisterObservers()
 		{
 			auto callback = [this]() { OnScoreIncrease(); };
-			m_Observer->RegisterForEvent("OnScoreCollect", callback);
+			m_Observer->RegisterForEvent(m_Observer, "OnScoreCollect", callback);
 		}
 
 	private:
