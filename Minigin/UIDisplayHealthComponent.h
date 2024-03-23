@@ -3,7 +3,7 @@
 
 #include "ECS.h"
 
-#include "EventManager_.h"
+#include "EventManager.h"
 
 #include "TextComponent.h"
 #include "HealthComponent.h"
@@ -17,7 +17,7 @@ namespace Pengin
 	public:
 		UIDisplayHealthComponent(EntityId id, const std::string& eventName , const std::string& playerName, unsigned initHealth = 0) :
 			m_Id{ id },
-			m_Observer{ EventManager_::GetInstance().CreateObserver<UIDisplayHealthComponent>(id) },
+			m_Observer{ EventManager::GetInstance().CreateObserver<UIDisplayHealthComponent>(id) },
 			m_PlayerName{ playerName },
 			m_EventName{eventName}
 
@@ -50,7 +50,7 @@ namespace Pengin
 
 	private:
 		const EntityId m_Id;
-		std::shared_ptr<Observer_> m_Observer;
+		std::shared_ptr<Observer> m_Observer;
 
 		int test = 0;
 

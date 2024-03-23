@@ -186,12 +186,6 @@
     <ClInclude Include="Renderer.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="EventManager.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Observer.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
@@ -231,13 +225,10 @@
     <ClInclude Include="ECSTestingComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ObserverTestComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="EventManager_.h">
+    <ClInclude Include="EventManager.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
-    <ClInclude Include="Observer_.h">
+    <ClInclude Include="Observer.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
     <ClInclude Include="TypedObserver.h">
@@ -317,13 +308,7 @@
     <ClCompile Include="InputBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EventManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Event.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Observer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
@@ -347,10 +332,10 @@
     <ClCompile Include="UIDisplayScoreComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EventManager_.cpp">
+    <ClCompile Include="EventManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Observer_.cpp">
+    <ClCompile Include="Observer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TypedObserver.cpp">

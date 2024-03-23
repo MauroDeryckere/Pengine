@@ -1,7 +1,6 @@
 #include "HealthComponent.h"
 
 #include "EventManager.h"
-#include "EventManager_.h"
 
 #include <iostream>
 #include <algorithm>
@@ -14,6 +13,6 @@ namespace Pengin
 		m_Health = std::max(0, newHp);
 
 		Event diedEvent{ event, &m_Health };
-		EventManager_::GetInstance().BroadcoastEvent(diedEvent.GetName());
+		EventManager::GetInstance().BroadcoastEvent(diedEvent.GetName());
 	}
 }

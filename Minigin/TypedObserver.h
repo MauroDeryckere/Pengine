@@ -1,20 +1,21 @@
-#pragma once
+#ifndef TYPEDOBSERVER
+#define TYPEDOBSERVER
 
 #include "ECS.h"
-#include "Observer_.h"
+#include "Observer.h"
 
 namespace Pengin
 {
 	template <typename ComponentType>
-	class TypedObserver final : public Observer_
+	class TypedObserver final : public Observer
 	{
 	public:
 		virtual void RegisterCallbacks() override
 		{
-			auto& component = ECS::GetInstance().GetComponent<ComponentType>(Observer_::GetEntityId());
+			auto& component = ECS::GetInstance().GetComponent<ComponentType>(Observer::GetEntityId());
 			component.RegisterObservers();
 
-			Observer_::SetIsDirtyFalse();
+			Observer::SetIsDirtyFalse();
 		}
 
 		virtual ~TypedObserver() override = default;
@@ -24,10 +25,11 @@ namespace Pengin
 		TypedObserver& operator=(const TypedObserver&) = delete;
 		TypedObserver& operator=(const TypedObserver&&) = delete;
 		TypedObserver(EntityId entityId) :
-			Observer_{ entityId, typeid(ComponentType) } //TODO MOVE TO FRIEND / PRIVATE
+			Observer{ entityId, typeid(ComponentType) } //TODO MOVE TO FRIEND / PRIVATE
 		{}
 
 	private:
-		friend class EventManager_;
+		friend class EventManager;
 	};
 }
+#endif

@@ -1,10 +1,15 @@
 #include "EventManager.h"
-#include <iostream>
+#include <algorithm>
+#include <cassert>
+#include <ranges>
 
 namespace Pengin
 {
-	void EventManager::ProcessEvents()
+	void EventManager::ProcessEventQueue()
 	{
+		//For now set all dirty - this logic has to be inside ECS later - TODO
+		SetObserverDirty(); 
+
 		while (!m_EventQueue.empty())
 		{
 			ProcessEvent(m_EventQueue.front());
@@ -12,48 +17,69 @@ namespace Pengin
 		}
 	}
 
-	void EventManager::BroadcastBlockingEvent(const Event& event)
+	void EventManager::BroadcoastEvent(const std::string& event)
+	{
+		m_EventQueue.emplace(event);
+	}
+
+	void EventManager::BroadcastBlockingEvent(const std::string& event)
 	{
 		ProcessEvent(event);
 	}
-
-	void EventManager::EnqueueEvent(const Event& event)
+	
+	void EventManager::ProcessEvent(const std::string& event)
 	{
-		m_EventQueue.push(event);
-	}
+		auto it{ m_EventCallbacks.find(event) };
 
-	void EventManager::RegisterObserver(const std::string& eventName, std::pair<std::shared_ptr<Observer>, fEventCallback> observer)
-	{
-		m_Observers[eventName].emplace_back(observer);
-	}
-
-	void EventManager::ProcessEvent(const Event& event)
-	{
-		auto it { m_Observers.find(event.GetName()) };
-
-		if (it != end(m_Observers))
+		if (it != end(m_EventCallbacks))
 		{
 			auto& observers{ it->second };
 
-			std::erase_if(observers, [](const auto& observerPair) 
-			{
-				return observerPair.first.expired();
-			});
+			std::erase_if(observers, [](const auto& observerPair)
+				{
+					return observerPair.first.expired();
+				});
 
-			for (auto& [observer ,fCallback] : observers)
+			for (auto& [observer, fCallback] : observers)
 			{
-				if (fCallback)
+				auto pObs{ observer.lock() };
+
+				if (pObs->IsDirty())
 				{
-					fCallback(event.GetData());
+					pObs->RegisterCallbacks();
 				}
-				else
-				{
-					std::cout << "Im fucked \n";
-				}
+				fCallback();
 			}
 		}
-		//No listeners
+	}
+
+	void EventManager::RegisterObserver(std::shared_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event)
+	{
+		const ObserverIdentifier identifier{ pObserver->GetEntityId(), pObserver->GetTypeIdx() };
+		m_Observers[identifier] = pObserver;
+		
+		auto& ObserverVec{ m_EventCallbacks[event] };
+
+		auto it = std::ranges::find_if(ObserverVec, [pObserver](const auto& pair) 
+			{
+				return pair.first.lock() == pObserver;
+			});
+
+		if (it != ObserverVec.end())
+		{
+			*it = { pObserver, fCallback };
+			return;
+		}
+
+		ObserverVec.emplace_back(pObserver, fCallback);
+	}
+
+	void EventManager::SetObserverDirty()
+	{
+		for (auto& obsPair : m_Observers) //Set specific obs dirty
+		{
+			obsPair.second.lock()->SetDirty();
+		}
 	}
 }
-
 

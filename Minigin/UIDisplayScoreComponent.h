@@ -15,20 +15,22 @@ namespace Pengin
 	public:
 		UIDisplayScoreComponent(EntityId id, const std::string& prefix) :
 			m_Id{ id },
-			m_Observer{ std::make_shared<Observer>() },
+			m_Observer{ EventManager::GetInstance().CreateObserver<UIDisplayScoreComponent>(id) },
 			m_Prefix{prefix},
 			m_Score{0}
 
 		{
-			assert( ECS::GetInstance().HasComponent<TextComponent>(m_Id) );
-
-			auto callback = [this](const void* eventData) { OnScoreIncrease(eventData); };
-			m_Observer->RegisterForEvent("OnScoreCollect", callback);
-
 			const std::string text{ m_Prefix + " " + std::to_string(m_Score) };
 
 			auto& textComp = ECS::GetInstance().GetComponent<TextComponent>(m_Id);
 			textComp.SetText(text);
+			RegisterObservers();
+		}
+
+		void RegisterObservers()
+		{
+			auto callback = [this]() { OnScoreIncrease(); };
+			m_Observer->RegisterForEvent("OnScoreCollect", callback);
 		}
 
 	private:
@@ -39,11 +41,9 @@ namespace Pengin
 
 		std::shared_ptr<Observer> m_Observer;
 
-		void OnScoreIncrease(const void* eventData)
-		{
-			const int scoreChange{ (*static_cast<const int*>(eventData)) };
-				
-			m_Score += scoreChange;
+		void OnScoreIncrease()
+		{				
+			m_Score += 10;
 
 			const std::string text{ m_Prefix + " " + std::to_string(m_Score) };
 

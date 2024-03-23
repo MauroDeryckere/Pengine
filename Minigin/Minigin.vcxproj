@@ -195,16 +195,14 @@
     <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="ConstComponentWrapper.h" />
     <ClInclude Include="ECSTestingComponent.h" />
-    <ClInclude Include="EventManager_.h" />
-    <ClInclude Include="ObserverTestComponent.h" />
-    <ClInclude Include="Observer_.h" />
+    <ClInclude Include="EventManager.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="TypedObserver.h" />
     <ClInclude Include="UIDisplayHealthComponent.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Event.h" />
-    <ClInclude Include="EventManager.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSCounterComponent.h" />
     <ClInclude Include="HealthComponent.h" />
@@ -218,7 +216,6 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InputMouse.h" />
     <ClInclude Include="Minigin.h" />
-    <ClInclude Include="Observer.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
@@ -246,7 +243,6 @@
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="EventManager.cpp" />
-    <ClCompile Include="EventManager_.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSCounterComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
@@ -259,7 +255,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="Observer.cpp" />
-    <ClCompile Include="Observer_.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />

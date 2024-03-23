@@ -1,26 +1,43 @@
 #ifndef EVENTMANAGER
 #define EVENTMANAGER
 
+#include "ECS.h"
 #include "Singleton.h"
 
-#include "Observer.h"
 #include "Event.h"
+#include "TypedObserver.h"
 
+#include <unordered_map>
+#include <functional>
 #include <string>
 #include <memory>
+#include <typeindex>
 #include <queue>
-#include <unordered_map>
-#include <vector>
 
 namespace Pengin
 {
+	template<typename ComponentType>
+	concept ObserverConcept = requires(ComponentType component)
+	{
+		{ component.RegisterObservers() } -> std::same_as<void>;
+	};
+
 	class EventManager final : public dae::Singleton<EventManager>
 	{
 	public:
-		void ProcessEvents();
+		void ProcessEventQueue();
 
-		void BroadcastBlockingEvent(const Event& event);
-		void EnqueueEvent(const Event& event);
+		void BroadcoastEvent(const std::string& event);
+		void BroadcastBlockingEvent(const std::string& event);
+
+		template<typename ComponentType>
+		requires ObserverConcept<ComponentType>
+		std::shared_ptr<Observer> CreateObserver(EntityId entityId) const
+		{
+			static_assert(ObserverConcept<ComponentType>, "Must provide a valid function in the component class");
+
+			return std::make_shared<TypedObserver<ComponentType>>(entityId);
+		}
 
 		EventManager(const EventManager&) = delete;
 		EventManager(EventManager&&) = delete;
@@ -28,21 +45,35 @@ namespace Pengin
 		EventManager& operator=(const EventManager&&) = delete;
 
 	private:
+		using fEventCallback = std::function<void()>;
+
 		friend class dae::Singleton<EventManager>;
-		
-		friend class Observer;
-		void RegisterObserver(const std::string& eventName, std::pair<std::shared_ptr<Observer>, fEventCallback> observer);
-
-		void ProcessEvent(const Event& event);
-
 		EventManager() = default;
 		~EventManager() = default;
 
-		std::queue<Event> m_EventQueue;
+		friend class Observer;
+		void RegisterObserver(std::shared_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event);
 
-		using EventListener = std::pair<std::weak_ptr<Observer>, fEventCallback>;
-		std::unordered_map<std::string, std::vector<EventListener>> m_Observers; //since using strings here and likely larger map in big games, consider a map inst of uno map (monitor performance 1st) TODO
+		void SetObserverDirty();
+		
+		void ProcessEvent(const std::string& event);
+
+		using ObserverIdentifier = std::pair<EntityId, std::type_index>;
+		struct ObserverIdentifierHash 
+		{
+			size_t operator()(const ObserverIdentifier& identifier) const 
+			{
+				const size_t hash1 = std::hash<unsigned>{}(identifier.first);
+				const size_t hash2 = identifier.second.hash_code();
+
+				return hash1 ^ hash2;
+			}
+		};
+
+		std::unordered_map<ObserverIdentifier, std::weak_ptr<Observer>, ObserverIdentifierHash> m_Observers;
+		std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>> m_EventCallbacks;
+
+		std::queue<std::string> m_EventQueue;
 	};
 }
-
 #endif

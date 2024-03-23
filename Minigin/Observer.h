@@ -2,24 +2,35 @@
 #define OBSERVER
 
 #include <string>
-#include <functional>
 #include <memory>
+#include <typeindex>
+#include "ECS.h"
 
 namespace Pengin
 {
-	using fEventCallback = std::function<void(const void* pEventData)>;
-
-	class Observer final : public std::enable_shared_from_this<Observer>
+	class Observer abstract : public std::enable_shared_from_this<Observer>
 	{
 	public:
-		Observer(const std::string& name = "") :
-			m_Name{ name } {}
+		virtual void RegisterCallbacks() = 0;
 
-		~Observer() = default;
+		void RegisterForEvent(const std::string& eventName, std::function<void()> fCallback);
 
-		void RegisterForEvent(const std::string& eventName, fEventCallback fCallBack);
+		[[nodiscard]] EntityId GetEntityId() const { return m_EntityId; }
+		[[nodiscard]] const std::type_index GetTypeIdx() const { return m_TypeIdx; }
 
-		const std::string& GetName() const { return m_Name; }
+		[[nodiscard]] bool IsDirty() const { return m_IsDirty; }
+		void SetDirty() { m_IsDirty = true; }
+
+	protected:
+		Observer(EntityId entityId, std::type_index typeIdx) :
+			m_EntityId{ entityId },
+			m_TypeIdx{ typeIdx },
+			m_IsDirty{ false }
+		{}
+
+		void SetIsDirtyFalse() { m_IsDirty = false; }
+
+		virtual ~Observer() = default;
 
 		Observer(const Observer&) = delete;
 		Observer(Observer&&) = delete;
@@ -27,8 +38,10 @@ namespace Pengin
 		Observer& operator=(const Observer&&) = delete;
 
 	private:
-		//Name can be useful for debugging purposes but isn't used past that
-		const std::string m_Name;
+		const EntityId m_EntityId;
+		const std::type_index m_TypeIdx;
+
+		bool m_IsDirty{ false };
 	};
 }
 

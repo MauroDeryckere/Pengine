@@ -3,7 +3,6 @@
 
 #include "InputCommand.h"
 #include "EventManager.h"
-#include "EventManager_.h"
 
 #include "ECS.h"
 
@@ -103,7 +102,7 @@ namespace Pengin
 		virtual void Execute() override
 		{
 			Event scoreEvent{"OnScoreCollect", &m_Score};
-			EventManager::GetInstance().EnqueueEvent(scoreEvent);
+			EventManager::GetInstance().BroadcoastEvent(scoreEvent.GetName());
 		}
 
 		virtual ~CollectScore() override = default;
