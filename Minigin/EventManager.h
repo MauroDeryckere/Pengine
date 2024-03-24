@@ -53,7 +53,11 @@ namespace Pengin
 		EventManager& operator=(const EventManager&) = delete;
 		EventManager& operator=(const EventManager&&) = delete;
 
-		void RemoveEvent(const std::string& eventName) { m_CompEventCallbacks.erase(eventName); }
+		void RemoveEvent(const std::string& eventName) 
+		{ 
+			m_CompEventCallbacks.erase(eventName); 
+			m_EventCallbacks.erase(eventName);
+		}
 
 	private:
 		using fEventCallback = std::function<void(const void*)>;
@@ -83,9 +87,11 @@ namespace Pengin
 		};
 
 		std::unordered_map<ObserverIdentifier, std::weak_ptr<CompObserver>, ObserverIdentifierHash> m_CompObservers;
-		std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<CompObserver>, fEventCallback>>> m_CompEventCallbacks;
 
-		std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>> m_EventCallbacks;
+		using CompObsCallbacks = std::vector<std::pair<std::weak_ptr<CompObserver>, fEventCallback>>;
+		using ObsCallbacks = std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>;
+		std::unordered_map<std::string, CompObsCallbacks> m_CompEventCallbacks;
+		std::unordered_map<std::string, ObsCallbacks> m_EventCallbacks;
 
 		std::queue<Event> m_EventQueue;
 	};

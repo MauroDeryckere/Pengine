@@ -1,6 +1,8 @@
 #ifndef ACHIEVEMENTSYSTEM
 #define ACHIEVEMENTSYSTEM
 
+#include "Defines.h"
+
 #include "Singleton.h"
 #include "EventManager.h"
 
@@ -46,13 +48,14 @@ namespace Pengin
 			#ifdef USE_STEAMWORKS
 				SteamUserStats()->SetAchievement("ACH_WIN_ONE_GAME");
 				SteamUserStats()->StoreStats();
-			#else	
+				return;
+			#else 
 				if (!m_Unlocked)
 				{
 					std::cout << "winner achievement unlocked\n";
 					m_Unlocked = true;
 				}
-			#endif
+			#endif				
 			}
 		}
 

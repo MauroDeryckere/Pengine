@@ -101,9 +101,8 @@ namespace Pengin
 	{
 		auto it = m_CompObservers.find({entiyId, typeIdx});
 
-		if (it == m_CompObservers.end()) //TODO: this check could get heavy for very large componentSets, maybe could be improved upon
+		if (it == m_CompObservers.end())
 		{
-			//std::cerr << "trying to set obs dirty that isnt in observer map \n";
 			return;
 		}
 
