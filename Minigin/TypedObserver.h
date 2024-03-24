@@ -7,14 +7,14 @@
 namespace Pengin
 {
 	template <typename ComponentType>
-	class TypedObserver final : public Observer
+	class ComponentObserver final : public Observer
 	{
 	public:
-		TypedObserver(EntityId entityId) :
+		ComponentObserver(EntityId entityId) :
 			Observer{ entityId, typeid(ComponentType) }
 		{}
 
-		virtual ~TypedObserver() override = default;
+		virtual ~ComponentObserver() override = default;
 
 		virtual void RegisterCallbacks() override
 		{
@@ -24,10 +24,10 @@ namespace Pengin
 			Observer::SetIsDirtyFalse();
 		}
 
-		TypedObserver(const TypedObserver&) = delete;
-		TypedObserver(TypedObserver&&) = delete;
-		TypedObserver& operator=(const TypedObserver&) = delete;
-		TypedObserver& operator=(const TypedObserver&&) = delete;
+		ComponentObserver(const ComponentObserver&) = delete;
+		ComponentObserver(ComponentObserver&&) = delete;
+		ComponentObserver& operator=(const ComponentObserver&) = delete;
+		ComponentObserver& operator=(const ComponentObserver&&) = delete;
 	};
 }
 #endif

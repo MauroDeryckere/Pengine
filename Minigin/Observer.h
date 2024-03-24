@@ -8,10 +8,10 @@
 
 namespace Pengin
 {
-	class Observer abstract
+	class Observer
 	{
 	public:
-		virtual void RegisterCallbacks() = 0;
+		virtual void RegisterCallbacks() {};
 
 		void RegisterForEvent(std::weak_ptr<Observer> pObs, const std::string& eventName, std::function<void(const void* eventData)> fCallback);
 

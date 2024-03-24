@@ -37,7 +37,7 @@ namespace Pengin
 		{
 			static_assert(ObserverConcept<ComponentType>, "Must provide a valid function in the component class");
 
-			return std::make_shared<TypedObserver<ComponentType>>(entityId);
+			return std::make_shared<ComponentObserver<ComponentType>>(entityId);
 		}
 
 		void SetObserverDirty(EntityId entiyId, std::type_index typeIdx);
