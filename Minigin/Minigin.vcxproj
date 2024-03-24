@@ -114,7 +114,8 @@
       <Command>xcopy $(SolutionDir)\3rdParty\SDL2\lib\x86\SDL2.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)\3rdParty\SDL2_image\lib\x86\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y
-xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\*.dll $(OutputPath) /Y</Command>
+xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPath) /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -139,7 +140,9 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\*.dll $
       <Command>xcopy $(SolutionDir)\3rdParty\SDL2\lib\x64\SDL2.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)\3rdParty\SDL2_image\lib\x64\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\*.dll $(OutputPath) /Y
-xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\win64\*.dll $(OutputPath) /Y</Command>
+xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\win64\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPath) /Y
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -168,7 +171,8 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\win64\*
       <Command>xcopy $(SolutionDir)\3rdParty\SDL2\lib\x86\SDL2.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)\3rdParty\SDL2_image\lib\x86\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y
-xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\*.dll $(OutputPath) /Y</Command>
+xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPath) /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -197,7 +201,9 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\*.dll $
       <Command>xcopy $(SolutionDir)\3rdParty\SDL2\lib\x64\SDL2.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)\3rdParty\SDL2_image\lib\x64\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\*.dll $(OutputPath) /Y
-xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\win64\*.dll $(OutputPath) /Y</Command>
+xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\win64\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPath) /Y
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
