@@ -47,11 +47,8 @@ namespace Pengin
 
 			m_Score += scoreIncrease;
 
-			if (m_Score >= 500)
-			{
-				const Event achievement{"ScoreAchievement"};
-				EventManager::GetInstance().BroadcoastEvent(achievement);
-			}
+			const Event achievement{"ScoreAchievement", &m_Score};
+			EventManager::GetInstance().BroadcoastEvent(achievement);
 
 			const std::string text{ m_Prefix + " " + std::to_string(m_Score) };
 

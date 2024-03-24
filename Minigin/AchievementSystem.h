@@ -26,7 +26,7 @@ namespace Pengin
 
 		void RegisterObservers()
 		{
-			auto callBack = [this](const void*){ ScoreAchievementCallback(); };
+			auto callBack = [this](const void* eventData){ ScoreAchievementCallback(eventData); };
 			m_Observer->RegisterForEvent(m_Observer, "ScoreAchievement", callBack);
 		}
 
@@ -36,18 +36,25 @@ namespace Pengin
 		//AchievementSystem& operator=(const AchievementSystem&&) = delete;
 
 	private:
-		void ScoreAchievementCallback()
+		void ScoreAchievementCallback(const void* pScore)
 		{
-		#ifdef USE_STEAMWORKS
-			SteamUserStats()->SetAchievement("ACH_WIN_ONE_GAME");
-			SteamUserStats()->StoreStats();
-		#else
-			if (!m_Unlocked)
+			const unsigned score{ (*static_cast<const unsigned*>(pScore)) };
+
+			constexpr unsigned reqScore{ 500 };
+
+			if (score >= reqScore)
 			{
-				std::cout << "winner achievement unlocked\n";
-				m_Unlocked = true;
+			#ifdef USE_STEAMWORKS
+				SteamUserStats()->SetAchievement("ACH_WIN_ONE_GAME");
+				SteamUserStats()->StoreStats();
+			#else	
+				if (!m_Unlocked)
+				{
+					std::cout << "winner achievement unlocked\n";
+					m_Unlocked = true;
+				}
+			#endif
 			}
-		#endif
 		}
 
 		std::shared_ptr<Observer> m_Observer;
