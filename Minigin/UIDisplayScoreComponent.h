@@ -15,7 +15,7 @@ namespace Pengin
 	public:
 		UIDisplayScoreComponent(EntityId id, const std::string& prefix, const std::string& eventName) :
 			m_Id{ id },
-			m_Observer{ EventManager::GetInstance().CreateObserver<UIDisplayScoreComponent>(id) },
+			m_Observer{ EventManager::GetInstance().CreateComponentObserver<UIDisplayScoreComponent>(id) },
 			m_Prefix{prefix},
 			m_EventName{ eventName },
 			m_Score{0}
@@ -35,7 +35,7 @@ namespace Pengin
 
 	private:
 		const EntityId m_Id;
-		std::shared_ptr<Observer> m_Observer;
+		std::shared_ptr<CompObserver> m_Observer;
 
 		const std::string m_Prefix;
 		const std::string m_EventName;

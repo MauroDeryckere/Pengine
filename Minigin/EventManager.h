@@ -4,7 +4,7 @@
 #include "Singleton.h"
 
 #include "Event.h"
-#include "TypedObserver.h"
+#include "TypedCompObserver.h"
 
 #include <unordered_map>
 #include <functional>
@@ -18,7 +18,7 @@ namespace Pengin
 	using EntityId = unsigned;
 
 	template<typename ComponentType>
-	concept ObserverConcept = requires(ComponentType component)
+	concept CompObserverConcept = requires(ComponentType component)
 	{
 		{ component.RegisterObservers() } -> std::same_as<void>;
 	};
@@ -32,12 +32,12 @@ namespace Pengin
 		void BroadcastBlockingEvent(const Event& event);
 
 		template<typename ComponentType>
-		requires ObserverConcept<ComponentType>
-		std::shared_ptr<Observer> CreateObserver(EntityId entityId) const
+		requires CompObserverConcept<ComponentType>
+		std::shared_ptr<CompObserver> CreateComponentObserver(EntityId entityId) const
 		{
-			static_assert(ObserverConcept<ComponentType>, "Must provide a valid function in the component class");
+			static_assert(CompObserverConcept<ComponentType>, "Must provide a valid function in the component class");
 
-			return std::make_shared<ComponentObserver<ComponentType>>(entityId);
+			return std::make_shared<TypedCompObserver<ComponentType>>(entityId);
 		}
 
 		void SetObserverDirty(EntityId entiyId, std::type_index typeIdx);
@@ -47,7 +47,7 @@ namespace Pengin
 		EventManager& operator=(const EventManager&) = delete;
 		EventManager& operator=(const EventManager&&) = delete;
 
-		void RemoveEvent(const std::string& eventName) { m_EventCallbacks.erase(eventName); }
+		void RemoveEvent(const std::string& eventName) { m_CompEventCallbacks.erase(eventName); }
 
 	private:
 		using fEventCallback = std::function<void(const void*)>;
@@ -56,8 +56,8 @@ namespace Pengin
 		EventManager() = default;
 		~EventManager() = default;
 
-		friend class Observer;
-		void RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& eventName);
+		friend class CompObserver;
+		void RegisterObserver(std::weak_ptr<CompObserver> pObserver, fEventCallback fCallback, const std::string& eventName);
 
 		void ProcessEvent(const Event& event);
 
@@ -73,8 +73,10 @@ namespace Pengin
 			}
 		};
 
-		std::unordered_map<ObserverIdentifier, std::weak_ptr<Observer>, ObserverIdentifierHash> m_Observers;
-		std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>> m_EventCallbacks;
+		std::unordered_map<ObserverIdentifier, std::weak_ptr<CompObserver>, ObserverIdentifierHash> m_CompObservers;
+		std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<CompObserver>, fEventCallback>>> m_CompEventCallbacks;
+
+		//std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>> m_EventCallbacks;
 
 		std::queue<Event> m_EventQueue;
 	};

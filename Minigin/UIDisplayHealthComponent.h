@@ -17,7 +17,7 @@ namespace Pengin
 	public:
 		UIDisplayHealthComponent(EntityId id, const std::string& eventName , const std::string& playerName, unsigned initHealth = 0) :
 			m_Id{ id },
-			m_Observer{ EventManager::GetInstance().CreateObserver<UIDisplayHealthComponent>(id) },
+			m_Observer{ EventManager::GetInstance().CreateComponentObserver<UIDisplayHealthComponent>(id) },
 			m_PlayerName{ playerName },
 			m_EventName{eventName}
 
@@ -47,7 +47,7 @@ namespace Pengin
 
 	private:
 		const EntityId m_Id;
-		std::shared_ptr<Observer> m_Observer;
+		std::shared_ptr<CompObserver> m_Observer;
 
 		const std::string m_PlayerName;
 		const std::string m_EventName;

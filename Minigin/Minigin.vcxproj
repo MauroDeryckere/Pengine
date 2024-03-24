@@ -274,8 +274,8 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="ECSTestingComponent.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventManager.h" />
-    <ClInclude Include="Observer.h" />
-    <ClInclude Include="TypedObserver.h" />
+    <ClInclude Include="CompObserver.h" />
+    <ClInclude Include="TypedCompObserver.h" />
     <ClInclude Include="UIDisplayHealthComponent.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="Entity.h" />

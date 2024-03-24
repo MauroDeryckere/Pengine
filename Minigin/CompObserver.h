@@ -1,5 +1,5 @@
-#ifndef OBSERVER
-#define OBSERVER
+#ifndef COMPOBSERVER
+#define COMPOBSERVER
 
 #include <string>
 #include <memory>
@@ -8,12 +8,12 @@
 
 namespace Pengin
 {
-	class Observer
+	class CompObserver
 	{
 	public:
 		virtual void RegisterCallbacks() {};
 
-		void RegisterForEvent(std::weak_ptr<Observer> pObs, const std::string& eventName, std::function<void(const void* eventData)> fCallback);
+		void RegisterForEvent(std::weak_ptr<CompObserver> pObs, const std::string& eventName, std::function<void(const void* eventData)> fCallback);
 
 		[[nodiscard]] EntityId GetEntityId() const { return m_EntityId; }
 		[[nodiscard]] const std::type_index GetTypeIdx() const { return m_TypeIdx; }
@@ -21,10 +21,10 @@ namespace Pengin
 		[[nodiscard]] bool IsDirty() const { return m_IsDirty; }
 		void SetDirty() { m_IsDirty = true; }
 
-		virtual ~Observer() = default;
+		virtual ~CompObserver() = default;
 
 	protected:
-		Observer(EntityId entityId, std::type_index typeIdx) :
+		CompObserver(EntityId entityId, std::type_index typeIdx) :
 			m_EntityId{ entityId },
 			m_TypeIdx{ typeIdx },
 			m_IsDirty{ false }
@@ -33,10 +33,10 @@ namespace Pengin
 		void SetIsDirtyFalse() { m_IsDirty = false; }
 
 
-		Observer(const Observer&) = delete;
-		Observer(Observer&&) = delete;
-		Observer& operator=(const Observer&) = delete;
-		Observer& operator=(const Observer&&) = delete;
+		CompObserver(const CompObserver&) = delete;
+		CompObserver(CompObserver&&) = delete;
+		CompObserver& operator=(const CompObserver&) = delete;
+		CompObserver& operator=(const CompObserver&&) = delete;
 
 	private:
 		const EntityId m_EntityId;

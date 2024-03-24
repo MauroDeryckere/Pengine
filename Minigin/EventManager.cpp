@@ -51,7 +51,7 @@ namespace Pengin
 		}
 	}
 
-	void EventManager::RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event)
+	void EventManager::RegisterObserver(std::weak_ptr<CompObserver> pObserver, fEventCallback fCallback, const std::string& event)
 	{
 		auto obs = pObserver.lock();
 

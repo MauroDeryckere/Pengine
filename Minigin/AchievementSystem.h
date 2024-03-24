@@ -17,7 +17,7 @@ namespace Pengin
 	{
 	public:
 		AchievementSystem(EntityId id) :
-			m_Observer{ EventManager::GetInstance().CreateObserver<AchievementSystem>(id) }
+			m_Observer{ EventManager::GetInstance().CreateComponentObserver<AchievementSystem>(id) }
 		{
 			RegisterObservers();
 		}
@@ -57,7 +57,7 @@ namespace Pengin
 			}
 		}
 
-		std::shared_ptr<Observer> m_Observer;
+		std::shared_ptr<CompObserver> m_Observer;
 		bool m_Unlocked = false;
 	};
 }
