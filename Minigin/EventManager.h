@@ -47,6 +47,8 @@ namespace Pengin
 		EventManager& operator=(const EventManager&) = delete;
 		EventManager& operator=(const EventManager&&) = delete;
 
+		void RemoveEvent(const std::string& eventName) { m_EventCallbacks.erase(eventName); }
+
 	private:
 		using fEventCallback = std::function<void(const void*)>;
 
