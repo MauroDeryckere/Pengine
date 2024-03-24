@@ -243,6 +243,7 @@
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api_flat.h" />
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api_internal.h" />
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_gameserver.h" />
+    <ClInclude Include="AchievementSystem.h" />
     <ClInclude Include="BaseComponentStorage.h" />
     <ClInclude Include="Bitset.h" />
     <ClInclude Include="CharacterMovementComponent.h" />

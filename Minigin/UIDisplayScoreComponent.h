@@ -46,6 +46,13 @@ namespace Pengin
 			const unsigned scoreIncrease{ (*static_cast<const unsigned*>(eventData)) };
 
 			m_Score += scoreIncrease;
+
+			if (m_Score >= 500)
+			{
+				const Event achievement{"ScoreAchievement"};
+				EventManager::GetInstance().BroadcoastEvent(achievement);
+			}
+
 			const std::string text{ m_Prefix + " " + std::to_string(m_Score) };
 
 			auto& textComp = ECS::GetInstance().GetComponent<TextComponent>(m_Id);

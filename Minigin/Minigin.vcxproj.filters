@@ -82,6 +82,9 @@
     <Filter Include="Header Files\Steam">
       <UniqueIdentifier>{b6f11fd8-58d6-4600-a95b-5a20ec48246b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Achievements">
+      <UniqueIdentifier>{6ce943ba-2823-4b82-a20e-ca9fe414b864}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
@@ -377,6 +380,9 @@
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steamuniverse.h">
       <Filter>Header Files\Steam</Filter>
+    </ClInclude>
+    <ClInclude Include="AchievementSystem.h">
+      <Filter>Header Files\Achievements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

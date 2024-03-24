@@ -15,6 +15,13 @@
 
 #include "ResourceManager.h"
 
+#ifdef USE_STEAMWORKS
+	#pragma warning (push)
+	#pragma warning (disable: 4996)
+		#include "steam_api.h"
+	#pragma warning (pop)
+#endif
+
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -105,6 +112,10 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 		sceneManager.Update();
 		renderer.Render();
+
+		#ifdef USE_STEAMWORKS
+			SteamAPI_RunCallbacks();
+		#endif
 
 		std::this_thread::sleep_for(time.GetSleepTime());
 	}

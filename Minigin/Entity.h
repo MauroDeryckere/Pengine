@@ -7,6 +7,8 @@
 namespace Pengin
 {
     using EntityId = unsigned;
+    constexpr EntityId NULL_ENTITY_ID{0};
+
 
     static_assert(std::is_unsigned_v<EntityId>, "EntityId must be an unsigned integer type");
 

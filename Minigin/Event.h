@@ -7,7 +7,7 @@ namespace Pengin
 	class Event final
 	{
 	public:
-		Event(const std::string& eventName, const void* eventData) :
+		Event(const std::string& eventName, const void* eventData = nullptr) :
 			m_EventName{ eventName },
 			m_EventData{ eventData }
 		{}

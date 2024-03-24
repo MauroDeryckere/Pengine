@@ -1,5 +1,7 @@
 #pragma once
 #include "SceneManager.h"
+#include "AchievementSystem.h"
+#include "ECS.h"
 
 namespace dae
 {
@@ -23,6 +25,7 @@ namespace dae
 		Scene& operator=(Scene&& other) = delete;
 	private: 
 		explicit Scene(const std::string& name);
+
 
 		std::string m_name;
 
