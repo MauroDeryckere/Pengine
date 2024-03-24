@@ -19,7 +19,7 @@ Scene::Scene(const std::string& name) : m_name(name)
 
 Scene::~Scene() = default;
 
-void dae::Scene::FixedUpdate()
+void Scene::FixedUpdate()
 {
 }
 
