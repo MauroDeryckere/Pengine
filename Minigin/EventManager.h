@@ -3,6 +3,7 @@
 
 #include "Singleton.h"
 
+#include "Event.h"
 #include "TypedObserver.h"
 
 #include <unordered_map>
@@ -27,8 +28,8 @@ namespace Pengin
 	public:
 		void ProcessEventQueue();
 
-		void BroadcoastEvent(const std::string& event);
-		void BroadcastBlockingEvent(const std::string& event);
+		void BroadcoastEvent(const Event& event);
+		void BroadcastBlockingEvent(const Event& event);
 
 		template<typename ComponentType>
 		requires ObserverConcept<ComponentType>
@@ -47,16 +48,16 @@ namespace Pengin
 		EventManager& operator=(const EventManager&&) = delete;
 
 	private:
-		using fEventCallback = std::function<void()>;
+		using fEventCallback = std::function<void(const void*)>;
 
 		friend class dae::Singleton<EventManager>;
 		EventManager() = default;
 		~EventManager() = default;
 
 		friend class Observer;
-		void RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event);
+		void RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& eventName);
 
-		void ProcessEvent(const std::string& event);
+		void ProcessEvent(const Event& event);
 
 		using ObserverIdentifier = std::pair<EntityId, std::type_index>;
 		struct ObserverIdentifierHash 
@@ -73,7 +74,7 @@ namespace Pengin
 		std::unordered_map<ObserverIdentifier, std::weak_ptr<Observer>, ObserverIdentifierHash> m_Observers;
 		std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>> m_EventCallbacks;
 
-		std::queue<std::string> m_EventQueue;
+		std::queue<Event> m_EventQueue;
 	};
 }
 #endif

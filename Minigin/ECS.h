@@ -71,20 +71,13 @@ namespace Pengin
             m_EntityManager.RemoveComponent(typeid(ComponentType), id);
             m_ComponentManager.RemoveComponent(typeid(ComponentType), id);
 
-            m_ECSEventInter.SetObserverDirty(lastId, typeid(ComponentType));
-            m_ECSEventInter.SetObserverDirty(id, typeid(ComponentType)); //Line an likely be removed
+            m_ECSEventInter.SetObserverDirty(lastId, typeid(ComponentType)); //Moved in memory
         }
 
         template<typename ComponentType>
         [[nodiscard]] bool HasComponent(const EntityId& id)
         {
             return m_ComponentManager.HasComponent(typeid(ComponentType), id); 
-        }
-
-        template<typename ComponentType>
-        [[nodiscard]] ComponentType& GetOrEmplaceComponent(const EntityId& id) //TODO
-        {
-            return m_ComponentManager.GetOrEmplaceComponent<ComponentType>(id);
         }
 
         template<typename ComponentType>

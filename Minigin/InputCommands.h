@@ -94,14 +94,15 @@ namespace Pengin
 	class CollectScore final : public InputCommand //bound to input for now
 	{
 	public:
-		CollectScore(EntityId id, unsigned score = 10) :
+		CollectScore(EntityId id, const std::string& eventName, unsigned score = 10) :
 			m_Id{ id },
-			m_Score{ score }
+			m_EventName{eventName},
+			m_ScoreVal{ score }
 		{ }
 
 		virtual void Execute() override
 		{
-			auto scoreEvent{"OnScoreCollect"};
+			Event scoreEvent{ m_EventName , &m_ScoreVal};
 			EventManager::GetInstance().BroadcoastEvent(scoreEvent);
 		}
 
@@ -114,7 +115,8 @@ namespace Pengin
 
 	private:
 		const EntityId m_Id;
-		const unsigned m_Score;
+		const std::string m_EventName;
+		const unsigned m_ScoreVal;
 	};
 
 }

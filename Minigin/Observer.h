@@ -13,7 +13,7 @@ namespace Pengin
 	public:
 		virtual void RegisterCallbacks() = 0;
 
-		void RegisterForEvent(std::weak_ptr<Observer> pObs, const std::string& eventName, std::function<void()> fCallback);
+		void RegisterForEvent(std::weak_ptr<Observer> pObs, const std::string& eventName, std::function<void(const void* eventData)> fCallback);
 
 		[[nodiscard]] EntityId GetEntityId() const { return m_EntityId; }
 		[[nodiscard]] const std::type_index GetTypeIdx() const { return m_TypeIdx; }

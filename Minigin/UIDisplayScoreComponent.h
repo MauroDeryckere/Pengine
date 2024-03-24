@@ -13,12 +13,12 @@ namespace Pengin
 	class UIDisplayScoreComponent final
 	{
 	public:
-		UIDisplayScoreComponent(EntityId id, const std::string& prefix) :
+		UIDisplayScoreComponent(EntityId id, const std::string& prefix, const std::string& eventName) :
 			m_Id{ id },
 			m_Observer{ EventManager::GetInstance().CreateObserver<UIDisplayScoreComponent>(id) },
 			m_Prefix{prefix},
+			m_EventName{ eventName },
 			m_Score{0}
-
 		{
 			const std::string text{ m_Prefix + " " + std::to_string(m_Score) };
 
@@ -29,22 +29,23 @@ namespace Pengin
 
 		void RegisterObservers()
 		{
-			auto callback = [this]() { OnScoreIncrease(); };
-			m_Observer->RegisterForEvent(m_Observer, "OnScoreCollect", callback);
+			auto callback = [this](const void* eventData) { OnScoreIncrease(eventData); };
+			m_Observer->RegisterForEvent(m_Observer, m_EventName, callback);
 		}
 
 	private:
 		const EntityId m_Id;
-		unsigned m_Score;
-
-		const std::string m_Prefix;
-
 		std::shared_ptr<Observer> m_Observer;
 
-		void OnScoreIncrease()
-		{				
-			m_Score += 10;
+		const std::string m_Prefix;
+		const std::string m_EventName;
+		unsigned m_Score;
 
+		void OnScoreIncrease(const void* eventData)
+		{			
+			const unsigned scoreIncrease{ (*static_cast<const unsigned*>(eventData)) };
+
+			m_Score += scoreIncrease;
 			const std::string text{ m_Prefix + " " + std::to_string(m_Score) };
 
 			auto& textComp = ECS::GetInstance().GetComponent<TextComponent>(m_Id);

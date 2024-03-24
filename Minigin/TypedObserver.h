@@ -10,6 +10,12 @@ namespace Pengin
 	class TypedObserver final : public Observer
 	{
 	public:
+		TypedObserver(EntityId entityId) :
+			Observer{ entityId, typeid(ComponentType) }
+		{}
+
+		virtual ~TypedObserver() override = default;
+
 		virtual void RegisterCallbacks() override
 		{
 			auto& component = ECS::GetInstance().GetComponent<ComponentType>(Observer::GetEntityId());
@@ -18,18 +24,10 @@ namespace Pengin
 			Observer::SetIsDirtyFalse();
 		}
 
-		virtual ~TypedObserver() override = default;
-
 		TypedObserver(const TypedObserver&) = delete;
 		TypedObserver(TypedObserver&&) = delete;
 		TypedObserver& operator=(const TypedObserver&) = delete;
 		TypedObserver& operator=(const TypedObserver&&) = delete;
-		TypedObserver(EntityId entityId) :
-			Observer{ entityId, typeid(ComponentType) } //TODO MOVE TO FRIEND / PRIVATE
-		{}
-
-	private:
-		friend class EventManager;
 	};
 }
 #endif

@@ -23,7 +23,7 @@ namespace Pengin
 
 		{
 			auto& textComp{ ECS::GetInstance().GetComponent<TextComponent>(m_Id) };
-			const std::string displayText { "Player: " + playerName + " Health: " + std::to_string(initHealth) };
+			const std::string displayText { "Player: Health: " + std::to_string(initHealth) };
 
 			textComp.SetText(displayText);
 
@@ -32,15 +32,13 @@ namespace Pengin
 
 		void RegisterObservers()
 		{
-			auto callback = [&id = m_Id, &test = test]()
+			auto callback = [this](const void* eventData)
 				{
-					//const unsigned health{ (*static_cast<const unsigned*>(eventData)) };
+					const unsigned health{ (*static_cast<const unsigned*>(eventData)) };
 
-					auto& textComp{ ECS::GetInstance().GetComponent<TextComponent>(id) };
-					const std::string displayText{ "Player: Health: " + std::to_string(test) };
+					auto& textComp{ ECS::GetInstance().GetComponent<TextComponent>(m_Id) };
+					const std::string displayText{ "Player: Health: " + std::to_string(health) };
 					
-					++test;
-
 					textComp.SetText(displayText);
 				};
 
@@ -50,8 +48,6 @@ namespace Pengin
 	private:
 		const EntityId m_Id;
 		std::shared_ptr<Observer> m_Observer;
-
-		int test = 0;
 
 		const std::string m_PlayerName;
 		const std::string m_EventName;

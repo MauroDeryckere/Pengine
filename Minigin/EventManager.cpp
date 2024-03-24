@@ -14,19 +14,19 @@ namespace Pengin
 		}
 	}
 
-	void EventManager::BroadcoastEvent(const std::string& event)
+	void EventManager::BroadcoastEvent(const Event& event)
 	{
 		m_EventQueue.emplace(event);
 	}
 
-	void EventManager::BroadcastBlockingEvent(const std::string& event)
+	void EventManager::BroadcastBlockingEvent(const Event& event)
 	{
 		ProcessEvent(event);
 	}
 	
-	void EventManager::ProcessEvent(const std::string& event)
+	void EventManager::ProcessEvent(const Event& event)
 	{
-		auto it{ m_EventCallbacks.find(event) };
+		auto it{ m_EventCallbacks.find(event.GetEventName()) };
 
 		if (it != end(m_EventCallbacks))
 		{
@@ -45,7 +45,8 @@ namespace Pengin
 				{
 					pObs->RegisterCallbacks();
 				}
-				fCallback();
+
+				fCallback(event.GetEventData());
 			}
 		}
 	}
@@ -53,12 +54,6 @@ namespace Pengin
 	void EventManager::RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event)
 	{
 		auto obs = pObserver.lock();
-
-		if (!obs)
-		{
-			std::cerr << "ERROR IN REGOBS \n";
-			return;
-		}
 
 		const ObserverIdentifier identifier{ obs->GetEntityId(), obs->GetTypeIdx() };
 		m_Observers[identifier] = pObserver;
@@ -83,9 +78,9 @@ namespace Pengin
 	{
 		auto it = m_Observers.find({entiyId, typeIdx});
 
-		if (it == m_Observers.end())
+		if (it == m_Observers.end()) //TODO: this check could get heavy for very large componentSets, maybe could be improved upon
 		{
-			std::cerr << "trying to set obs dirty that isnt in observer map \n";
+			//std::cerr << "trying to set obs dirty that isnt in observer map \n";
 			return;
 		}
 

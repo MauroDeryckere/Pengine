@@ -196,6 +196,7 @@
     <ClInclude Include="ConstComponentWrapper.h" />
     <ClInclude Include="EcsEventInter.h" />
     <ClInclude Include="ECSTestingComponent.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="TypedObserver.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="CharacterMovementComponent.cpp" />
     <ClCompile Include="EcsEventInter.cpp" />
     <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="Event.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSCounterComponent.cpp" />

@@ -115,7 +115,7 @@ namespace Pengin
         {
             const auto it{ m_TypeBitMap.find(typeid(ComponentType)) };
 
-            if (it == m_TypeBitMap.end())
+            if (it == m_TypeBitMap.end()) [[unlikely]]
             {
                 throw std::out_of_range("Checking for a component that is not ever added to the typeTracker");
             }
@@ -138,49 +138,6 @@ namespace Pengin
             throw std::out_of_range("Component not found for the given entity ID");
         }
 
-        template<typename ComponentType>
-        [[nodiscard]] ComponentType& GetOrEmplaceComponent(const EntityId& id)
-            requires std::is_default_constructible_v<ComponentType>
-        {
-            const auto typeIt{ m_TypeBitMap.find(typeid(ComponentType)) };
-
-            if (typeIt == m_TypeBitMap.end())
-            {
-                throw std::out_of_range("Checking for a component that is not ever added to the typeTracker");
-            }
-
-            const size_t idx{ typeIt->second };
-
-            auto* basePtr{ m_ComponentStorage[idx].get() };
-
-            if (!basePtr)
-            {
-                m_ComponentStorage[idx].reset(static_cast<BaseComponentStorage*>(new ComponentStorage<ComponentType>{}));
-                basePtr = m_ComponentStorage[idx].get();
-
-                ComponentStorage<ComponentType>* const storage{ dynamic_cast<ComponentStorage<ComponentType>*>(basePtr) };
-                auto& set{ storage->GetSet() };
-
-                auto it{ set.Emplace(id) };
-
-                return *it;
-            }
-
-            ComponentStorage<ComponentType>* storage{ dynamic_cast<ComponentStorage<ComponentType>*>(basePtr) };
-            auto& set{ storage->GetSet() };
-
-            if (!set.Contains(id))
-            {
-                auto it{ set.Emplace(id) };
-
-                if (it != set.end())
-                {
-                    return *it;
-                }
-            }
-
-            return set[id];
-        }
 
         template<typename ComponentType>
         [[nodiscard]] const ComponentType& GetConstComponent(const EntityId& id) const
