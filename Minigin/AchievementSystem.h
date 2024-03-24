@@ -16,26 +16,25 @@ namespace Pengin
 	class AchievementSystem final
 	{
 	public:
-		AchievementSystem(EntityId id) :
-			m_Observer{ EventManager::GetInstance().CreateComponentObserver<AchievementSystem>(id) }
+		AchievementSystem() :
+			m_Observer{ EventManager::GetInstance().CreateObserver() }
 		{
 			RegisterObservers();
 		}
 
 		~AchievementSystem() = default;
 
+		AchievementSystem(const AchievementSystem&) = delete;
+		AchievementSystem(AchievementSystem&&) = delete;
+		AchievementSystem& operator=(const AchievementSystem&) = delete;
+		AchievementSystem& operator=(const AchievementSystem&&) = delete;
+	private:
 		void RegisterObservers()
 		{
-			auto callBack = [this](const void* eventData){ ScoreAchievementCallback(eventData); };
+			auto callBack = [this](const void* eventData) { ScoreAchievementCallback(eventData); };
 			m_Observer->RegisterForEvent(m_Observer, "ScoreAchievement", callBack);
 		}
 
-		//AchievementSystem(const AchievementSystem&) = delete;
-		//AchievementSystem(AchievementSystem&&) = delete;
-		//AchievementSystem& operator=(const AchievementSystem&) = delete;
-		//AchievementSystem& operator=(const AchievementSystem&&) = delete;
-
-	private:
 		void ScoreAchievementCallback(const void* pScore)
 		{
 			const unsigned score{ (*static_cast<const unsigned*>(pScore)) };
@@ -57,7 +56,7 @@ namespace Pengin
 			}
 		}
 
-		std::shared_ptr<CompObserver> m_Observer;
+		std::shared_ptr<Observer> m_Observer;
 		bool m_Unlocked = false;
 	};
 }

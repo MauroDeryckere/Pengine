@@ -11,7 +11,7 @@ namespace Pengin
 	class CompObserver
 	{
 	public:
-		virtual void RegisterCallbacks() {};
+		virtual void RegisterCallbacks() = 0;
 
 		void RegisterForEvent(std::weak_ptr<CompObserver> pObs, const std::string& eventName, std::function<void(const void* eventData)> fCallback);
 
@@ -31,7 +31,6 @@ namespace Pengin
 		{ }
 
 		void SetIsDirtyFalse() { m_IsDirty = false; }
-
 
 		CompObserver(const CompObserver&) = delete;
 		CompObserver(CompObserver&&) = delete;

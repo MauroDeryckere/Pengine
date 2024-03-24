@@ -332,6 +332,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClCompile Include="InputMouse.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
+    <ClCompile Include="CompObserver.cpp" />
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
@@ -346,6 +347,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
   </ItemGroup>
   <ItemGroup>
     <None Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api.json" />
+    <None Include="Observer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

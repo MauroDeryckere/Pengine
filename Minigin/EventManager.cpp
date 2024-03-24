@@ -26,11 +26,11 @@ namespace Pengin
 	
 	void EventManager::ProcessEvent(const Event& event)
 	{
-		auto it{ m_EventCallbacks.find(event.GetEventName()) };
+		auto compIt{ m_CompEventCallbacks.find(event.GetEventName()) };
 
-		if (it != end(m_EventCallbacks))
+		if (compIt != end(m_CompEventCallbacks))
 		{
-			auto& observers{ it->second };
+			auto& observers{ compIt->second };
 
 			std::erase_if(observers, [](const auto& observerPair)
 				{
@@ -49,6 +49,23 @@ namespace Pengin
 				fCallback(event.GetEventData());
 			}
 		}
+
+		auto normalIt{ m_EventCallbacks.find(event.GetEventName()) };
+
+		if (normalIt != end(m_EventCallbacks))
+		{
+			auto& observers{ normalIt->second };
+
+			std::erase_if(observers, [](const auto& observerPair)
+				{
+					return observerPair.first.expired();
+				});
+
+			for (auto& [observer, fCallback] : observers)
+			{
+				fCallback(event.GetEventData());
+			}
+		}
 	}
 
 	void EventManager::RegisterObserver(std::weak_ptr<CompObserver> pObserver, fEventCallback fCallback, const std::string& event)
@@ -56,9 +73,9 @@ namespace Pengin
 		auto obs = pObserver.lock();
 
 		const ObserverIdentifier identifier{ obs->GetEntityId(), obs->GetTypeIdx() };
-		m_Observers[identifier] = pObserver;
+		m_CompObservers[identifier] = pObserver;
 		
-		auto& ObserverVec{ m_EventCallbacks[event] };
+		auto& ObserverVec{ m_CompEventCallbacks[event] };
 
 		auto it = std::ranges::find_if(ObserverVec, [obs](const auto& pair)
 			{
@@ -74,11 +91,17 @@ namespace Pengin
 		ObserverVec.emplace_back(pObserver, fCallback);
 	}
 
+	void EventManager::RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event)
+	{
+		auto& ObserverVec{ m_EventCallbacks[event] };
+		ObserverVec.emplace_back(pObserver, fCallback);
+	}
+
 	void EventManager::SetObserverDirty(EntityId entiyId, std::type_index typeIdx)
 	{
-		auto it = m_Observers.find({entiyId, typeIdx});
+		auto it = m_CompObservers.find({entiyId, typeIdx});
 
-		if (it == m_Observers.end()) //TODO: this check could get heavy for very large componentSets, maybe could be improved upon
+		if (it == m_CompObservers.end()) //TODO: this check could get heavy for very large componentSets, maybe could be improved upon
 		{
 			//std::cerr << "trying to set obs dirty that isnt in observer map \n";
 			return;
@@ -92,7 +115,7 @@ namespace Pengin
 			return;
 		}
 
-		m_Observers.erase(it);
+		m_CompObservers.erase(it);
 	}
 }
 

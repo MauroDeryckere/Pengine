@@ -4,6 +4,7 @@
 #include "Singleton.h"
 
 #include "Event.h"
+#include "Observer.h"
 #include "TypedCompObserver.h"
 
 #include <unordered_map>
@@ -40,6 +41,11 @@ namespace Pengin
 			return std::make_shared<TypedCompObserver<ComponentType>>(entityId);
 		}
 
+		std::shared_ptr<Observer> CreateObserver() const
+		{
+			return std::make_shared<Observer>();
+		}
+
 		void SetObserverDirty(EntityId entiyId, std::type_index typeIdx);
 
 		EventManager(const EventManager&) = delete;
@@ -59,6 +65,9 @@ namespace Pengin
 		friend class CompObserver;
 		void RegisterObserver(std::weak_ptr<CompObserver> pObserver, fEventCallback fCallback, const std::string& eventName);
 
+		friend class Observer;
+		void RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& eventName);
+
 		void ProcessEvent(const Event& event);
 
 		using ObserverIdentifier = std::pair<EntityId, std::type_index>;
@@ -76,7 +85,7 @@ namespace Pengin
 		std::unordered_map<ObserverIdentifier, std::weak_ptr<CompObserver>, ObserverIdentifierHash> m_CompObservers;
 		std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<CompObserver>, fEventCallback>>> m_CompEventCallbacks;
 
-		//std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>> m_EventCallbacks;
+		std::unordered_map<std::string, std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>> m_EventCallbacks;
 
 		std::queue<Event> m_EventQueue;
 	};

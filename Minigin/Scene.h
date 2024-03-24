@@ -1,7 +1,8 @@
 #pragma once
 #include "SceneManager.h"
-#include "AchievementSystem.h"
 #include "ECS.h"
+
+#include "AchievementSystem.h"
 
 namespace dae
 {
@@ -26,6 +27,7 @@ namespace dae
 	private: 
 		explicit Scene(const std::string& name);
 
+		std::unique_ptr<Pengin::AchievementSystem> m_AchSys{std::make_unique<Pengin::AchievementSystem>() };
 
 		std::string m_name;
 
