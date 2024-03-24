@@ -6,17 +6,7 @@
 namespace Pengin
 {
 	void EventManager::ProcessEventQueue()
-	{
-		for (auto& obs: m_Observers)
-		{
-			auto ptr = obs.second.lock();
-			if (ptr)
-			{
-				ptr->SetDirty();
-			}
-		}
-
-		
+	{		
 		while (!m_EventQueue.empty())
 		{
 			ProcessEvent(m_EventQueue.front());
@@ -36,9 +26,6 @@ namespace Pengin
 	
 	void EventManager::ProcessEvent(const std::string& event)
 	{
-		//1 strong , 
-
-
 		auto it{ m_EventCallbacks.find(event) };
 
 		if (it != end(m_EventCallbacks))
@@ -49,7 +36,7 @@ namespace Pengin
 				{
 					return observerPair.first.expired();
 				});
-			//A strong ref somewhere tht shouldnt exist, need to fix.
+
 			for (auto& [observer, fCallback] : observers)
 			{
 				auto pObs{ observer.lock() };
@@ -94,9 +81,7 @@ namespace Pengin
 
 	void EventManager::SetObserverDirty(EntityId entiyId, std::type_index typeIdx)
 	{
-		entiyId;
-		typeIdx;
-		/*auto it = m_Observers.find({entiyId, typeIdx});
+		auto it = m_Observers.find({entiyId, typeIdx});
 
 		if (it == m_Observers.end())
 		{
@@ -112,7 +97,7 @@ namespace Pengin
 			return;
 		}
 
-		m_Observers.erase(it);*/
+		m_Observers.erase(it);
 	}
 }
 

@@ -17,10 +17,9 @@ namespace Pengin
     //TODO, expand conceppts, mayb provide a 'stable' sparse set where we use erase
     template<typename ValueType, typename KeyType>
         requires std::is_default_constructible_v<KeyType> && 
-                 std::is_move_constructible_v<KeyType> &&
-                
-                (std::is_move_constructible_v <ValueType> || std::is_move_assignable_v<ValueType>) &&
-                (std::is_copy_constructible_v<ValueType> || std::is_copy_assignable_v<ValueType>) 
+                 std::is_move_constructible_v<KeyType> &&    
+
+                (std::is_move_constructible_v <ValueType> || std::is_move_assignable_v<ValueType>) //Copy (?)
     class SparseSet final
     {
     public:
@@ -135,26 +134,26 @@ namespace Pengin
 
             if (it != m_SparseMap.end())
             {
-                const size_t index{ it->second };
+                const size_t indexToRemove{ it->second };
                 const KeyType lastKey{ m_ReverseMapping.back() };
 
-                m_SparseMap[lastKey] = index;
+                m_SparseMap[lastKey] = indexToRemove;
                 m_SparseMap.erase(it);
                 
                 if constexpr(std::is_move_assignable_v<ValueType>)
                 {
-                    m_DenseArray[index] = std::move(m_DenseArray.back());
+                    m_DenseArray[indexToRemove] = std::move(m_DenseArray.back());
                 }
                 else if constexpr(std::is_move_constructible_v<ValueType>)
                 {
-                    std::cout << "moveconstruct on id: "<< key << " -> " << lastKey << " \n";
-                    new (&m_DenseArray[index]) ValueType(std::move(m_DenseArray.back()));
+                    m_DenseArray[indexToRemove].~ValueType();
+                    new (&m_DenseArray[indexToRemove]) ValueType(std::move(m_DenseArray.back()));
                 }
 
-                m_ReverseMapping[index] = m_ReverseMapping.back();
-                std::cout << "popped back (id: " << m_ReverseMapping.back() << " ) \n";
-                m_ReverseMapping.pop_back();
+                m_ReverseMapping[indexToRemove] = m_ReverseMapping.back();
+
                 m_DenseArray.pop_back();
+                m_ReverseMapping.pop_back();
             }
         }
 

@@ -22,7 +22,6 @@ namespace Pengin
 			m_EventName{eventName}
 
 		{
-			std::cout << m_Id << "\n";
 			auto& textComp{ ECS::GetInstance().GetComponent<TextComponent>(m_Id) };
 			const std::string displayText { "Player: " + playerName + " Health: " + std::to_string(initHealth) };
 
@@ -47,20 +46,15 @@ namespace Pengin
 
 			m_Observer->RegisterForEvent(m_Observer, m_EventName, callback);
 		}
-		~UIDisplayHealthComponent()
-		{
-			m_Observer = nullptr;
-		 }
-	private:
 
-		//A move construct here breaks the program, holds an "extra" strong reference to the m_Obs
-		EntityId m_Id;
-		std::shared_ptr<Observer> m_Observer; //Problem that this captures the weak ptr?
+	private:
+		const EntityId m_Id;
+		std::shared_ptr<Observer> m_Observer;
 
 		int test = 0;
 
-		std::string m_PlayerName;
-		std::string m_EventName;
+		const std::string m_PlayerName;
+		const std::string m_EventName;
 	};
 }
 

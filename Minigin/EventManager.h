@@ -34,8 +34,6 @@ namespace Pengin
 		requires ObserverConcept<ComponentType>
 		std::shared_ptr<Observer> CreateObserver(EntityId entityId) const
 		{
-			std::cout << "create obs caled for id: " << entityId << "\n";
-
 			static_assert(ObserverConcept<ComponentType>, "Must provide a valid function in the component class");
 
 			return std::make_shared<TypedObserver<ComponentType>>(entityId);

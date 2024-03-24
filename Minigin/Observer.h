@@ -21,18 +21,14 @@ namespace Pengin
 		[[nodiscard]] bool IsDirty() const { return m_IsDirty; }
 		void SetDirty() { m_IsDirty = true; }
 
-		virtual ~Observer()
-		{
-			std::cout << "Obs deleted for id: " << m_EntityId << "\n\n\n";
-		};
+		virtual ~Observer() = default;
+
 	protected:
 		Observer(EntityId entityId, std::type_index typeIdx) :
 			m_EntityId{ entityId },
 			m_TypeIdx{ typeIdx },
 			m_IsDirty{ false }
-		{
-			std::cout << "Obs created for id: "<< m_EntityId << "\n\n\n";
-		}
+		{ }
 
 		void SetIsDirtyFalse() { m_IsDirty = false; }
 

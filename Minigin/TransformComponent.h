@@ -11,6 +11,8 @@ namespace Pengin
 		TransformComponent(const glm::vec3& pos) : m_Position{ pos }
 		{}
 
+		~TransformComponent() = default;
+
 		glm::vec3 m_Position{ 0, 0, 0 };
 	};
 }

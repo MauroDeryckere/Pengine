@@ -52,10 +52,10 @@ namespace Pengin
             m_EntityManager.AddComponent(typeid(ComponentType), id);
             auto pair = m_ComponentManager.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
 
-            /*if (pair.second)
+            if (pair.second)
             {
                 m_ECSEventInter.SetObserverDirty(id, typeid(ComponentType));
-            }*/
+            }
 
             return pair.first;
         }
@@ -67,13 +67,12 @@ namespace Pengin
             auto it = std::prev(wrapper.end());
 
             EntityId lastId = wrapper.GetIdFromIterator(it);
-            lastId;
 
             m_EntityManager.RemoveComponent(typeid(ComponentType), id);
             m_ComponentManager.RemoveComponent(typeid(ComponentType), id);
 
-           // m_ECSEventInter.SetObserverDirty(lastId, typeid(ComponentType));
-            //m_ECSEventInter.SetObserverDirty(id, typeid(ComponentType));
+            m_ECSEventInter.SetObserverDirty(lastId, typeid(ComponentType));
+            m_ECSEventInter.SetObserverDirty(id, typeid(ComponentType)); //Line an likely be removed
         }
 
         template<typename ComponentType>
