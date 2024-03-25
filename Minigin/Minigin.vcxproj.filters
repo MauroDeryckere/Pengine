@@ -85,6 +85,9 @@
     <Filter Include="Header Files\Achievements">
       <UniqueIdentifier>{6ce943ba-2823-4b82-a20e-ca9fe414b864}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Events\Component">
+      <UniqueIdentifier>{a7b0b8b3-0532-4370-9343-7a9f0b59fe6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
@@ -234,16 +237,7 @@
     <ClInclude Include="EventManager.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
-    <ClInclude Include="Observer.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="TypedObserver.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
     <ClInclude Include="Event.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="EcsEventInter.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamapplist.h">
@@ -384,6 +378,18 @@
     <ClInclude Include="AchievementSystem.h">
       <Filter>Header Files\Achievements</Filter>
     </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="CompObserver.h">
+      <Filter>Header Files\Events\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EcsEventInter.h">
+      <Filter>Header Files\Events\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="TypedCompObserver.h">
+      <Filter>Header Files\Events\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -402,9 +408,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Minigin.cpp">
@@ -491,8 +494,17 @@
     <ClCompile Include="Event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CompObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Header Files\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api.json" />
+    <None Include="Observer.h">
+      <Filter>Header Files\Events</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -41,7 +41,7 @@ namespace Pengin
         const_iterator cbegin() const noexcept { return m_ComponentSet->cbegin(); }
         const_iterator cend() const noexcept { return m_ComponentSet->cend(); }
 
-        EntityId GetIdFromIterator(iterator it)
+        [[nodiscard]] const EntityId GetIdFromIterator(const_iterator it) const noexcept
         {
             return m_ComponentSet->GetKeyFromIterator(it);
         }

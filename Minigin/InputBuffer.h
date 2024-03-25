@@ -14,19 +14,13 @@
 
 namespace Pengin
 {
-    struct InputRecord
-    {
-        std::shared_ptr<InputCommand> pAction;
-        std::chrono::high_resolution_clock::time_point timestamp;
-    };
-
     class InputBuffer final : public dae::Singleton<InputBuffer>
     {
     public:
-        void RecordInput(std::shared_ptr<InputCommand> pAction);
-        [[nodiscard]] bool CheckCombo(const InputCombo& combo) const;
+        void RecordInput(std::shared_ptr<InputCommand> pAction) noexcept;
+        [[nodiscard]] bool CheckCombo(const InputCombo& combo) const noexcept;
         
-        void ClearBuffer() { m_Buffer.clear(); }
+        void ClearBuffer() noexcept { m_Buffer.clear(); }
 
         InputBuffer(const InputBuffer&) = delete;
         InputBuffer(InputBuffer&&) = delete;
@@ -38,6 +32,12 @@ namespace Pengin
         InputBuffer() = default;
 
         ~InputBuffer() = default;
+
+        struct InputRecord
+        {
+            std::shared_ptr<InputCommand> pAction;
+            std::chrono::high_resolution_clock::time_point timestamp;
+        };
 
         std::deque<InputRecord> m_Buffer;
 

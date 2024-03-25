@@ -36,18 +36,18 @@ namespace Pengin
             return m_EntityManager.CreateEntity();
         }
 
-        [[nodiscard]] bool Exists(const EntityId& id) noexcept
+        [[nodiscard]] bool Exists(const EntityId id) noexcept
         {
             return m_EntityManager.HasEntity(id);
         }
          
-        bool DestroyEntity(const EntityId& id)
+        bool DestroyEntity(const EntityId id)
         {
             return m_EntityManager.DestroyEntity(id);
         }
 
         template<typename ComponentType, typename... Args>
-        ComponentType& AddComponent(const EntityId& id, Args&&... args)
+        ComponentType& AddComponent(const EntityId id, Args&&... args)
         {
             m_EntityManager.AddComponent(typeid(ComponentType), id);
             auto pair = m_ComponentManager.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
@@ -61,12 +61,12 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        void RemoveComponent(const EntityId& id)
+        void RemoveComponent(const EntityId id)
         {
-            auto wrapper = m_ComponentManager.GetComponentWrapper<ComponentType>();
-            auto it = std::prev(wrapper.end());
+            const auto wrapper{ m_ComponentManager.GetConstComponentWrapper<ComponentType>() };
+            const auto it{ std::prev(wrapper.cend()) };
 
-            EntityId lastId = wrapper.GetIdFromIterator(it);
+            const EntityId lastId{ wrapper.GetIdFromIterator(it) };
 
             m_EntityManager.RemoveComponent(typeid(ComponentType), id);
             m_ComponentManager.RemoveComponent(typeid(ComponentType), id);

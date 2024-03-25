@@ -5,7 +5,7 @@
 
 namespace Pengin
 {
-	void EventManager::ProcessEventQueue()
+	void EventManager::ProcessEventQueue() noexcept
 	{		
 		while (!m_EventQueue.empty())
 		{
@@ -14,17 +14,17 @@ namespace Pengin
 		}
 	}
 
-	void EventManager::BroadcoastEvent(const Event& event)
+	void EventManager::BroadcoastEvent(const Event& event) noexcept
 	{
 		m_EventQueue.emplace(event);
 	}
 
-	void EventManager::BroadcastBlockingEvent(const Event& event)
+	void EventManager::BroadcastBlockingEvent(const Event& event) noexcept
 	{
 		ProcessEvent(event);
 	}
 	
-	void EventManager::ProcessEvent(const Event& event)
+	void EventManager::ProcessEvent(const Event& event) noexcept
 	{
 		auto compIt{ m_CompEventCallbacks.find(event.GetEventName()) };
 
@@ -68,7 +68,7 @@ namespace Pengin
 		}
 	}
 
-	void EventManager::RegisterObserver(std::weak_ptr<CompObserver> pObserver, fEventCallback fCallback, const std::string& event)
+	void EventManager::RegisterObserver(std::weak_ptr<CompObserver> pObserver, fEventCallback fCallback, const std::string& event) noexcept
 	{
 		auto obs = pObserver.lock();
 
@@ -91,13 +91,13 @@ namespace Pengin
 		ObserverVec.emplace_back(pObserver, fCallback);
 	}
 
-	void EventManager::RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event)
+	void EventManager::RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event) noexcept
 	{
 		auto& ObserverVec{ m_EventCallbacks[event] };
 		ObserverVec.emplace_back(pObserver, fCallback);
 	}
 
-	void EventManager::SetObserverDirty(EntityId entiyId, std::type_index typeIdx)
+	void EventManager::SetObserverDirty(EntityId entiyId, std::type_index typeIdx) noexcept
 	{
 		auto it = m_CompObservers.find({entiyId, typeIdx});
 

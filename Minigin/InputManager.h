@@ -24,15 +24,15 @@ namespace Pengin
     class InputManager final : public dae::Singleton<InputManager>
     {
     public:
-        [[nodiscard]] bool ProcessInput();
+        [[nodiscard]] bool ProcessInput() noexcept;
 
-        void MapControllerAction(ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
-        void MapKeyboardAction(KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
+        void MapControllerAction(ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
+        void MapKeyboardAction(KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
         //void MapMouseAction(MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
 
         //unmapping TODO
 
-        void MapCombo(const InputCombo& combo);
+        void MapCombo(const InputCombo& combo) noexcept;
 
         InputManager(const InputManager&) = delete;
         InputManager(InputManager&&) = delete;

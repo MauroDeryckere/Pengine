@@ -30,6 +30,11 @@ namespace Pengin
         const_iterator cbegin() const noexcept { return m_ComponentSet->cbegin(); }
         const_iterator cend() const noexcept { return m_ComponentSet->cend(); }
 
+        [[nodiscard]] const EntityId GetIdFromIterator(const_iterator it) const noexcept
+        {
+            return m_ComponentSet->GetKeyFromIterator(it);
+        }
+
     private:
         const SparseSet<ComponentType, EntityId>* m_ComponentSet;
     };

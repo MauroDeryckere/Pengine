@@ -1,6 +1,6 @@
 #ifndef DEFINES
 #define DEFINES
 
-#define USE_STEAMWORKS
+//#define USE_STEAMWORKS
 
 #endif

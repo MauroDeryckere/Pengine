@@ -27,26 +27,26 @@ namespace Pengin
 	class EventManager final : public dae::Singleton<EventManager>
 	{
 	public:
-		void ProcessEventQueue();
+		void ProcessEventQueue() noexcept;
 
-		void BroadcoastEvent(const Event& event);
-		void BroadcastBlockingEvent(const Event& event);
+		void BroadcoastEvent(const Event& event) noexcept;
+		void BroadcastBlockingEvent(const Event& event) noexcept;
 
 		template<typename ComponentType>
 		requires CompObserverConcept<ComponentType>
-		std::shared_ptr<CompObserver> CreateComponentObserver(EntityId entityId) const
+		[[nodiscard]] std::shared_ptr<CompObserver> CreateComponentObserver(EntityId entityId) const noexcept
 		{
 			static_assert(CompObserverConcept<ComponentType>, "Must provide a valid function in the component class");
 
 			return std::make_shared<TypedCompObserver<ComponentType>>(entityId);
 		}
 
-		std::shared_ptr<Observer> CreateObserver() const
+		[[nodiscard]] std::shared_ptr<Observer> CreateObserver() const noexcept
 		{
 			return std::make_shared<Observer>();
 		}
 
-		void SetObserverDirty(EntityId entiyId, std::type_index typeIdx);
+		void SetObserverDirty(EntityId entiyId, std::type_index typeIdx) noexcept;
 
 		EventManager(const EventManager&) = delete;
 		EventManager(EventManager&&) = delete;
@@ -67,12 +67,12 @@ namespace Pengin
 		~EventManager() = default;
 
 		friend class CompObserver;
-		void RegisterObserver(std::weak_ptr<CompObserver> pObserver, fEventCallback fCallback, const std::string& eventName);
+		void RegisterObserver(std::weak_ptr<CompObserver> pObserver, fEventCallback fCallback, const std::string& eventName) noexcept;
 
 		friend class Observer;
-		void RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& eventName);
+		void RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& eventName) noexcept;
 
-		void ProcessEvent(const Event& event);
+		void ProcessEvent(const Event& event) noexcept;
 
 		using ObserverIdentifier = std::pair<EntityId, std::type_index>;
 		struct ObserverIdentifierHash 

@@ -1,6 +1,6 @@
 #include "InputBuffer.h"
 
-void Pengin::InputBuffer::RecordInput(std::shared_ptr<InputCommand> pAction)
+void Pengin::InputBuffer::RecordInput(std::shared_ptr<InputCommand> pAction) noexcept
 {
     InputRecord record;
     record.pAction = std::move(pAction);
@@ -14,7 +14,7 @@ void Pengin::InputBuffer::RecordInput(std::shared_ptr<InputCommand> pAction)
     }
 }
 
-bool Pengin::InputBuffer::CheckCombo(const InputCombo& combo) const
+bool Pengin::InputBuffer::CheckCombo(const InputCombo& combo) const noexcept
 {
     if (m_Buffer.size() < combo.pComboActions.size() || combo.pComboActions.empty())
     {

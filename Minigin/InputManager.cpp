@@ -21,7 +21,7 @@ namespace Pengin
 		m_InputDevices[static_cast<size_t>(Devices::Controller)].reset(new InputController{});
 	}
 
-	bool InputManager::ProcessInput()
+	bool InputManager::ProcessInput() noexcept
 	{
 		for (auto& device : m_InputDevices)
 		{
@@ -57,17 +57,17 @@ namespace Pengin
 		return true;
 	}
 
-	void InputManager::MapControllerAction(ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
+	void InputManager::MapControllerAction(ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept
 	{
 		m_InputDevices[static_cast<size_t>(Devices::Controller)]->MapActionToInput(static_cast<unsigned>(button), inputState, std::move(pInputAction));
 	}
 
-	void InputManager::MapKeyboardAction(KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
+	void InputManager::MapKeyboardAction(KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept
 	{
 		m_InputDevices[static_cast<size_t>(Devices::Keyboard)]->MapActionToInput(static_cast<unsigned>(key), inputState, std::move(pInputAction));
 	}
 
-	void InputManager::MapCombo(const InputCombo& combo)
+	void InputManager::MapCombo(const InputCombo& combo) noexcept
 	{
 		assert(combo.pComboActions.size() > 1);
 		assert(combo.pComboActions.size() >= combo.allowedDelay.size());
