@@ -1,5 +1,5 @@
-#ifndef TEXTURECOMPONENT
-#define TEXTURECOMPONENT
+#ifndef STATICTEXTURECOMPONENT
+#define STATICTEXTURECOMPONENT
 
 #include "ECS.h"
 #include "ResourceManager.h"
@@ -9,17 +9,17 @@
 
 namespace Pengin
 {
-	class TextureComponent final
+	class StaticTextureComponent final
 	{
 	public:
-		TextureComponent(EntityId id) :
+		StaticTextureComponent(EntityId id) :
 			m_Id{ id }
 		{}
-		TextureComponent(const std::string& texturePath, EntityId id) :
+		StaticTextureComponent(const std::string& texturePath, EntityId id) :
 			m_pTexture{ dae::ResourceManager::GetInstance().LoadTexture(texturePath) },
 			m_Id{ id }
 		{}
-		~TextureComponent() = default;
+		~StaticTextureComponent() = default;
 
 		void SetTexture(const std::string& texturePath) { m_pTexture = dae::ResourceManager::GetInstance().LoadTexture(texturePath); }
 		void SetTexture(std::shared_ptr<dae::Texture2D> texture) { m_pTexture = texture; }

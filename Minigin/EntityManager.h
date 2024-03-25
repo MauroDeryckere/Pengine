@@ -24,20 +24,20 @@ namespace Pengin
         EntityManager& operator=(EntityManager&&) noexcept = delete;
 
         const EntityId& CreateEntity() noexcept;
-        [[nodiscard]] bool HasEntity(const EntityId& id) const noexcept;
+        [[nodiscard]] bool HasEntity(const EntityId id) const noexcept;
 
-        [[nodiscard]] bool DestroyEntity(const EntityId& id) noexcept;
+        [[nodiscard]] bool DestroyEntity(const EntityId id) noexcept;
 
-        [[nodiscard]] const std::vector<std::type_index> GetAllCompTypes(const EntityId& id) const;
+        [[nodiscard]] const std::vector<std::type_index> GetAllCompTypes(const EntityId id) const;
 
-        void AddComponent(std::type_index typeIdx, const EntityId& id) noexcept
+        void AddComponent(std::type_index typeIdx, const EntityId id) noexcept
         {
             const size_t bit{ m_TypeBitMap.at(typeIdx)};
 
             m_EntityCompFlags[id].Set(bit);
         }
 
-        void RemoveComponent(std::type_index typeIdx, const EntityId& id) noexcept
+        void RemoveComponent(std::type_index typeIdx, const EntityId id) noexcept
         {
             const size_t bit{ m_TypeBitMap.at(typeIdx) };
 

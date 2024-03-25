@@ -1,7 +1,7 @@
 #include "TextComponent.h"
 
 #include "Renderer.h"
-#include "TextureComponent.h"
+#include "StaticTextureComponent.h"
 
 #include <stdexcept>
 
@@ -27,7 +27,7 @@ namespace Pengin
 			auto pTexture = std::make_shared<dae::Texture2D>(texture);
 			m_NeedsUpdate = false;
 
-			auto& textureComp{ ECS::GetInstance().GetComponent<TextureComponent>(m_Id) };
+			auto& textureComp{ ECS::GetInstance().GetComponent<StaticTextureComponent>(m_Id) };
 			textureComp.SetTexture(pTexture);
 		}
 	}

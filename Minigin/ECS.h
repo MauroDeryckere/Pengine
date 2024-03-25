@@ -31,7 +31,7 @@ namespace Pengin
     class ECS final : public dae::Singleton<ECS>
     {
     public:
-        const EntityId& CreateEntity() noexcept
+        const EntityId CreateEntity() noexcept
         {
             return m_EntityManager.CreateEntity();
         }
@@ -75,31 +75,31 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        [[nodiscard]] bool HasComponent(const EntityId& id)
+        [[nodiscard]] bool HasComponent(const EntityId id)
         {
             return m_ComponentManager.HasComponent(typeid(ComponentType), id); 
         }
 
         template<typename ComponentType>
-        [[nodiscard]] ComponentType& GetComponent(const EntityId& id)
+        [[nodiscard]] ComponentType& GetComponent(const EntityId id)
         {
             return m_ComponentManager.GetComponent<ComponentType>(id);
         }
 
         template<typename ComponentType>
-        const ComponentType& GetComponent(const EntityId& id) const
+        [[nodiscard]] const ComponentType& GetComponent(const EntityId id) const
         {
             return m_ComponentManager.GetConstComponent<ComponentType>(id);
         }
 
         template<typename ComponentType>
-        ComponentWrapper<ComponentType> GetComponents()
+        [[nodiscard]] ComponentWrapper<ComponentType> GetComponents()
         {
             return m_ComponentManager.GetComponentWrapper<ComponentType>();
         }
 
         template<typename ComponentType>
-        const ConstComponentWrapper<ComponentType> GetComponents() const
+        [[nodiscard]] const ConstComponentWrapper<ComponentType> GetComponents() const
         {
             return m_ComponentManager.GetConstComponentWrapper<ComponentType>();
         }

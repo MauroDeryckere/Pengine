@@ -7,7 +7,7 @@
 #include "FPSCounterComponent.h"
 #include "HealthComponent.h"
 #include "TextComponent.h"
-#include "TextureComponent.h"
+#include "StaticTextureComponent.h"
 #include "TransformComponent.h"
 
 #endif

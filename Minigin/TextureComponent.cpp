@@ -1,4 +1,4 @@
-#include "TextureComponent.h"
+#include "StaticTextureComponent.h"
 
 #include "TransformComponent.h"
 
@@ -6,7 +6,7 @@
 
 namespace Pengin
 {
-	void TextureComponent::Render() const
+	void StaticTextureComponent::Render() const
 	{
 		//In future: move ID out, create view for comp types (?)
 		if (m_pTexture)

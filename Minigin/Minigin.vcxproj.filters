@@ -25,9 +25,6 @@
     <Filter Include="Header Files\ECS\ECS Components\ECS">
       <UniqueIdentifier>{9a81b5d0-729a-446f-8a99-9248ab0b01d6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ECS\ECS Components\Entitiies">
-      <UniqueIdentifier>{a6c5146d-ce25-40be-afc1-30f8229be3f7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\ECS\BitSet">
       <UniqueIdentifier>{be3fc76b-0a34-4c8a-a412-c286e5a50cad}</UniqueIdentifier>
     </Filter>
@@ -88,6 +85,9 @@
     <Filter Include="Header Files\Events\Component">
       <UniqueIdentifier>{a7b0b8b3-0532-4370-9343-7a9f0b59fe6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ECS\ECS Components\Entities">
+      <UniqueIdentifier>{a6c5146d-ce25-40be-afc1-30f8229be3f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
@@ -97,7 +97,7 @@
       <Filter>Header Files\ECS\ECS Components\ECS</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
-      <Filter>Header Files\ECS\ECS Components\Entitiies</Filter>
+      <Filter>Header Files\ECS\ECS Components\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Bitset.h">
       <Filter>Header Files\ECS\BitSet</Filter>
@@ -106,7 +106,7 @@
       <Filter>Header Files\ECS\SparseSet</Filter>
     </ClInclude>
     <ClInclude Include="EntityManager.h">
-      <Filter>Header Files\ECS\ECS Components\Entitiies</Filter>
+      <Filter>Header Files\ECS\ECS Components\Entities</Filter>
     </ClInclude>
     <ClInclude Include="UniqueTypeTracker.h">
       <Filter>Header Files\ECS\ECS Components\ECS</Filter>
@@ -210,7 +210,7 @@
     <ClInclude Include="Scene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="TextureComponent.h">
+    <ClInclude Include="StaticTextureComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="TextComponent.h">

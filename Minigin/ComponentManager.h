@@ -37,7 +37,7 @@ namespace Pengin
         ComponentManager& operator=(ComponentManager&&) noexcept = delete;
 
         template<typename ComponentType, typename... Args>
-        std::pair<ComponentType&, bool> AddComponent(const EntityId& id, Args&&... args)
+        std::pair<ComponentType&, bool> AddComponent(const EntityId id, Args&&... args)
         {
             [[maybe_unused]] UniqueTypesTracker<ComponentType> tracker; //TODO Change this
 
@@ -66,7 +66,7 @@ namespace Pengin
             throw std::runtime_error("Failed to add component");
         }
 
-        bool RemoveComponent(std::type_index typeIdx, const EntityId& id) noexcept
+        bool RemoveComponent(std::type_index typeIdx, const EntityId id) noexcept
         {
             const auto it{ m_TypeBitMap.find(typeIdx) };
 
@@ -88,7 +88,7 @@ namespace Pengin
             return true;
         }
 
-        [[nodiscard]] bool HasComponent(std::type_index typeIdx, const EntityId& id) const
+        [[nodiscard]] bool HasComponent(std::type_index typeIdx, const EntityId id) const
         {
             const auto it{ m_TypeBitMap.find(typeIdx) };
 
@@ -111,7 +111,7 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        [[nodiscard]] ComponentType& GetComponent(const EntityId& id)
+        [[nodiscard]] ComponentType& GetComponent(const EntityId id)
         {
             const auto it{ m_TypeBitMap.find(typeid(ComponentType)) };
 
@@ -140,7 +140,7 @@ namespace Pengin
 
 
         template<typename ComponentType>
-        [[nodiscard]] const ComponentType& GetConstComponent(const EntityId& id) const
+        [[nodiscard]] const ComponentType& GetConstComponent(const EntityId id) const
         {
             const auto it{ m_TypeBitMap.find(typeid(ComponentType)) };
 

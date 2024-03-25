@@ -42,7 +42,7 @@ void Scene::Update()
 
 void Scene::Render() const
 {
-	auto textureComps = Pengin::ECS::GetInstance().GetComponents<Pengin::TextureComponent>();
+	auto textureComps = Pengin::ECS::GetInstance().GetComponents<Pengin::StaticTextureComponent>();
 	
 	for (const auto& entity : textureComps)
 	{
