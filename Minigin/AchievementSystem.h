@@ -7,14 +7,15 @@
 #include "EventManager.h"
 
 #ifdef USE_STEAMWORKS
-#pragma warning (push)
-#pragma warning (disable: 4996)
-	#include "steam_api.h"
-#pragma warning (pop)
+	#pragma warning (push)
+	#pragma warning (disable: 4996)
+		#include "steam_api.h"
+	#pragma warning (pop)
 #endif
 
 namespace Pengin
 {
+	//Singleton TODO
 	class AchievementSystem final
 	{
 	public:
@@ -23,7 +24,7 @@ namespace Pengin
 		{
 			RegisterObservers();
 		}
-
+ 
 		~AchievementSystem() = default;
 
 		AchievementSystem(const AchievementSystem&) = delete;
@@ -34,7 +35,7 @@ namespace Pengin
 		void RegisterObservers()
 		{
 			auto callBack = [this](const void* eventData) { ScoreAchievementCallback(eventData); };
-			m_Observer->RegisterForEvent(m_Observer, "ScoreAchievement", callBack);
+			m_Observer->RegisterForEvent(m_Observer,"ScoreAchievement", callBack);
 		}
 
 		void ScoreAchievementCallback(const void* pScore)

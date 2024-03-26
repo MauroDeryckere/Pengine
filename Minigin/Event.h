@@ -4,6 +4,8 @@
 
 namespace Pengin
 {
+	//event args obj or templetized?
+
 	class Event final
 	{
 	public:

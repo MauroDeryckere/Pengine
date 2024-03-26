@@ -94,8 +94,7 @@ namespace Pengin
 	class CollectScore final : public InputCommand //bound to input for now
 	{
 	public:
-		CollectScore(EntityId id, const std::string& eventName, unsigned score = 10) :
-			m_Id{ id },
+		CollectScore(const std::string& eventName, unsigned score = 10) :
 			m_EventName{eventName},
 			m_ScoreVal{ score }
 		{ }
@@ -114,7 +113,6 @@ namespace Pengin
 		CollectScore& operator=(CollectScore&&) noexcept = delete;
 
 	private:
-		const EntityId m_Id;
 		const std::string m_EventName;
 		const unsigned m_ScoreVal;
 	};

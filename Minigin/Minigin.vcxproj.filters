@@ -390,6 +390,12 @@
     <ClInclude Include="TypedCompObserver.h">
       <Filter>Header Files\Events\Component</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilStructs.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -499,6 +505,9 @@
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Header Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationComponent.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

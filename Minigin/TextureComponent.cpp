@@ -14,7 +14,11 @@ namespace Pengin
 			auto& ecs = ECS::GetInstance();
 			const auto& tranform{ ecs.GetComponent<TransformComponent>(m_Id) };
 
-			dae::Renderer::GetInstance().RenderTexture(*m_pTexture, tranform.m_Position.x, tranform.m_Position.y);
+			dae::Renderer::GetInstance().RenderTexture(*m_pTexture, 
+														tranform.m_Position.x, 
+														tranform.m_Position.y, 
+														m_pTexture->GetSize().x * tranform.m_Scale.x,
+														m_pTexture->GetSize().y * tranform.m_Scale.y);
 		}
 	}
 }

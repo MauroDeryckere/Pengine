@@ -38,13 +38,24 @@ void Scene::Update()
 	{
 		entity.Update();
 	}
+
+	auto aniComps = Pengin::ECS::GetInstance().GetComponents<Pengin::AnimationComponent>();
+	for (auto& entity : aniComps)
+	{
+		entity.Update();
+	}
 }
 
 void Scene::Render() const
 {
-	auto textureComps = Pengin::ECS::GetInstance().GetComponents<Pengin::StaticTextureComponent>();
-	
-	for (const auto& entity : textureComps)
+	auto staticTexturecomps = Pengin::ECS::GetInstance().GetComponents<Pengin::StaticTextureComponent>();
+	for (const auto& entity : staticTexturecomps)
+	{
+		entity.Render();
+	}
+
+	auto aniComps = Pengin::ECS::GetInstance().GetComponents<Pengin::AnimationComponent>();
+	for (auto& entity : aniComps)
 	{
 		entity.Render();
 	}
@@ -52,6 +63,6 @@ void Scene::Render() const
 
 void Scene::RenderGUI() const
 {
-	//m_TrashCache.Render();
+
 }
 

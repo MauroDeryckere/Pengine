@@ -5,7 +5,7 @@
 
 namespace Pengin
 {
-	class FPSCounterComponent
+	class FPSCounterComponent final
 	{
 	public:
 		FPSCounterComponent(EntityId id) :

@@ -46,11 +46,11 @@ namespace Pengin
 		}
 
 	private:
-		const EntityId m_Id;
-		std::shared_ptr<CompObserver> m_Observer;
-
 		const std::string m_PlayerName;
 		const std::string m_EventName;
+
+		std::shared_ptr<CompObserver> m_Observer;
+		const EntityId m_Id;
 	};
 }
 

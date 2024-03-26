@@ -16,9 +16,9 @@ namespace Pengin
 	{
 	public:
 		TextComponent(EntityId id, const std::string& fontPath, unsigned fontSize, const std::string& text = "<EMPTY STRING>", SDL_Color color = {255,255,255,255}) :
-			m_Id{ id },
-			m_pFont{ dae::ResourceManager::GetInstance().LoadFont(fontPath, fontSize) },
 			m_Text{ text },
+			m_pFont{ dae::ResourceManager::GetInstance().LoadFont(fontPath, fontSize) },
+			m_Id{ id },
 			m_Color{ color }
 		{}
 
@@ -35,13 +35,13 @@ namespace Pengin
 		const std::string& GetText() const { return m_Text; }
 
 	private:
-		bool m_NeedsUpdate{ true };
 		std::string m_Text;
-
-		const SDL_Color m_Color{ 255,255,255,255 };
 
 		std::shared_ptr<dae::Font> m_pFont;
 		const EntityId m_Id;
+
+		const SDL_Color m_Color{ 255,255,255,255 };
+		bool m_NeedsUpdate{ true };
 	};
 }
 

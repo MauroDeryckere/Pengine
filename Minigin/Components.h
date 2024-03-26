@@ -8,6 +8,7 @@
 #include "HealthComponent.h"
 #include "TextComponent.h"
 #include "StaticTextureComponent.h"
+#include "AnimationComponent.h"
 #include "TransformComponent.h"
 
 #endif

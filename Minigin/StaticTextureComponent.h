@@ -19,6 +19,7 @@ namespace Pengin
 			m_pTexture{ dae::ResourceManager::GetInstance().LoadTexture(texturePath) },
 			m_Id{ id }
 		{}
+
 		~StaticTextureComponent() = default;
 
 		void SetTexture(const std::string& texturePath) { m_pTexture = dae::ResourceManager::GetInstance().LoadTexture(texturePath); }

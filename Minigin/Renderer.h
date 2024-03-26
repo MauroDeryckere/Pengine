@@ -2,8 +2,12 @@
 #include <SDL.h>
 #include "Singleton.h"
 
+#include "UtilStructs.h"
+
 namespace dae
 {
+	using namespace Pengin::UtilStructs;
+
 	class Texture2D;
 	/**
 	 * Simple RAII wrapper for the SDL renderer
@@ -19,12 +23,16 @@ namespace dae
 		void Destroy();
 
 		void RenderTexture(const Texture2D& texture, float x, float y) const;
+		void RenderTexture(const Texture2D& texture, const Recti& dstRect, const Recti& srcRect = {}) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
 
-		SDL_Renderer* GetSDLRenderer() const;
+		[[nodiscard]] SDL_Renderer* GetSDLRenderer() const;
 
 		const SDL_Color& GetBackgroundColor() const { return m_clearColor; }
 		void SetBackgroundColor(const SDL_Color& color) { m_clearColor = color; }
+
+	private:
+		void RenderTexture(const Texture2D& texture, SDL_Rect* pDstRect, SDL_Rect* pSrcRect) const;
 	};
 }
 

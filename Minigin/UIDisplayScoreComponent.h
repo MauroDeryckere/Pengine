@@ -34,12 +34,13 @@ namespace Pengin
 		}
 
 	private:
-		const EntityId m_Id;
-		std::shared_ptr<CompObserver> m_Observer;
-
 		const std::string m_Prefix;
 		const std::string m_EventName;
+
+		std::shared_ptr<CompObserver> m_Observer;
+
 		unsigned m_Score;
+		const EntityId m_Id;
 
 		void OnScoreIncrease(const void* eventData)
 		{			

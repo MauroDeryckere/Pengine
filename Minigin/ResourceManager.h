@@ -11,8 +11,10 @@ namespace dae
 	{
 	public:
 		void Init(const std::string& data);
-		std::shared_ptr<Texture2D> LoadTexture(const std::string& file) const;
-		std::shared_ptr<Font> LoadFont(const std::string& file, unsigned int size) const;
+
+		[[nodiscard]] std::shared_ptr<Texture2D> LoadTexture(std::string_view file) const;
+		[[nodiscard]] std::shared_ptr<Font> LoadFont(std::string_view, unsigned size) const;
+
 	private:
 		friend class Singleton<ResourceManager>;
 		ResourceManager() = default;
