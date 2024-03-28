@@ -11,6 +11,7 @@
 namespace Pengin
 {
     class ComponentManager;
+    class EcsEventInter;
 
     class EntityManager final
     {
@@ -26,7 +27,7 @@ namespace Pengin
         const EntityId& CreateEntity() noexcept;
         [[nodiscard]] bool HasEntity(const EntityId id) const noexcept;
 
-        [[nodiscard]] bool DestroyEntity(const EntityId id) noexcept;
+        [[nodiscard]] bool DestroyEntity(const EntityId id, EcsEventInter& eventInter) noexcept;
 
         [[nodiscard]] const std::vector<std::type_index> GetAllCompTypes(const EntityId id) const;
 

@@ -49,9 +49,9 @@ namespace Pengin
             return m_EntityManager.HasEntity(id);
         }
          
-        bool DestroyEntity(const EntityId id)
+        bool DestroyEntity(const EntityId id) 
         {
-            return m_EntityManager.DestroyEntity(id);
+            return m_EntityManager.DestroyEntity(id, m_ECSEventInter);
         }
 
         template<typename ComponentType, typename... Args>
