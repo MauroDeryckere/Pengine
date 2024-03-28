@@ -11,11 +11,11 @@ namespace Pengin
     class InputController final : public InputDevice
     {
     public:
-        InputController();
+        InputController(size_t userIdx);
         virtual ~InputController() override = default;
 
         virtual void ProcessInputState() override;
-        virtual void ProcessMappedActions() override;
+        virtual void ProcessMappedActions(InputBuffer* const inputBuffer) override;
         virtual void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) override;
 
     private:

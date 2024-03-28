@@ -11,13 +11,15 @@ namespace Pengin
 	enum class InputState;
 	struct InputCombo;
 
+	class InputBuffer;
+
 	class InputDevice abstract
 	{
 	public:
 		virtual ~InputDevice() = default;
 
 		virtual void ProcessInputState() = 0;
-		virtual void ProcessMappedActions() = 0;
+		virtual void ProcessMappedActions(InputBuffer* const inputbuffer) = 0;
 
 		virtual void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) = 0;
 

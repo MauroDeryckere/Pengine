@@ -14,9 +14,12 @@
 
 namespace Pengin
 {
-    class InputBuffer final : public dae::Singleton<InputBuffer>
+    class InputBuffer final
     {
     public:
+        InputBuffer() = default;
+        ~InputBuffer() = default;
+
         void RecordInput(std::shared_ptr<InputCommand> pAction) noexcept;
         [[nodiscard]] bool CheckCombo(const InputCombo& combo) const noexcept;
         
@@ -27,12 +30,7 @@ namespace Pengin
         InputBuffer& operator=(const InputBuffer&) = delete;
         InputBuffer& operator=(const InputBuffer&&) = delete;
 
-    private:
-        friend class dae::Singleton<InputBuffer>;
-        InputBuffer() = default;
-
-        ~InputBuffer() = default;
-
+    private:   
         struct InputRecord
         {
             std::shared_ptr<InputCommand> pAction;
@@ -41,7 +39,7 @@ namespace Pengin
 
         std::deque<InputRecord> m_Buffer;
 
-        constinit static const int MAX_BUFFER_SIZE{ 20 };
+        static constexpr int MAX_BUFFER_SIZE{ 20 };
         static constexpr float ERROR_MARGIN_TIME{ 200.f }; //ms
     };
 }

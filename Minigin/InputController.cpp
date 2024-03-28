@@ -1,5 +1,7 @@
 #include "InputController.h"
 
+#include "Time.h"
+
 #include "InputManager.h"
 #include "InputBuffer.h"
 
@@ -7,6 +9,7 @@
 #include "Xinput.h"
 
 #include <unordered_map>
+#include <ranges>
 #include <vector>
 
 namespace Pengin
@@ -14,11 +17,11 @@ namespace Pengin
 	class WindowsInputControllerImpl
 	{
 	public:
-		WindowsInputControllerImpl();
+		WindowsInputControllerImpl(size_t userIdx);
 		~WindowsInputControllerImpl() = default;
 
 		void ProcessInputState();
-		void ProcessMappedActions();
+		void ProcessMappedActions(InputBuffer* const inputBuffer);
 		void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
 
 		//Pivate in InputController
@@ -26,63 +29,89 @@ namespace Pengin
 		bool IsDownThisFrame(unsigned btn) const;
 		bool IsUpThisFrame(unsigned btn) const;
 		bool IsPressed(unsigned btn) const;
+
 	private:
+		void UpdateControllerIdx();
+
+		std::pair<size_t, DWORD> m_UserIdxControllerIdxPair;
+
 		XINPUT_STATE m_CurrentState;
 		unsigned m_ButtonsPressedThisFrame;
 		unsigned m_ButtonsReleasedThisFrame;
 		std::vector<std::unordered_map<ControllerButton, std::shared_ptr<InputCommand>>> m_ControllerActionMapping;
 
-	};
+		static constexpr DWORD INVALID_CONTROLLER_VALUE { 100 } ;
+		
+		static std::vector<DWORD> m_FreeControllerIdxes;
 
-	WindowsInputControllerImpl::WindowsInputControllerImpl():
+		float m_DisconnectedTime{ 0.f };
+		static constexpr float MAX_ALLOWED_DISCONNECTED_TIME{ 10.f };
+	};
+	std::vector<DWORD> WindowsInputControllerImpl::m_FreeControllerIdxes = { 0, 1, 2, 3 }; //Windows defined available controller idxes
+
+	WindowsInputControllerImpl::WindowsInputControllerImpl(size_t userIdx):
+		m_UserIdxControllerIdxPair{userIdx, INVALID_CONTROLLER_VALUE },
 		m_CurrentState{},
 
 		m_ButtonsPressedThisFrame{},
 		m_ButtonsReleasedThisFrame{},
 
-		m_ControllerActionMapping(static_cast<size_t>(InputState::STATE_COUNT)) {}
+		m_ControllerActionMapping(static_cast<size_t>(InputState::STATE_COUNT)) 
+	
+	{
+		UpdateControllerIdx();
+	}
 
 	void WindowsInputControllerImpl::ProcessInputState()
 	{
-		DWORD userIdx{ };
+		if (m_UserIdxControllerIdxPair.second == INVALID_CONTROLLER_VALUE)
+		{
+			UpdateControllerIdx();
+			return;
+		}
 
 		XINPUT_STATE previousState{};
 
 		CopyMemory(&previousState, &m_CurrentState, sizeof(XINPUT_STATE));
 		ZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
-		XInputGetState(userIdx, &m_CurrentState);
+		auto result = XInputGetState(m_UserIdxControllerIdxPair.second, &m_CurrentState);
 
-		//if (result == ERROR_SUCCESS)
-		//{
-			//Controller connected
-		//}
+		if (result == ERROR_SUCCESS)
+		{
+			auto buttonChanges = m_CurrentState.Gamepad.wButtons ^ previousState.Gamepad.wButtons;
+			m_ButtonsPressedThisFrame = buttonChanges & m_CurrentState.Gamepad.wButtons;
+			m_ButtonsReleasedThisFrame = buttonChanges & (~m_CurrentState.Gamepad.wButtons);
+		}
+		else
+		{
+			m_FreeControllerIdxes.emplace_back(m_UserIdxControllerIdxPair.second);
+			m_UserIdxControllerIdxPair.second = INVALID_CONTROLLER_VALUE;
 
-		auto buttonChanges = m_CurrentState.Gamepad.wButtons ^ previousState.Gamepad.wButtons;
-		m_ButtonsPressedThisFrame = buttonChanges & m_CurrentState.Gamepad.wButtons;
-		m_ButtonsReleasedThisFrame = buttonChanges & (~m_CurrentState.Gamepad.wButtons);
+			UpdateControllerIdx();
+		}
 	}
 
-	void WindowsInputControllerImpl::ProcessMappedActions()
+	void WindowsInputControllerImpl::ProcessMappedActions(InputBuffer * const inputBuffer)
 	{
 		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::DownThisFrame)]) {
 			if (IsDownThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
 			{
 				pair.second->Execute();
-				InputBuffer::GetInstance().RecordInput(pair.second);
+				inputBuffer->RecordInput(pair.second);
 			}
 		}
 		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::UpThisFrame)]) {
 			if (IsUpThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
 			{
 				pair.second->Execute();
-				InputBuffer::GetInstance().RecordInput(pair.second);
+				inputBuffer->RecordInput(pair.second);
 			}
 		}
 		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::Pressed)]) {
 			if (IsPressed(GetCodeFromKey(static_cast<unsigned>(pair.first))))
 			{
 				pair.second->Execute();
-				InputBuffer::GetInstance().RecordInput(pair.second);
+				inputBuffer->RecordInput(pair.second);
 			}
 		}
 	}
@@ -132,21 +161,46 @@ namespace Pengin
 		return m_CurrentState.Gamepad.wButtons & btn;
 	}
 
-	InputController::InputController() :
-		InputDevice{},
-		m_WinImpl(std::make_unique<WindowsInputControllerImpl>())
+	void WindowsInputControllerImpl::UpdateControllerIdx()
 	{
+		for (auto& controllerIdx : m_FreeControllerIdxes)
+		{
+			XINPUT_STATE state;
+			DWORD result = XInputGetState(controllerIdx, &state);
 
+			if (result == ERROR_SUCCESS)
+			{
+				m_UserIdxControllerIdxPair.second = controllerIdx;
+				std::erase_if(m_FreeControllerIdxes, [&](DWORD idx) { return idx == controllerIdx; });
+
+				m_DisconnectedTime = 0.f;
+
+				return;
+			}
+		}
+		
+		m_DisconnectedTime += Time::GetInstance().GetElapsedSec();
+
+		if (m_DisconnectedTime >= MAX_ALLOWED_DISCONNECTED_TIME)
+		{
+			std::cerr << "MAX ALLOWED CONTROLLER DISCONNECT TIME REACHED FOR USERIDX: " << m_UserIdxControllerIdxPair.first << "\n\n\n";
+			//Can allow some handling here like back to main menu, ...
+		}
 	}
+
+	InputController::InputController(size_t userIdx) :
+		InputDevice{},
+		m_WinImpl(std::make_unique<WindowsInputControllerImpl>(userIdx))
+	{ }
 
 	void InputController::ProcessInputState()
 	{
 		m_WinImpl->ProcessInputState();
 	}
 
-	void InputController::ProcessMappedActions()
+	void InputController::ProcessMappedActions(InputBuffer* const inputBuffer)
 	{
-		m_WinImpl->ProcessMappedActions();
+		m_WinImpl->ProcessMappedActions(inputBuffer);
 	}
 
 	void InputController::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)

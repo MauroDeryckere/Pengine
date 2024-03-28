@@ -25,8 +25,11 @@ void Scene::FixedUpdate()
 
 void Scene::Update()
 {
-	Pengin::EventManager::GetInstance().ProcessEventQueue();
+	Pengin::EventManager::GetInstance().ProcessEventQueue(); //Shouldnt be on a scene level but on scenemanager TODO
 
+	//Also more generic update apporach and render? or systems TODO
+
+	//TOOD what if empty?
 	auto fpsComps = Pengin::ECS::GetInstance().GetComponents<Pengin::FPSCounterComponent>();
 	for (auto& entity : fpsComps)
 	{

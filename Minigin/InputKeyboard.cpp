@@ -15,7 +15,7 @@ namespace Pengin
 		~WindowsKeyboardImpl() = default;
 
 		void ProcessInputState();
-		void ProcessMappedActions();
+		void ProcessMappedActions(InputBuffer* const inputBuffer);
 		void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
 
 		//Pivate in InputKeyboard
@@ -54,27 +54,27 @@ namespace Pengin
 
 	}
 
-	void WindowsKeyboardImpl::ProcessMappedActions()
+	void WindowsKeyboardImpl::ProcessMappedActions(InputBuffer* const inputBuffer)
 	{
 		for (auto& pair : m_KeyboardActionMapping[static_cast<size_t>(InputState::DownThisFrame)]) {
 			if (IsDownThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
 			{
 				pair.second->Execute();
-				InputBuffer::GetInstance().RecordInput(pair.second);
+				inputBuffer->RecordInput(pair.second);
 			}
 		}
 		for (auto& pair : m_KeyboardActionMapping[static_cast<size_t>(InputState::UpThisFrame)]) {
 			if (IsUpThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
 			{
 				pair.second->Execute();
-				InputBuffer::GetInstance().RecordInput(pair.second);
+				inputBuffer->RecordInput(pair.second);
 			}			
 		}
 		for (auto& pair : m_KeyboardActionMapping[static_cast<size_t>(InputState::Pressed)]) {
 			if (IsPressed(GetCodeFromKey(static_cast<unsigned>(pair.first))))
 			{
 				pair.second->Execute();
-				InputBuffer::GetInstance().RecordInput(pair.second);
+				inputBuffer->RecordInput(pair.second);
 			}
 		}
 	}
@@ -210,9 +210,9 @@ namespace Pengin
 		m_WinImpl->ProcessInputState();
 	}
 
-	void InputKeyboard::ProcessMappedActions()
+	void InputKeyboard::ProcessMappedActions(InputBuffer* const inputBuffer)
 	{
-		m_WinImpl->ProcessMappedActions();
+		m_WinImpl->ProcessMappedActions(inputBuffer);
 	}
 
 	void InputKeyboard::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)

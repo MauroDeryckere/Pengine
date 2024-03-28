@@ -5,6 +5,7 @@
 
 #include "InputCommand.h"
 #include "InputDevice.h"
+#include "InputBuffer.h"
 
 #include "InputKeys.h"
 
@@ -13,6 +14,14 @@
 
 namespace Pengin
 {
+    class InputBuffer;
+
+    enum class UserType : char
+    {
+        Keyboard,
+        Controller
+    };
+
     struct InputCombo
     {
         std::vector<std::shared_ptr<InputCommand>> pComboActions;
@@ -26,13 +35,16 @@ namespace Pengin
     public:
         [[nodiscard]] bool ProcessInput() noexcept;
 
-        void MapControllerAction(ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
-        void MapKeyboardAction(KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
-        //void MapMouseAction(MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
+        [[nodiscard]] size_t RegisterUser(UserType usertype) noexcept; //returns the userIndex
+
+        void MapControllerAction(size_t userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
+        void MapKeyboardAction(size_t userIdx, KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
+
+        //void MapMouseAction(userIdx, MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
 
         //unmapping TODO
 
-        void MapCombo(const InputCombo& combo) noexcept;
+        void MapCombo(size_t userIdx, const InputCombo& combo) noexcept;
 
         InputManager(const InputManager&) = delete;
         InputManager(InputManager&&) = delete;
@@ -41,21 +53,15 @@ namespace Pengin
 
     private:
         friend class dae::Singleton<InputManager>;
-        InputManager(); //TODO: make sure to check if keyboard, controller,...
+        InputManager() = default;
         ~InputManager() = default;
 
-        std::vector<std::unique_ptr<InputDevice>> m_InputDevices;
+        std::vector<std::pair<UserType, std::vector<std::unique_ptr<InputDevice>>>> m_RegisteredUsers;
+        std::vector<std::vector<InputCombo>> m_NewInputCombos;
+        std::vector<std::unique_ptr<InputBuffer>> m_InputBuffers;
 
-        std::vector<InputCombo> m_Combos;
 
-        enum class Devices : char
-        {
-            Keyboard,
-            //Mouse,
-            Controller,
-
-            DEVICE_COUNT
-        };
+        static constexpr unsigned MAX_ALLOWED_CONTROLLERS{ 4 };
     };
 }
 
