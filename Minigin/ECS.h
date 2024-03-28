@@ -17,6 +17,8 @@
 * The templated functions that do not cast down to a typeid are templated because the return type is required. The others for uniformity
 * It is recommended to use the Get function whenever you need to acces a specific component because references could become invalid frame - frame as the container changes
 * 
+* A user should only define the RegisterObserevr function when they actually use observers to prevent expensive function calls when not necessary.
+* 
 * TODO: 
 * HasComponent<Types ...>()
 * GetComponents<Type, Type>()  - return All entities with 2 given componennts
@@ -28,10 +30,16 @@
 
 namespace Pengin
 {   
+    template<typename ComponentType>
+    concept CompObserverConcept = requires(ComponentType component)
+    {
+        { component.RegisterObservers() } -> std::same_as<void>;
+    };
+
     class ECS final : public dae::Singleton<ECS>
     {
     public:
-        const EntityId CreateEntity() noexcept
+        [[nodiscard]] const EntityId CreateEntity() noexcept
         {
             return m_EntityManager.CreateEntity();
         }
@@ -52,9 +60,17 @@ namespace Pengin
             m_EntityManager.AddComponent(typeid(ComponentType), id);
             auto pair = m_ComponentManager.AddComponent<ComponentType>(id, std::forward<Args>(args)...);
 
-            if (pair.second)
+            if constexpr (CompObserverConcept<ComponentType>)
             {
-                m_ECSEventInter.SetObserverDirty(id, typeid(ComponentType));
+                if (pair.second)
+                {
+                    const ComponentWrapper<ComponentType> compWrapper = GetComponents<ComponentType>();
+
+                    for (typename ComponentWrapper<ComponentType>::const_iterator it{ compWrapper.cbegin() }; it != compWrapper.cend(); ++it)
+                    {
+                        m_ECSEventInter.SetObserverDirty(compWrapper.GetIdFromIterator(it), typeid(ComponentType));
+                    }
+                }
             }
 
             return pair.first;
@@ -64,14 +80,17 @@ namespace Pengin
         void RemoveComponent(const EntityId id)
         {
             const auto wrapper{ m_ComponentManager.GetConstComponentWrapper<ComponentType>() };
-            const auto it{ std::prev(wrapper.cend()) };
 
-            const EntityId lastId{ wrapper.GetIdFromIterator(it) };
+            if constexpr (CompObserverConcept<ComponentType>)
+            {
+                const auto it{ std::prev(wrapper.cend()) };
+                const EntityId lastId{ wrapper.GetIdFromIterator(it) };
+
+                m_ECSEventInter.SetObserverDirty(lastId, typeid(ComponentType)); //Moved in memory
+            }
 
             m_EntityManager.RemoveComponent(typeid(ComponentType), id);
             m_ComponentManager.RemoveComponent(typeid(ComponentType), id);
-
-            m_ECSEventInter.SetObserverDirty(lastId, typeid(ComponentType)); //Moved in memory
         }
 
         template<typename ComponentType>

@@ -118,12 +118,12 @@ namespace Pengin
                 return { m_DenseArray.end(), false };
             }    
 
-            const size_t oldCapacity{ m_DenseArray.capacity() };
+            auto oldCap = m_DenseArray.capacity();
 
             m_DenseArray.emplace_back(std::forward<Args>(args)...);
             m_ReverseMapping.emplace_back(key);
 
-            return { std::prev(m_DenseArray.end()), (oldCapacity <= m_DenseArray.capacity()) };
+            return { std::prev(m_DenseArray.end()), (oldCap != m_DenseArray.capacity())};
         }
 
         void Remove(const KeyType& key) noexcept

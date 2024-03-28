@@ -18,12 +18,6 @@ namespace Pengin
 {
 	using EntityId = unsigned;
 
-	template<typename ComponentType>
-	concept CompObserverConcept = requires(ComponentType component)
-	{
-		{ component.RegisterObservers() } -> std::same_as<void>;
-	};
-
 	class EventManager final : public dae::Singleton<EventManager>
 	{
 	public:

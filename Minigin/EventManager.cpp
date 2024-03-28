@@ -101,7 +101,7 @@ namespace Pengin
 	{
 		auto it = m_CompObservers.find({entiyId, typeIdx});
 
-		if (it == m_CompObservers.end())
+		if (it == m_CompObservers.end()) [[unlikely]]
 		{
 			return;
 		}
