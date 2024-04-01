@@ -9,5 +9,5 @@ void Pengin::Time::Update()
 	m_ElapsedSec = duration<float>(currentTime - m_LastTime).count();
 
 	m_LastTime = currentTime;
-	m_Lag += m_ElapsedSec;
+	m_Lag += m_ElapsedSec * 1000.f;
 }

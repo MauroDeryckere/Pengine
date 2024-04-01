@@ -1,13 +1,14 @@
 #ifndef INPUTCOMMANDS
 #define INPUTCOMMANDS
 
+#include "SceneManager.h"
+
 #include "InputCommand.h"
 #include "EventManager.h"
 
 #include "ECS.h"
 
 #include "Components.h"
-#include "HealthComponent.h"
 
 #include "glm/vec3.hpp"
 
@@ -36,17 +37,18 @@ namespace Pengin
 	class CharacterMovement final : public InputCommand
 	{
 	public:
-		CharacterMovement(const glm::vec3& direction, EntityId id) :
+		CharacterMovement(const glm::vec3& direction, EntityId id, float movementSpeed = 100.f) :
 			InputCommand{},
 			m_Direction{direction},
-			m_Id{ id }
+			m_Id{ id },
+			m_MovementSpeed{ movementSpeed }
 		{
 		}
 
 		virtual void Execute() override 
 		{ 
-			auto& characterMovement{ ECS::GetInstance().GetComponent<CharacterMovementComponent>(m_Id) };
-			characterMovement.Move(m_Direction);
+			auto& ecs = SceneManager::GetInstance().GetActiveScene()->GetECS();
+			ecs.GetComponent<VelocityComponent>(m_Id).m_Velocity += m_Direction * m_MovementSpeed;
 		}
 
 		virtual ~CharacterMovement() override = default;
@@ -59,23 +61,25 @@ namespace Pengin
 	private:
 		const glm::vec3 m_Direction;
 		const EntityId m_Id;
+		const float m_MovementSpeed;
 	};
 
 	class AttackPlayer final : public InputCommand //bound to input for now
 	{
 	public:
-		AttackPlayer(EntityId id, const std::string& event, unsigned attackDamage = 1) :
-			m_Id{ id },
-			m_AttackDamage{ attackDamage },
-			m_Event{event}
+		AttackPlayer(const EntityId id) :
+			m_Id{ id }
 		{
-			assert(ECS::GetInstance().HasComponent<HealthComponent>(m_Id));
+			assert(SceneManager::GetInstance().GetActiveScene()->GetECS().HasComponent<HealthComponent>(m_Id));
 		}
 
 		virtual void Execute() override
 		{
-			auto& playerHealth{ ECS::GetInstance().GetComponent<HealthComponent>(m_Id) };
-			playerHealth.TakeDamage(m_AttackDamage, m_Event);
+			auto& ecs = SceneManager::GetInstance().GetActiveScene()->GetECS();
+			ecs.GetComponent<HealthComponent>(m_Id).m_Health--;
+
+			Event healthchangeEvent{"OnHealthChangeEvent", &m_Id};
+			EventManager::GetInstance().BroadcoastEvent(healthchangeEvent);
 		}
 
 		virtual ~AttackPlayer() override = default;
@@ -87,21 +91,22 @@ namespace Pengin
 
 	private:
 		const EntityId m_Id;
-		const unsigned m_AttackDamage;
-		const std::string m_Event;
 	};
 
 	class CollectScore final : public InputCommand //bound to input for now
 	{
 	public:
-		CollectScore(const std::string& eventName, unsigned score = 10) :
-			m_EventName{eventName},
+		CollectScore(const EntityId id, unsigned score = 10) :
+			m_EntityId { id },
 			m_ScoreVal{ score }
 		{ }
 
 		virtual void Execute() override
 		{
-			Event scoreEvent{ m_EventName , &m_ScoreVal};
+			auto& ecs = SceneManager::GetInstance().GetActiveScene()->GetECS();
+			ecs.GetComponent<ScoreComponent>(m_EntityId).m_Score += m_ScoreVal;
+
+			Event scoreEvent{ "OnScoreCollectEvent" , &m_EntityId };
 			EventManager::GetInstance().BroadcoastEvent(scoreEvent);
 		}
 
@@ -113,7 +118,8 @@ namespace Pengin
 		CollectScore& operator=(CollectScore&&) noexcept = delete;
 
 	private:
-		const std::string m_EventName;
+		const EntityId m_EntityId;
+
 		const unsigned m_ScoreVal;
 	};
 

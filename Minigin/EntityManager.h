@@ -1,9 +1,9 @@
 #ifndef ENTITYMANAGER
 #define ENTITYMANAGER
 
-#include "Entity.h"
 #include "SparseSet.h"
 #include "Bitset.h"
+#include "EntityId.h"
 
 #include <unordered_map>
 #include <typeindex>

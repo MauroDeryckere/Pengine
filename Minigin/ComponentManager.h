@@ -1,8 +1,8 @@
 #ifndef COMPONENTMANAGER
 #define COMPONENTMANAGER
 
-#include "Entity.h"
 #include "SparseSet.h"
+#include "EntityId.h"
 
 #include "BaseComponentStorage.h"
 #include "ComponentStorage.h"
@@ -174,7 +174,11 @@ namespace Pengin
 
             if (it == m_TypeBitMap.end())
             {
-                throw std::out_of_range("Checking for a component that is not ever added to the typeTracker");
+                std::cerr << "trying to get a componentwrapper for a type that was never added: " << typeid(ComponentType).name() << "\n";
+                throw;
+                ///TOOD
+               // auto set = SparseSet<ComponentType, EntityId>{};
+               // return ComponentWrapper<ComponentType> { set };
             }
 
             const size_t idx{ it->second };
@@ -193,7 +197,10 @@ namespace Pengin
 
             if (it == m_TypeBitMap.end())
             {
-                throw std::out_of_range("Checking for a component that is not ever added to the typeTracker");
+                std::cerr << "trying to get a componentwrapper for a type that was never added: " << typeid(ComponentType).name() << "\n";
+                throw;
+                //auto set = SparseSet<ComponentType, EntityId>{};
+                //return ConstComponentWrapper<ComponentType> { set };
             }
 
             const size_t idx{ it->second };

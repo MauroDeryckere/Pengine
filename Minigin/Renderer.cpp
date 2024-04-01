@@ -41,7 +41,7 @@ void dae::Renderer::Render() const
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(m_renderer);
 
-	SceneManager::GetInstance().Render();
+	Pengin::SceneManager::GetInstance().Render();
 	
 	SDL_RenderFlush(m_renderer);
 
@@ -49,7 +49,7 @@ void dae::Renderer::Render() const
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
-	SceneManager::GetInstance().RenderGUI();
+	Pengin::SceneManager::GetInstance().RenderGUI();
 
 	//ImGui::ShowDemoWindow();
 	ImGui::Render();

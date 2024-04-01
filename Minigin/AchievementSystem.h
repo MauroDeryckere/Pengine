@@ -15,7 +15,6 @@
 
 namespace Pengin
 {
-	//Singleton TODO
 	class AchievementSystem final
 	{
 	public:
@@ -31,11 +30,13 @@ namespace Pengin
 		AchievementSystem(AchievementSystem&&) = delete;
 		AchievementSystem& operator=(const AchievementSystem&) = delete;
 		AchievementSystem& operator=(const AchievementSystem&&) = delete;
+
 	private:
 		void RegisterObservers()
 		{
+			//TODO
 			auto callBack = [this](const void* eventData) { ScoreAchievementCallback(eventData); };
-			m_Observer->RegisterForEvent(m_Observer,"ScoreAchievement", callBack);
+			m_Observer->RegisterForEvent(m_Observer,"OnScoreIncreaseEvent", callBack);
 		}
 
 		void ScoreAchievementCallback(const void* pScore)
@@ -44,18 +45,15 @@ namespace Pengin
 
 			constexpr unsigned reqScore{ 500 };
 
-			if (score >= reqScore)
+			if (score >= reqScore  && !m_Unlocked)
 			{
 			#ifdef USE_STEAMWORKS
 				SteamUserStats()->SetAchievement("ACH_WIN_ONE_GAME");
 				SteamUserStats()->StoreStats();
 				return;
 			#else 
-				if (!m_Unlocked)
-				{
-					std::cout << "winner achievement unlocked\n";
-					m_Unlocked = true;
-				}
+				std::cout << "winner achievement unlocked\n";
+				m_Unlocked = true;
 			#endif				
 			}
 		}

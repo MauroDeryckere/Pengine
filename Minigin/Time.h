@@ -11,7 +11,7 @@ namespace Pengin
 	{
 	public:
 		[[nodiscard]] float GetElapsedSec() const { return m_ElapsedSec; }
-		[[nodiscard]] float GetFixedTimeStep() const { return m_FixedTimeStep; }
+		[[nodiscard]] float GetFixedTimeStep() const { return (m_FixedTimeStep / 1000.f); }
 
 		[[nodiscard]] bool IsLag() const { return m_Lag >= m_FixedTimeStep;  }
 
@@ -41,7 +41,7 @@ namespace Pengin
 		const float m_FixedTimeStep{ 20.f };
 
 		float m_ElapsedSec{ 0.f };
-		float m_Lag{ 0.f };
+		float m_Lag{ 0.f }; //in seconds
 	};
 }
 

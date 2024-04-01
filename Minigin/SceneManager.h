@@ -1,16 +1,20 @@
-#pragma once
+#ifndef SCENEMANAGER
+#define SCENEMANAGER
+
+#include "Singleton.h"
+
 #include <vector>
 #include <string>
 #include <memory>
-#include "Singleton.h"
 
-namespace dae
+namespace Pengin
 {
 	class Scene;
-	class SceneManager final : public Singleton<SceneManager>
+	class SceneManager final : public dae::Singleton<SceneManager>
 	{
 	public:
-		Scene& CreateScene(const std::string& name);
+		std::shared_ptr<Scene> CreateScene(const std::string& name);
+		std::shared_ptr<Scene> GetActiveScene() { return m_ActiveScene; }
 
 		void Update();
 		void FixedUpdate();
@@ -19,9 +23,15 @@ namespace dae
 		void RenderGUI();
 
 	private:
-		friend class Singleton<SceneManager>;
+		friend class dae::Singleton<SceneManager>;
 		SceneManager() = default;
 
-		std::vector<std::shared_ptr<Scene>> m_scenes;
+		std::shared_ptr<Scene> m_ActiveScene;
+
+		std::vector<std::shared_ptr<Scene>> m_Scenes;
+
+		//TODO swpaping scenes
 	};
 }
+
+#endif

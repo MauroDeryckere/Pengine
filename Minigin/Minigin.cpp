@@ -94,7 +94,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	load();
 
 	auto& renderer{ Renderer::GetInstance() };
-	auto& sceneManager{ SceneManager::GetInstance() };
+	auto& sceneManager{ Pengin::SceneManager::GetInstance() };
 	auto& input{ Pengin::InputManager::GetInstance() };
 	auto& time{ Pengin::Time::GetInstance() };
 

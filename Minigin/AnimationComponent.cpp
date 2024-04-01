@@ -6,7 +6,7 @@
 #include "UtilStructs.h"
 #include "TransformComponent.h"
 
-Pengin::AnimationComponent::AnimationComponent(EntityId id, const std::string_view spriteSheet, const std::vector<SpriteAnimationData>& animations, bool playOnInit):
+/*Pengin::AnimationComponent::AnimationComponent(EntityId id, const std::string_view spriteSheet, const std::vector<SpriteAnimationData>& animations, bool playOnInit) :
 	m_Animations{ animations },
 	m_pSpriteSheet{ dae::ResourceManager::GetInstance().LoadTexture(spriteSheet) },
 	m_FrameTimer{ 0.f },
@@ -48,8 +48,8 @@ void Pengin::AnimationComponent::Render() const
 
 	SpriteAnimationData currAnimation{ m_Animations[m_CurrAnimationIdx] };
 
-	const UtilStructs::Recti dstRect{ static_cast<int>(transform.m_Position.x + currAnimation.width),
-									  static_cast<int>(transform.m_Position.y + currAnimation.height),
+	const UtilStructs::Recti dstRect{ static_cast<int>(transform.m_LocalPos.x + currAnimation.width),
+									  static_cast<int>(transform.m_LocalPos.y + currAnimation.height),
 									  static_cast<unsigned>(transform.m_Scale.x * currAnimation.width),
 									  static_cast<unsigned>(transform.m_Scale.y * currAnimation.height) };
 
@@ -87,4 +87,4 @@ void Pengin::AnimationComponent::SwitchAnimation(unsigned aniIdx)
 	assert(aniIdx < m_Animations.size());
 
 	m_CurrAnimationIdx = static_cast<uint8_t>(aniIdx);
-}
+}*/

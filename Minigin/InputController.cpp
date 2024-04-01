@@ -183,7 +183,7 @@ namespace Pengin
 
 		if (m_DisconnectedTime >= MAX_ALLOWED_DISCONNECTED_TIME)
 		{
-			std::cerr << "MAX ALLOWED CONTROLLER DISCONNECT TIME REACHED FOR USERIDX: " << m_UserIdxControllerIdxPair.first << "\n\n\n";
+			std::cerr << "MAX ALLOWED CONTROLLER DISCONNECT TIME REACHED FOR USERIDX: " << m_UserIdxControllerIdxPair.first << "\n";
 			//Can allow some handling here like back to main menu, ...
 		}
 	}

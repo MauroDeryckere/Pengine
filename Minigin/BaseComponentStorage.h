@@ -1,15 +1,15 @@
 #ifndef BASECOMPONENTSTORAGE
 #define BASECOMPONENTSTORAGE
 
-#include "Entity.h"
+#include "EntityId.h"
 
 namespace Pengin
 {
     class BaseComponentStorage abstract
     {
     public:
-        virtual void RemoveComponent(const EntityId& id) noexcept = 0;
-        virtual bool HasComponent(const EntityId& id) noexcept = 0;
+        virtual void RemoveComponent(const EntityId id) noexcept = 0;
+        virtual bool HasComponent(const EntityId id) noexcept = 0;
         //AddComponent
         //...
 

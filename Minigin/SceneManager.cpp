@@ -1,41 +1,39 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-void dae::SceneManager::Update()
+#include "EventManager.h"
+
+namespace Pengin
 {
-	for(auto& scene : m_scenes)
+	void SceneManager::Update()
 	{
-		scene->Update();
-	}
-}
+		EventManager::GetInstance().ProcessEventQueue();
 
-void dae::SceneManager::FixedUpdate()
-{
-	for (const auto& scene : m_scenes)
+		m_ActiveScene->Update();
+	}
+
+	void SceneManager::FixedUpdate()
 	{
-		scene->FixedUpdate();
+		m_ActiveScene->FixedUpdate();
 	}
-}
 
-void dae::SceneManager::Render() const
-{
-	for (const auto& scene : m_scenes)
+	void SceneManager::Render() const
 	{
-		scene->Render();
+		m_ActiveScene->Render();
 	}
-}
 
-void dae::SceneManager::RenderGUI()
-{
-	//for (const auto& scene : m_scenes)
-	//{
-		//scene->RenderTrashCache();
-	//}
-}
+	void SceneManager::RenderGUI()
+	{
+		m_ActiveScene->RenderGUI();
+	}
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
-{
-	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
-	m_scenes.push_back(scene);
-	return *scene;
+	std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name)
+	{
+		const auto& scene = std::shared_ptr<Scene>(new Scene{ name });
+		m_Scenes.push_back(scene);
+
+		m_ActiveScene = scene;
+
+		return scene;
+	}
 }

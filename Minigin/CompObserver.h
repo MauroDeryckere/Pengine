@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 #include <typeindex>
-#include "ECS.h"
+#include "EntityId.h"
 
 namespace Pengin
 {

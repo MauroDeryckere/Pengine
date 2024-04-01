@@ -1,13 +1,10 @@
 #ifndef ENTITYCOMPONENTSYSTEM
 #define ENTITYCOMPONENTSYSTEM
 
-#include "Singleton.h"
-
-#include "Entity.h"
-
 #include "ComponentManager.h"
 #include "ComponentWrapper.h"
 #include "ConstComponentWrapper.h"
+#include "EntityId.h"
 
 #include "EntityManager.h"
 
@@ -18,12 +15,15 @@
 * It is recommended to use the Get function whenever you need to acces a specific component because references could become invalid frame - frame as the container changes
 * 
 * A user should only define the RegisterObserevr function when they actually use observers to prevent expensive function calls when not necessary.
+*   --> Will be moved out in future (systemss)
 * 
 * TODO: 
 * HasComponent<Types ...>()
 * GetComponents<Type, Type>()  - return All entities with 2 given componennts
 * 
-* Other communication methods (?) Get might not be the most optimal in all scenarios, oother methods could be nice (lower prio)
+* Update the sparseSet structure to use a sparse array
+* 
+* Other communication methods (?) Get might not be the most optimal in all scenarios, other methods could be nice (lower prio)
 *   -> messaging system
 * Serialization
 */
@@ -36,9 +36,16 @@ namespace Pengin
         { component.RegisterObservers() } -> std::same_as<void>;
     };
 
-    class ECS final : public dae::Singleton<ECS>
+    class ECS final
     {
     public:
+        ECS() :
+            m_ComponentManager{},
+            m_EntityManager{ m_ComponentManager }
+        { }
+
+        ~ECS() = default;
+
         [[nodiscard]] const EntityId CreateEntity() noexcept
         {
             return m_EntityManager.CreateEntity();
@@ -121,7 +128,7 @@ namespace Pengin
         [[nodiscard]] const ConstComponentWrapper<ComponentType> GetComponents() const
         {
             return m_ComponentManager.GetConstComponentWrapper<ComponentType>();
-        }
+        } 
         
         //TODO Clear
 
@@ -131,14 +138,6 @@ namespace Pengin
         ECS& operator=(ECS&&) = delete;
 
     private:
-        ECS() :
-            m_ComponentManager{},
-            m_EntityManager{ m_ComponentManager }
-        { }
-        ~ECS() = default;
-
-        friend class dae::Singleton<ECS>;
-
         ComponentManager m_ComponentManager;
         EntityManager m_EntityManager;
 

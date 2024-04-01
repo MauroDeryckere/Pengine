@@ -1,6 +1,8 @@
 #ifndef UTILSTRUCTS
 #define UTILSTRUCTS
 
+#include <compare>
+
 namespace Pengin
 {
 

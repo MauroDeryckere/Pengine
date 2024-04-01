@@ -1,71 +1,59 @@
 #include "Scene.h"
 
+#include "Entity.h"
+
 #include "ECS.h"
-#include "Components.h"
+#include "TransformComponent.h"
 
 #include "Renderer.h"
 
-#include "EventManager.h"
-
-#include <algorithm>
-
-using namespace dae;
-
-unsigned int Scene::m_idCounter = 0;
-
-Scene::Scene(const std::string& name) : m_name(name) 
+namespace Pengin
 {
-}
+	unsigned int Scene::m_IdCounter = 0;
 
-Scene::~Scene() = default;
+	Scene::Scene(const std::string& name) : 
+		m_Name{ name }
+	{ }
 
-void Scene::FixedUpdate()
-{
-}
-
-void Scene::Update()
-{
-	Pengin::EventManager::GetInstance().ProcessEventQueue(); //Shouldnt be on a scene level but on scenemanager TODO
-
-	//Also more generic update apporach and render? or systems TODO
-
-	//TOOD what if empty?
-	auto fpsComps = Pengin::ECS::GetInstance().GetComponents<Pengin::FPSCounterComponent>();
-	for (auto& entity : fpsComps)
+	Entity Scene::CreateEntity(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
 	{
-		entity.Update();
+		const auto id{ m_Ecs.CreateEntity() };
+
+		Entity entity{ id, weak_from_this() };
+		entity.AddComponent<TransformComponent>(position, rotation, scale);
+
+		return entity;
 	}
 
-	auto textComps = Pengin::ECS::GetInstance().GetComponents<Pengin::TextComponent>();
-	for (auto& entity : textComps)
+	bool Scene::DestroyEntity(Entity entity)
 	{
-		entity.Update();
+		return DestroyEntity(entity.GetEntityId());
 	}
 
-	auto aniComps = Pengin::ECS::GetInstance().GetComponents<Pengin::AnimationComponent>();
-	for (auto& entity : aniComps)
+	bool Scene::DestroyEntity(const EntityId entityId)
 	{
-		entity.Update();
+		return m_Ecs.DestroyEntity(entityId);
+	}
+
+	void Scene::FixedUpdate()
+	{
+	}
+
+	void Scene::Update()
+	{
+		m_TextSystem->Update();
+		m_FPSSystem->Update();
+		m_MovementSystem->Update();
+		m_WorldPosSystem->Update();
+	}
+
+	void Scene::Render() const
+	{
+		m_RenderSystem->Render();
+	}
+
+	void Scene::RenderGUI() const
+	{
+
 	}
 }
-
-void Scene::Render() const
-{
-	auto staticTexturecomps = Pengin::ECS::GetInstance().GetComponents<Pengin::StaticTextureComponent>();
-	for (const auto& entity : staticTexturecomps)
-	{
-		entity.Render();
-	}
-
-	auto aniComps = Pengin::ECS::GetInstance().GetComponents<Pengin::AnimationComponent>();
-	for (auto& entity : aniComps)
-	{
-		entity.Render();
-	}
-}
-
-void Scene::RenderGUI() const
-{
-
-}
-

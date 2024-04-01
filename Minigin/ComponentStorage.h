@@ -1,10 +1,9 @@
 #ifndef COMPONENTSTORAGE
 #define COMPONENTSTORAGE
 
-#include "Entity.h"
 #include "SparseSet.h"
-#include "UniqueTypeTracker.h"
 
+#include "UniqueTypeTracker.h"
 #include "BaseComponentStorage.h"
 
 namespace Pengin
@@ -17,12 +16,12 @@ namespace Pengin
         ComponentStorage() : BaseComponentStorage{},
             m_ComponentSet{} {}
 
-        virtual void RemoveComponent(const EntityId& id) noexcept override
+        virtual void RemoveComponent(const EntityId id) noexcept override
         {
             m_ComponentSet.Remove(id);
         }
 
-        virtual bool HasComponent(const EntityId& id) noexcept override
+        virtual bool HasComponent(const EntityId id) noexcept override
         {
             return m_ComponentSet.Contains(id);
         }

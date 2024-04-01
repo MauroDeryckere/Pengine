@@ -2,7 +2,6 @@
 #define CONSTCOMPONENTWRAPPER
 
 #include "SparseSet.h"
-#include "Entity.h"
 
 namespace Pengin
 {
@@ -10,9 +9,10 @@ namespace Pengin
     class ConstComponentWrapper final
     {
     public:
-        ConstComponentWrapper(const SparseSet<ComponentType, EntityId>& set) : m_ComponentSet(&set) {}
+        ConstComponentWrapper(const SparseSet<ComponentType, EntityId>& set) : m_ComponentSet(&set) 
+        {}
 
-        [[nodiscard]] const ComponentType& GetComponent(const EntityId& id) const
+        [[nodiscard]] const ComponentType& GetComponent(const EntityId id) const
         {
             if (m_ComponentSet->Contains(id))
             {
@@ -36,7 +36,7 @@ namespace Pengin
         }
 
     private:
-        const SparseSet<ComponentType, EntityId>* m_ComponentSet;
+        const SparseSet<ComponentType, EntityId>* const m_ComponentSet;
     };
 }
 

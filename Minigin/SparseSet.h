@@ -14,7 +14,7 @@
 
 namespace Pengin
 {
-    //TODO, expand conceppts, mayb provide a 'stable' sparse set where we use erase
+    //TODO, expand concepts, maybe provide a 'stable' sparse set where we use erase
     template<typename ValueType, typename KeyType>
         requires std::is_default_constructible_v<KeyType> && 
                  std::is_move_constructible_v<KeyType> &&    
