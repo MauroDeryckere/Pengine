@@ -16,9 +16,7 @@ namespace Pengin
 
 		auto& io = ImGui::GetIO();
 		io.ConfigWindowsMoveFromTitleBarOnly = true;
-		//io.ConfigFlags |= ImGuiConfigFlags_;
-
-		ImGui::GetMainViewport();
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 		ImGui_ImplSDL2_InitForOpenGL(pWindow, SDL_GL_GetCurrentContext());
 		ImGui_ImplOpenGL2_Init();
@@ -41,6 +39,8 @@ namespace Pengin
 		ImGui_ImplOpenGL2_NewFrame();
 		ImGui_ImplSDL2_NewFrame();
 		ImGui::NewFrame();
+
+		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 	}
 
 	void ImGUIWindow::EndRender() const
