@@ -29,10 +29,7 @@ void dae::Renderer::Init(SDL_Window* window)
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
 
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
-	ImGui_ImplOpenGL2_Init();
+	m_ImGUIWindow.Create(m_window);
 }
 
 void dae::Renderer::Render() const
@@ -42,27 +39,20 @@ void dae::Renderer::Render() const
 	SDL_RenderClear(m_renderer);
 
 	Pengin::SceneManager::GetInstance().Render();
-	
 	SDL_RenderFlush(m_renderer);
 
-	ImGui_ImplOpenGL2_NewFrame();
-	ImGui_ImplSDL2_NewFrame();
-	ImGui::NewFrame();
+	m_ImGUIWindow.BeginRender();
 
-	Pengin::SceneManager::GetInstance().RenderGUI();
+	Pengin::SceneManager::GetInstance().RenderImGUI();
+	ImGui::ShowDemoWindow();
 
-	//ImGui::ShowDemoWindow();
-	ImGui::Render();
-	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-
+	m_ImGUIWindow.EndRender();
 	SDL_RenderPresent(m_renderer);
 }
 
 void dae::Renderer::Destroy()
 {
-	ImGui_ImplOpenGL2_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
+	m_ImGUIWindow.Destroy();
 
 	if (m_renderer != nullptr)
 	{
@@ -99,7 +89,6 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const Recti& dstRect
 void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
 {
 	SDL_Rect dst{ static_cast<int>(x), static_cast<int>(y), static_cast<int>(width), static_cast<int>(height) };
-
 	RenderTexture(texture, &dst, nullptr);
 }
 

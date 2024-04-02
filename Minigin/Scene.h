@@ -36,7 +36,7 @@ namespace Pengin
 		void Update();
 		void Render() const;
 
-		void RenderGUI() const;
+		void RenderImGUI() const;
 
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;

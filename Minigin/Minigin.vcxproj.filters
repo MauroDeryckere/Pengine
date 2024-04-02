@@ -31,9 +31,6 @@
     <Filter Include="Header Files\Resource">
       <UniqueIdentifier>{001430b0-a41f-41b3-b21e-027c1c844598}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ImGui">
-      <UniqueIdentifier>{68b60ae6-e349-4c72-9fc1-039a23a41cd7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\ImGui">
       <UniqueIdentifier>{a93af61a-9c83-448c-94e7-b7c3ada23cbb}</UniqueIdentifier>
     </Filter>
@@ -94,6 +91,9 @@
     <Filter Include="Header Files\Systems">
       <UniqueIdentifier>{80d4353f-ef05-471a-8123-a480e7f4da18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\3rd Party ImGui">
+      <UniqueIdentifier>{68b60ae6-e349-4c72-9fc1-039a23a41cd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
@@ -130,31 +130,31 @@
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imstb_truetype.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>Header Files\3rd Party ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imconfig.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>Header Files\3rd Party ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>Header Files\3rd Party ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_internal.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>Header Files\3rd Party ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imstb_rectpack.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>Header Files\3rd Party ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imstb_textedit.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>Header Files\3rd Party ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl2.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>Header Files\3rd Party ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>Header Files\3rd Party ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_plot.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>Header Files\3rd Party ImGui</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Header Files\Input</Filter>
@@ -420,6 +420,9 @@
     <ClInclude Include="ScoreComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ImGUIWindow.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -538,6 +541,9 @@
     </ClCompile>
     <ClCompile Include="UIDisplaySystem.cpp">
       <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUIWindow.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

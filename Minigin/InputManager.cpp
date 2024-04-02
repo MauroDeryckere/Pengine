@@ -1,7 +1,6 @@
 #include "InputManager.h"
 
 #include <SDL.h>
-#include <backends/imgui_impl_sdl2.h>
 
 #include <iostream>
 #include <algorithm>
@@ -12,14 +11,49 @@
 
 #include "InputBuffer.h"
 
+#include "Renderer.h" //Imgui
+
 namespace Pengin
 {
 	bool InputManager::ProcessInput() noexcept
 	{
+		SDL_Event e;
+		while (SDL_PollEvent(&e))
+		{
+			if (e.type == SDL_QUIT)
+			{
+				return false;
+			}
+
+			dae::Renderer::GetInstance().GetImGUIWindow().ProcessEvent(e);
+		}
+
+		const bool usedMouse = dae::Renderer::GetInstance().GetImGUIWindow().UsedMouse();
+		const bool usedKeyboard = dae::Renderer::GetInstance().GetImGUIWindow().UsedKeyboard();
+
+		if (usedMouse && usedKeyboard)
+		{
+			return true;
+		}
+
 		for (size_t userIdx{ 0 }; userIdx < m_InputBuffers.size(); ++userIdx)
 		{
-			for (auto& device : m_RegisteredUsers[userIdx].second)
+			for (auto idx = -1; auto& device : m_RegisteredUsers[userIdx].second)
 			{
+				++idx;
+
+				if (m_RegisteredUsers[userIdx].first == UserType::Keyboard) 
+				{
+					if (static_cast<KeyboardDevices>(idx) == KeyboardDevices::Mouse && usedMouse)
+					{
+						continue;
+					}
+					else if (static_cast<KeyboardDevices>(idx) == KeyboardDevices::Keyboard && usedKeyboard)
+					{
+						continue;
+					}
+				}
+
 				device->ProcessInputState();
 				device->ProcessMappedActions(m_InputBuffers[userIdx].get());
 			}
@@ -40,17 +74,6 @@ namespace Pengin
 					inputBuffer->RecordInput(combo.pResultingAction);
 				}
 			}
-		}
-
-		SDL_Event e;
-		while (SDL_PollEvent(&e))
-		{
-			if (e.type == SDL_QUIT)
-			{
-				return false;
-			}
-
-			ImGui_ImplSDL2_ProcessEvent(&e);
 		}
 
 		return true;

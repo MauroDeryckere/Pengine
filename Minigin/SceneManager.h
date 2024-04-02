@@ -20,7 +20,7 @@ namespace Pengin
 		void FixedUpdate();
 		void Render() const;
 
-		void RenderGUI();
+		void RenderImGUI();
 
 	private:
 		friend class dae::Singleton<SceneManager>;

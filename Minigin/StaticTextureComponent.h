@@ -28,6 +28,7 @@ namespace Pengin
 		~StaticTextureComponent() = default;
 
 		std::shared_ptr<dae::Texture2D> m_pTexture{ nullptr };
+		
 	};
 }
 

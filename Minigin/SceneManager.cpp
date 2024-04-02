@@ -22,9 +22,9 @@ namespace Pengin
 		m_ActiveScene->Render();
 	}
 
-	void SceneManager::RenderGUI()
+	void SceneManager::RenderImGUI()
 	{
-		m_ActiveScene->RenderGUI();
+		m_ActiveScene->RenderImGUI();
 	}
 
 	std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name)

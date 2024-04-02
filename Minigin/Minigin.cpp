@@ -64,12 +64,15 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	}
 
 	g_window = SDL_CreateWindow(
-		"Programming 4 Engine",
+		"Pengine",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		640,
 		480,
-		SDL_WINDOW_OPENGL
+		  SDL_WINDOW_OPENGL 
+		| SDL_WINDOW_RESIZABLE 
+		| SDL_WINDOW_INPUT_FOCUS
+		//| SDL_WINDOW_MAXIMIZED
 	);
 	if (g_window == nullptr) 
 	{
@@ -77,7 +80,6 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	}
 
 	Renderer::GetInstance().Init(g_window);
-
 	ResourceManager::GetInstance().Init(dataPath);
 }
 

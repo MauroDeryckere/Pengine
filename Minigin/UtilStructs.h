@@ -2,59 +2,37 @@
 #define UTILSTRUCTS
 
 #include <compare>
+#include <cstdint>
 
 namespace Pengin
 {
 
 	namespace UtilStructs
 	{
-		struct Rectf final
+		template<typename T>
+		struct Rect final
 		{
-			float x;
-			float y;
-			float width;
-			float height;
+			T x;
+			T y;
+			T width;
+			T height;
 
-			Rectf() = default;
-
-			Rectf(float x, float _y, float _width, float _height) : 
-				x(x), 
-				y(_y), 
-				width(_width), 
-				height(_height) 
-			{}
-
-			/*auto operator<=>(const Rectf& other) const
+			template<typename U>
+			constexpr explicit operator Rect<U>() const noexcept 
 			{
-				if (auto cmp = x <=> other.x; cmp != 0) return cmp;
-				if (auto cmp = y <=> other.y; cmp != 0) return cmp;
-				if (auto cmp = width <=> other.width; cmp != 0) return cmp;
-				return height <=> other.height;
+				return Rect<U>(static_cast<U>(x), static_cast<U>(y), static_cast<U>(width), static_cast<U>(height));
 			}
 
-			bool operator==(const Rectf& other) const
-			{
-				return (*this <=> other) == std::strong_ordering::equal;
-			}*/
-		};
+			constexpr Rect() noexcept = default;
 
-		struct Recti final
-		{
-			int x;
-			int y;
-			unsigned width;
-			unsigned height;
-
-			Recti() = default;
-
-			Recti(int _x, int _y, unsigned _width, unsigned _height) :
-				x{ _x },
+			constexpr explicit Rect(T _x, T _y, T _width, T _height) noexcept :
+				x(_x),
 				y(_y),
 				width(_width),
 				height(_height)
 			{}
 
-			auto operator<=>(const Recti& other) const
+			constexpr auto operator<=>(const Rect& other) const noexcept
 			{
 				if (auto cmp = x <=> other.x; cmp != 0) return cmp;
 				if (auto cmp = y <=> other.y; cmp != 0) return cmp;
@@ -62,11 +40,19 @@ namespace Pengin
 				return height <=> other.height;
 			}
 
-			bool operator==(const Recti& other) const
+			constexpr bool operator==(const Rect& other) const noexcept
 			{
 				return (*this <=> other) == std::strong_ordering::equal;
 			}
 		};
+
+		using Rectf = Rect<float>;
+		using Recti = Rect<int>;
+		using Rectu = Rect<unsigned>;
+		using Rect16 = Rect<int16_t>; 
+		using Rectu16 = Rect<uint16_t>; 
+		using Rect8 = Rect<int8_t>; 
+		using Rectu8 = Rect<uint8_t>; 
 	}
 }
 

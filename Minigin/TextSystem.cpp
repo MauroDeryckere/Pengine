@@ -23,8 +23,6 @@ namespace Pengin
 		m_pObserver->RegisterForEvent(m_pObserver, "OnTextChangeEvent", [this](const void* eventData) {eventData; });
 	}
 
-
-
 	void TextSystem::Update()
 	{
 		auto textComps = m_ECS.GetComponents<TextComponent>();
@@ -32,7 +30,8 @@ namespace Pengin
 		{
 			if (entity.needsTextureChange)
 			{
-				const auto surf = TTF_RenderText_Blended(entity.m_pFont->GetFont(), entity.m_Text.c_str(), entity.m_Color);
+				const SDL_Color color{ entity.m_Color.w, entity.m_Color.x, entity.m_Color.y, entity.m_Color.z };
+				const auto surf = TTF_RenderText_Blended(entity.m_pFont->GetFont(), entity.m_Text.c_str(), color);
 				if (!surf)
 				{
 					throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
@@ -65,7 +64,8 @@ namespace Pengin
 		auto& textComp = m_ECS.GetComponent<TextComponent>(id);
 		textComp.m_Text = text;
 
-		const auto surf = TTF_RenderText_Blended(textComp.m_pFont->GetFont(), textComp.m_Text.c_str(), textComp.m_Color);
+		const SDL_Color color{ textComp.m_Color.w, textComp.m_Color.x, textComp.m_Color.y, textComp.m_Color.z };
+		const auto surf = TTF_RenderText_Blended(textComp.m_pFont->GetFont(), textComp.m_Text.c_str(), color);
 		if (!surf)
 		{
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
@@ -82,5 +82,7 @@ namespace Pengin
 
 		auto& textureComp = m_ECS.GetComponent<StaticTextureComponent>(id);
 		textureComp.m_pTexture = pTexture;
+
+		textComp.needsTextureChange = false;
 	}
 }

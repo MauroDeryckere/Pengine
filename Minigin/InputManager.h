@@ -62,6 +62,17 @@ namespace Pengin
 
 
         static constexpr unsigned MAX_ALLOWED_CONTROLLERS{ 4 };
+
+        enum class KeyboardDevices
+        {
+            Keyboard = 0,
+            Mouse = 1,
+        };
+
+        enum class ControllerDevices
+        {
+            Controller = 0
+        };
     };
 }
 

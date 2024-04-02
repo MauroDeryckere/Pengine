@@ -1,11 +1,10 @@
 #include "Scene.h"
 
 #include "Entity.h"
-
-#include "ECS.h"
 #include "TransformComponent.h"
-
 #include "Renderer.h"
+
+#include "imgui.h"
 
 namespace Pengin
 {
@@ -52,8 +51,12 @@ namespace Pengin
 		m_RenderSystem->Render();
 	}
 
-	void Scene::RenderGUI() const
+	void Scene::RenderImGUI() const
 	{
+		ImGui::Begin("Test");
 
+		ImGui::Text("Test number 2");
+
+		ImGui::End();
 	}
 }
