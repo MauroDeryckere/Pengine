@@ -42,7 +42,7 @@ namespace Pengin
 	{
 	}
 
-	void Scene::Update()
+	void Scene::Update() //TODO: when empty
 	{
 		m_TextSystem->Update();
 		m_FPSSystem->Update();
@@ -67,7 +67,7 @@ namespace Pengin
 			auto id = comps.GetIdFromIterator(it);
 			const auto& transform = *it;
 
-			if (ImGui::TreeNode(("Entity ID: " + EntityToString(id)).c_str()))
+			if (ImGui::TreeNode(("Entity ID: " + EntityIdToString(id)).c_str()))
 			{
 				if (ImGui::TreeNode("Transform"))
 				{
@@ -134,7 +134,7 @@ namespace Pengin
 							ImGui::TableNextColumn();
 							ImGui::TextUnformatted("Parent");
 							ImGui::TableNextColumn();
-							ImGui::Text(std::format("{}", EntityToString(transform.relation.parent)).c_str());
+							ImGui::Text(std::format("{}", EntityIdToString(transform.relation.parent)).c_str());
 
 							ImGui::TableNextRow();
 							ImGui::TableNextColumn();
@@ -146,19 +146,19 @@ namespace Pengin
 							ImGui::TableNextColumn();
 							ImGui::TextUnformatted("First Child");
 							ImGui::TableNextColumn();
-							ImGui::Text(std::format("{}", EntityToString(transform.relation.firstChild)).c_str());
+							ImGui::Text(std::format("{}", EntityIdToString(transform.relation.firstChild)).c_str());
 
 							ImGui::TableNextRow();
 							ImGui::TableNextColumn();
 							ImGui::TextUnformatted("Previous Sibling");
 							ImGui::TableNextColumn();
-							ImGui::Text(std::format("{}", EntityToString(transform.relation.prevSibling)).c_str());
+							ImGui::Text(std::format("{}", EntityIdToString(transform.relation.prevSibling)).c_str());
 
 							ImGui::TableNextRow();
 							ImGui::TableNextColumn();
 							ImGui::TextUnformatted("Next Sibling");
 							ImGui::TableNextColumn();
-							ImGui::Text(std::format("{}", EntityToString(transform.relation.nextSibling)).c_str());
+							ImGui::Text(std::format("{}", EntityIdToString(transform.relation.nextSibling)).c_str());
 
 							ImGui::EndTable();
 						}

@@ -9,6 +9,7 @@ namespace Pengin
     class ComponentWrapper final
     {
     public:
+        //take ptr, allow nullptr?
         ComponentWrapper(SparseSet<ComponentType, EntityId>& set) : m_ComponentSet(&set) {}
 
         [[nodiscard]] ComponentType& GetComponent(const EntityId id)
