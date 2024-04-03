@@ -94,6 +94,9 @@
     <Filter Include="Header Files\3rd Party ImGui">
       <UniqueIdentifier>{68b60ae6-e349-4c72-9fc1-039a23a41cd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Rendering\ImGui">
+      <UniqueIdentifier>{085c28fe-b9fe-4238-ad82-26079554d974}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
@@ -421,7 +424,7 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="ImGUIWindow.h">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Header Files\Rendering\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

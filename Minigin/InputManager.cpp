@@ -19,8 +19,12 @@ namespace Pengin
 	{
 		SDL_Event e;
 		while (SDL_PollEvent(&e))
-		{
+		{			
 			if (e.type == SDL_QUIT)
+			{
+				return false;
+			}
+			if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE && e.window.windowID == SDL_GetWindowID(dae::Renderer::GetInstance().GetSDLWindow()))
 			{
 				return false;
 			}

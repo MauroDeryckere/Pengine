@@ -46,19 +46,18 @@ void dae::Renderer::Render() const
 	Pengin::SceneManager::GetInstance().RenderImGUI();
 	ImGui::ShowDemoWindow();
 
-	m_ImGUIWindow.EndRender();
+	m_ImGUIWindow.EndRender(m_window);
 	SDL_RenderPresent(m_renderer);
 }
 
 void dae::Renderer::Destroy()
 {
-	m_ImGUIWindow.Destroy();
-
 	if (m_renderer != nullptr)
 	{
 		SDL_DestroyRenderer(m_renderer);
 		m_renderer = nullptr;
 	}
+	m_ImGUIWindow.Destroy();
 }
 
 void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const

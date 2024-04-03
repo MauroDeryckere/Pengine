@@ -18,12 +18,13 @@ namespace Pengin
 		void ProcessEvent(SDL_Event& event);
 
 		void BeginRender() const;
-		void EndRender() const;
+		void EndRender(SDL_Window* pWindow) const;
 
 		[[nodiscard]] bool UsedMouse() const noexcept;
 		[[nodiscard]] bool UsedKeyboard() const noexcept;
 
 	private:
+		void SetupImGuiStyle(float alpha = 1.f);
 	};
 }
 

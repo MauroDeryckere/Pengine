@@ -33,6 +33,7 @@ namespace dae
 
 		[[nodiscard]] SDL_Renderer* GetSDLRenderer() const;
 		[[nodiscard]] Pengin::ImGUIWindow& GetImGUIWindow() { return m_ImGUIWindow; }
+		[[nodiscard]] SDL_Window* GetSDLWindow() { return m_window; }
 
 		const SDL_Color& GetBackgroundColor() const { return m_clearColor; }
 		void SetBackgroundColor(const SDL_Color& color) { m_clearColor = color; }

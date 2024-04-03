@@ -14,6 +14,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "Time.h"
+#include "ImGUIWindow.h"
 
 #include "ResourceManager.h"
 
@@ -88,6 +89,7 @@ dae::Minigin::~Minigin()
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
+
 	SDL_Quit();
 }
 
