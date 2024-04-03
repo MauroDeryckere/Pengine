@@ -4,7 +4,11 @@
 #include "TransformComponent.h"
 #include "Renderer.h"
 
+#include "TextComponent.h"
+
 #include "imgui.h"
+
+#include <format>
 
 namespace Pengin
 {
@@ -51,11 +55,132 @@ namespace Pengin
 		m_RenderSystem->Render();
 	}
 
-	void Scene::RenderImGUI() const
+	void Scene::RenderImGUI()
 	{
-		ImGui::Begin("Test");
+		static EntityId selectedEntity = NULL_ENTITY_ID;
 
-		ImGui::Text("Test number 2");
+		ImGui::Begin("Scene information");
+
+		auto comps = m_Ecs.GetComponents<TransformComponent>();
+		for (auto it = comps.begin(); it != comps.end(); ++it)
+		{
+			auto id = comps.GetIdFromIterator(it);
+			const auto& transform = *it;
+
+			if (ImGui::TreeNode(("Entity ID: " + EntityToString(id)).c_str()))
+			{
+				if (ImGui::TreeNode("Transform"))
+				{
+					if (ImGui::BeginTable("TransformTable", 4))
+					{
+						ImGui::TableSetupColumn("Component");
+						ImGui::TableSetupColumn("X", ImGuiTableColumnFlags_WidthStretch);
+						ImGui::TableSetupColumn("Y", ImGuiTableColumnFlags_WidthStretch);
+						ImGui::TableSetupColumn("Z", ImGuiTableColumnFlags_WidthStretch);
+						ImGui::TableHeadersRow();
+
+						ImGui::TableNextRow();
+						ImGui::TableNextColumn();
+						ImGui::TextUnformatted("World Position");
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", transform.worldPos.x);
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", transform.worldPos.y);
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", transform.worldPos.z);
+
+						ImGui::TableNextRow();
+						ImGui::TableNextColumn();
+						ImGui::TextUnformatted("Local Position");
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", transform.localPos.x);
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", transform.localPos.y);
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", transform.localPos.z);
+
+						ImGui::TableNextRow();
+						ImGui::TableNextColumn();
+						ImGui::TextUnformatted("Rotation");
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", transform.rotation.x);
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", transform.rotation.y);
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", transform.rotation.z);
+
+						ImGui::TableNextRow();
+						ImGui::TableNextColumn();
+						ImGui::TextUnformatted("Scale");
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", transform.scale.x);
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", transform.scale.y);
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", transform.scale.z);
+
+						ImGui::EndTable();
+					}
+
+					if (ImGui::TreeNode("Relation"))
+					{
+						if (ImGui::BeginTable("TransformRelation", 2))
+						{
+							ImGui::TableSetupColumn("Relation");
+							ImGui::TableSetupColumn("Entity ID", ImGuiTableColumnFlags_WidthStretch);
+							ImGui::TableHeadersRow();
+
+							ImGui::TableNextRow();
+							ImGui::TableNextColumn();
+							ImGui::TextUnformatted("Parent");
+							ImGui::TableNextColumn();
+							ImGui::Text(std::format("{}", EntityToString(transform.relation.parent)).c_str());
+
+							ImGui::TableNextRow();
+							ImGui::TableNextColumn();
+							ImGui::TextUnformatted("Children");
+							ImGui::TableNextColumn();
+							ImGui::Text(std::format("{}", transform.relation.children).c_str());
+
+							ImGui::TableNextRow();
+							ImGui::TableNextColumn();
+							ImGui::TextUnformatted("First Child");
+							ImGui::TableNextColumn();
+							ImGui::Text(std::format("{}", EntityToString(transform.relation.firstChild)).c_str());
+
+							ImGui::TableNextRow();
+							ImGui::TableNextColumn();
+							ImGui::TextUnformatted("Previous Sibling");
+							ImGui::TableNextColumn();
+							ImGui::Text(std::format("{}", EntityToString(transform.relation.prevSibling)).c_str());
+
+							ImGui::TableNextRow();
+							ImGui::TableNextColumn();
+							ImGui::TextUnformatted("Next Sibling");
+							ImGui::TableNextColumn();
+							ImGui::Text(std::format("{}", EntityToString(transform.relation.nextSibling)).c_str());
+
+							ImGui::EndTable();
+						}
+
+						ImGui::TreePop();
+					}
+
+					ImGui::TreePop();
+				}
+				if (ImGui::TreeNode("Owned components"))
+				{
+					for (auto&& comp : m_Ecs.GetAllComponents(id))
+					{
+						ImGui::Text(comp.name());
+					}
+
+					ImGui::TreePop();
+				}
+
+				ImGui::TreePop();
+			}
+		}
 
 		ImGui::End();
 	}

@@ -162,6 +162,16 @@ namespace Pengin
             return m_SparseMap.find(key) != m_SparseMap.end();
         }
 
+        [[nodiscard]] const std::vector<ValueType>& GetData() const noexcept
+        {
+            return m_DenseArray;
+        }
+
+        [[nodiscard]] std::vector<ValueType>& GetData() noexcept
+        {
+            return m_DenseArray;
+        }
+
     private:
         std::unordered_map<KeyType, size_t> m_SparseMap; //Map key to dense array index
         std::vector<ValueType> m_DenseArray;

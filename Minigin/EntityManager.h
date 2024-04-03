@@ -24,10 +24,12 @@ namespace Pengin
         EntityManager(EntityManager&&) noexcept = delete;
         EntityManager& operator=(EntityManager&&) noexcept = delete;
 
-        const EntityId& CreateEntity() noexcept;
+        const EntityId CreateEntity() noexcept;
         [[nodiscard]] bool HasEntity(const EntityId id) const noexcept;
 
         [[nodiscard]] bool DestroyEntity(const EntityId id, EcsEventInter& eventInter) noexcept;
+
+        [[nodiscard]] const std::vector<EntityId> GetAllEntityIds() const noexcept;
 
         [[nodiscard]] const std::vector<std::type_index> GetAllCompTypes(const EntityId id) const;
 
@@ -42,9 +44,8 @@ namespace Pengin
         {
             const size_t bit{ m_TypeBitMap.at(typeIdx) };
 
-            m_EntityCompFlags[id].Clear(bit);
+            m_EntityCompFlags[id].Clear(bit);    
         }
-
 
     private:
         ComponentManager& m_ComponentManagerRef;
@@ -52,7 +53,7 @@ namespace Pengin
         const std::unordered_map<std::type_index, size_t> m_TypeBitMap;
         const std::vector<std::type_index> m_TypeBitVector; //rev mapping
 
-        SparseSet<Bitset, EntityId> m_EntityCompFlags;        
+        SparseSet<Bitset, EntityId> m_EntityCompFlags;
 
         [[nodiscard]] const std::unordered_map<std::type_index, size_t> InitTypeBitMapping() noexcept;
         [[nodiscard]] const std::vector<std::type_index> InitTypeBitVector() noexcept;

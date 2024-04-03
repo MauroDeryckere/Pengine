@@ -13,7 +13,7 @@ namespace Pengin
 	class Entity final
 	{
 	public:
-		Entity(EntityId id, std::weak_ptr<Scene> pScene) :
+		Entity(const EntityId id, std::weak_ptr<Scene> pScene) :
 			m_EntityId{ id },
 			m_pScene{ pScene }
 		{}

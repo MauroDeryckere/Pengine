@@ -10,16 +10,16 @@ namespace Pengin
 		m_ComponentManagerRef{ componentManager },
 		m_TypeBitMap{ InitTypeBitMapping() },
 		m_TypeBitVector{ InitTypeBitVector() }
-	{
-	
-	}
+	{ }
 
-	const EntityId& EntityManager::CreateEntity() noexcept
+	const EntityId EntityManager::CreateEntity() noexcept
 	{
+		const EntityId id{ CURRENT_ID_COUNT };
+		m_EntityCompFlags.Emplace(id, Bitset{ m_TypeBitMap.size() });
+
 		++CURRENT_ID_COUNT;
-		m_EntityCompFlags.Emplace(CURRENT_ID_COUNT, Bitset{ m_TypeBitMap.size() });
 
-		return CURRENT_ID_COUNT;
+		return id;
 	}
 
 	bool EntityManager::HasEntity(const EntityId id) const noexcept
@@ -44,6 +44,12 @@ namespace Pengin
 		m_EntityCompFlags.Remove(id);
 
 		return true;
+	}
+
+	const std::vector<EntityId> EntityManager::GetAllEntityIds() const noexcept
+	{
+		//TODO
+		return {};
 	}
 
 	const std::vector<std::type_index> EntityManager::GetAllCompTypes(const EntityId id) const

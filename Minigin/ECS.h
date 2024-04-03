@@ -46,6 +46,11 @@ namespace Pengin
 
         ~ECS() = default;
 
+        [[nodiscard]] const std::vector<EntityId>& GetAllEntities() const noexcept
+        {
+            return {}; //TODO
+        }
+
         [[nodiscard]] const EntityId CreateEntity() noexcept
         {
             return m_EntityManager.CreateEntity();
@@ -56,6 +61,11 @@ namespace Pengin
             return m_EntityManager.HasEntity(id);
         }
          
+        [[nodiscard]] const std::vector<std::type_index> GetAllComponents(const EntityId id)
+        {
+            return m_EntityManager.GetAllCompTypes(id);
+        }
+
         bool DestroyEntity(const EntityId id) 
         {
             return m_EntityManager.DestroyEntity(id, m_ECSEventInter);
