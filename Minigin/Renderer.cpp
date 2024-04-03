@@ -44,7 +44,7 @@ void dae::Renderer::Render() const
 	m_ImGUIWindow.BeginRender();
 
 	Pengin::SceneManager::GetInstance().RenderImGUI();
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 	m_ImGUIWindow.EndRender(m_window);
 	SDL_RenderPresent(m_renderer);
