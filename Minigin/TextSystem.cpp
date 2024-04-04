@@ -9,7 +9,7 @@
 #include "EventManager.h"
 
 #include "TextComponent.h"
-#include "StaticTextureComponent.h"
+#include "SpriteComponent.h"
 #include "Texture2D.h"
 
 #include <stdexcept>
@@ -46,7 +46,7 @@ namespace Pengin
 				SDL_FreeSurface(surf);
 				auto pTexture = std::make_shared<dae::Texture2D>(texture);
 
-				auto& textureComp = m_ECS.GetComponent<StaticTextureComponent>(textComps.GetIdFromIterator(it));
+				auto& textureComp = m_ECS.GetComponent<SpriteComponent>(textComps.GetIdFromIterator(it));
 				textureComp.m_pTexture = pTexture;
 
 				entity.needsTextureChange = false;
@@ -58,7 +58,7 @@ namespace Pengin
 
 	void TextSystem::SetText(const EntityId id, const std::string& text)
 	{
-		assert(m_ECS.HasComponent<StaticTextureComponent>(id));
+		assert(m_ECS.HasComponent<SpriteComponent>(id));
 		assert(m_ECS.HasComponent<TextComponent>(id));
 
 		auto& textComp = m_ECS.GetComponent<TextComponent>(id);
@@ -80,7 +80,7 @@ namespace Pengin
 		SDL_FreeSurface(surf);
 		auto pTexture = std::make_shared<dae::Texture2D>(texture);
 
-		auto& textureComp = m_ECS.GetComponent<StaticTextureComponent>(id);
+		auto& textureComp = m_ECS.GetComponent<SpriteComponent>(id);
 		textureComp.m_pTexture = pTexture;
 
 		textComp.needsTextureChange = false;

@@ -8,7 +8,7 @@
 #include "HealthComponent.h"
 #include "ScoreComponent.h"
 
-#include "StaticTextureComponent.h"
+#include "SpriteComponent.h"
 #include "TextComponent.h"
 #include "AnimationComponent.h"
 

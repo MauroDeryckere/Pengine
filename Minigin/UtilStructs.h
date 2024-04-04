@@ -3,6 +3,7 @@
 
 #include <compare>
 #include <cstdint>
+#include <cassert>
 
 namespace Pengin
 {
@@ -30,7 +31,9 @@ namespace Pengin
 				y(_y),
 				width(_width),
 				height(_height)
-			{}
+			{
+				assert(width >= 0 && height >= 0);
+			}
 
 			constexpr auto operator<=>(const Rect& other) const noexcept
 			{
@@ -44,6 +47,8 @@ namespace Pengin
 			{
 				return (*this <=> other) == std::strong_ordering::equal;
 			}
+
+			operator bool() const noexcept { return *this != Rect<T>{}; }
 		};
 
 		using Rectf = Rect<float>;

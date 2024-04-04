@@ -60,21 +60,24 @@ void dae::Renderer::Destroy()
 	m_ImGUIWindow.Destroy();
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const
+void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, Rectu16 srcRect) const
 {
-	SDL_Rect dst{};
-	dst.x = static_cast<int>(x);
-	dst.y = static_cast<int>(y);
-	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
+	SDL_Rect dst;
 
-	RenderTexture(texture, &dst, nullptr);
-}
+	const bool isSrcRect{ srcRect };
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, const Recti& dstRect, const Recti& srcRect) const
-{
-	SDL_Rect dst{ dstRect.x, dstRect.y, static_cast<int>(dstRect.width), static_cast<int>(dstRect.height) };
-
-	if (srcRect == Recti{})
+	if (isSrcRect)
+	{
+		dst = SDL_Rect{ static_cast<int>(x), static_cast<int>(y), static_cast<int>(srcRect.width), static_cast<int>(srcRect.height) };
+	}
+	else
+	{
+		dst.x = static_cast<int>(x);
+		dst.y = static_cast<int>(y);
+		SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
+	}
+	
+	if (!isSrcRect)
 	{
 		RenderTexture(texture, &dst, nullptr);
 		return;
@@ -84,8 +87,22 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const Recti& dstRect
 	RenderTexture(texture, &dst, &src);
 }
 
+void dae::Renderer::RenderTexture(const Texture2D& texture, const Recti& dstRect, Rectu16 srcRect) const
+{
+	SDL_Rect dst{ dstRect.x, dstRect.y, dstRect.width, dstRect.height };
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
+	if (!srcRect)
+	{
+		RenderTexture(texture, &dst, nullptr);
+		return;
+	}
+
+	SDL_Rect src{ srcRect.x, srcRect.y, srcRect.width ,srcRect.height };
+	RenderTexture(texture, &dst, &src);
+}
+
+
+void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const
 {
 	SDL_Rect dst{ static_cast<int>(x), static_cast<int>(y), static_cast<int>(width), static_cast<int>(height) };
 	RenderTexture(texture, &dst, nullptr);
