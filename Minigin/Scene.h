@@ -27,8 +27,8 @@ namespace Pengin
 		~Scene() = default;
 
 		[[nodiscard]] Entity CreateEntity(const glm::vec3& position = { 0, 0, 0 }, const glm::vec3& rotation = { 0, 0, 0 }, const glm::vec3 & scale = { 1, 1, 1 });
-		bool DestroyEntity(Entity entity);
-		bool DestroyEntity(const EntityId entityId);
+		bool DestroyEntity(Entity entity, bool keepChildren = true);
+		bool DestroyEntity(const EntityId entityId, bool keepChildren = true);
 
 		[[nodiscard]] ECS& GetECS() { return m_Ecs; }
 

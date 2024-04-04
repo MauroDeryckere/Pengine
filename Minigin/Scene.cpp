@@ -28,14 +28,15 @@ namespace Pengin
 		return entity;
 	}
 
-	bool Scene::DestroyEntity(Entity entity)
+	bool Scene::DestroyEntity(Entity entity, bool keepChildren)
 	{
-		return DestroyEntity(entity.GetEntityId());
+		entity.SetParent({ NULL_ENTITY_ID, shared_from_this() }, keepChildren);
+		return m_Ecs.DestroyEntity(entity.GetEntityId());
 	}
 
-	bool Scene::DestroyEntity(const EntityId entityId)
+	bool Scene::DestroyEntity(const EntityId entityId, bool keepChildren)
 	{
-		return m_Ecs.DestroyEntity(entityId);
+		return DestroyEntity({entityId, shared_from_this() }, keepChildren);
 	}
 
 	void Scene::FixedUpdate()
@@ -44,9 +45,9 @@ namespace Pengin
 
 	void Scene::Update() //TODO: when empty
 	{
-		m_TextSystem->Update();
-		m_FPSSystem->Update();
-		m_MovementSystem->Update();
+		//m_TextSystem->Update();
+		//m_FPSSystem->Update();
+		//m_MovementSystem->Update();
 		m_WorldPosSystem->Update();
 	}
 

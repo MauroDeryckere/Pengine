@@ -81,15 +81,14 @@ namespace Pengin
 			assert(!parentEntity.m_pScene.expired() && !m_pScene.expired());
 
 			auto& thisTransform = GetComponent<TransformComponent>();
-			auto& newParentTransform = parentEntity.GetComponent<TransformComponent>();
 
 			auto pScene{ m_pScene.lock() };
 
-			if (IsParentChildOfThis(thisTransform, parentEntity.m_EntityId) || 
+			if ((IsParentChildOfThis(thisTransform, parentEntity.m_EntityId) || 
 				parentEntity.m_EntityId == m_EntityId || 
-				thisTransform.relation.parent == parentEntity.m_EntityId)
+				thisTransform.relation.parent == parentEntity.m_EntityId) && parentEntity.m_EntityId != NULL_ENTITY_ID)
 			{
-				std::cerr << "can not set entity " << parentEntity.GetEntityId() << " as parent \n";
+				std::cerr << "can not set entity " << parentEntity.GetEntityId() << " as parent for entity "<< m_EntityId << "\n";
 				return;
 			}
 
@@ -97,11 +96,34 @@ namespace Pengin
 			{
 				thisTransform.localPos = GetWorldPosition(thisTransform);
 				SetPosDirty(thisTransform);
+
+				if (keepWorldPos) //Keep worldPos upon deletion of a parent means we keep the children at their current world pos (and their relationships)
+				{
+					if (thisTransform.relation.children > 0)
+					{
+						auto currChildId = thisTransform.relation.firstChild;
+
+						for (size_t childIdx = 0; childIdx < thisTransform.relation.children; ++childIdx)
+						{
+							auto& currChildTransform = pScene->m_Ecs.GetComponent<TransformComponent>(currChildId);
+
+							currChildTransform.localPos = thisTransform.localPos + currChildTransform.localPos; //set all childrens positions to the correct world position
+
+							currChildTransform.relation.parent = NULL_ENTITY_ID;
+							currChildId = currChildTransform.relation.nextSibling;
+						}
+					}
+				}
+				else //otherwise all children and relationships get destroyed
+				{
+					DestroyChildren(thisTransform);
+				}
 			}
 			else
 			{
 				if (keepWorldPos)
 				{
+					auto& newParentTransform = parentEntity.GetComponent<TransformComponent>();
 					thisTransform.localPos = GetWorldPosition(thisTransform) - GetWorldPosition(newParentTransform);
 				}
 
@@ -109,10 +131,13 @@ namespace Pengin
 			}
 
 			RemoveSelfAsChild(thisTransform);
-
 			thisTransform.relation.parent = parentEntity.m_EntityId;
 
-			AddSelfAsChild(thisTransform, newParentTransform);
+			if (parentEntity.m_EntityId != NULL_ENTITY_ID)
+			{
+				auto& newParentTransform = parentEntity.GetComponent<TransformComponent>();
+				AddSelfAsChild(thisTransform, newParentTransform);
+			}
 		}
 
 		void SetLocalPosition(const glm::vec3& position)
@@ -179,6 +204,28 @@ namespace Pengin
 			}
 		}
 
+		void DestroyChildren(TransformComponent& transform)
+		{
+			if (transform.relation.children != 0)
+			{
+				auto pScene = m_pScene.lock();
+				assert(pScene);
+
+				auto currChildId = transform.relation.firstChild;
+
+				for (size_t childIdx{ 0 }; childIdx < transform.relation.children; ++childIdx)
+				{
+					auto& childTransform = pScene->m_Ecs.GetComponent<TransformComponent>(currChildId);
+					const auto nextSiblingId = childTransform.relation.nextSibling;
+
+					DestroyChildren(childTransform);
+
+					pScene->m_Ecs.DestroyEntity(currChildId);
+					currChildId = nextSiblingId;
+				}
+			}
+		}
+
 		const glm::vec3& GetWorldPosition(TransformComponent& transform)
 		{
 			if (transform.isPosDirty)
@@ -218,16 +265,19 @@ namespace Pengin
 			{
 				auto& oldParentTransform{ pScene->m_Ecs.GetComponent<TransformComponent>(self.relation.parent) };
 
-				--oldParentTransform.relation.children;
-
 				//Only child
-				if (oldParentTransform.relation.children == 0)
+				if (oldParentTransform.relation.children == 1)
 				{
+					--oldParentTransform.relation.children;
+
 					oldParentTransform.relation.firstChild = NULL_ENTITY_ID;
 				}
+
 				//First child and there are other children
 				else if (oldParentTransform.relation.firstChild == m_EntityId)
 				{
+					--oldParentTransform.relation.children;
+
 					auto prevSibId = self.relation.prevSibling;
 					auto nexSibId = self.relation.nextSibling;
 
@@ -239,6 +289,8 @@ namespace Pengin
 				//Other children and not first child
 				else
 				{
+					--oldParentTransform.relation.children;
+
 					auto prevSibId = self.relation.prevSibling;
 					auto nexSibId = self.relation.nextSibling;
 
@@ -247,9 +299,11 @@ namespace Pengin
 						auto& nextSibTransform{ pScene->m_Ecs.GetComponent<TransformComponent>(nexSibId) };
 						nextSibTransform.relation.prevSibling = prevSibId;
 					}
-
-					auto& prevSibTransform{ pScene->m_Ecs.GetComponent<TransformComponent>(prevSibId) };
-					prevSibTransform.relation.nextSibling = nexSibId;
+					if (prevSibId != NULL_ENTITY_ID)
+					{
+						auto& prevSibTransform{ pScene->m_Ecs.GetComponent<TransformComponent>(prevSibId) };
+						prevSibTransform.relation.nextSibling = nexSibId;
+					}
 				}
 			}
 		}
