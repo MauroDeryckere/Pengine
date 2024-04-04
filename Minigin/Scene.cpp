@@ -6,8 +6,9 @@
 
 #include "TextComponent.h"
 #include "SpriteComponent.h"
+#include "AnimationComponent.h"
 
-#include "imgui.h"
+#include "imgui.h" //RenderImgui --> TODO: move to sep function /  class
 
 #include <format>
 
@@ -44,11 +45,14 @@ namespace Pengin
 	{
 	}
 
-	void Scene::Update() //TODO: when empty
+	void Scene::Update() //TODO: when empty, wrapper
 	{
-		//m_TextSystem->Update();
-		//m_FPSSystem->Update();
-		//m_MovementSystem->Update();
+		m_TextSystem->Update();
+		m_FPSSystem->Update();
+		m_MovementSystem->Update();
+
+		m_AnimationSystem->Update();
+
 		m_WorldPosSystem->Update();
 	}
 
@@ -193,6 +197,102 @@ namespace Pengin
 						}
 
 						ImGui::TreePop();
+					}
+				}
+
+				if (m_Ecs.HasComponent<AnimationComponent>(id))
+				{
+					const auto& aniComp = m_Ecs.GetComponent<AnimationComponent>(id);
+					const bool isAniDataEmpty{ aniComp.m_Animations.empty() };
+
+					if (ImGui::TreeNode("Animation Component"))
+					{
+						if (!isAniDataEmpty)
+						{
+							if (ImGui::BeginTable("Animation table", 2))
+							{
+								ImGui::TableSetupColumn("Data");
+								ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch);
+								ImGui::TableHeadersRow();
+
+								ImGui::TableNextRow();
+								ImGui::TableNextColumn();
+								ImGui::TextUnformatted("Is playing");
+								ImGui::TableNextColumn();
+								ImGui::Text("%s", aniComp.m_IsPlaying ? "True" : "False");
+
+								ImGui::TableNextRow();
+								ImGui::TableNextColumn();
+								ImGui::TextUnformatted("Current animation index");
+								ImGui::TableNextColumn();
+								ImGui::Text("%d", aniComp.m_CurrAnimationIdx);
+
+								ImGui::TableNextRow();
+								ImGui::TableNextColumn();
+								ImGui::TextUnformatted("Current frame index");
+								ImGui::TableNextColumn();
+								ImGui::Text("%d", aniComp.m_CurrFrame);
+
+								ImGui::TableNextRow();
+								ImGui::TableNextColumn();
+								ImGui::TextUnformatted("Current frame time");
+								ImGui::TableNextColumn();
+								ImGui::Text("%f", aniComp.m_FrameTimer);
+
+								ImGui::EndTable();
+							}
+
+							if (ImGui::TreeNode("Animations"))
+							{
+								for (size_t idx{0};  const auto& animation : aniComp.m_Animations)
+								{
+									animation;
+
+									const std::string label{ "Animation " + std::to_string(idx) + " data"};
+
+									if (ImGui::TreeNode(label.c_str()))
+									{
+										if (ImGui::BeginTable("Animation data table", 2))
+										{
+											ImGui::TableSetupColumn("Data");
+											ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch);
+											ImGui::TableHeadersRow();
+
+											ImGui::TableNextRow();
+											ImGui::TableNextColumn();
+											ImGui::TextUnformatted("frame count");
+											ImGui::TableNextColumn();
+											ImGui::Text("%d", animation.frameCt);
+
+											ImGui::TableNextRow();
+											ImGui::TableNextColumn();
+											ImGui::TextUnformatted("frame duration");
+											ImGui::TableNextColumn();
+											ImGui::Text("%d", animation.frameDuration);
+
+											ImGui::TableNextRow();
+											ImGui::TableNextColumn();
+											ImGui::TextUnformatted("frame 0 source rect");
+											ImGui::TableNextColumn();
+											ImGui::Text("(%d, %d, %d, %d)", animation.frame0sourceRect.x, animation.frame0sourceRect.y, animation.frame0sourceRect.width, animation.frame0sourceRect.height);
+
+										ImGui::EndTable();
+										}
+
+									ImGui::TreePop();
+									}
+
+									++idx;
+								}
+								
+							ImGui::TreePop();
+							}
+						}
+						else
+						{
+							ImGui::Text("EMPTY ANIMATION DATA");
+						}
+					ImGui::TreePop();
 					}
 				}
 
