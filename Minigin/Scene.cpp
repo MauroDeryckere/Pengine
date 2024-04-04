@@ -5,6 +5,7 @@
 #include "Renderer.h"
 
 #include "TextComponent.h"
+#include "SpriteComponent.h"
 
 #include "imgui.h"
 
@@ -56,7 +57,7 @@ namespace Pengin
 		m_RenderSystem->Render();
 	}
 
-	void Scene::RenderImGUI()
+	void Scene::RenderImGUI()//Todo, different windows / panels - diff class / function
 	{
 		static EntityId selectedEntity = NULL_ENTITY_ID;
 
@@ -72,7 +73,7 @@ namespace Pengin
 			{
 				if (ImGui::TreeNode("Transform"))
 				{
-					if (ImGui::BeginTable("TransformTable", 4))
+					if (ImGui::BeginTable("Transform Table", 4))
 					{
 						ImGui::TableSetupColumn("Component");
 						ImGui::TableSetupColumn("X", ImGuiTableColumnFlags_WidthStretch);
@@ -125,7 +126,7 @@ namespace Pengin
 
 					if (ImGui::TreeNode("Relation"))
 					{
-						if (ImGui::BeginTable("TransformRelation", 2))
+						if (ImGui::BeginTable("Transform Relation", 2))
 						{
 							ImGui::TableSetupColumn("Relation");
 							ImGui::TableSetupColumn("Entity ID", ImGuiTableColumnFlags_WidthStretch);
@@ -169,6 +170,32 @@ namespace Pengin
 
 					ImGui::TreePop();
 				}
+
+				if (m_Ecs.HasComponent<SpriteComponent>(id))
+				{
+					const auto& sprite = m_Ecs.GetComponent<SpriteComponent>(id);
+
+					if (ImGui::TreeNode("Sprite Component"))
+					{
+						if (ImGui::BeginTable("Sprite table", 2))
+						{
+							ImGui::TableSetupColumn("Data");
+							ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch);
+							ImGui::TableHeadersRow();
+
+							ImGui::TableNextRow();
+							ImGui::TableNextColumn();
+							ImGui::TextUnformatted("Source Rect");
+							ImGui::TableNextColumn();
+							ImGui::Text("(%d, %d, %d, %d)", sprite.m_SourceRect.x, sprite.m_SourceRect.y, sprite.m_SourceRect.width, sprite.m_SourceRect.height);
+
+							ImGui::EndTable();
+						}
+
+						ImGui::TreePop();
+					}
+				}
+
 				if (ImGui::TreeNode("Owned components"))
 				{
 					for (auto&& comp : m_Ecs.GetAllComponents(id))
