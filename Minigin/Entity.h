@@ -94,11 +94,11 @@ namespace Pengin
 
 			if (parentEntity.m_EntityId == NULL_ENTITY_ID)
 			{
-				thisTransform.localPos = GetWorldPosition(thisTransform);
-				SetPosDirty(thisTransform);
-
 				if (keepWorldPos) //Keep worldPos upon deletion of a parent means we keep the children at their current world pos (and their relationships)
 				{
+					thisTransform.localPos = GetWorldPosition(thisTransform);
+					SetPosDirty(thisTransform);
+
 					if (thisTransform.relation.children > 0)
 					{
 						auto currChildId = thisTransform.relation.firstChild;
