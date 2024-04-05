@@ -19,6 +19,7 @@ namespace Pengin
 			{
 				if (innerIt == outerIt) //Can not collide with self
 				{
+					++innerIt;
 					continue;
 				}
 
