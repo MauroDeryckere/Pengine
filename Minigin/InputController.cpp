@@ -163,6 +163,8 @@ namespace Pengin
 
 	void WindowsInputControllerImpl::UpdateControllerIdx()
 	{
+		static bool displayMessage = false;
+
 		for (auto& controllerIdx : m_FreeControllerIdxes)
 		{
 			XINPUT_STATE state;
@@ -174,15 +176,17 @@ namespace Pengin
 				std::erase_if(m_FreeControllerIdxes, [&](DWORD idx) { return idx == controllerIdx; });
 
 				m_DisconnectedTime = 0.f;
+				displayMessage = false;
 				return;
 			}
 		}
 		
 		m_DisconnectedTime += Time::GetInstance().GetElapsedSec();
 
-		if (m_DisconnectedTime >= MAX_ALLOWED_DISCONNECTED_TIME)
+		if (m_DisconnectedTime >= MAX_ALLOWED_DISCONNECTED_TIME && !displayMessage)
 		{
 			std::cerr << "MAX ALLOWED CONTROLLER DISCONNECT TIME REACHED FOR USERIDX: " << m_UserIdxControllerIdxPair.first << "\n";
+			displayMessage = true;
 		}
 	}
 

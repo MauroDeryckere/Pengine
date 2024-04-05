@@ -3,6 +3,8 @@
 
 #include "UtilStructs.h"
 #include <vector>
+#include <cassert>
+#include <algorithm>
 
 namespace Pengin
 { 
@@ -21,7 +23,12 @@ namespace Pengin
 			m_Animations{ animations },
 			m_IsPlaying{ playOnInit },
 			m_CurrAnimationIdx{ initAnimationIdx }
-		{}
+		{
+
+			assert(std::all_of(animations.begin(), animations.end(), [](const AnimationData& animation) { return animation.frameCt > 0; }) && "Can not have an animation with 0 frames");
+			assert(std::all_of(animations.begin(), animations.end(), [](const AnimationData& animation) { return animation.frameDuration > 0.f; }) && "Can not have an animation with negative or 0 frame duration");
+			assert(std::all_of(animations.begin(), animations.end(), [](const AnimationData& animation) { return animation.frame0sourceRect; }) && "Must provide valid frame sourceRect");
+		}
 		
 		~AnimationComponent() = default;
 

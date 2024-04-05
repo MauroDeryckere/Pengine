@@ -7,6 +7,7 @@
 #include "TextComponent.h"
 #include "SpriteComponent.h"
 #include "AnimationComponent.h"
+#include "RectColliderComponent.h"
 
 #include "imgui.h" //RenderImgui --> TODO: move to sep function /  class
 
@@ -50,6 +51,7 @@ namespace Pengin
 		m_TextSystem->Update();
 		m_FPSSystem->Update();
 		m_MovementSystem->Update();
+		m_CollSystem->Update();
 
 		m_AnimationSystem->Update();
 
@@ -61,7 +63,7 @@ namespace Pengin
 		m_RenderSystem->Render();
 	}
 
-	void Scene::RenderImGUI()//Todo, different windows / panels - diff class / function
+	void Scene::RenderImGUI()//Todo, different windows / panels - in class / function
 	{
 		static EntityId selectedEntity = NULL_ENTITY_ID;
 
@@ -174,6 +176,38 @@ namespace Pengin
 
 					ImGui::TreePop();
 				}
+
+				if (m_Ecs.HasComponent<RectColliderComponent>(id))
+				{
+					const auto& rectColl = m_Ecs.GetComponent<RectColliderComponent>(id);
+
+					if (ImGui::TreeNode("Rect Collider Component"))
+					{
+						if (ImGui::BeginTable("Sprite table", 2))
+						{
+							ImGui::TableSetupColumn("Data");
+							ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch);
+							ImGui::TableHeadersRow();
+
+							ImGui::TableNextRow();
+							ImGui::TableNextColumn();
+							ImGui::TextUnformatted("Collider Rect");
+							ImGui::TableNextColumn();
+							ImGui::Text("(%d, %d, %d, %d)", rectColl.m_CollRect.x, rectColl.m_CollRect.y, rectColl.m_CollRect.width, rectColl.m_CollRect.height);
+
+							ImGui::TableNextRow();
+							ImGui::TableNextColumn();
+							ImGui::TextUnformatted("World Location Rect");
+							ImGui::TableNextColumn();
+							ImGui::Text("(%d, %d, %d, %d)", static_cast<uint16_t>(transform.worldPos.x) + rectColl.m_CollRect.x, static_cast<uint16_t>(transform.worldPos.y) + rectColl.m_CollRect.y, rectColl.m_CollRect.width, rectColl.m_CollRect.height);
+
+							ImGui::EndTable();
+						}
+
+						ImGui::TreePop();
+					}
+				}
+
 
 				if (m_Ecs.HasComponent<SpriteComponent>(id))
 				{

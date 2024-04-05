@@ -18,7 +18,9 @@ namespace Pengin
 			m_pFont{ dae::ResourceManager::GetInstance().LoadFont(fontPath, fontSize) },
 			m_Color{ color },
 			needsTextureChange{ true }
-		{}
+		{
+			assert(fontSize > 0 && "Can not have fontsize 0");
+		}
 
 		~TextComponent() = default;
 

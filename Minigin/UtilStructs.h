@@ -7,7 +7,6 @@
 
 namespace Pengin
 {
-
 	namespace UtilStructs
 	{
 		template<typename T>

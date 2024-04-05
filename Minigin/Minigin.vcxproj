@@ -266,9 +266,11 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="BaseComponentStorage.h" />
     <ClInclude Include="Bitset.h" />
+    <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="FPSSystem.h" />
     <ClInclude Include="ImGUIWindow.h" />
     <ClInclude Include="MovementSystem.h" />
+    <ClInclude Include="RectColliderComponent.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="UIDisplaySystem.h" />
     <ClInclude Include="VelocityComponent.h" />
@@ -328,6 +330,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_widgets.cpp" />
     <ClCompile Include="AnimationSystem.cpp" />
+    <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="EcsEventInter.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />

@@ -5,6 +5,8 @@
 
 #include "VelocityComponent.h"
 
+#include "RectColliderComponent.h"
+
 #include "HealthComponent.h"
 #include "ScoreComponent.h"
 

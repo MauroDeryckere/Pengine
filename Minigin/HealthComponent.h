@@ -20,8 +20,6 @@ namespace Pengin
 
 		~HealthComponent() = default; 
 
-		void TakeDamage(unsigned damage, const std::string& event); //TODO remove
-
 		unsigned m_Health;
 		std::vector<EntityId> m_HealthDisplayIds;
 	};
