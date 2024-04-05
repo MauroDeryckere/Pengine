@@ -201,13 +201,26 @@ namespace Pengin
 							ImGui::TableNextColumn();
 							ImGui::Text("(%d, %d, %d, %d)", static_cast<uint16_t>(transform.worldPos.x) + rectColl.m_CollRect.x, static_cast<uint16_t>(transform.worldPos.y) + rectColl.m_CollRect.y, rectColl.m_CollRect.width, rectColl.m_CollRect.height);
 
+							ImGui::TableNextRow();
+							ImGui::TableNextColumn();
+							ImGui::TextUnformatted("Enable Collider Debug Drawing"); 
+							ImGui::TableNextColumn();
+
+							static std::unordered_map<EntityId, bool> checkboxStates;
+							bool& enableCollider = checkboxStates[id];
+							ImGui::Checkbox("##EnableCollider", &enableCollider);
+
 							ImGui::EndTable();
+
+							if (enableCollider)
+							{
+								dae::Renderer::GetInstance().DrawRect(UtilStructs::Rectu16{ static_cast<uint16_t>(transform.worldPos.x + rectColl.m_CollRect.x),  static_cast<uint16_t>(transform.worldPos.y + rectColl.m_CollRect.y), rectColl.m_CollRect.width, rectColl.m_CollRect.height }, SDL_Color{255, 0, 0, 255});
+							}
 						}
 
 						ImGui::TreePop();
 					}
 				}
-
 
 				if (m_Ecs.HasComponent<SpriteComponent>(id))
 				{
