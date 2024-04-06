@@ -31,7 +31,7 @@ namespace Pengin
 		void RenderSpriteInfo(ECS& ecs, const EntityId id);
 		void RenderAnimationInfo(ECS& ecs, const EntityId id);
 
-		void RenderEditorWindow(ECS& ecs);
+		void RenderEditorWindow(ECS& ecs, bool* keepChildren);
 
 		Scene* m_pScene;
 	};

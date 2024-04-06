@@ -20,6 +20,7 @@ namespace Pengin
 	void SceneInfoPanel::Render(ECS& ecs)
 	{
 		static bool EDITOR_MODE = false;
+		static bool KEEPCHILDREN_ON_DESTROY = true;
 
 		std::vector<EntityId> esToDestroy;
 
@@ -95,12 +96,12 @@ namespace Pengin
 
 		for (const auto entity : esToDestroy)
 		{
-			m_pScene->DestroyEntity(entity);
+			m_pScene->DestroyEntity(entity, KEEPCHILDREN_ON_DESTROY);
 		}
 
 		if (EDITOR_MODE)
 		{
-			RenderEditorWindow(ecs);
+			RenderEditorWindow(ecs, &KEEPCHILDREN_ON_DESTROY);
 		}
 	}
 
@@ -383,12 +384,13 @@ namespace Pengin
 		}
 	}
 
-	void SceneInfoPanel::RenderEditorWindow(ECS& ecs)
+	void SceneInfoPanel::RenderEditorWindow(ECS& ecs, bool* keepChildren)
 	{
 		ecs;
 		ImGui::Begin("Editor window");
 
-		ImGui::Text("Editor Window");
+		ImGui::Checkbox("Keep children on destroy ##Keepchildren", keepChildren);
+		ImGui::Unindent();
 
 		ImGui::End();
 	}
