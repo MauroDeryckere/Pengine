@@ -385,6 +385,7 @@ namespace Pengin
 
 	void SceneInfoPanel::RenderEditorWindow(ECS& ecs)
 	{
+		ecs;
 		ImGui::Begin("Editor window");
 
 		ImGui::Text("Editor Window");
