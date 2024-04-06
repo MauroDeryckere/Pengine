@@ -174,11 +174,7 @@ namespace Pengin
 
             if (it == m_TypeBitMap.end())
             {
-                std::cerr << "trying to get a componentwrapper for a type that was never added: " << typeid(ComponentType).name() << "\n";
-                throw;
-                ///TOOD
-               // auto set = SparseSet<ComponentType, EntityId>{};
-               // return ComponentWrapper<ComponentType> { set };
+                return ComponentWrapper<ComponentType> { nullptr };
             }
 
             const size_t idx{ it->second };
@@ -186,8 +182,13 @@ namespace Pengin
 
             ComponentStorage<ComponentType>* storage{ dynamic_cast<ComponentStorage<ComponentType>*>(basePtr) };
 
+            if (!storage)
+            {
+                return ComponentWrapper<ComponentType> { nullptr };
+            }
+
             auto& set{ storage->GetSet() };
-            return ComponentWrapper<ComponentType>{ set };
+            return ComponentWrapper<ComponentType>{ &set };
         }
 
         template<typename ComponentType>
@@ -197,10 +198,7 @@ namespace Pengin
 
             if (it == m_TypeBitMap.end())
             {
-                std::cerr << "trying to get a componentwrapper for a type that was never added: " << typeid(ComponentType).name() << "\n";
-                throw;
-                //auto set = SparseSet<ComponentType, EntityId>{};
-                //return ConstComponentWrapper<ComponentType> { set };
+                return ConstComponentWrapper<ComponentType> { nullptr };
             }
 
             const size_t idx{ it->second };
@@ -209,9 +207,14 @@ namespace Pengin
 
             ComponentStorage<ComponentType>* storage{ dynamic_cast<ComponentStorage<ComponentType>*>(basePtr) };
 
+            if (!storage)
+            {
+                return ConstComponentWrapper<ComponentType> { nullptr };
+            }
+
             const auto& set{ storage->GetSet() };
             
-            return ConstComponentWrapper<ComponentType>{set};
+            return ConstComponentWrapper<ComponentType>{&set};
         }
 
     private:

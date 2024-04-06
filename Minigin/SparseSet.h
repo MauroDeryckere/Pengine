@@ -172,6 +172,11 @@ namespace Pengin
             return m_DenseArray;
         }
 
+        [[nodiscard]] bool Empty() const noexcept
+        {
+            return m_DenseArray.empty();
+        }
+
     private:
         std::unordered_map<KeyType, size_t> m_SparseMap; //Map key to dense array index
         std::vector<ValueType> m_DenseArray;
