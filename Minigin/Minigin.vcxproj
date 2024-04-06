@@ -128,7 +128,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
       <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>CoreIncludes.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -189,7 +189,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
       <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>CoreIncludes.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
