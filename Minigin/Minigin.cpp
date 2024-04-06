@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_opengl.h>
 
 #include <thread>
 
@@ -25,7 +26,7 @@
 	#pragma warning (pop)
 #endif
 
-SDL_Window* g_window{};
+SDL_Window* g_Window{};
 
 void PrintSDLVersion()
 {
@@ -58,37 +59,50 @@ void PrintSDLVersion()
 dae::Minigin::Minigin(const std::string &dataPath)
 {
 	PrintSDLVersion();
-	
+
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
 
-	g_window = SDL_CreateWindow(
+	#ifdef SDL_HINT_IME_SHOW_UI
+		SDL_SetHint(SDL_HINT_IME_SHOW_UI, "1");
+	#endif
+
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
+	const SDL_WindowFlags windowFlags = static_cast<SDL_WindowFlags>( SDL_WINDOW_OPENGL
+																	| SDL_WINDOW_RESIZABLE
+																	| SDL_WINDOW_ALLOW_HIGHDPI
+																	);
+	g_Window = SDL_CreateWindow(
 		"Pengine",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		640,
 		480,
-		  SDL_WINDOW_OPENGL 
-		| SDL_WINDOW_RESIZABLE 
-		| SDL_WINDOW_INPUT_FOCUS
-		//| SDL_WINDOW_MAXIMIZED
+		windowFlags
 	);
-	if (g_window == nullptr) 
+
+	if (g_Window == nullptr) 
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
 
-	Renderer::GetInstance().Init(g_window);
+	Renderer::GetInstance().Init(g_Window);
+	//auto context = SDL_GL_CreateContext(g_window);
+	//SDL_GL_MakeCurrent(g_window, context);
+	//SDL_GL_SetSwapInterval(1); // Enable vsync
+
 	ResourceManager::GetInstance().Init(dataPath);
 }
 
 dae::Minigin::~Minigin()
 {
 	Renderer::GetInstance().Destroy();
-	SDL_DestroyWindow(g_window);
-	g_window = nullptr;
+	SDL_DestroyWindow(g_Window);
+	g_Window = nullptr;
 
 	SDL_Quit();
 }

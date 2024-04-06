@@ -1,29 +1,33 @@
 #include "ImGUIWindow.h"
 
-
 #include "Renderer.h"
 
 #include <SDL.h>
 #include "imgui.h"
 #include <backends/imgui_impl_sdl2.h>
 #include <backends/imgui_impl_opengl2.h>
-#include <SDL_opengl.h>
 
 namespace Pengin
 {
 	void ImGUIWindow::Create(SDL_Window* pWindow)
 	{
 		IMGUI_CHECKVERSION();
-
 		ImGui::CreateContext();
 
 		auto& io = ImGui::GetIO();
 		io.ConfigWindowsMoveFromTitleBarOnly = true;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-		io.ConfigFlags |= ImGuiConfigFlags_::ImGuiConfigFlags_ViewportsEnable;
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
         SetupImGuiStyle();
 
+		ImGuiStyle& style = ImGui::GetStyle();
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			style.WindowRounding = 0.0f;
+			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+		}
+		
 		ImGui_ImplSDL2_InitForOpenGL(pWindow, SDL_GL_GetCurrentContext());
 		ImGui_ImplOpenGL2_Init();
 	}
@@ -32,7 +36,6 @@ namespace Pengin
 	{
 		ImGui_ImplOpenGL2_Shutdown();
 		ImGui_ImplSDL2_Shutdown();
-
 		ImGui::DestroyContext();
 	}
 
@@ -56,13 +59,15 @@ namespace Pengin
 		auto& io = ImGui::GetIO();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
+			SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
 			SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();
-			SDL_GL_MakeCurrent(pWindow, backup_current_context);
+			SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
 		}
-
-		//SDL_GL_SwapWindow(backup_current_window);
+		
+		pWindow;
+		//SDL_GL_SwapWindow(pWindow);
 	}
 
 	bool ImGUIWindow::UsedMouse() const noexcept

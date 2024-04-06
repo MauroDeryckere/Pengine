@@ -432,6 +432,9 @@
     <ClInclude Include="CollisionSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdlrenderer2.h">
+      <Filter>Header Files\3rd Party ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -556,6 +559,9 @@
     </ClCompile>
     <ClCompile Include="CollisionSystem.cpp">
       <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdlrenderer2.cpp">
+      <Filter>Source Files\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

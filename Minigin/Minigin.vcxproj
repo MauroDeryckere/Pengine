@@ -209,6 +209,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
   <ItemGroup>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl2.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.h" />
+    <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdlrenderer2.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imconfig.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_internal.h" />
@@ -323,6 +324,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl2.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.cpp" />
+    <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdlrenderer2.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_demo.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_draw.cpp" />

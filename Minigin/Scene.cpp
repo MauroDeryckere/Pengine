@@ -65,10 +65,7 @@ namespace Pengin
 
 	void Scene::RenderImGUI()//Todo, different windows / panels - in class / function
 	{
-		static EntityId selectedEntity = NULL_ENTITY_ID;
-
 		ImGui::Begin("Scene information");
-
 		auto comps = m_Ecs.GetComponents<TransformComponent>();
 		for (auto it = comps.begin(); it != comps.end(); ++it)
 		{
@@ -224,7 +221,7 @@ namespace Pengin
 
 				if (m_Ecs.HasComponent<SpriteComponent>(id))
 				{
-					const auto& sprite = m_Ecs.GetComponent<SpriteComponent>(id);
+					auto& sprite = m_Ecs.GetComponent<SpriteComponent>(id);
 
 					if (ImGui::TreeNode("Sprite Component"))
 					{
@@ -239,6 +236,13 @@ namespace Pengin
 							ImGui::TextUnformatted("Source Rect");
 							ImGui::TableNextColumn();
 							ImGui::Text("(%d, %d, %d, %d)", sprite.m_SourceRect.x, sprite.m_SourceRect.y, sprite.m_SourceRect.width, sprite.m_SourceRect.height);
+
+							ImGui::TableNextRow();
+							ImGui::TableNextColumn();
+							ImGui::TextUnformatted("Toggle sprite visibility");
+							ImGui::TableNextColumn();
+
+							ImGui::Checkbox("##EnableCollider", &sprite.isVisible);
 
 							ImGui::EndTable();
 						}
@@ -293,8 +297,6 @@ namespace Pengin
 							{
 								for (size_t idx{0};  const auto& animation : aniComp.m_Animations)
 								{
-									animation;
-
 									const std::string label{ "Animation " + std::to_string(idx) + " data"};
 
 									if (ImGui::TreeNode(label.c_str()))

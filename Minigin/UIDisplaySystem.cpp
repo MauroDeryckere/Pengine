@@ -29,8 +29,16 @@ namespace Pengin
 
 		auto& healthComp = m_ECS.GetComponent<HealthComponent>(id);
 		
+		std::vector<EntityId> idsToErase;
+
 		for (const auto entity : healthComp.m_HealthDisplayIds)
 		{
+			if (!m_ECS.Exists(entity))
+			{
+				idsToErase.emplace_back(id);
+				continue;
+			}
+
 			assert(m_ECS.HasComponent<TextComponent>(entity));
 			assert(m_ECS.HasComponent<DisplayComponent>(entity));
 
@@ -42,6 +50,11 @@ namespace Pengin
 			textComp.m_Text = newText; //TODO change
 			textComp.needsTextureChange = true;
 		}
+
+		std::erase_if(healthComp.m_HealthDisplayIds, [&idsToErase](const EntityId& id) 
+			{
+				return std::find(idsToErase.begin(), idsToErase.end(), id) != idsToErase.end();
+			});
 	}
 
 	void UIDisplaySystem::OnScoreCollectEvent(const void* eventData)
@@ -52,8 +65,16 @@ namespace Pengin
 
 		auto& scoreComp = m_ECS.GetComponent<ScoreComponent>(id);
 
+		std::vector<EntityId> idsToErase;
+
 		for (const auto entity : scoreComp.m_ScoreDisplays)
 		{
+			if (!m_ECS.Exists(entity))
+			{
+				idsToErase.emplace_back(id);
+				continue;
+			}
+
 			assert(m_ECS.HasComponent<TextComponent>(entity));
 			assert(m_ECS.HasComponent<DisplayComponent>(entity));
 
@@ -65,6 +86,11 @@ namespace Pengin
 			textComp.m_Text = newText; //TODO change
 			textComp.needsTextureChange = true;
 		}
+
+		std::erase_if(scoreComp.m_ScoreDisplays, [&idsToErase](const EntityId& id)
+			{
+				return std::find(idsToErase.begin(), idsToErase.end(), id) != idsToErase.end();
+			});
 	}
 }
 

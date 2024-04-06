@@ -39,14 +39,14 @@ void dae::Renderer::Render() const
 	SDL_RenderClear(m_renderer);
 
 	Pengin::SceneManager::GetInstance().Render();
+
 	SDL_RenderFlush(m_renderer);
 
 	m_ImGUIWindow.BeginRender();
-
-	Pengin::SceneManager::GetInstance().RenderImGUI();
-	//ImGui::ShowDemoWindow();
-
+		Pengin::SceneManager::GetInstance().RenderImGUI();
+		//ImGui::ShowDemoWindow();
 	m_ImGUIWindow.EndRender(m_window);
+
 	SDL_RenderPresent(m_renderer);
 }
 
