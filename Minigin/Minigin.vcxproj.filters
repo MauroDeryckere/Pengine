@@ -94,6 +94,12 @@
     <Filter Include="Header Files\Rendering\ImGui">
       <UniqueIdentifier>{085c28fe-b9fe-4238-ad82-26079554d974}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Rendering\Debug">
+      <UniqueIdentifier>{e5facb31-a907-4a34-8f1f-a981825ee73a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering\Renderer">
+      <UniqueIdentifier>{f6a4fd4b-4acb-48c3-ac95-b799e336a751}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
@@ -197,9 +203,6 @@
     </ClInclude>
     <ClInclude Include="InputKeys.h">
       <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="TransformComponent.h">
       <Filter>Header Files\Components</Filter>
@@ -435,6 +438,12 @@
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdlrenderer2.h">
       <Filter>Header Files\3rd Party ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="SceneInfoPanel.h">
+      <Filter>Header Files\Rendering\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files\Rendering\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -562,6 +571,9 @@
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdlrenderer2.cpp">
       <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneInfoPanel.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

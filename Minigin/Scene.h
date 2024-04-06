@@ -17,12 +17,16 @@
 #include "CollisionSystem.h"
 #include "UIDisplaySystem.h"
 
+#include "SceneInfoPanel.h"
+
 #include <memory>
 
 namespace Pengin
 {
 	class Entity;
 	
+	class SceneInfoPanel;
+
 	class Scene final : public std::enable_shared_from_this<Scene>
 	{
 	public:
@@ -67,8 +71,11 @@ namespace Pengin
 
 		std::unique_ptr<UIDisplaySystem> m_UIDisplaySystem{ std::make_unique<UIDisplaySystem>(m_Ecs) };
 
-
 		std::unique_ptr<AchievementSystem> m_AchSys{ std::make_unique<AchievementSystem>() };
+
+		std::unique_ptr<SceneInfoPanel> m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>() };
+
+
 	};
 }
 
