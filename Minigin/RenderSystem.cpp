@@ -24,15 +24,7 @@ namespace Pengin
 			if (pTexture && entity.isVisible)
 			{
 				auto& transform = m_ECS.GetComponent<TransformComponent>(entityId);
-				renderer.RenderTexture((*pTexture), transform.worldPos.x, transform.worldPos.y, entity.m_SourceRect);
-
-				auto&& srcRect{ entity.m_SourceRect };
-				renderer.RenderTexture((*pTexture), 
-					UtilStructs::Recti{ static_cast<int>(transform.worldPos.x), 
-										static_cast<int>(transform.worldPos.y), 
-										static_cast<int>(transform.scale.x) * srcRect.width ,
-										static_cast<int>(transform.scale.y) * srcRect.height }, 
-										srcRect);
+				renderer.RenderTexture((*pTexture), static_cast<int>(transform.worldPos.x), static_cast<int>(transform.worldPos.y), transform.scale, entity.m_SourceRect);
 			}
 
 			++it;

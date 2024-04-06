@@ -26,15 +26,19 @@ namespace Pengin
 				const auto& outerTrans{ m_ECS.GetComponent<TransformComponent>(rectCollComps.GetIdFromIterator(outerIt)) };
 				const auto& innerTrans{ m_ECS.GetComponent<TransformComponent>(rectCollComps.GetIdFromIterator(innerIt)) };
 
-				//TODO scale 
-
 				UtilStructs::Rectu16 outerRect{ outerEntity.m_CollRect };
-				outerRect.x += static_cast<uint16_t>(outerTrans.worldPos.x);
-				outerRect.y += static_cast<uint16_t>(outerTrans.worldPos.y);
+				outerRect.x = static_cast<uint16_t>(outerTrans.worldPos.x) + outerRect.x * static_cast<uint16_t>(outerTrans.scale.x);
+				outerRect.y = static_cast<uint16_t>(outerTrans.worldPos.y) + outerRect.y * static_cast<uint16_t>(outerTrans.scale.y);
+
+				outerRect.width *= static_cast<uint16_t>(outerTrans.scale.x);
+				outerRect.height *= static_cast<uint16_t>(outerTrans.scale.y);
 
 				UtilStructs::Rectu16 innerRect{ innerEntity.m_CollRect };
-				innerRect.x += static_cast<uint16_t>(innerTrans.worldPos.x);
-				innerRect.y += static_cast<uint16_t>(innerTrans.worldPos.y);
+				innerRect.x = static_cast<uint16_t>(innerTrans.worldPos.x) + innerRect.x * static_cast<uint16_t>(innerTrans.scale.x);
+				innerRect.y = static_cast<uint16_t>(innerTrans.worldPos.y) + innerRect.y * static_cast<uint16_t>(innerTrans.scale.y);
+
+				innerRect.width += static_cast<uint16_t>(innerTrans.worldPos.x);
+				innerRect.height += static_cast<uint16_t>(innerTrans.worldPos.y);
 
 				if (IsCollidingABBA(outerRect, innerRect))
 				{

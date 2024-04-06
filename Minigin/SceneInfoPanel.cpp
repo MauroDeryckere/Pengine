@@ -186,7 +186,10 @@ namespace Pengin
 				ImGui::TableNextColumn();
 				ImGui::TextUnformatted("World Location Rect");
 				ImGui::TableNextColumn();
-				ImGui::Text("(%d, %d, %d, %d)", static_cast<uint16_t>(transform.worldPos.x) + rectColl.m_CollRect.x, static_cast<uint16_t>(transform.worldPos.y) + rectColl.m_CollRect.y, rectColl.m_CollRect.width, rectColl.m_CollRect.height);
+				ImGui::Text("(%d, %d, %d, %d)", static_cast<int>(transform.worldPos.x + rectColl.m_CollRect.x * transform.scale.x),
+												static_cast<int>(transform.worldPos.y + rectColl.m_CollRect.y  * transform.scale.y),
+												rectColl.m_CollRect.width * static_cast<int>(transform.scale.x), 
+												rectColl.m_CollRect.height * static_cast<int>(transform.scale.y));
 
 				ImGui::TableNextRow();
 				ImGui::TableNextColumn();
@@ -201,7 +204,11 @@ namespace Pengin
 
 				if (enableCollider)
 				{
-					dae::Renderer::GetInstance().DrawRect(UtilStructs::Rectu16{ static_cast<uint16_t>(transform.worldPos.x + rectColl.m_CollRect.x),  static_cast<uint16_t>(transform.worldPos.y + rectColl.m_CollRect.y), rectColl.m_CollRect.width, rectColl.m_CollRect.height }, SDL_Color{ 255, 0, 0, 255 });
+					dae::Renderer::GetInstance().DrawRect(UtilStructs::Rect16{ static_cast<int16_t>(transform.worldPos.x + rectColl.m_CollRect.x * transform.scale.x),
+																				static_cast<int16_t>(transform.worldPos.y + rectColl.m_CollRect.y * transform.scale.y),
+																				static_cast<int16_t>(rectColl.m_CollRect.width * transform.scale.x), 
+																				static_cast<int16_t>(rectColl.m_CollRect.height * transform.scale.y)}, 
+																				SDL_Color{255, 0, 0, 255});
 				}
 			}
 

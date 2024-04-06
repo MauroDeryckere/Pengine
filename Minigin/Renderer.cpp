@@ -60,15 +60,14 @@ void dae::Renderer::Destroy()
 	m_ImGUIWindow.Destroy();
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, Rectu16 srcRect) const
+void dae::Renderer::RenderTexture(const Texture2D& texture, int x, int y, const glm::vec3& scale, Rectu16 srcRect) const
 {
 	SDL_Rect dst;
-
 	const bool isSrcRect{ srcRect };
 
 	if (isSrcRect)
 	{
-		dst = SDL_Rect{ static_cast<int>(x), static_cast<int>(y), static_cast<int>(srcRect.width), static_cast<int>(srcRect.height) };
+		dst = SDL_Rect{x, y, static_cast<int>(srcRect.width), static_cast<int>(srcRect.height) };
 	}
 	else
 	{
@@ -77,14 +76,17 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, Re
 		SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
 	}
 	
-	if (!isSrcRect)
+	dst.w *= static_cast<int>(scale.x);
+	dst.h *= static_cast<int>(scale.y);
+
+	if (isSrcRect)
 	{
-		RenderTexture(texture, &dst, nullptr);
+		SDL_Rect src{ srcRect.x, srcRect.y, static_cast<int>(srcRect.width), static_cast<int>(srcRect.height) };
+		RenderTexture(texture, &dst, &src);
 		return;
 	}
 
-	SDL_Rect src{ srcRect.x, srcRect.y, static_cast<int>(srcRect.width), static_cast<int>(srcRect.height) };
-	RenderTexture(texture, &dst, &src);
+	RenderTexture(texture, &dst, nullptr);
 }
 
 void dae::Renderer::RenderTexture(const Texture2D& texture, const Recti& dstRect, Rectu16 srcRect) const
@@ -101,11 +103,21 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const Recti& dstRect
 	RenderTexture(texture, &dst, &src);
 }
 
-
-void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const
+void dae::Renderer::RenderTexture(const Texture2D& texture, int x, int y, uint16_t width, uint16_t height, const glm::vec3& scale, Rectu16 srcRect) const
 {
-	SDL_Rect dst{ static_cast<int>(x), static_cast<int>(y), static_cast<int>(width), static_cast<int>(height) };
-	RenderTexture(texture, &dst, nullptr);
+	SDL_Rect dst{ x, y, width, height };
+
+	dst.w *= static_cast<int>(scale.x);
+	dst.h *= static_cast<int>(scale.y);
+
+	if (!srcRect)
+	{
+		RenderTexture(texture, &dst, nullptr);
+		return;
+	}
+
+	SDL_Rect src{ srcRect.x, srcRect.y, srcRect.width ,srcRect.height };
+	RenderTexture(texture, &dst, &src);
 }
 
 void dae::Renderer::DrawLine(int x1, int y1, int x2, int y2, SDL_Color color) const
@@ -122,9 +134,25 @@ void dae::Renderer::FillRect(Rectu16 dst, SDL_Color color) const
 	SDL_RenderFillRect(m_renderer, &rect);
 }
 
+void dae::Renderer::FillRect(Rect16 dst, SDL_Color color) const
+{
+	SDL_Rect rect = { dst.x, dst.y, dst.width, dst.height };
+
+	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
+	SDL_RenderFillRect(m_renderer, &rect);
+}
+
 void dae::Renderer::DrawRect(Rectu16 dst, SDL_Color color) const
 {
 	SDL_Rect rect = { static_cast<int>(dst.x), static_cast<int>(dst.y), static_cast<int>(dst.width), static_cast<int>(dst.height) };
+
+	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
+	SDL_RenderDrawRect(m_renderer, &rect);
+}
+
+void dae::Renderer::DrawRect(Rect16 dst, SDL_Color color) const
+{
+	SDL_Rect rect = { dst.x, dst.y, dst.width, dst.height };
 
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderDrawRect(m_renderer, &rect);
