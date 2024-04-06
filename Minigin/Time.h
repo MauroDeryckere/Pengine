@@ -41,7 +41,7 @@ namespace Pengin
 		const float m_FixedTimeStep{ 20.f };
 
 		float m_ElapsedSec{ 0.f };
-		float m_Lag{ 0.f }; //in seconds
+		float m_Lag{ 0.f };
 	};
 }
 
