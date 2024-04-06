@@ -1,10 +1,11 @@
 #ifndef SCENE
 #define SCENE
 
+#include "CoreIncludes.h"
+
 #include "SceneManager.h"
 
 #include "ECS.h"
-#include "EntityId.h"
 #include "glm/vec3.hpp"
 
 #include "AchievementSystem.h"
@@ -18,6 +19,7 @@
 #include "UIDisplaySystem.h"
 
 #include "SceneInfoPanel.h"
+#include "InputInfoPanel.h"
 
 #include <memory>
 
@@ -25,8 +27,6 @@ namespace Pengin
 {
 	class Entity;
 	
-	class SceneInfoPanel;
-
 	class Scene final : public std::enable_shared_from_this<Scene>
 	{
 	public:
@@ -74,6 +74,7 @@ namespace Pengin
 		std::unique_ptr<AchievementSystem> m_AchSys{ std::make_unique<AchievementSystem>() };
 
 		std::unique_ptr<SceneInfoPanel> m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>() };
+		std::unique_ptr<InputInfoPanel> m_InputInfoPanel{ std::make_unique<InputInfoPanel>() };
 
 
 	};

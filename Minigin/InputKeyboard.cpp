@@ -18,6 +18,8 @@ namespace Pengin
 		void ProcessMappedActions(InputBuffer* const inputBuffer);
 		void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
 
+		void* GetMappedActions();
+
 		//Pivate in InputKeyboard
 		unsigned GetCodeFromKey(unsigned key) const;
 		bool IsDownThisFrame(unsigned btn) const;
@@ -83,6 +85,12 @@ namespace Pengin
 	{
 		m_KeyboardActionMapping[static_cast<size_t>(inputState)][static_cast<KeyBoardKey>(key)] = std::move(pInputAction);
 	}
+
+	void* WindowsKeyboardImpl::GetMappedActions()
+	{
+		return &m_KeyboardActionMapping;
+	}
+
 	unsigned WindowsKeyboardImpl::GetCodeFromKey(unsigned key) const
 	{
 		KeyBoardKey keyEnum{ static_cast<KeyBoardKey>(key) };
@@ -218,6 +226,11 @@ namespace Pengin
 	void InputKeyboard::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
 		m_WinImpl->MapActionToInput(key, inputState, pInputAction);
+	}
+
+	void* InputKeyboard::GetMappedActions()
+	{
+		return m_WinImpl->GetMappedActions();
 	}
 
 	unsigned InputKeyboard::GetCodeFromKey(unsigned key) const

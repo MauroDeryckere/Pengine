@@ -24,6 +24,8 @@ namespace Pengin
 		void ProcessMappedActions(InputBuffer* const inputBuffer);
 		void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
 
+		void* GetMappedActions();
+
 		//Pivate in InputController
 		unsigned GetCodeFromKey(unsigned key) const;
 		bool IsDownThisFrame(unsigned btn) const;
@@ -121,6 +123,12 @@ namespace Pengin
 		m_ControllerActionMapping[static_cast<size_t>(inputState)][static_cast<ControllerButton>(key)] = std::move(pInputAction);
 	}
 
+	void* WindowsInputControllerImpl::GetMappedActions()
+	{
+		return &m_ControllerActionMapping;
+	}
+
+
 	unsigned WindowsInputControllerImpl::GetCodeFromKey(unsigned key) const
 	{
 		ControllerButton button{ static_cast<ControllerButton>(key) };
@@ -208,6 +216,11 @@ namespace Pengin
 	void InputController::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
 		m_WinImpl->MapActionToInput(key, inputState, pInputAction);
+	}
+
+	void* InputController::GetMappedActions()
+	{
+		return m_WinImpl->GetMappedActions();
 	}
 
 	unsigned InputController::GetCodeFromKey(unsigned key) const

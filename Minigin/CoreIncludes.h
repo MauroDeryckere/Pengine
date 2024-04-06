@@ -6,3 +6,5 @@
 
 #include "UtilStructs.h"
 #include "DebugOutput.h"
+
+#include "EntityId.h"

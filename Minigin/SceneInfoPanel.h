@@ -1,7 +1,7 @@
 #ifndef SCENEINFOPANEL
 #define SCENEINFOPANEL
 
-#include "EntityId.h"
+#include "CoreIncludes.h"
 
 namespace Pengin
 {

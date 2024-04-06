@@ -56,5 +56,6 @@ namespace Pengin
 	void Scene::RenderImGUI()
 	{
 		m_SceneInfoPanel->Render(m_Ecs);
+		m_InputInfoPanel->Render();
 	}
 }

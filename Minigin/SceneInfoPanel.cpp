@@ -10,7 +10,6 @@
 #include "SpriteComponent.h"
 #include "AnimationComponent.h"
 
-#include "UtilStructs.h"
 #include <string>
 #include <format>
 

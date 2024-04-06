@@ -60,7 +60,6 @@ namespace Pengin
         std::vector<std::vector<InputCombo>> m_NewInputCombos;
         std::vector<std::unique_ptr<InputBuffer>> m_InputBuffers;
 
-
         static constexpr unsigned MAX_ALLOWED_CONTROLLERS{ 4 };
 
         enum class KeyboardDevices
@@ -73,6 +72,8 @@ namespace Pengin
         {
             Controller = 0
         };
+
+        friend class InputInfoPanel;
     };
 }
 

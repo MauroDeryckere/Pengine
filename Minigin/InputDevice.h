@@ -23,6 +23,8 @@ namespace Pengin
 
 		virtual void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) = 0;
 
+		virtual void* GetMappedActions() = 0;
+
 	protected:
 		virtual [[nodiscard]] unsigned GetCodeFromKey(unsigned key) const = 0;
 

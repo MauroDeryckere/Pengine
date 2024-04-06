@@ -456,6 +456,9 @@
     <ClInclude Include="CoreIncludes.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
+    <ClInclude Include="InputInfoPanel.h">
+      <Filter>Header Files\Rendering\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -586,6 +589,9 @@
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Header Files\Core\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="InputInfoPanel.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

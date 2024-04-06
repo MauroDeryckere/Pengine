@@ -276,6 +276,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="DebugOutput.h" />
     <ClInclude Include="FPSSystem.h" />
     <ClInclude Include="ImGUIWindow.h" />
+    <ClInclude Include="InputInfoPanel.h" />
     <ClInclude Include="MovementSystem.h" />
     <ClInclude Include="RectColliderComponent.h" />
     <ClInclude Include="SceneInfoPanel.h" />
@@ -351,6 +352,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClCompile Include="InputBuffer.cpp" />
     <ClCompile Include="InputCommand.cpp" />
     <ClCompile Include="InputController.cpp" />
+    <ClCompile Include="InputInfoPanel.cpp" />
     <ClCompile Include="InputKeyboard.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="InputMouse.cpp" />
