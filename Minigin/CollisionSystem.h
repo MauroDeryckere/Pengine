@@ -26,7 +26,7 @@ namespace Pengin
 	private:
 		ECS& m_ECS;
 
-		[[nodiscard]] inline constexpr bool IsCollidingABBA(UtilStructs::Rectu16 rect1, UtilStructs::Rectu16 rect2) const noexcept;
+		[[nodiscard]] inline constexpr bool IsCollidingABBA(UtilStructs::Rect16 rect1, UtilStructs::Rect16 rect2) const noexcept;
 	};
 }
 
