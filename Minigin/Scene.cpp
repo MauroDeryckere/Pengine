@@ -36,7 +36,7 @@ namespace Pengin
 	{
 	}
 
-	void Scene::Update() //TODO: when empty, wrapper
+	void Scene::Update()
 	{
 		m_TextSystem->Update();
 		m_FPSSystem->Update();

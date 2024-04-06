@@ -100,6 +100,12 @@
     <Filter Include="Header Files\Rendering\Renderer">
       <UniqueIdentifier>{f6a4fd4b-4acb-48c3-ac95-b799e336a751}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Core\Debug">
+      <UniqueIdentifier>{d361e516-2906-45ec-b803-41d33ae138e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\Game">
+      <UniqueIdentifier>{34e145c7-9b3b-4962-acf5-01cf8ee4e3f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
@@ -119,12 +125,6 @@
     </ClInclude>
     <ClInclude Include="UniqueTypeTracker.h">
       <Filter>Header Files\ECS\ECS Components\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Minigin.h">
-      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="Texture2D.h">
       <Filter>Header Files\Resource</Filter>
@@ -176,9 +176,6 @@
     </ClInclude>
     <ClInclude Include="InputMouse.h">
       <Filter>Header Files\Input\InputDevices\Devices</Filter>
-    </ClInclude>
-    <ClInclude Include="Time.h">
-      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="InputBuffer.h">
       <Filter>Header Files\Input</Filter>
@@ -378,9 +375,6 @@
     <ClInclude Include="AchievementSystem.h">
       <Filter>Header Files\Achievements</Filter>
     </ClInclude>
-    <ClInclude Include="Defines.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="CompObserver.h">
       <Filter>Header Files\Events\Component</Filter>
     </ClInclude>
@@ -392,9 +386,6 @@
     </ClInclude>
     <ClInclude Include="AnimationComponent.h">
       <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="UtilStructs.h">
-      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="EntityId.h">
       <Filter>Header Files\ECS\ECS Components\Entities</Filter>
@@ -443,6 +434,24 @@
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Header Files\Rendering\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Minigin.h">
+      <Filter>Header Files\Core\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Header Files\Core\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Header Files\Core\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Header Files\Core\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilStructs.h">
+      <Filter>Header Files\Core\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugOutput.h">
+      <Filter>Header Files\Core\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -533,9 +542,6 @@
     <ClCompile Include="CompObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Header Files\Core</Filter>
-    </ClCompile>
     <ClCompile Include="RenderSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -574,6 +580,9 @@
     </ClCompile>
     <ClCompile Include="SceneInfoPanel.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Header Files\Core\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

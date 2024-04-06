@@ -129,13 +129,13 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        [[nodiscard]] ComponentWrapper<ComponentType> GetComponents()
+        [[nodiscard]] ComponentWrapper<ComponentType> GetComponents() noexcept
         {
             return m_ComponentManager.GetComponentWrapper<ComponentType>();
         }
 
         template<typename ComponentType>
-        [[nodiscard]] const ConstComponentWrapper<ComponentType> GetComponents() const
+        [[nodiscard]] const ConstComponentWrapper<ComponentType> GetComponents() const noexcept
         {
             return m_ComponentManager.GetConstComponentWrapper<ComponentType>();
         } 

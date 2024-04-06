@@ -12,6 +12,8 @@
 #include "ComponentWrapper.h"
 #include "ConstComponentWrapper.h"
 
+#include "DebugOutput.h"
+
 #include <memory>
 #include <cassert>
 #include <unordered_map>
@@ -72,7 +74,7 @@ namespace Pengin
 
             if (it == m_TypeBitMap.end())
             {
-                std::cerr << "Checking for a component that is not ever added to the typeTracker \n";
+                DEBUG_OUT("Checking for a component that is not ever added to the typeTracker");
                 return false;
             }
 
@@ -94,7 +96,7 @@ namespace Pengin
 
             if (it == m_TypeBitMap.end())
             {
-                std::cerr << "Checking for a component that is not ever added to the typeTracker \n";
+                DEBUG_OUT("Checking for a component that is not ever added to the typeTracker");
                 return false;
             }
 
@@ -168,12 +170,13 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        [[nodiscard]] ComponentWrapper<ComponentType> GetComponentWrapper()
+        [[nodiscard]] ComponentWrapper<ComponentType> GetComponentWrapper() noexcept
         {
             const auto it{ m_TypeBitMap.find(typeid(ComponentType)) };
 
             if (it == m_TypeBitMap.end())
             {
+                DEBUG_OUT("Checking for a component that is not ever added to the typeTracker");
                 return ComponentWrapper<ComponentType> { nullptr };
             }
 
@@ -192,12 +195,13 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        [[nodiscard]] const ConstComponentWrapper<ComponentType> GetConstComponentWrapper() const
+        [[nodiscard]] const ConstComponentWrapper<ComponentType> GetConstComponentWrapper() const noexcept
         {
             const auto it{ m_TypeBitMap.find(typeid(ComponentType)) };
 
             if (it == m_TypeBitMap.end())
             {
+                DEBUG_OUT("Checking for a component that is not ever added to the typeTracker");
                 return ConstComponentWrapper<ComponentType> { nullptr };
             }
 
