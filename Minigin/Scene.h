@@ -73,10 +73,8 @@ namespace Pengin
 
 		std::unique_ptr<AchievementSystem> m_AchSys{ std::make_unique<AchievementSystem>() };
 
-		std::unique_ptr<SceneInfoPanel> m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>() };
+		std::unique_ptr<SceneInfoPanel> m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>(this) };
 		std::unique_ptr<InputInfoPanel> m_InputInfoPanel{ std::make_unique<InputInfoPanel>() };
-
-
 	};
 }
 

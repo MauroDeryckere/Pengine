@@ -6,12 +6,15 @@
 namespace Pengin
 {
 	class ECS;
+	class Scene;
 	struct TransformComponent;
 	
 	class SceneInfoPanel final
 	{
 	public:
-		SceneInfoPanel() = default;
+		SceneInfoPanel(Scene* pScene) :
+			m_pScene{ pScene }
+		{}
 
 		~SceneInfoPanel() = default;
 
@@ -27,6 +30,10 @@ namespace Pengin
 		void RenderRectCollInfo(ECS& ecs, const EntityId id, const TransformComponent& transform);
 		void RenderSpriteInfo(ECS& ecs, const EntityId id);
 		void RenderAnimationInfo(ECS& ecs, const EntityId id);
+
+		void RenderEditorWindow(ECS& ecs);
+
+		Scene* m_pScene;
 	};
 }
 

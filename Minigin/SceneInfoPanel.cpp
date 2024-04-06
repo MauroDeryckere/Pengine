@@ -5,6 +5,8 @@
 
 #include "ECS.h"
 
+#include "Scene.h"
+
 #include "TransformComponent.h"
 #include "RectColliderComponent.h"
 #include "SpriteComponent.h"
@@ -17,7 +19,13 @@ namespace Pengin
 {
 	void SceneInfoPanel::Render(ECS& ecs)
 	{
+		static bool EDITOR_MODE = false;
+
+		std::vector<EntityId> esToDestroy;
+
 		ImGui::Begin("Scene information");
+		ImGui::Checkbox("Editor Mode", &EDITOR_MODE);
+
 		auto comps = ecs.GetComponents<TransformComponent>();
 
 		for (auto it = comps.begin(); it != comps.end(); ++it)
@@ -25,7 +33,32 @@ namespace Pengin
 			auto id = comps.GetIdFromIterator(it);
 			const auto& transform = *it;
 
-			if (ImGui::TreeNode(("Entity ID: " + EntityIdToString(id)).c_str()))
+			const bool hasSpriteComp{ ecs.HasComponent<SpriteComponent>(id) };
+			const bool treeNodeOpened = ImGui::TreeNode(("Entity ID: " + EntityIdToString(id)).c_str());
+
+			if (hasSpriteComp) //Display a checkbox at treenode level to allow toggling visibility
+			{
+				ImVec2 checkboxSize = ImGui::CalcTextSize("");
+				ImVec2 availableSize = ImGui::GetContentRegionAvail();
+				float xPos = availableSize.x - checkboxSize.x - 5.0f; 
+
+				ImGui::SameLine(xPos);
+				ImGui::Checkbox(("##" + std::to_string(id)).c_str(), &ecs.GetComponent<SpriteComponent>(id).isVisible);
+			}
+
+			if (EDITOR_MODE)
+			{
+				ImGui::Indent();
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.1f, 0.1f, 1.0f)); // Red color for the button
+				if (ImGui::Button(("Destroy##destroy" + std::to_string(id)).c_str()))
+				{
+					esToDestroy.emplace_back(id);
+				}
+				ImGui::PopStyleColor();
+				ImGui::Unindent();
+			}
+
+			if (treeNodeOpened)
 			{
 				RenderTransformInfo(transform);
 
@@ -34,7 +67,7 @@ namespace Pengin
 					RenderRectCollInfo(ecs, id, transform);
 				}
 
-				if (ecs.HasComponent<SpriteComponent>(id))
+				if (hasSpriteComp)
 				{
 					RenderSpriteInfo(ecs, id);
 				}
@@ -59,6 +92,16 @@ namespace Pengin
 		}
 
 		ImGui::End();
+
+		for (const auto entity : esToDestroy)
+		{
+			m_pScene->DestroyEntity(entity);
+		}
+
+		if (EDITOR_MODE)
+		{
+			RenderEditorWindow(ecs);
+		}
 	}
 
 	void SceneInfoPanel::RenderTransformInfo( const TransformComponent& transform)
@@ -338,5 +381,14 @@ namespace Pengin
 			}
 			ImGui::TreePop();
 		}
+	}
+
+	void SceneInfoPanel::RenderEditorWindow(ECS& ecs)
+	{
+		ImGui::Begin("Editor window");
+
+		ImGui::Text("Editor Window");
+
+		ImGui::End();
 	}
 }

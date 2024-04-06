@@ -38,13 +38,17 @@ namespace Pengin
 
 	void Scene::Update()
 	{
+		//Order doesnt matter
 		m_TextSystem->Update();
 		m_FPSSystem->Update();
+		m_AnimationSystem->Update(); 
+		//-------------------
+		
+		//Detect collision (and respond) - might adjust velocity so update the positions | no complex phjysics so not required to be in fixed update rn
+		m_CollSystem->Update(); 
+		//Update the character positions based on velocity - might set dirty
 		m_MovementSystem->Update();
-		m_CollSystem->Update();
-
-		m_AnimationSystem->Update();
-
+		//Update the dirty world positions that are left
 		m_WorldPosSystem->Update();
 	}
 
