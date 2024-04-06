@@ -3,16 +3,17 @@
 #include <memory>
 #include "Singleton.h"
 
+#include "Texture2D.h"
+
 namespace dae
 {
-	class Texture2D;
 	class Font;
 	class ResourceManager final : public Singleton<ResourceManager>
 	{
 	public:
 		void Init(const std::string& data);
 
-		[[nodiscard]] std::shared_ptr<Texture2D> LoadTexture(std::string_view file) const;
+		[[nodiscard]] std::shared_ptr<Texture2D> LoadTexture(const std::string& path) const;
 		[[nodiscard]] std::shared_ptr<Font> LoadFont(std::string_view, unsigned size) const;
 
 	private:

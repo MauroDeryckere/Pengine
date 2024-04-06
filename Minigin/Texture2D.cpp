@@ -1,6 +1,13 @@
 #include <SDL.h>
 #include "Texture2D.h"
 
+#include <iostream>
+
+dae::Texture2D::Texture2D(SDL_Texture* texture, const std::string& path):
+	m_texture { texture },
+	m_Path { path }
+{ }
+
 dae::Texture2D::~Texture2D()
 {
 	SDL_DestroyTexture(m_texture);
@@ -18,7 +25,4 @@ SDL_Texture* dae::Texture2D::GetSDLTexture() const
 	return m_texture;
 }
 
-dae::Texture2D::Texture2D(SDL_Texture* texture)
-{
-	m_texture = texture;
-}
+

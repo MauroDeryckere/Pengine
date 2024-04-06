@@ -7,11 +7,13 @@
 #include "UtilStructs.h"
 #include "glm/vec3.hpp"
 
+#include "Texture2D.h" 
+
 namespace dae
 {
 	using namespace Pengin::UtilStructs;
 
-	class Texture2D;
+	//class Texture2D;
 	/**
 	 * Simple RAII wrapper for the SDL renderer
 	 */

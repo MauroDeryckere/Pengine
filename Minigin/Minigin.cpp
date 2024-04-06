@@ -8,8 +8,6 @@
 
 #include <thread>
 
-#include "Defines.h"
-
 #include "Minigin.h"
 #include "InputManager.h"
 #include "SceneManager.h"

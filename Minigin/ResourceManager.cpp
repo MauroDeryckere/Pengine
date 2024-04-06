@@ -3,8 +3,10 @@
 #include <SDL_ttf.h>
 #include "ResourceManager.h"
 #include "Renderer.h"
-#include "Texture2D.h"
 #include "Font.h"
+
+
+#include "Texture2D.h"
 
 void dae::ResourceManager::Init(const std::string& dataPath)
 {
@@ -16,9 +18,9 @@ void dae::ResourceManager::Init(const std::string& dataPath)
 	}
 }
 
-std::shared_ptr<dae::Texture2D> dae::ResourceManager::LoadTexture(std::string_view file) const
+std::shared_ptr<dae::Texture2D> dae::ResourceManager::LoadTexture(const std::string& path) const
 {
-	const auto fullPath = m_dataPath + file.data();
+	const auto fullPath = m_dataPath + path;
 	auto texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
 
 	if (texture == nullptr)
@@ -26,10 +28,10 @@ std::shared_ptr<dae::Texture2D> dae::ResourceManager::LoadTexture(std::string_vi
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
 	}
 
-	return std::make_shared<Texture2D>(texture);
+	return std::make_shared<dae::Texture2D>(texture, path);
 }
 
 std::shared_ptr<dae::Font> dae::ResourceManager::LoadFont(std::string_view file, unsigned size) const
 {
-	return std::make_shared<Font>(m_dataPath + file.data(), size);
+	return std::make_shared<dae::Font>(m_dataPath + file.data(), size);
 }

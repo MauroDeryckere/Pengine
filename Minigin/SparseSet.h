@@ -1,6 +1,8 @@
 #ifndef SPARSESET
 #define SPARSESET
 
+#include "CoreIncludes.h"
+
 #include <utility>
 #include <type_traits>
 
@@ -81,7 +83,16 @@ namespace Pengin
                 return m_DenseArray[index];
             }
 
-            throw std::out_of_range("Key not found in SparseSet");
+            if constexpr (std::is_default_constructible_v<ValueType>)
+            {
+                DEBUG_OUT("Added the default constructable key (warning: may not be what you intended)");
+                return *Emplace(key).first;
+            }
+            else
+            {
+                DEBUG_OUT("ERROR: can't find or defaul construct " << typeid(ValueType).name() << " for key " << key << " using operator []");
+                throw std::out_of_range("Key not found in SparseSet");
+            }
         }
 
         const ValueType& operator[](const KeyType& key) const

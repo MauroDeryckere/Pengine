@@ -44,7 +44,7 @@ namespace Pengin
 				}
 
 				SDL_FreeSurface(surf);
-				auto pTexture = std::make_shared<dae::Texture2D>(texture);
+				auto pTexture = std::make_shared<dae::Texture2D>(texture, "NO PATH"); //TODO
 
 				auto& textureComp = m_ECS.GetComponent<SpriteComponent>(textComps.GetIdFromIterator(it));
 				textureComp.m_pTexture = pTexture;
@@ -78,7 +78,7 @@ namespace Pengin
 		}
 
 		SDL_FreeSurface(surf);
-		auto pTexture = std::make_shared<dae::Texture2D>(texture);
+		auto pTexture = std::make_shared<dae::Texture2D>(texture, "NO PATH"); //TODO
 
 		auto& textureComp = m_ECS.GetComponent<SpriteComponent>(id);
 		textureComp.m_pTexture = pTexture;

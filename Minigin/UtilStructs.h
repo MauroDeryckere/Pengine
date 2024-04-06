@@ -47,16 +47,16 @@ namespace Pengin
 				return (*this <=> other) == std::strong_ordering::equal;
 			}
 
-			operator bool() const noexcept { return *this != Rect<T>{}; }
+			constexpr operator bool() const noexcept { return *this != Rect<T>{}; }
 		};
 
 		using Rectf = Rect<float>;
 		using Recti = Rect<int>;
 		using Rectu = Rect<unsigned>;
+		using Rect8 = Rect<int8_t>;
+		using Rectu8 = Rect<uint8_t>;
 		using Rect16 = Rect<int16_t>; 
 		using Rectu16 = Rect<uint16_t>; 
-		using Rect8 = Rect<int8_t>; 
-		using Rectu8 = Rect<uint8_t>; 
 	}
 }
 

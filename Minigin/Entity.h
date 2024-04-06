@@ -1,7 +1,8 @@
 #ifndef ENTITY
 #define ENTITY
 
-#include "EntityId.h"
+#include "CoreIncludes.h"
+
 #include "Scene.h"
 #include <memory>
 #include <cassert>
@@ -13,7 +14,7 @@ namespace Pengin
 	class Entity final
 	{
 	public:
-		Entity(const EntityId id, std::weak_ptr<Scene> pScene) :
+		Entity(const EntityId id, std::weak_ptr<Scene> pScene) noexcept :
 			m_EntityId{ id },
 			m_pScene{ pScene }
 		{}
@@ -25,10 +26,8 @@ namespace Pengin
 		{
 			if (auto pScene{ m_pScene.lock() }; pScene)
 			{
-
 				return pScene->GetECS().AddComponent<ComponentType>(m_EntityId, std::forward<Args>(args)...);
 			}
-
 			throw std::runtime_error("Attempted to add component to an entity with invalid scene pointer");
 		}
 
@@ -39,7 +38,6 @@ namespace Pengin
 			{
 				pScene->GetECS().RemoveComponent<ComponentType>(m_EntityId);
 			}
-
 			throw std::runtime_error("Attempted to remove component of an entity with invalid scene pointer");
 		}
 
@@ -50,7 +48,6 @@ namespace Pengin
 			{
 				return pScene->GetECS().GetComponent<ComponentType>(m_EntityId);
 			}
-
 			throw std::runtime_error("Attempted to get component of an entity with invalid scene pointer");
 		}
 
@@ -61,7 +58,6 @@ namespace Pengin
 			{
 				return pScene->GetECS().GetComponent<ComponentType>(m_EntityId);
 			}
-
 			throw std::runtime_error("Attempted to get component of an entity with invalid scene pointer");
 		}
 
@@ -72,84 +68,16 @@ namespace Pengin
 			{
 				return pScene->GetECS().HasComponent<ComponentType>(m_EntityId);
 			}
-
 			throw std::runtime_error("Attempted to check existance of a component for an entity with invalid scene pointer");
 		}
 
-		void SetParent(Entity parentEntity, bool keepWorldPos = false)
-		{
-			assert(!parentEntity.m_pScene.expired() && !m_pScene.expired());
+		void SetParent(Entity parentEntity, bool keepWorldPos = false);
+		void SetLocalPosition(const glm::vec3& position);
 
-			auto& thisTransform = GetComponent<TransformComponent>();
+		const EntityId GetEntityId() const noexcept { return m_EntityId; }
+		operator bool() const noexcept { return (m_EntityId != NULL_ENTITY_ID && !m_pScene.expired()); }
 
-			auto pScene{ m_pScene.lock() };
-
-			if ((IsParentChildOfThis(thisTransform, parentEntity.m_EntityId) || 
-				parentEntity.m_EntityId == m_EntityId || 
-				thisTransform.relation.parent == parentEntity.m_EntityId) && parentEntity.m_EntityId != NULL_ENTITY_ID)
-			{
-				std::cerr << "can not set entity " << parentEntity.GetEntityId() << " as parent for entity "<< m_EntityId << "\n";
-				return;
-			}
-
-			if (parentEntity.m_EntityId == NULL_ENTITY_ID)
-			{
-				if (keepWorldPos) //Keep worldPos upon deletion of a parent means we keep the children at their current world pos (and their relationships)
-				{
-					thisTransform.localPos = GetWorldPosition(thisTransform);
-					SetPosDirty(thisTransform);
-
-					if (thisTransform.relation.children > 0)
-					{
-						auto currChildId = thisTransform.relation.firstChild;
-
-						for (size_t childIdx = 0; childIdx < thisTransform.relation.children; ++childIdx)
-						{
-							auto& currChildTransform = pScene->m_Ecs.GetComponent<TransformComponent>(currChildId);
-
-							currChildTransform.localPos = thisTransform.localPos + currChildTransform.localPos; //set all childrens positions to the correct world position
-
-							currChildTransform.relation.parent = NULL_ENTITY_ID;
-							currChildId = currChildTransform.relation.nextSibling;
-						}
-					}
-				}
-				else //otherwise all children and relationships get destroyed
-				{
-					DestroyChildren(thisTransform);
-				}
-			}
-			else
-			{
-				if (keepWorldPos)
-				{
-					auto& newParentTransform = parentEntity.GetComponent<TransformComponent>();
-					thisTransform.localPos = GetWorldPosition(thisTransform) - GetWorldPosition(newParentTransform);
-				}
-
-				SetPosDirty(thisTransform);
-			}
-
-			RemoveSelfAsChild(thisTransform);
-			thisTransform.relation.parent = parentEntity.m_EntityId;
-
-			if (parentEntity.m_EntityId != NULL_ENTITY_ID)
-			{
-				auto& newParentTransform = parentEntity.GetComponent<TransformComponent>();
-				AddSelfAsChild(thisTransform, newParentTransform);
-			}
-		}
-
-		void SetLocalPosition(const glm::vec3& position)
-		{
-			auto& thisTransform = GetComponent<TransformComponent>();
-			thisTransform.localPos = position;
-
-			SetPosDirty(thisTransform);
-		}
-
-		const EntityId GetEntityId() const { return m_EntityId; }
-		operator bool() const { return (m_EntityId != NULL_ENTITY_ID && !m_pScene.expired()); }
+		void OutputEntityData() const noexcept;
 
 		Entity(const Entity& other) = default;
 		Entity(Entity&& other) = default;
@@ -160,178 +88,16 @@ namespace Pengin
 		EntityId m_EntityId{ NULL_ENTITY_ID };
 		std::weak_ptr<Scene> m_pScene;
 
-		[[nodiscard]] bool IsParentChildOfThis(const TransformComponent& thisTransform, const EntityId parentId) const
-		{
-			auto pScene{ m_pScene.lock() };
-			auto& ecs { pScene->GetECS() };
+		[[nodiscard]] bool IsParentChildOfThis(const TransformComponent& thisTransform, const EntityId parentId) const;
 
-			if (thisTransform.relation.children == 0)
-			{
-				return false;
-			}
+		void SetPosDirty(TransformComponent& transform);
+		void DestroyChildren(TransformComponent& transform);
 
-			auto currChildId = thisTransform.relation.firstChild;
-			assert(currChildId != NULL_ENTITY_ID);
+		const glm::vec3& GetWorldPosition(TransformComponent& transform);
+		void UpdateWorldPosition(TransformComponent& transform);
 
-			for (size_t childIdx {0}; childIdx  < thisTransform.relation.children; ++childIdx)
-			{
-				currChildId = ecs.GetComponent<TransformComponent>(currChildId).relation.nextSibling;
-
-				if (currChildId == parentId)
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		void SetPosDirty(TransformComponent& transform)
-		{
-			transform.isPosDirty = true;
-
-			if (transform.relation.children != 0)
-			{
-				auto currChildId = transform.relation.firstChild;
-
-				for (size_t childIdx{ 0 }; childIdx < transform.relation.children; ++childIdx)
-				{
-					auto& currChildTransform = m_pScene.lock()->m_Ecs.GetComponent<TransformComponent>(currChildId);
-
-					SetPosDirty(currChildTransform);
-					currChildId = currChildTransform.relation.nextSibling;
-				}
-			}
-		}
-
-		void DestroyChildren(TransformComponent& transform)
-		{
-			if (transform.relation.children != 0)
-			{
-				auto pScene = m_pScene.lock();
-				assert(pScene);
-
-				auto currChildId = transform.relation.firstChild;
-
-				for (size_t childIdx{ 0 }; childIdx < transform.relation.children; ++childIdx)
-				{
-					auto& childTransform = pScene->m_Ecs.GetComponent<TransformComponent>(currChildId);
-					const auto nextSiblingId = childTransform.relation.nextSibling;
-
-					DestroyChildren(childTransform);
-
-					pScene->m_Ecs.DestroyEntity(currChildId);
-					currChildId = nextSiblingId;
-				}
-			}
-		}
-
-		const glm::vec3& GetWorldPosition(TransformComponent& transform)
-		{
-			if (transform.isPosDirty)
-			{
-				UpdateWorldPosition(transform);
-			}
-
-			return transform.worldPos;
-		}
-
-		void UpdateWorldPosition(TransformComponent& transform)
-		{
-			auto scene = m_pScene.lock();
-			assert(scene);
-
-			if (transform.isPosDirty)
-			{
-				if (transform.relation.parent == NULL_ENTITY_ID)
-				{
-					transform.worldPos = transform.localPos;
-				}
-				else
-				{
-					transform.worldPos = GetWorldPosition(scene->m_Ecs.GetComponent<TransformComponent>(transform.relation.parent)) + transform.localPos;
-				}
-			}
-			transform.isPosDirty = false;
-		}
-
-		void RemoveSelfAsChild(TransformComponent& self)
-		{
-			auto pScene = m_pScene.lock();
-			assert(pScene);
-
-			//Remove yourself as a child
-			if (self.relation.parent != NULL_ENTITY_ID)
-			{
-				auto& oldParentTransform{ pScene->m_Ecs.GetComponent<TransformComponent>(self.relation.parent) };
-
-				//Only child
-				if (oldParentTransform.relation.children == 1)
-				{
-					--oldParentTransform.relation.children;
-
-					oldParentTransform.relation.firstChild = NULL_ENTITY_ID;
-				}
-
-				//First child and there are other children
-				else if (oldParentTransform.relation.firstChild == m_EntityId)
-				{
-					--oldParentTransform.relation.children;
-
-					auto prevSibId = self.relation.prevSibling;
-					auto nexSibId = self.relation.nextSibling;
-
-					auto& nextSibTransform{ pScene->m_Ecs.GetComponent<TransformComponent>(nexSibId) };
-					nextSibTransform.relation.prevSibling = prevSibId;
-
-					oldParentTransform.relation.firstChild = nexSibId;
-				}
-				//Other children and not first child
-				else
-				{
-					--oldParentTransform.relation.children;
-
-					auto prevSibId = self.relation.prevSibling;
-					auto nexSibId = self.relation.nextSibling;
-
-					if (nexSibId != NULL_ENTITY_ID)
-					{
-						auto& nextSibTransform{ pScene->m_Ecs.GetComponent<TransformComponent>(nexSibId) };
-						nextSibTransform.relation.prevSibling = prevSibId;
-					}
-					if (prevSibId != NULL_ENTITY_ID)
-					{
-						auto& prevSibTransform{ pScene->m_Ecs.GetComponent<TransformComponent>(prevSibId) };
-						prevSibTransform.relation.nextSibling = nexSibId;
-					}
-				}
-			}
-		}
-
-		void AddSelfAsChild(TransformComponent& self, TransformComponent& parent)
-		{
-			auto pScene = m_pScene.lock();
-			assert(pScene);
-
-			//Add yourself as a child
-			if (self.relation.parent != NULL_ENTITY_ID)
-			{
-				++parent.relation.children;
-
-				auto firstChildId{ parent.relation.firstChild };
-
-				parent.relation.firstChild = m_EntityId;
-
-				if (parent.relation.children != 1)
-				{
-					auto& firstChildTransfom{ pScene->m_Ecs.GetComponent<TransformComponent>(firstChildId) };
-					firstChildTransfom.relation.prevSibling = m_EntityId;
-				}
-
-				self.relation.prevSibling = NULL_ENTITY_ID;
-				self.relation.nextSibling = firstChildId;
-			}
-		}
+		void RemoveSelfAsChild(TransformComponent& self);
+		void AddSelfAsChild(TransformComponent& self, TransformComponent& parent);
 	};
 }
 
