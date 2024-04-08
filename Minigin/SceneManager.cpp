@@ -27,9 +27,9 @@ namespace Pengin
 		m_ActiveScene->RenderImGUI();
 	}
 
-	std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name)
+	std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name, const std::string& sceneLoadPath, const std::string& sceneSavePath, bool saveOnDestroy)
 	{
-		const auto& scene = std::shared_ptr<Scene>(new Scene{ name });
+		const auto& scene = std::shared_ptr<Scene>( new Scene{ name, std::filesystem::path{sceneLoadPath}, std::filesystem::path{sceneSavePath}, saveOnDestroy } );
 		m_Scenes.push_back(scene);
 
 		m_ActiveScene = scene;

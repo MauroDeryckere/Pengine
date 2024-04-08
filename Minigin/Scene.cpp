@@ -1,7 +1,6 @@
 #include "Scene.h"
 
 #include "Serializer.h"
-
 #include "Entity.h"
 #include "TransformComponent.h"
 
@@ -9,9 +8,33 @@ namespace Pengin
 {
 	unsigned int Scene::m_IdCounter = 0;
 
-	Scene::Scene(const std::string& name) : 
-		m_Name{ name }
-	{ }
+	Scene::Scene(const std::string& name, const std::filesystem::path& sceneLoadPath, const std::filesystem::path& sceneSavePath, bool saveOnDestroy) :
+		m_Name{ name },
+		m_SaveOnDestroy{ saveOnDestroy },
+		m_SceneSavePath{ sceneSavePath }
+	{
+		if (!sceneLoadPath.empty())
+		{
+			if (!DeserializeScene(sceneLoadPath))
+			{
+				throw std::runtime_error("Failed to deserialize scene at: " + sceneLoadPath.string());
+			}
+		}
+	}
+
+	Scene::~Scene()
+	{
+		if (m_SaveOnDestroy)
+		{
+			DEBUG_OUT("Saving scene " << m_Name);
+			SerializeScene();
+		}
+	}
+
+	bool Scene::DeserializeScene(const std::filesystem::path& scenePath) noexcept
+	{
+		return Serializer::GetInstance().DeserializeScene(m_Name, m_Ecs, scenePath);
+	}
 
 	Entity Scene::CreateEntity(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
 	{
@@ -63,6 +86,11 @@ namespace Pengin
 	{
 		m_SceneInfoPanel->Render(m_Ecs);
 		m_InputInfoPanel->Render();
+	}
+
+	bool Scene::SerializeScene() const noexcept
+	{
+		return Serializer::GetInstance().SerializeScene(m_Ecs, m_Name, m_SceneSavePath);
 	}
 
 	void Scene::SerializeEntity(const EntityId id) noexcept

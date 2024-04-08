@@ -4,6 +4,7 @@
 #include "CoreIncludes.h"
 
 #include <filesystem>
+#include <json.hpp>
 
 namespace Pengin
 {
@@ -12,6 +13,9 @@ namespace Pengin
 	class Serializer final : public dae::Singleton<Serializer>
 	{
 	public:
+		[[nodiscard]] bool SerializeScene(const ECS& ecs, const std::string& sceneName, const std::filesystem::path& scenePath) const noexcept;
+		[[nodiscard]] bool DeserializeScene(std::string& sceneName, ECS& ecs, const std::filesystem::path& scenePath) noexcept;
+
 		bool SerializeEntity(ECS& ecs, const EntityId id, const std::filesystem::path& path) noexcept;
 		bool DeserializeEntity(ECS& ecs, const std::filesystem::path& path) noexcept;
 
@@ -25,8 +29,15 @@ namespace Pengin
 		Serializer() = default;
 		~Serializer() = default;
 
+		[[nodiscard]] bool SerializeScene_Json(const ECS& ecs, const std::string& sceneName, const std::filesystem::path& scenePath) const noexcept;
+		[[nodiscard]] bool DeserializeScene_Json(std::string& sceneName, ECS& ecs, const std::filesystem::path& scenePath) noexcept;
+
 		[[nodiscard]] bool SerializeEntity_Json(ECS& ecs, const EntityId id, const std::filesystem::path& path) noexcept;
 		[[nodiscard]] bool DeserializeEntity_Json(ECS& ecs, const std::filesystem::path& path) noexcept;
+
+		using json = nlohmann::ordered_json;
+		[[nodiscard]] bool SerializeSceneEntity_Json(const ECS& ecs, const EntityId id, json& j) const noexcept;
+		[[nodiscard]] bool DeserializeSceneEntity_Json(ECS& ecs, const json& entityData) noexcept;
 
 		void OutputEntityData(ECS& ecs, const EntityId id) const noexcept;
 	};

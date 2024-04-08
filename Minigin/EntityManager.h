@@ -29,7 +29,7 @@ namespace Pengin
 
         [[nodiscard]] bool DestroyEntity(const EntityId id, EcsEventInter& eventInter) noexcept;
 
-        [[nodiscard]] const std::vector<EntityId> GetAllEntityIds() const noexcept;
+        [[nodiscard]] const std::vector<EntityId>& GetAllEntityIds() const noexcept;
 
         [[nodiscard]] const std::vector<std::type_index> GetAllCompTypes(const EntityId id) const;
 

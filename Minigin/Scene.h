@@ -22,6 +22,7 @@
 #include "InputInfoPanel.h"
 
 #include <memory>
+#include <filesystem>
 
 namespace Pengin
 {
@@ -30,9 +31,9 @@ namespace Pengin
 	class Scene final : public std::enable_shared_from_this<Scene>
 	{
 	public:
-		~Scene() = default;
+		~Scene();
 
-		[[nodiscard]] Entity CreateEntity(const glm::vec3& position = { 0, 0, 0 }, const glm::vec3& rotation = { 0, 0, 0 }, const glm::vec3 & scale = { 1, 1, 1 });
+		[[nodiscard]] Entity CreateEntity(const glm::vec3& position = { 0, 0, 0 }, const glm::vec3& rotation = { 0, 0, 0 }, const glm::vec3& scale = { 1, 1, 1 });
 		bool DestroyEntity(Entity entity, bool keepChildren = true);
 		bool DestroyEntity(const EntityId entityId, bool keepChildren = true);
 
@@ -44,6 +45,8 @@ namespace Pengin
 
 		void RenderImGUI();
 
+		bool SerializeScene() const noexcept;
+
 		//Temporarily for testing a public function, will be moved to a private function later, and serialize the whole scene using this function
 		void SerializeEntity(const EntityId id) noexcept;
 		void DeserializeEntity() noexcept;
@@ -53,16 +56,17 @@ namespace Pengin
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
-	private: 
-		friend std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name);
+	private:
+		friend std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name, const std::string& sceneLoadPath, const std::string& sceneSavePath, bool saveOnDestroy);
 
-		explicit Scene(const std::string& name);
-		
+		explicit Scene(const std::string& name, const std::filesystem::path& sceneLoadPath = { }, const std::filesystem::path& sceneSavePath = { }, bool saveOnDestroy = false);
 		friend class Entity;
 		ECS m_Ecs;
 
 		std::string m_Name;
-		static unsigned m_IdCounter; 
+		static unsigned m_IdCounter;
+
+		bool m_SaveOnDestroy{ false };
 
 		//SYSTEMS----------------------------
 		//Can this be moved to a more generic approach? System queue, manager, ... (base system?)
@@ -83,6 +87,10 @@ namespace Pengin
 		std::unique_ptr<SceneInfoPanel> m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>(this) };
 		std::unique_ptr<InputInfoPanel> m_InputInfoPanel{ std::make_unique<InputInfoPanel>() };
 		//-----------------------------------
+
+		const std::filesystem::path m_SceneSavePath{};
+
+		bool DeserializeScene(const std::filesystem::path& scenePath) noexcept;
 	};
 }
 

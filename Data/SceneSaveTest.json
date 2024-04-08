@@ -1,0 +1,322 @@
+{
+    "Scene name": "Demo Scene",
+    "Entities": [
+        {
+            "Entity id": 0,
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "pengoLowQualityFortesting.png"
+            }
+        },
+        {
+            "Entity id": 1,
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            }
+        },
+        {
+            "Entity id": 2,
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            }
+        },
+        {
+            "Entity id": 3,
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            }
+        },
+        {
+            "Entity id": 4,
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            }
+        },
+        {
+            "Entity id": 5,
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            }
+        },
+        {
+            "Entity id": 6,
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            }
+        },
+        {
+            "Entity id": 7,
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            }
+        },
+        {
+            "Entity id": 8,
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "is visible": true,
+                "path": "pengoLowQualityFortesting.png"
+            }
+        }
+    ]
+}

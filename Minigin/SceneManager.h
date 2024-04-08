@@ -13,7 +13,7 @@ namespace Pengin
 	class SceneManager final : public dae::Singleton<SceneManager>
 	{
 	public:
-		std::shared_ptr<Scene> CreateScene(const std::string& name);
+		std::shared_ptr<Scene> CreateScene(const std::string& name, const std::string& sceneLoadPath = {}, const std::string & sceneSavePath = {}, bool saveOnDestroy = false);
 		std::shared_ptr<Scene> GetActiveScene() { return m_ActiveScene; }
 
 		void Update();

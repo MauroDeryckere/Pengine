@@ -183,6 +183,11 @@ namespace Pengin
             return m_DenseArray;
         }
 
+        [[nodiscard]] const std::vector<KeyType>& GetAllKeys() const noexcept
+        {
+            return m_ReverseMapping;
+        }
+
         [[nodiscard]] bool Empty() const noexcept
         {
             return m_DenseArray.empty();

@@ -48,7 +48,7 @@ namespace Pengin
 
         [[nodiscard]] const std::vector<EntityId>& GetAllEntities() const noexcept
         {
-            return {}; //TODO
+            return m_EntityManager.GetAllEntityIds();
         }
 
         [[nodiscard]] const EntityId CreateEntity() noexcept
@@ -56,7 +56,7 @@ namespace Pengin
             return m_EntityManager.CreateEntity();
         }
 
-        [[nodiscard]] bool Exists(const EntityId id) noexcept
+        [[nodiscard]] bool Exists(const EntityId id) const noexcept
         {
             return m_EntityManager.HasEntity(id);
         }
@@ -111,7 +111,7 @@ namespace Pengin
         }
 
         template<typename ComponentType>
-        [[nodiscard]] bool HasComponent(const EntityId id)
+        [[nodiscard]] bool HasComponent(const EntityId id) const
         {
             return m_ComponentManager.HasComponent(typeid(ComponentType), id); 
         }

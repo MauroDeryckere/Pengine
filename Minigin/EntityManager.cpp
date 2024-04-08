@@ -33,7 +33,7 @@ namespace Pengin
 		
 		for (const auto& comp : ownedCompTypes)
 		{
-			eventInter.SetObserverDirty(id, comp); //This does result in some redundant calls upon remove if a component does not have an observer
+			eventInter.SetObserverDirty(id, comp); //This does result in some redundant calls upon remove if a component does not have an observer but plan on moving away from observers inside components anyway (well be depracated)
 
 			if (!m_ComponentManagerRef.RemoveComponent(comp, id))
 			{
@@ -46,10 +46,9 @@ namespace Pengin
 		return true;
 	}
 
-	const std::vector<EntityId> EntityManager::GetAllEntityIds() const noexcept
+	const std::vector<EntityId>& EntityManager::GetAllEntityIds() const noexcept
 	{
-		//TODO
-		return {};
+		return m_EntityCompFlags.GetAllKeys();
 	}
 
 	const std::vector<std::type_index> EntityManager::GetAllCompTypes(const EntityId id) const
