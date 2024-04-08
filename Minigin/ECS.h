@@ -7,7 +7,6 @@
 #include "EntityId.h"
 
 #include "EntityManager.h"
-
 #include "EcsEventInter.h"
 
 /*ECS Documentation
@@ -25,7 +24,6 @@
 * 
 * Other communication methods (?) Get might not be the most optimal in all scenarios, other methods could be nice (lower prio)
 *   -> messaging system
-* Serialization
 */
 
 namespace Pengin

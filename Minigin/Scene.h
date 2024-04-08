@@ -46,8 +46,8 @@ namespace Pengin
 		void RenderImGUI();
 
 		bool SerializeScene() const noexcept;
-
-		//Temporarily for testing a public function, will be moved to a private function later, and serialize the whole scene using this function
+		
+		//Single entity desirialization / serialization - TODO allow to select a file for it,...
 		void SerializeEntity(const EntityId id) noexcept;
 		void DeserializeEntity() noexcept;
 
