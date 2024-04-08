@@ -221,6 +221,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imstb_rectpack.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imstb_truetype.h" />
+    <ClInclude Include="..\3rdParty\json\json.hpp" />
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamapplist.h" />
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamapps.h" />
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamappticket.h" />
