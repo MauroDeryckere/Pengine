@@ -1,5 +1,7 @@
 #include "Scene.h"
 
+#include "Serializer.h"
+
 #include "Entity.h"
 #include "TransformComponent.h"
 
@@ -62,4 +64,15 @@ namespace Pengin
 		m_SceneInfoPanel->Render(m_Ecs);
 		m_InputInfoPanel->Render();
 	}
+
+	void Scene::SerializeEntity(const EntityId id) noexcept
+	{
+		Serializer::GetInstance().SerializeEntity(m_Ecs, id, "../Data/testEntitySer.txt");
+	}
+
+	void Scene::DeserializeEntity() noexcept
+	{
+		Serializer::GetInstance().DeserializeEntity(m_Ecs, "../Data/testEntitySer.txt");
+	}
+
 }

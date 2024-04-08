@@ -1,5 +1,5 @@
-#ifndef DEBUGOUTPUT
-#define DEBUGOUTPUT
+#ifndef DEBUGOUTPUT_H
+#define DEBUGOUTPUT_H
 
 #include "Defines.h"
 

@@ -77,8 +77,6 @@ namespace Pengin
 		const EntityId GetEntityId() const noexcept { return m_EntityId; }
 		operator bool() const noexcept { return (m_EntityId != NULL_ENTITY_ID && !m_pScene.expired()); }
 
-		void OutputEntityData() const noexcept;
-
 		Entity(const Entity& other) = default;
 		Entity(Entity&& other) = default;
 		Entity& operator=(const Entity& other) = default;

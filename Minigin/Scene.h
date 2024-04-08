@@ -44,6 +44,10 @@ namespace Pengin
 
 		void RenderImGUI();
 
+		//Temporarily for testing a public function, will be moved to a private function later, and serialize the whole scene using this function
+		void SerializeEntity(const EntityId id) noexcept;
+		void DeserializeEntity() noexcept;
+
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
@@ -60,6 +64,7 @@ namespace Pengin
 		std::string m_Name;
 		static unsigned m_IdCounter; 
 
+		//SYSTEMS----------------------------
 		//Can this be moved to a more generic approach? System queue, manager, ... (base system?)
 		std::unique_ptr<RenderSystem> m_RenderSystem{ std::make_unique<RenderSystem>(m_Ecs) };
 		std::unique_ptr<TextSystem> m_TextSystem{ std::make_unique<TextSystem>(m_Ecs) };
@@ -72,9 +77,12 @@ namespace Pengin
 		std::unique_ptr<UIDisplaySystem> m_UIDisplaySystem{ std::make_unique<UIDisplaySystem>(m_Ecs) };
 
 		std::unique_ptr<AchievementSystem> m_AchSys{ std::make_unique<AchievementSystem>() };
+		//-----------------------------------
 
+		//GUI--------------------------------
 		std::unique_ptr<SceneInfoPanel> m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>(this) };
 		std::unique_ptr<InputInfoPanel> m_InputInfoPanel{ std::make_unique<InputInfoPanel>() };
+		//-----------------------------------
 	};
 }
 

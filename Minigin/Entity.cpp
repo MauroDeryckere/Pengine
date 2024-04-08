@@ -75,43 +75,6 @@ namespace Pengin
 		SetPosDirty(thisTransform);
 	}
 
-	void Entity::OutputEntityData() const noexcept
-	{
-		auto pScene = m_pScene.lock();
-
-		assert(pScene);
-
-		DEBUG_OUT("Printing entity data");
-
-		if (pScene->m_Ecs.HasComponent<TransformComponent>(m_EntityId))
-		{
-			const auto& transform = pScene->m_Ecs.GetComponent<TransformComponent>(m_EntityId);
-			DEBUG_OUT("Transform Component\n");
-
-			DEBUG_OUT("World pos " << transform.worldPos.x << " " << transform.worldPos.y << " " << transform.worldPos.z);
-			DEBUG_OUT("Local pos " << transform.localPos.x << " " << transform.localPos.y << " " << transform.localPos.z);
-			DEBUG_OUT("Rotation " << transform.rotation.x << " " << transform.rotation.y << " " << transform.rotation.z);
-			DEBUG_OUT("Scale " << transform.scale.x << " " << transform.scale.y << " " << transform.scale.z);
-
-			DEBUG_OUT("Relation ");
-			DEBUG_OUT("Children " << transform.relation.children);
-			DEBUG_OUT("First Child  " << transform.relation.firstChild);
-			DEBUG_OUT("Previous Sibling " << transform.relation.prevSibling);
-			DEBUG_OUT("Parent " << transform.relation.parent);
-
-			DEBUG_OUT("Is pos dirty " << transform.isPosDirty << "\n");
-		}
-		if (pScene->m_Ecs.HasComponent<SpriteComponent>(m_EntityId))
-		{
-			const auto& sprite = pScene->m_Ecs.GetComponent<SpriteComponent>(m_EntityId);
-			DEBUG_OUT("Sprite Component\n");
-
-			DEBUG_OUT("Is Visible " << sprite.isVisible);
-			DEBUG_OUT("Source rect " << sprite.m_SourceRect.x << " " << sprite.m_SourceRect.y << " " << sprite.m_SourceRect.width << " " << sprite.m_SourceRect.height);
-			DEBUG_OUT("Texture " << sprite.m_pTexture->GetPath() << "\n");
-		}
-	}
-
 	bool Entity::IsParentChildOfThis(const TransformComponent& thisTransform, const EntityId parentId) const
 	{
 		auto pScene{ m_pScene.lock() };

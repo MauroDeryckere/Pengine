@@ -8,8 +8,6 @@ namespace Pengin
 {
 	struct TransformComponent final
 	{
-		TransformComponent() = default;
-
 		TransformComponent(const glm::vec3& pos = { 0, 0, 0 }, const glm::vec3& rotation = { 0, 0, 0 }, const glm::vec3& scale = { 1, 1, 1 }) :
 			worldPos{ pos },
 			localPos{ pos },

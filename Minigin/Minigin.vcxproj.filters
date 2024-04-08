@@ -106,6 +106,9 @@
     <Filter Include="Header Files\Core\Game">
       <UniqueIdentifier>{34e145c7-9b3b-4962-acf5-01cf8ee4e3f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\FileSystem">
+      <UniqueIdentifier>{e2dbbaf0-66d6-41de-9787-4baf08d2f941}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
@@ -459,6 +462,9 @@
     <ClInclude Include="InputInfoPanel.h">
       <Filter>Header Files\Rendering\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="Serializer.h">
+      <Filter>Header Files\FileSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -591,6 +597,9 @@
       <Filter>Header Files\Core\Game</Filter>
     </ClCompile>
     <ClCompile Include="InputInfoPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Serializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

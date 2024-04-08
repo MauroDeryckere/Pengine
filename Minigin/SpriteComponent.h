@@ -31,7 +31,6 @@ namespace Pengin
 		UtilStructs::Rectu16 m_SourceRect{};
 
 		bool isVisible{ true };
-
 	};
 }
 
