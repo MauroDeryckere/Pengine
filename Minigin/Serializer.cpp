@@ -10,6 +10,7 @@
 
 #include <string>
 
+#include "JsonConversion.h"
 #include <json.hpp>
 
 namespace Pengin
@@ -74,39 +75,16 @@ namespace Pengin
 		if (ecs.HasComponent<TransformComponent>(id))
 		{
 			const auto& transform = ecs.GetComponent<TransformComponent>(id);
-			entityData["Transform Component"] = 
-			{
-				{"worldPos", {transform.worldPos.x, transform.worldPos.y, transform.worldPos.z} },
-				{"localPos", {transform.localPos.x, transform.localPos.y, transform.localPos.z} },
-				{"rotation", {transform.rotation.x, transform.rotation.y, transform.rotation.z} },
-				{"scale",    {transform.scale.x, transform.scale.y, transform.scale.z} },
-				{"relation", 
-					{
-						{"children", transform.relation.children},
-						{"firstChild", transform.relation.firstChild},
-						{"prevSibling", transform.relation.prevSibling},
-						{"nextSibling", transform.relation.nextSibling},
-						{"parent", transform.relation.parent}
-					}	
-				},
-				{"isPosDirty", transform.isPosDirty}
-			};
+			entityData["Transform Component"] = transform;
 		}
-
 		if (ecs.HasComponent<SpriteComponent>(id))
 		{
 			const auto& sprite = ecs.GetComponent<SpriteComponent>(id);
-			entityData["Sprite Component"] =
-			{
-				{"Source rect", {sprite.m_SourceRect.x, sprite.m_SourceRect.y, sprite.m_SourceRect.width, sprite.m_SourceRect.height} },
-				{"is visible", sprite.isVisible },
-				{"path", sprite.m_pTexture->GetPath() },
-			};
+			entityData["Sprite Component"] = sprite;
 		}
 
 		if (std::ofstream file{ path, std::ios::out }; file.is_open())
 		{
-
 			file << entityData.dump(4);
 			return true;
 		}
@@ -119,60 +97,41 @@ namespace Pengin
 	bool Serializer::DeserializeEntity_Json(ECS& ecs, const std::filesystem::path& path) noexcept
 	{
 		using json = nlohmann::ordered_json;
-
 		if (std::ifstream file{ path, std::ios::in }; file.is_open())
 		{
 			json entityData;
 			file >> entityData;
 
-			if (entityData.contains("Entity id"))
+			if (!entityData.contains("Entity id"))
 			{
-				EntityId id = entityData["Entity id"];
-				id;
-
-				const auto entity = ecs.CreateEntity(); //TODO UUID comp
-
-				for (auto it = entityData.begin(); it != entityData.end(); ++it)
-				{
-					if (it.key() == "Entity id")
-						continue;
-
-					if (it.key() == "Transform Component")
-					{
-						const auto& transformData = it.value();
-
-						auto& transform = ecs.AddComponent<TransformComponent>(entity);
-						transform.worldPos = { transformData["worldPos"][0], transformData["worldPos"][1], transformData["worldPos"][2] };
-						transform.localPos = { transformData["localPos"][0], transformData["localPos"][1], transformData["localPos"][2] };
-						transform.rotation = { transformData["rotation"][0], transformData["rotation"][1], transformData["rotation"][2] };
-						transform.scale = { transformData["scale"][0], transformData["scale"][1], transformData["scale"][2] };
-
-							transform.relation.children = transformData["relation"]["children"];
-							transform.relation.firstChild = transformData["relation"]["firstChild"];
-							transform.relation.prevSibling = transformData["relation"]["prevSibling"];
-							transform.relation.nextSibling = transformData["relation"]["nextSibling"];
-							transform.relation.parent = transformData["relation"]["parent"];
-
-						transform.isPosDirty = transformData["isPosDirty"];
-					}
-
-					else if (it.key() == "Sprite Component")
-					{
-						const auto& spriteData = it.value();
-
-						const std::string texturePath = spriteData["path"];
-						auto& sprite = ecs.AddComponent<SpriteComponent>(entity, texturePath);
-
-						sprite.m_SourceRect = UtilStructs::Rectu16{ static_cast<uint16_t>(spriteData["Source rect"][0]),
-																	static_cast<uint16_t>(spriteData["Source rect"][1]),
-																	static_cast<uint16_t>(spriteData["Source rect"][2]),
-																	static_cast<uint16_t>(spriteData["Source rect"][3]) };
-						sprite.isVisible = spriteData["is visible"];
-					}
-				}
-				return true;
+				return false;
 			}
-			return false;
+
+			EntityId id = entityData["Entity id"];
+			id;
+			const auto entity = ecs.CreateEntity(); //TODO UUID comp
+			entity;
+
+			if (entityData.contains("Transform Component"))
+			{
+				TransformComponent transform = entityData["Transform Component"];
+				ecs.AddComponent<TransformComponent>(id, std::move(transform));
+			}
+			if (entityData.contains("Sprite Component"))
+			{
+				const auto& spriteData = entityData["Sprite Component"];
+
+				const std::string texturePath = spriteData["path"];
+				auto& sprite = (texturePath == "NO PATH" ? ecs.AddComponent<SpriteComponent>(entity, texturePath) : ecs.AddComponent<SpriteComponent>(entity));
+
+				sprite.m_SourceRect = UtilStructs::Rectu16{ static_cast<uint16_t>(spriteData["Source rect"][0]),
+															static_cast<uint16_t>(spriteData["Source rect"][1]),
+															static_cast<uint16_t>(spriteData["Source rect"][2]),
+															static_cast<uint16_t>(spriteData["Source rect"][3]) };
+				sprite.isVisible = spriteData["is visible"];
+			}
+
+			return true;
 		}
 		return false;
 	}

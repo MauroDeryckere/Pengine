@@ -471,6 +471,9 @@
     <ClInclude Include="..\3rdParty\json\json.hpp">
       <Filter>3rd party Json</Filter>
     </ClInclude>
+    <ClInclude Include="JsonConversion.h">
+      <Filter>Header Files\FileSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">

@@ -1,43 +1,43 @@
 {
-"Entity id": 0,
-"Transform Component": {
-"worldPos": [
-0.0,
-0.0,
-0.0
-],
-"localPos": [
-0.0,
-0.0,
-0.0
-],
-"rotation": [
-0.0,
-0.0,
-0.0
-],
-"scale": [
-1.0,
-1.0,
-1.0
-],
-"relation": {
-"children": 0,
-"firstChild": 4294967295,
-"prevSibling": 4294967295,
-"nextSibling": 4294967295,
-"parent": 4294967295
-},
-"isPosDirty": false
-},
-"Sprite Component": {
-"Source rect": [
-0,
-0,
-0,
-0
-],
-"is visible": true,
-"path": "pengoLowQualityFortesting.png"
-}
+    "Entity id": 0,
+    "Transform Component": {
+        "worldPos": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "localPos": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "scale": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "relation": {
+            "children": 0,
+            "firstChild": 4294967295,
+            "prevSibling": 4294967295,
+            "nextSibling": 4294967295,
+            "parent": 4294967295
+        },
+        "isPosDirty": false
+    },
+    "Sprite Component": {
+        "Source rect": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "is visible": true,
+        "path": "pengoLowQualityFortesting.png"
+    }
 }

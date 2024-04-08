@@ -27,7 +27,7 @@ namespace Pengin
 
 		~SpriteComponent() = default;
 
-		std::shared_ptr<dae::Texture2D> m_pTexture{};
+		std::shared_ptr<dae::Texture2D> m_pTexture { nullptr };
 		UtilStructs::Rectu16 m_SourceRect{};
 
 		bool isVisible{ true };
