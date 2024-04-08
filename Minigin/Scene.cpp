@@ -67,12 +67,12 @@ namespace Pengin
 
 	void Scene::SerializeEntity(const EntityId id) noexcept
 	{
-		Serializer::GetInstance().SerializeEntity(m_Ecs, id, "../Data/testEntitySer.txt");
+		Serializer::GetInstance().SerializeEntity(m_Ecs, id, "../Data/jsonTestSerEntity.json");
 	}
 
 	void Scene::DeserializeEntity() noexcept
 	{
-		Serializer::GetInstance().DeserializeEntity(m_Ecs, "../Data/testEntitySer.txt");
+		Serializer::GetInstance().DeserializeEntity(m_Ecs, "../Data/jsonTestSerEntity.json");
 	}
 
 }

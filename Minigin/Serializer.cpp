@@ -8,17 +8,32 @@
 #include <unordered_map>
 #include <variant>
 
+#include <string>
+
+#include <json.hpp>
+
 namespace Pengin
 {
 	//a UUID would be preferred in future for proper serialization (add a UUID component to each entity)
-
-	//TODO: no longer use a txt format, but support binary / json/ similar
-
-	void Serializer::SerializeEntity(ECS& ecs, const EntityId id, const std::filesystem::path& path) noexcept
+	bool Serializer::SerializeEntity(ECS& ecs, const EntityId id, const std::filesystem::path& path) noexcept
 	{
 		assert(id != NULL_ENTITY_ID);
 
 		constexpr bool S_OUTPUT_DATA{ true };
+		const auto extension{ path.extension() };
+		
+		if (extension == ".json")
+		{
+			if (!SerializeEntity_Json(ecs, id, path))
+			{
+				return false;
+			}
+		}
+		else
+		{
+			DEBUG_OUT("wrong file extension, only support .json");
+			return false;
+		}
 		
 		if (S_OUTPUT_DATA)
 		{
@@ -27,93 +42,139 @@ namespace Pengin
 
 			OutputEntityData(ecs, id);
 		}
+		return true;
+	}
+
+	bool Serializer::DeserializeEntity(ECS& ecs, const std::filesystem::path& path) noexcept
+	{
+		const auto extension{ path.extension() };
+
+		if (extension == ".json")
+		{
+			if (!DeserializeEntity_Json(ecs, path))
+			{
+				return false;
+			}
+		}
+		else
+		{
+			DEBUG_OUT("wrong file extension, only support .json");
+			return false;
+		}
+		return true;
+	}
+
+	bool Serializer::SerializeEntity_Json(ECS& ecs, const EntityId id, const std::filesystem::path& path) noexcept
+	{
+		using json = nlohmann::ordered_json;
+		json entityData;
+
+		entityData["Entity id"] = id;
+
+		if (ecs.HasComponent<TransformComponent>(id))
+		{
+			const auto& transform = ecs.GetComponent<TransformComponent>(id);
+			entityData["Transform Component"] = 
+			{
+				{"worldPos", {transform.worldPos.x, transform.worldPos.y, transform.worldPos.z} },
+				{"localPos", {transform.localPos.x, transform.localPos.y, transform.localPos.z} },
+				{"rotation", {transform.rotation.x, transform.rotation.y, transform.rotation.z} },
+				{"scale",    {transform.scale.x, transform.scale.y, transform.scale.z} },
+				{"relation", 
+					{
+						{"children", transform.relation.children},
+						{"firstChild", transform.relation.firstChild},
+						{"prevSibling", transform.relation.prevSibling},
+						{"nextSibling", transform.relation.nextSibling},
+						{"parent", transform.relation.parent}
+					}	
+				},
+				{"isPosDirty", transform.isPosDirty}
+			};
+		}
+
+		if (ecs.HasComponent<SpriteComponent>(id))
+		{
+			const auto& sprite = ecs.GetComponent<SpriteComponent>(id);
+			entityData["Sprite Component"] =
+			{
+				{"Source rect", {sprite.m_SourceRect.x, sprite.m_SourceRect.y, sprite.m_SourceRect.width, sprite.m_SourceRect.height} },
+				{"is visible", sprite.isVisible },
+				{"path", sprite.m_pTexture->GetPath() },
+			};
+		}
 
 		if (std::ofstream file{ path, std::ios::out }; file.is_open())
 		{
-			if (ecs.HasComponent<TransformComponent>(id))
-			{
-				const auto& transform = ecs.GetComponent<TransformComponent>(id);
-				file << "Transform";
-				file << std::format(" {} {} {}",transform.worldPos.x, transform.worldPos.y, transform.worldPos.z);
-				file << std::format(" {} {} {}",transform.localPos.x, transform.localPos.y, transform.localPos.z);
-				file << std::format(" {} {} {}",transform.rotation.x, transform.rotation.y, transform.rotation.z);
-				file << std::format(" {} {} {}",transform.scale.x, transform.scale.y, transform.scale.z);
 
-				const auto& relation = transform.relation;
-				file << " " << relation.children;
-				file << " " << relation.firstChild;
-				file << " " << relation.prevSibling;
-				file << " " << relation.nextSibling;
-				file << " " << relation.parent;
-
-				file << std::format(" {}", transform.isPosDirty ? "true" : "false");
-				file << std::endl;
-			}
-			if (ecs.HasComponent<SpriteComponent>(id))
-			{
-				const auto& sprite = ecs.GetComponent<SpriteComponent>(id);
-				file << "Sprite";
-				file << std::format(" {}", sprite.isVisible ? "true" : "false");
-				file << std::format(" {} {} {} {}", sprite.m_SourceRect.x, sprite.m_SourceRect.y, sprite.m_SourceRect.width, sprite.m_SourceRect.height);
-				file << " " << sprite.m_pTexture->GetPath();
-				file << std::endl;
-			}
+			file << entityData.dump(4);
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 
-	void Serializer::DeserializeEntity(ECS& ecs, const std::filesystem::path& path) noexcept
+	bool Serializer::DeserializeEntity_Json(ECS& ecs, const std::filesystem::path& path) noexcept
 	{
-		const auto entity = ecs.CreateEntity();
+		using json = nlohmann::ordered_json;
 
 		if (std::ifstream file{ path, std::ios::in }; file.is_open())
 		{
-			std::string line;
-			while (std::getline(file, line))
+			json entityData;
+			file >> entityData;
+
+			if (entityData.contains("Entity id"))
 			{
-				std::istringstream iss{ line };
+				EntityId id = entityData["Entity id"];
+				id;
 
-				std::string componentType;
-				iss >> componentType;
+				const auto entity = ecs.CreateEntity(); //TODO UUID comp
 
-				if (componentType == "Transform")
+				for (auto it = entityData.begin(); it != entityData.end(); ++it)
 				{
-					auto& transform = ecs.AddComponent<TransformComponent>(entity);
-				
-					iss >> transform.worldPos.x >> transform.worldPos.y >> transform.worldPos.z
-						>> transform.localPos.x >> transform.localPos.y >> transform.localPos.z
-						>> transform.rotation.x >> transform.rotation.y >> transform.rotation.z
-						>> transform.scale.x >> transform.scale.y >> transform.scale.z
+					if (it.key() == "Entity id")
+						continue;
 
-						>> transform.relation.children
-						>> transform.relation.firstChild
-						>> transform.relation.prevSibling
-						>> transform.relation.nextSibling
-						>> transform.relation.parent;
+					if (it.key() == "Transform Component")
+					{
+						const auto& transformData = it.value();
 
-					std::string isPosDirty;
-					iss >> isPosDirty;
-					transform.isPosDirty = (isPosDirty == "true");
+						auto& transform = ecs.AddComponent<TransformComponent>(entity);
+						transform.worldPos = { transformData["worldPos"][0], transformData["worldPos"][1], transformData["worldPos"][2] };
+						transform.localPos = { transformData["localPos"][0], transformData["localPos"][1], transformData["localPos"][2] };
+						transform.rotation = { transformData["rotation"][0], transformData["rotation"][1], transformData["rotation"][2] };
+						transform.scale = { transformData["scale"][0], transformData["scale"][1], transformData["scale"][2] };
+
+							transform.relation.children = transformData["relation"]["children"];
+							transform.relation.firstChild = transformData["relation"]["firstChild"];
+							transform.relation.prevSibling = transformData["relation"]["prevSibling"];
+							transform.relation.nextSibling = transformData["relation"]["nextSibling"];
+							transform.relation.parent = transformData["relation"]["parent"];
+
+						transform.isPosDirty = transformData["isPosDirty"];
+					}
+
+					else if (it.key() == "Sprite Component")
+					{
+						const auto& spriteData = it.value();
+
+						const std::string texturePath = spriteData["path"];
+						auto& sprite = ecs.AddComponent<SpriteComponent>(entity, texturePath);
+
+						sprite.m_SourceRect = UtilStructs::Rectu16{ static_cast<uint16_t>(spriteData["Source rect"][0]),
+																	static_cast<uint16_t>(spriteData["Source rect"][1]),
+																	static_cast<uint16_t>(spriteData["Source rect"][2]),
+																	static_cast<uint16_t>(spriteData["Source rect"][3]) };
+						sprite.isVisible = spriteData["is visible"];
+					}
 				}
-				else if (componentType == "Sprite")
-				{
-					bool visible;
-					UtilStructs::Rect16 src;
-
-					std::string texturePath;
-
-					std::string isVisible;
-					iss >> isVisible;
-					visible = (isVisible == "true");
-
-					iss >> src.x >> src.y >> src.width >> src.height
-						>> texturePath;
-
-					ecs.AddComponent<SpriteComponent>(entity, texturePath);
-				}
+				return true;
 			}
+			return false;
 		}
-
-		OutputEntityData(ecs, entity);
+		return false;
 	}
 
 	void Serializer::OutputEntityData(ECS& ecs, const EntityId id) const noexcept

@@ -34,6 +34,15 @@ namespace Pengin
 				assert(width >= 0 && height >= 0);
 			}
 
+			Rect& operator=(const Rect& other)
+			{
+				x = other.x;
+				y = other.y;
+				width = other.width;
+				height = other.height;
+				return *this;
+			}
+
 			constexpr auto operator<=>(const Rect& other) const noexcept
 			{
 				if (auto cmp = x <=> other.x; cmp != 0) return cmp;
