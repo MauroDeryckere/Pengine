@@ -213,8 +213,11 @@ namespace Pengin
 
 		assert(id != NULL_ENTITY_ID);
 		assert(ecs.Exists(id));
+		assert(ecs.HasComponent<UUIDComponent>(id));
 
 		j["Entity id"] = id;
+		const auto& uuidComp = ecs.GetComponent<UUIDComponent>(id);
+		j["UUID"] = uuidComp.uuid.GetUUID_PrettyStr();
 
 		if (ecs.HasComponent<TransformComponent>(id))
 		{
@@ -276,11 +279,19 @@ namespace Pengin
 		{
 			return false;
 		}
+		if (!entityData.contains("UUID"))
+		{
+			DEBUG_OUT("Need UUID in json file");
+			return false;
+		}
 
 		EntityId id = entityData["Entity id"];
-		id;
-		const auto entity = ecs.CreateEntity(); //TODO UUID comp
-		entity;
+		assert(id != NULL_ENTITY_ID && "Entity was invalid when serialized");
+
+		const auto entity = ecs.CreateEntity();
+		ecs.AddComponent<UUIDComponent>(id, UUID{ entityData["UUID"].get<std::string>() });
+
+		//TODO scene map: UUID - entityID
 
 		if (entityData.contains("Transform Component"))
 		{
@@ -321,7 +332,7 @@ namespace Pengin
 
 			textComp.m_Text = textData["Text"].get<std::string>();
 
-			textComp.needsTextureChange = true; //Always need to generate a texture upon loading 
+			textComp.needsTextureChange = true; //Always need to generate a texture upon deserializing
 		}
 		if (entityData.contains("RectCollider Component"))
 		{

@@ -2,6 +2,7 @@
 #define COMPONENTS
 
 #include "TransformComponent.h"
+#include "UUIDComponent.h"
 
 #include "VelocityComponent.h"
 

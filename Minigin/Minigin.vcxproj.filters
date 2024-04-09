@@ -112,6 +112,12 @@
     <Filter Include="Header Files\ECS\ECS">
       <UniqueIdentifier>{9a81b5d0-729a-446f-8a99-9248ab0b01d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Core\UUID">
+      <UniqueIdentifier>{12c9a460-de28-427b-ac37-a57f12f33cc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd Party UUID">
+      <UniqueIdentifier>{2d1c7d16-3ebf-4686-bef0-59daf4c81dc2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
@@ -474,6 +480,18 @@
     <ClInclude Include="JsonConversion.h">
       <Filter>Header Files\FileSystem</Filter>
     </ClInclude>
+    <ClInclude Include="UUID.h">
+      <Filter>Header Files\Core\UUID</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\UUID\endianness.h">
+      <Filter>3rd Party UUID</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\UUID\uuid_v4.h">
+      <Filter>3rd Party UUID</Filter>
+    </ClInclude>
+    <ClInclude Include="UUIDComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -609,6 +627,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Serializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UUID.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

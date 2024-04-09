@@ -11,6 +11,7 @@
 #include "RectColliderComponent.h"
 #include "SpriteComponent.h"
 #include "AnimationComponent.h"
+#include "UUIDComponent.h"
 
 #include <string>
 #include <format>
@@ -37,6 +38,13 @@ namespace Pengin
 			const bool hasSpriteComp{ ecs.HasComponent<SpriteComponent>(id) };
 			const bool treeNodeOpened = ImGui::TreeNode(("Entity ID: " + EntityIdToString(id)).c_str());
 
+			if (treeNodeOpened)
+			{
+				assert(ecs.HasComponent<UUIDComponent>(id));
+				const auto& uuidComp = ecs.GetComponent<UUIDComponent>(id);
+				ImGui::Text(std::format("Entity UUID: {}", uuidComp.uuid.GetUUID_PrettyStr()).c_str());
+			}
+
 			if (hasSpriteComp) //Display a checkbox at treenode level to allow toggling visibility
 			{
 				ImVec2 checkboxSize = ImGui::CalcTextSize("");
@@ -46,6 +54,7 @@ namespace Pengin
 				ImGui::SameLine(xPos);
 				ImGui::Checkbox(("##" + std::to_string(id)).c_str(), &ecs.GetComponent<SpriteComponent>(id).isVisible);
 			}
+
 
 			if (EDITOR_MODE)
 			{

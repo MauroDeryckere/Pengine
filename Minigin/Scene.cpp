@@ -3,6 +3,7 @@
 #include "Serializer.h"
 #include "Entity.h"
 #include "TransformComponent.h"
+#include "UUIDComponent.h"
 
 namespace Pengin
 {
@@ -42,6 +43,7 @@ namespace Pengin
 
 		Entity entity{ id, weak_from_this() };
 		entity.AddComponent<TransformComponent>(position, rotation, scale);
+		entity.AddComponent<UUIDComponent>();
 
 		return entity;
 	}

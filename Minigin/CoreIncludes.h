@@ -8,3 +8,5 @@
 #include "DebugOutput.h"
 
 #include "EntityId.h"
+
+#include "UUID.h"

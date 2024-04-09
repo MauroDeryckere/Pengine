@@ -99,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\UUID;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -125,7 +125,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\UUID;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -156,7 +156,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\UUID;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -186,7 +186,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\UUID;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -267,6 +267,8 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api_flat.h" />
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api_internal.h" />
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_gameserver.h" />
+    <ClInclude Include="..\3rdParty\UUID\endianness.h" />
+    <ClInclude Include="..\3rdParty\UUID\uuid_v4.h" />
     <ClInclude Include="AchievementSystem.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AnimationSystem.h" />
@@ -285,6 +287,8 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="Serializer.h" />
     <ClInclude Include="UIDisplaySystem.h" />
+    <ClInclude Include="UUID.h" />
+    <ClInclude Include="UUIDComponent.h" />
     <ClInclude Include="VelocityComponent.h" />
     <ClInclude Include="ComponentStorage.h" />
     <ClInclude Include="ComponentWrapper.h" />
@@ -377,6 +381,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="UIDisplaySystem.cpp" />
     <ClCompile Include="UniqueTypesTracker.cpp" />
+    <ClCompile Include="UUID.cpp" />
     <ClCompile Include="WorldPositionSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
