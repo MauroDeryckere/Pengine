@@ -6,14 +6,13 @@
 #include <fstream>
 #include <format>
 #include <unordered_map>
-#include <variant>
 
 #include <string>
-
 #include "JsonConversion.h"
 
 namespace Pengin
 {
+	//a UUID would be preferred in future for proper serialization (add a UUID component to each entity)
 	bool Serializer::SerializeScene(const ECS& ecs, const std::string& sceneName, const std::filesystem::path& scenePath) const noexcept
 	{
 		const auto extension{ scenePath.extension() };
@@ -42,14 +41,11 @@ namespace Pengin
 		}
 	}
 
-	//a UUID would be preferred in future for proper serialization (add a UUID component to each entity)
-	bool Serializer::SerializeEntity(ECS& ecs, const EntityId id, const std::filesystem::path& path) noexcept
+	bool Serializer::SerializeEntity(const ECS& ecs, const EntityId id, const std::filesystem::path& path) const noexcept
 	{
 		assert(id != NULL_ENTITY_ID);
 
-		constexpr bool S_OUTPUT_DATA{ true };
-		const auto extension{ path.extension() };
-		
+		const auto extension{ path.extension() };		
 		if (extension == ".json")
 		{
 			if (!SerializeEntity_Json(ecs, id, path))
@@ -62,21 +58,12 @@ namespace Pengin
 			DEBUG_OUT("wrong file extension, only support .json");
 			return false;
 		}
-		
-		if (S_OUTPUT_DATA)
-		{
-			DEBUG_OUT("\n Outputting entity data for entity: " << id );
-			DEBUG_OUT("file path: " << path);
-
-			OutputEntityData(ecs, id);
-		}
 		return true;
 	}
 
 	bool Serializer::DeserializeEntity(ECS& ecs, const std::filesystem::path& path) noexcept
 	{
 		const auto extension{ path.extension() };
-
 		if (extension == ".json")
 		{
 			if (!DeserializeEntity_Json(ecs, path))
@@ -152,7 +139,7 @@ namespace Pengin
 		return false;
 	}
 
-	bool Serializer::SerializeEntity_Json(ECS& ecs, const EntityId id, const std::filesystem::path& path) noexcept
+	bool Serializer::SerializeEntity_Json(const ECS& ecs, const EntityId id, const std::filesystem::path& path) const noexcept
 	{
 		using json = nlohmann::ordered_json;
 		json entityData;
@@ -245,6 +232,38 @@ namespace Pengin
 			const auto& sprite = ecs.GetComponent<SpriteComponent>(id);
 			j["Sprite Component"] = sprite;
 		}
+		if (ecs.HasComponent<VelocityComponent>(id))
+		{
+			const auto& vel = ecs.GetComponent<VelocityComponent>(id);
+			j["Velocity Component"] = vel;
+		}
+		if (ecs.HasComponent<TextComponent>(id))
+		{
+			const auto& text = ecs.GetComponent<TextComponent>(id);
+			j["Text Component"] = text;
+		}
+		if (ecs.HasComponent<ScoreComponent>(id))
+		{
+			//TODO - requires UUID
+		}
+		if (ecs.HasComponent<RectColliderComponent>(id))
+		{
+			const auto& rectColl = ecs.GetComponent<RectColliderComponent>(id);
+			j["RectCollider Component"] = rectColl;
+		}
+		if (ecs.HasComponent<HealthComponent>(id))
+		{
+			//TODO - requires UUID
+		}
+		if (ecs.HasComponent<FPSCounterComponent>(id))
+		{
+			j["FPS Component"];
+		}
+		if (ecs.HasComponent<AnimationComponent>(id))
+		{
+			const auto& ani = ecs.GetComponent<AnimationComponent>(id);
+			j["Animation Component"] = ani;
+		}
 
 		return true;
 	}
@@ -275,16 +294,54 @@ namespace Pengin
 			const std::string texturePath = spriteData["path"];
 			auto& sprite = (texturePath == "NO PATH" ?  ecs.AddComponent<SpriteComponent>(entity) : ecs.AddComponent<SpriteComponent>(entity, texturePath));
 
-			sprite.m_SourceRect = UtilStructs::Rectu16{ static_cast<uint16_t>(spriteData["Source rect"][0]),
-														static_cast<uint16_t>(spriteData["Source rect"][1]),
-														static_cast<uint16_t>(spriteData["Source rect"][2]),
-														static_cast<uint16_t>(spriteData["Source rect"][3]) };
+			sprite.m_SourceRect = UtilStructs::Rectu16{ spriteData["Source rect"][0].get<uint16_t>(),
+														spriteData["Source rect"][1].get<uint16_t>(),
+														spriteData["Source rect"][2].get<uint16_t>(),
+														spriteData["Source rect"][3].get<uint16_t>() };
+
 			sprite.isVisible = spriteData["is visible"];
 		}
+		if (entityData.contains("Velocity Component"))
+		{
+			VelocityComponent vel = entityData["Velocity Component"];
+			ecs.AddComponent<VelocityComponent>(id, std::move(vel));
+		}
+		if (entityData.contains("Text Component"))
+		{
+			const auto& textData = entityData["Text Component"];
+
+			const std::string fontPath = textData["Path"];
+			const unsigned fontSize = textData["FontSize"];
+
+			auto& textComp = ecs.AddComponent<TextComponent>(id, fontPath, fontSize);
+			textComp.m_Color = glm::u8vec4{ textData["Color"][0].get<uint8_t>(),
+											textData["Color"][1].get<uint8_t>(),
+											textData["Color"][2].get<uint8_t>(),
+											textData["Color"][3].get<uint8_t>() };
+
+			textComp.m_Text = textData["Text"].get<std::string>();
+
+			textComp.needsTextureChange = true; //Always need to generate a texture upon loading 
+		}
+		if (entityData.contains("RectCollider Component"))
+		{
+			RectColliderComponent rectColl = entityData["RectCollider Component"];
+			ecs.AddComponent<RectColliderComponent>(id, std::move(rectColl));
+		}
+		if (entityData.contains("Animation Component"))
+		{
+			AnimationComponent ani = entityData["Animation Component"];
+			ecs.AddComponent<AnimationComponent>(id, std::move(ani));
+;		}
+		if (entityData.contains("FPS Component"))
+		{
+			ecs.AddComponent<FPSCounterComponent>(id);
+		}
+
 		return true;
 	}
 
-	void Serializer::OutputEntityData(ECS& ecs, const EntityId id) const noexcept
+	void Serializer::OutputEntityData(const ECS& ecs, const EntityId id) const noexcept
 	{
 		if (ecs.HasComponent<TransformComponent>(id))
 		{

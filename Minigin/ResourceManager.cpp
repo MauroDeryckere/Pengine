@@ -31,7 +31,14 @@ std::shared_ptr<dae::Texture2D> dae::ResourceManager::LoadTexture(const std::str
 	return std::make_shared<dae::Texture2D>(texture, path);
 }
 
-std::shared_ptr<dae::Font> dae::ResourceManager::LoadFont(std::string_view file, unsigned size) const
+std::shared_ptr<dae::Font> dae::ResourceManager::LoadFont(const std::string& path, unsigned size) const
 {
-	return std::make_shared<dae::Font>(m_dataPath + file.data(), size);
+	const auto fullPath = m_dataPath + path;
+
+	auto font = TTF_OpenFont(fullPath.c_str(), size);
+	if (font == nullptr)
+	{
+		throw std::runtime_error(std::string("Failed to load font: ") + SDL_GetError());
+	}
+	return std::make_shared<dae::Font>(font, path, size);
 }

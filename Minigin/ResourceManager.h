@@ -14,11 +14,12 @@ namespace dae
 		void Init(const std::string& data);
 
 		[[nodiscard]] std::shared_ptr<Texture2D> LoadTexture(const std::string& path) const;
-		[[nodiscard]] std::shared_ptr<Font> LoadFont(std::string_view, unsigned size) const;
+		[[nodiscard]] std::shared_ptr<Font> LoadFont(const std::string& path, unsigned size) const;
 
 	private:
 		friend class Singleton<ResourceManager>;
 		ResourceManager() = default;
+
 		std::string m_dataPath;
 	};
 }

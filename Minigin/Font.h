@@ -11,8 +11,11 @@ namespace dae
 	{
 	public:
 		_TTF_Font* GetFont() const;
-		explicit Font(const std::string& fullPath, unsigned int size);
+		explicit Font(_TTF_Font* pFont, const std::string& path, unsigned fontSize);
 		~Font();
+
+		const std::string& GetPath() const noexcept { return m_FontPath; }
+		unsigned GetFontSize() const noexcept { return m_FontSize; }
 
 		Font(const Font &) = delete;
 		Font(Font &&) = delete;
@@ -20,5 +23,8 @@ namespace dae
 		Font & operator= (const Font &&) = delete;
 	private:
 		_TTF_Font* m_font;
+
+		std::string m_FontPath;
+		unsigned m_FontSize;
 	};
 }

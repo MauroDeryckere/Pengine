@@ -19,7 +19,7 @@ namespace Pengin
 
 	struct AnimationComponent final
 	{
-		AnimationComponent(const std::vector<AnimationData>& animations, uint8_t initAnimationIdx = 0, bool playOnInit = true) :
+		AnimationComponent(const std::vector<AnimationData>& animations = {}, uint8_t initAnimationIdx = 0, bool playOnInit = true) :
 			m_Animations{ animations },
 			m_IsPlaying{ playOnInit },
 			m_CurrAnimationIdx{ initAnimationIdx }

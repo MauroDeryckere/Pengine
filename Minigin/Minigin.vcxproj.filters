@@ -22,9 +22,6 @@
     <Filter Include="Header Files\ECS\SparseSet">
       <UniqueIdentifier>{a648090b-0891-415c-9e0b-abf67a5037fd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ECS\ECS Components\ECS">
-      <UniqueIdentifier>{9a81b5d0-729a-446f-8a99-9248ab0b01d6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\ECS\BitSet">
       <UniqueIdentifier>{be3fc76b-0a34-4c8a-a412-c286e5a50cad}</UniqueIdentifier>
     </Filter>
@@ -112,13 +109,16 @@
     <Filter Include="3rd party Json">
       <UniqueIdentifier>{8ad16287-e09e-478a-953f-f7788bb5d37e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ECS\ECS">
+      <UniqueIdentifier>{9a81b5d0-729a-446f-8a99-9248ab0b01d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="ECS.h">
-      <Filter>Header Files\ECS\ECS Components\ECS</Filter>
+      <Filter>Header Files\ECS\ECS</Filter>
     </ClInclude>
     <ClInclude Include="Bitset.h">
       <Filter>Header Files\ECS\BitSet</Filter>
@@ -130,7 +130,7 @@
       <Filter>Header Files\ECS\ECS Components\Entities</Filter>
     </ClInclude>
     <ClInclude Include="UniqueTypeTracker.h">
-      <Filter>Header Files\ECS\ECS Components\ECS</Filter>
+      <Filter>Header Files\ECS\ECS</Filter>
     </ClInclude>
     <ClInclude Include="Texture2D.h">
       <Filter>Header Files\Resource</Filter>

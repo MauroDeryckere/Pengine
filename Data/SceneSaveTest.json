@@ -42,6 +42,14 @@
                 ],
                 "is visible": true,
                 "path": "pengoLowQualityFortesting.png"
+            },
+            "RectCollider Component": {
+                "CollRect": [
+                    0,
+                    0,
+                    20,
+                    20
+                ]
             }
         },
         {
@@ -75,6 +83,27 @@
                     "parent": 4294967295
                 },
                 "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "NO PATH"
+            },
+            "Text Component": {
+                "Text": "Demo background text",
+                "Path": "Lingua.otf",
+                "FontSize": 36,
+                "Color": [
+                    255,
+                    255,
+                    255,
+                    255
+                ]
             }
         },
         {
@@ -275,91 +304,207 @@
                 "isPosDirty": false
             }
         },
-      {
-        "Entity id": 8,
-        "Transform Component": {
-          "worldPos": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "localPos": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "rotation": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "scale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "relation": {
-            "children": 0,
-            "firstChild": 4294967295,
-            "prevSibling": 4294967295,
-            "nextSibling": 4294967295,
-            "parent": 4294967295
-          },
-          "isPosDirty": false
+        {
+            "Entity id": 8,
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            }
         },
-        "Sprite Component": {
-          "Source rect": [
-            2,
-            3,
-            4,
-            5
-          ],
-          "is visible": true,
-          "path": "pengoLowQualityFortesting.png"
-        }
-      },
-      {
-        "Entity id": 9,
-        "Transform Component": {
-          "worldPos": [
-            159.0,
-            150.0,
-            0.0
-          ],
-          "localPos": [
-            159.0,
-            150.0,
-            0.0
-          ],
-          "rotation": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "scale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "relation": {
-            "children": 0,
-            "firstChild": 4294967295,
-            "prevSibling": 4294967295,
-            "nextSibling": 4294967295,
-            "parent": 4294967295
-          },
-          "isPosDirty": false
+        {
+            "Entity id": 9,
+            "Transform Component": {
+                "worldPos": [
+                    200.0,
+                    200.0,
+                    0.0
+                ],
+                "localPos": [
+                    200.0,
+                    200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    2,
+                    3,
+                    40,
+                    50
+                ],
+                "is visible": true,
+                "path": "pengoLowQualityFortesting.png"
+            }
         },
-        "Sprite Component": {
-          "Source rect": [
-            2,
-            3,
-            40,
-            50
-          ],
-          "is visible": true,
-          "path": "pengoLowQualityFortesting.png"
+        {
+            "Entity id": 10,
+            "Transform Component": {
+                "worldPos": [
+                    200.0,
+                    200.0,
+                    0.0
+                ],
+                "localPos": [
+                    200.0,
+                    200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    4.0,
+                    4.0,
+                    0.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    32,
+                    0,
+                    16,
+                    16
+                ],
+                "is visible": true,
+                "path": "Pengo_Snobee_Spritesheet.png"
+            },
+            "Animation Component": {
+                "Animations": [
+                    {
+                        "Frame0SourceRect": [
+                            32,
+                            0,
+                            16,
+                            16
+                        ],
+                        "FrameCount": 2,
+                        "FrameDuration": 1.0
+                    },
+                    {
+                        "Frame0SourceRect": [
+                            0,
+                            0,
+                            16,
+                            16
+                        ],
+                        "FrameCount": 2,
+                        "FrameDuration": 1.0
+                    }
+                ],
+                "CurrentAnimationIndex": 0,
+                "CurrentAnimationFrame": 0,
+                "CurrentFrameTime": 0.7537302374839783,
+                "IsPlaying": true
+            }
+        },
+        {
+            "Entity id": 11,
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "NO PATH"
+            },
+            "Text Component": {
+                "Text": "58.5",
+                "Path": "Lingua.otf",
+                "FontSize": 36,
+                "Color": [
+                    255,
+                    255,
+                    255,
+                    255
+                ]
+            },
+            "FPS Component": null
         }
-      }
     ]
 }

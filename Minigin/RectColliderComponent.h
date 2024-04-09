@@ -7,7 +7,7 @@ namespace Pengin
 {
 	struct RectColliderComponent final
 	{
-		RectColliderComponent(const UtilStructs::Rectu16 collRect) :
+		RectColliderComponent(const UtilStructs::Rectu16 collRect = UtilStructs::Rectu16{0 ,0, 1, 1}) :
 			m_CollRect{collRect}
 		{
 			assert(collRect.width > 0 && collRect.height > 0);

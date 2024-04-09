@@ -6,13 +6,12 @@ TTF_Font* dae::Font::GetFont() const {
 	return m_font;
 }
 
-dae::Font::Font(const std::string& fullPath, unsigned int size) : m_font(nullptr)
+dae::Font::Font(_TTF_Font* pFont, const std::string& path, unsigned fontSize) :
+	m_font{ pFont },
+	m_FontPath{ path },
+	m_FontSize{ fontSize }
 {
-	m_font = TTF_OpenFont(fullPath.c_str(), size);
-	if (m_font == nullptr) 
-	{
-		throw std::runtime_error(std::string("Failed to load font: ") + SDL_GetError());
-	}
+
 }
 
 dae::Font::~Font()
