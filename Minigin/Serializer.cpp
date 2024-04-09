@@ -223,19 +223,18 @@ namespace Pengin
 			return false;
 		}
 
-		EntityId id = entityData["Entity id"];
-		assert(id != NULL_ENTITY_ID && "Entity was invalid when serialized");
+		assert(entityData["Entity id"] != NULL_ENTITY_ID && "Entity was invalid when serialized");
 
 		const auto entity = ecs.CreateEntity();
 		const auto uuid = UUID{ entityData["UUID"].get<std::string>() };
-		ecs.AddComponent<UUIDComponent>(id, uuid);
+		ecs.AddComponent<UUIDComponent>(entity, uuid);
 
-		entityMap[uuid] = id;
+		entityMap[uuid] = entity;
 		
 		if (entityData.contains("Transform Component"))
 		{
 			TransformComponent transform = entityData["Transform Component"];
-			ecs.AddComponent<TransformComponent>(id, std::move(transform));
+			ecs.AddComponent<TransformComponent>(entity, std::move(transform));
 		}
 		if (entityData.contains("Sprite Component"))
 		{
@@ -254,7 +253,7 @@ namespace Pengin
 		if (entityData.contains("Velocity Component"))
 		{
 			VelocityComponent vel = entityData["Velocity Component"];
-			ecs.AddComponent<VelocityComponent>(id, std::move(vel));
+			ecs.AddComponent<VelocityComponent>(entity, std::move(vel));
 		}
 		if (entityData.contains("Text Component"))
 		{
@@ -263,7 +262,7 @@ namespace Pengin
 			const std::string fontPath = textData["Path"];
 			const unsigned fontSize = textData["FontSize"];
 
-			auto& textComp = ecs.AddComponent<TextComponent>(id, fontPath, fontSize);
+			auto& textComp = ecs.AddComponent<TextComponent>(entity, fontPath, fontSize);
 			textComp.m_Color = glm::u8vec4{ textData["Color"][0].get<uint8_t>(),
 											textData["Color"][1].get<uint8_t>(),
 											textData["Color"][2].get<uint8_t>(),
@@ -276,16 +275,16 @@ namespace Pengin
 		if (entityData.contains("RectCollider Component"))
 		{
 			RectColliderComponent rectColl = entityData["RectCollider Component"];
-			ecs.AddComponent<RectColliderComponent>(id, std::move(rectColl));
+			ecs.AddComponent<RectColliderComponent>(entity, std::move(rectColl));
 		}
 		if (entityData.contains("Animation Component"))
 		{
 			AnimationComponent ani = entityData["Animation Component"];
-			ecs.AddComponent<AnimationComponent>(id, std::move(ani));
+			ecs.AddComponent<AnimationComponent>(entity, std::move(ani));
 ;		}
 		if (entityData.contains("FPS Component"))
 		{
-			ecs.AddComponent<FPSCounterComponent>(id);
+			ecs.AddComponent<FPSCounterComponent>(entity);
 		}
 
 		return true;
