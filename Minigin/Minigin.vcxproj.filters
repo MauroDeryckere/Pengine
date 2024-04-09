@@ -85,9 +85,6 @@
     <Filter Include="Header Files\Systems">
       <UniqueIdentifier>{80d4353f-ef05-471a-8123-a480e7f4da18}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\3rd Party ImGui">
-      <UniqueIdentifier>{68b60ae6-e349-4c72-9fc1-039a23a41cd7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Rendering\ImGui">
       <UniqueIdentifier>{085c28fe-b9fe-4238-ad82-26079554d974}</UniqueIdentifier>
     </Filter>
@@ -106,16 +103,22 @@
     <Filter Include="Header Files\FileSystem">
       <UniqueIdentifier>{e2dbbaf0-66d6-41de-9787-4baf08d2f941}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd party Json">
-      <UniqueIdentifier>{8ad16287-e09e-478a-953f-f7788bb5d37e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\ECS\ECS">
       <UniqueIdentifier>{9a81b5d0-729a-446f-8a99-9248ab0b01d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Core\UUID">
       <UniqueIdentifier>{12c9a460-de28-427b-ac37-a57f12f33cc3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd Party UUID">
+    <Filter Include="3rd Party">
+      <UniqueIdentifier>{0d8575da-926d-4033-9fe7-e76726b65e46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd Party\ImGui">
+      <UniqueIdentifier>{68b60ae6-e349-4c72-9fc1-039a23a41cd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd Party\Json">
+      <UniqueIdentifier>{8ad16287-e09e-478a-953f-f7788bb5d37e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd Party\UUID">
       <UniqueIdentifier>{2d1c7d16-3ebf-4686-bef0-59daf4c81dc2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -148,31 +151,31 @@
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imstb_truetype.h">
-      <Filter>Header Files\3rd Party ImGui</Filter>
+      <Filter>3rd Party\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imconfig.h">
-      <Filter>Header Files\3rd Party ImGui</Filter>
+      <Filter>3rd Party\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui.h">
-      <Filter>Header Files\3rd Party ImGui</Filter>
+      <Filter>3rd Party\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_internal.h">
-      <Filter>Header Files\3rd Party ImGui</Filter>
+      <Filter>3rd Party\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imstb_rectpack.h">
-      <Filter>Header Files\3rd Party ImGui</Filter>
+      <Filter>3rd Party\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imstb_textedit.h">
-      <Filter>Header Files\3rd Party ImGui</Filter>
+      <Filter>3rd Party\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl2.h">
-      <Filter>Header Files\3rd Party ImGui</Filter>
+      <Filter>3rd Party\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.h">
-      <Filter>Header Files\3rd Party ImGui</Filter>
+      <Filter>3rd Party\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_plot.h">
-      <Filter>Header Files\3rd Party ImGui</Filter>
+      <Filter>3rd Party\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Header Files\Input</Filter>
@@ -439,7 +442,7 @@
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdlrenderer2.h">
-      <Filter>Header Files\3rd Party ImGui</Filter>
+      <Filter>3rd Party\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="SceneInfoPanel.h">
       <Filter>Header Files\Rendering\Debug</Filter>
@@ -475,7 +478,7 @@
       <Filter>Header Files\FileSystem</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\json\json.hpp">
-      <Filter>3rd party Json</Filter>
+      <Filter>3rd Party\Json</Filter>
     </ClInclude>
     <ClInclude Include="JsonConversion.h">
       <Filter>Header Files\FileSystem</Filter>
@@ -484,10 +487,10 @@
       <Filter>Header Files\Core\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\UUID\endianness.h">
-      <Filter>3rd Party UUID</Filter>
+      <Filter>3rd Party\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\UUID\uuid_v4.h">
-      <Filter>3rd Party UUID</Filter>
+      <Filter>3rd Party\UUID</Filter>
     </ClInclude>
     <ClInclude Include="UUIDComponent.h">
       <Filter>Header Files\Components</Filter>

@@ -14,7 +14,7 @@ namespace Pengin
 	{
 	public:
 		[[nodiscard]] bool SerializeScene(const ECS& ecs, const std::string& sceneName, const std::filesystem::path& scenePath) const noexcept;
-		[[nodiscard]] bool DeserializeScene(std::string& sceneName, ECS& ecs, const std::filesystem::path& scenePath) noexcept;
+		[[nodiscard]] bool DeserializeScene(std::string& sceneName, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept;
 
 		bool SerializeEntity(const ECS& ecs, const EntityId id, const std::filesystem::path& path) const noexcept;
 		bool DeserializeEntity(ECS& ecs, const std::filesystem::path& path) noexcept;
@@ -30,15 +30,11 @@ namespace Pengin
 		~Serializer() = default;
 
 		[[nodiscard]] bool SerializeScene_Json(const ECS& ecs, const std::string& sceneName, const std::filesystem::path& scenePath) const noexcept;
-		[[nodiscard]] bool DeserializeScene_Json(std::string& sceneName, ECS& ecs, const std::filesystem::path& scenePath) noexcept;
-
-		//should just call scene entity and output in the path TODO
-		[[nodiscard]] bool SerializeEntity_Json(const ECS& ecs, const EntityId id, const std::filesystem::path& path) const noexcept;
-		[[nodiscard]] bool DeserializeEntity_Json(ECS& ecs, const std::filesystem::path& path) noexcept;
+		[[nodiscard]] bool DeserializeScene_Json(std::string& sceneName, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept;
 
 		using json = nlohmann::ordered_json;
 		[[nodiscard]] bool SerializeSceneEntity_Json(const ECS& ecs, const EntityId id, json& j) const noexcept;
-		[[nodiscard]] bool DeserializeSceneEntity_Json(ECS& ecs, const json& entityData) noexcept;
+		[[nodiscard]] bool DeserializeSceneEntity_Json(ECS& ecs, std::unordered_map<UUID, EntityId>& entityMap, const json& entityData) noexcept;
 
 		void OutputEntityData(const ECS& ecs, const EntityId id) const noexcept;
 	};

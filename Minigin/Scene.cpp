@@ -34,7 +34,7 @@ namespace Pengin
 
 	bool Scene::DeserializeScene(const std::filesystem::path& scenePath) noexcept
 	{
-		return Serializer::GetInstance().DeserializeScene(m_Name, m_Ecs, scenePath);
+		return Serializer::GetInstance().DeserializeScene(m_Name, m_UUID_EntityIdMap, m_Ecs, scenePath);
 	}
 
 	Entity Scene::CreateEntity(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
@@ -43,7 +43,9 @@ namespace Pengin
 
 		Entity entity{ id, weak_from_this() };
 		entity.AddComponent<TransformComponent>(position, rotation, scale);
-		entity.AddComponent<UUIDComponent>();
+		const auto& uuidComp = entity.AddComponent<UUIDComponent>();
+
+		m_UUID_EntityIdMap[uuidComp.uuid] = id;
 
 		return entity;
 	}
@@ -51,7 +53,16 @@ namespace Pengin
 	bool Scene::DestroyEntity(Entity entity, bool keepChildren)
 	{
 		entity.SetParent({ NULL_ENTITY_ID, shared_from_this() }, keepChildren);
-		return m_Ecs.DestroyEntity(entity.GetEntityId());
+
+		const auto id = entity.GetEntityId();
+		const auto& uuid = entity.GetComponent<UUIDComponent>().uuid;
+
+		auto it = m_UUID_EntityIdMap.find(uuid);
+		assert(it != end(m_UUID_EntityIdMap));
+
+		m_UUID_EntityIdMap.erase(it);
+
+		return m_Ecs.DestroyEntity(id);
 	}
 
 	bool Scene::DestroyEntity(const EntityId entityId, bool keepChildren)

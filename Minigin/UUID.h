@@ -1,6 +1,8 @@
 #ifndef PENGIN_UUID
 #define PENGIN_UUID
 
+#include <xhash>
+
 #pragma warning (push)
 	#pragma warning (disable: 4244)
 	#include <uuid_v4.h>
@@ -20,6 +22,11 @@ namespace Pengin
 
 		~UUID() = default;
 
+		bool operator==(const UUID& other) const noexcept
+		{
+			return m_UUID == other.m_UUID;
+		}
+
 	private:
 		UUIDv4::UUID m_UUID;
 	};
@@ -32,6 +39,7 @@ namespace std
 	{
 		size_t operator()(const Pengin::UUID& UUID) const noexcept
 		{
+			//return UUIDv4::UUID{ UUID.GetUUID_Str() }.hash();
 			return hash<std::string>()(UUID.GetUUID_Str());
 		}
 	};

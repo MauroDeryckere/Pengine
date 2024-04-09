@@ -12,7 +12,6 @@
 
 namespace Pengin
 {
-	//a UUID would be preferred in future for proper serialization (add a UUID component to each entity)
 	bool Serializer::SerializeScene(const ECS& ecs, const std::string& sceneName, const std::filesystem::path& scenePath) const noexcept
 	{
 		const auto extension{ scenePath.extension() };
@@ -27,12 +26,12 @@ namespace Pengin
 		}
 	}
 
-	bool Serializer::DeserializeScene(std::string& sceneName, ECS& ecs, const std::filesystem::path& scenePath) noexcept
+	bool Serializer::DeserializeScene(std::string& sceneName, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
 	{
 		const auto extension{ scenePath.extension() };
 		if (extension == ".json")
 		{
-			return DeserializeScene_Json(sceneName, ecs, scenePath);
+			return DeserializeScene_Json(sceneName, entityMap, ecs, scenePath);
 		}
 		else
 		{
@@ -43,40 +42,47 @@ namespace Pengin
 
 	bool Serializer::SerializeEntity(const ECS& ecs, const EntityId id, const std::filesystem::path& path) const noexcept
 	{
-		assert(id != NULL_ENTITY_ID);
+		ecs;
+		id;
+		path;
+		return false;
+		//assert(id != NULL_ENTITY_ID);
 
-		const auto extension{ path.extension() };		
-		if (extension == ".json")
-		{
-			if (!SerializeEntity_Json(ecs, id, path))
-			{
-				return false;
-			}
-		}
-		else
-		{
-			DEBUG_OUT("wrong file extension, only support .json");
-			return false;
-		}
-		return true;
+		//const auto extension{ path.extension() };		
+		//if (extension == ".json")
+		//{
+		//	if (!SerializeEntity_Json(ecs, id, path))
+		//	{
+		//		return false;
+		//	}
+		//}
+		//else
+		//{
+		//	DEBUG_OUT("wrong file extension, only support .json");
+		//	return false;
+		//}
+		//return true;
 	}
 
 	bool Serializer::DeserializeEntity(ECS& ecs, const std::filesystem::path& path) noexcept
 	{
-		const auto extension{ path.extension() };
-		if (extension == ".json")
-		{
-			if (!DeserializeEntity_Json(ecs, path))
-			{
-				return false;
-			}
-		}
-		else
-		{
-			DEBUG_OUT("wrong file extension, only support .json");
-			return false;
-		}
-		return true;
+		ecs;
+		path;
+		return false;
+		//const auto extension{ path.extension() };
+		//if (extension == ".json")
+		//{
+		//	if (!DeserializeEntity_Json(ecs, path))
+		//	{
+		//		return false;
+		//	}
+		//}
+		//else
+		//{
+		//	DEBUG_OUT("wrong file extension, only support .json");
+		//	return false;
+		//}
+		//return true;
 	}
 
 	bool Serializer::SerializeScene_Json(const ECS& ecs, const std::string& sceneName, const std::filesystem::path& scenePath) const noexcept
@@ -104,7 +110,7 @@ namespace Pengin
 		return false;
 	}
 
-	bool Serializer::DeserializeScene_Json(std::string& sceneName, ECS& ecs, const std::filesystem::path& scenePath) noexcept
+	bool Serializer::DeserializeScene_Json(std::string& sceneName, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
 	{
 		using json = nlohmann::ordered_json;
 
@@ -123,7 +129,7 @@ namespace Pengin
 			{
 				for (const auto& entityData : scene["Entities"])
 				{
-					if (!DeserializeSceneEntity_Json(ecs, entityData))
+					if (!DeserializeSceneEntity_Json(ecs, entityMap, entityData))
 					{
 						return false;
 					}
@@ -132,74 +138,6 @@ namespace Pengin
 			else
 			{
 				DEBUG_OUT("Scene " << sceneName << " does not contain entities");
-			}
-
-			return true;
-		}
-		return false;
-	}
-
-	bool Serializer::SerializeEntity_Json(const ECS& ecs, const EntityId id, const std::filesystem::path& path) const noexcept
-	{
-		using json = nlohmann::ordered_json;
-		json entityData;
-
-		entityData["Entity id"] = id;
-
-		if (ecs.HasComponent<TransformComponent>(id))
-		{
-			const auto& transform = ecs.GetComponent<TransformComponent>(id);
-			entityData["Transform Component"] = transform;
-		}
-		if (ecs.HasComponent<SpriteComponent>(id))
-		{
-			const auto& sprite = ecs.GetComponent<SpriteComponent>(id);
-			entityData["Sprite Component"] = sprite;
-		}
-
-		if (std::ofstream file{ path, std::ios::out }; file.is_open())
-		{
-			file << entityData.dump(4);
-			return true;
-		}
-		return false;
-	}
-
-	bool Serializer::DeserializeEntity_Json(ECS& ecs, const std::filesystem::path& path) noexcept
-	{
-		using json = nlohmann::ordered_json;
-		if (std::ifstream file{ path, std::ios::in }; file.is_open())
-		{
-			json entityData;
-			file >> entityData;
-
-			if (!entityData.contains("Entity id"))
-			{
-				return false;
-			}
-
-			EntityId id = entityData["Entity id"];
-			id;
-			const auto entity = ecs.CreateEntity(); //TODO UUID comp
-			entity;
-
-			if (entityData.contains("Transform Component"))
-			{
-				TransformComponent transform = entityData["Transform Component"];
-				ecs.AddComponent<TransformComponent>(id, std::move(transform));
-			}
-			if (entityData.contains("Sprite Component"))
-			{
-				const auto& spriteData = entityData["Sprite Component"];
-
-				const std::string texturePath = spriteData["path"];
-				auto& sprite = (texturePath == "NO PATH" ? ecs.AddComponent<SpriteComponent>(entity) : ecs.AddComponent<SpriteComponent>(entity, texturePath));
-
-				sprite.m_SourceRect = UtilStructs::Rectu16{ static_cast<uint16_t>(spriteData["Source rect"][0]),
-															static_cast<uint16_t>(spriteData["Source rect"][1]),
-															static_cast<uint16_t>(spriteData["Source rect"][2]),
-															static_cast<uint16_t>(spriteData["Source rect"][3]) };
-				sprite.isVisible = spriteData["is visible"];
 			}
 
 			return true;
@@ -271,7 +209,7 @@ namespace Pengin
 		return true;
 	}
 
-	bool Serializer::DeserializeSceneEntity_Json(ECS& ecs, const json& entityData) noexcept
+	bool Serializer::DeserializeSceneEntity_Json(ECS& ecs, std::unordered_map<UUID, EntityId>& entityMap, const json& entityData) noexcept
 	{
 		using json = nlohmann::ordered_json;
 
@@ -289,10 +227,11 @@ namespace Pengin
 		assert(id != NULL_ENTITY_ID && "Entity was invalid when serialized");
 
 		const auto entity = ecs.CreateEntity();
-		ecs.AddComponent<UUIDComponent>(id, UUID{ entityData["UUID"].get<std::string>() });
+		const auto uuid = UUID{ entityData["UUID"].get<std::string>() };
+		ecs.AddComponent<UUIDComponent>(id, uuid);
 
-		//TODO scene map: UUID - entityID
-
+		entityMap[uuid] = id;
+		
 		if (entityData.contains("Transform Component"))
 		{
 			TransformComponent transform = entityData["Transform Component"];
