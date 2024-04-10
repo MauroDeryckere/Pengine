@@ -153,7 +153,7 @@ namespace Pengin
 		assert(ecs.Exists(id));
 		assert(ecs.HasComponent<UUIDComponent>(id));
 
-		j["Entity id"] = id;
+		j["Entity id"] = static_cast<uint64_t>(id);
 		const auto& uuidComp = ecs.GetComponent<UUIDComponent>(id);
 		j["UUID"] = uuidComp.uuid.GetUUID_PrettyStr();
 
@@ -267,7 +267,7 @@ namespace Pengin
 			const auto& textData = entityData["Text Component"];
 
 			const std::string fontPath = textData["Path"];
-			const unsigned fontSize = textData["FontSize"];
+			unsigned fontSize = static_cast<unsigned>(textData["FontSize"].get<uint64_t>());
 
 			auto& textComp = ecs.AddComponent<TextComponent>(entity, fontPath, fontSize);
 			textComp.m_Color = glm::u8vec4{ textData["Color"][0].get<uint8_t>(),
@@ -315,7 +315,9 @@ namespace Pengin
 	{
 		if (ecs.HasComponent<TransformComponent>(id))
 		{
-			const auto& transform = ecs.GetComponent<TransformComponent>(id);
+			//unused in release
+			const auto& transform [[maybe_unused]] = ecs.GetComponent<TransformComponent>(id);
+
 			DEBUG_OUT("Transform Component\n");
 
 			DEBUG_OUT("World pos " << transform.worldPos.x << " " << transform.worldPos.y << " " << transform.worldPos.z);
@@ -334,7 +336,7 @@ namespace Pengin
 		}
 		if (ecs.HasComponent<SpriteComponent>(id))
 		{
-			const auto& sprite = ecs.GetComponent<SpriteComponent>(id);
+			const auto& sprite [[maybe_unused]] = ecs.GetComponent<SpriteComponent>(id);
 			DEBUG_OUT("Sprite Component\n");
 
 			DEBUG_OUT("Is Visible " << sprite.isVisible);

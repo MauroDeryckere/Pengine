@@ -283,6 +283,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="JsonConversion.h" />
     <ClInclude Include="MovementSystem.h" />
     <ClInclude Include="RectColliderComponent.h" />
+    <ClInclude Include="SceneData.h" />
     <ClInclude Include="SceneInfoPanel.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="Serializer.h" />
