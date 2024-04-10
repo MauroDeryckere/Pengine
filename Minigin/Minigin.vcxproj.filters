@@ -67,9 +67,6 @@
     <Filter Include="Header Files\Core">
       <UniqueIdentifier>{21cac00d-f9ca-47b4-8a88-f29b7b579806}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Steam">
-      <UniqueIdentifier>{b6f11fd8-58d6-4600-a95b-5a20ec48246b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Achievements">
       <UniqueIdentifier>{6ce943ba-2823-4b82-a20e-ca9fe414b864}</UniqueIdentifier>
     </Filter>
@@ -120,6 +117,9 @@
     </Filter>
     <Filter Include="3rd Party\UUID">
       <UniqueIdentifier>{2d1c7d16-3ebf-4686-bef0-59daf4c81dc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd Party\Steam">
+      <UniqueIdentifier>{b6f11fd8-58d6-4600-a95b-5a20ec48246b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -253,139 +253,139 @@
       <Filter>Header Files\Events</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamapplist.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamapps.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamappticket.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamclient.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamcontroller.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamdualsense.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamfriends.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamgamecoordinator.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamgameserver.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamgameserverstats.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamhtmlsurface.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamhttp.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteaminput.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteaminventory.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteammatchmaking.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteammusic.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteammusicremote.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamnetworking.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamnetworkingmessages.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamnetworkingsockets.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamnetworkingutils.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamparentalsettings.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamps3overlayrenderer.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamremoteplay.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamremotestorage.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamscreenshots.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamugc.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamuser.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamuserstats.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamutils.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamvideo.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\matchmakingtypes.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api_common.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api_flat.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api_internal.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_gameserver.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steamclientpublic.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steamencryptedappticket.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steamhttpenums.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steamnetworkingfakeip.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steamnetworkingtypes.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steamps3params.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steamtypes.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steamuniverse.h">
-      <Filter>Header Files\Steam</Filter>
+      <Filter>3rd Party\Steam</Filter>
     </ClInclude>
     <ClInclude Include="AchievementSystem.h">
       <Filter>Header Files\Achievements</Filter>

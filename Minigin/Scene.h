@@ -53,8 +53,8 @@ namespace Pengin
 		bool SerializeScene() const noexcept;
 		
 		//Single entity desirialization / serialization - TODO allow to select a file for it,...
-		void SerializeEntity(const EntityId id) noexcept;
-		void DeserializeEntity() noexcept;
+		//void SerializeEntity(const EntityId id) noexcept;
+		//void DeserializeEntity() noexcept;
 
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
@@ -62,18 +62,17 @@ namespace Pengin
 		Scene& operator=(Scene&& other) = delete;
 
 	private:
-		friend std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name, const std::string& sceneLoadPath, const std::string& sceneSavePath, bool saveOnDestroy);
+		friend std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name, const path& sceneLoadPath, const path& sceneSavePath, bool saveOnDestroy, bool swapToNext);
 
 		explicit Scene(const std::string& name, const path& sceneLoadPath = { }, const path& sceneSavePath = { }, bool saveOnDestroy = false);
 		friend class Entity;
 		ECS m_Ecs;
+		std::unordered_map<UUID, EntityId> m_UUID_EntityIdMap;
 
 		std::string m_Name;
-		static unsigned m_IdCounter;
 
+		const path m_SceneSavePath{};
 		bool m_SaveOnDestroy{ false };
-
-		std::unordered_map<UUID, EntityId> m_UUID_EntityIdMap;
 
 		//SYSTEMS----------------------------
 		//Can this be moved to a more generic approach? System queue, manager, ... (base system?)
@@ -94,8 +93,6 @@ namespace Pengin
 		std::unique_ptr<SceneInfoPanel> m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>(this) };
 		std::unique_ptr<InputInfoPanel> m_InputInfoPanel{ std::make_unique<InputInfoPanel>() };
 		//-----------------------------------
-
-		const path m_SceneSavePath{};
 
 		bool DeserializeScene(const path& scenePath) noexcept;
 	};

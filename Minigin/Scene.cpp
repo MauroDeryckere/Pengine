@@ -7,9 +7,7 @@
 
 namespace Pengin
 {
-	unsigned int Scene::m_IdCounter = 0;
-
-	Scene::Scene(const std::string& name, const std::filesystem::path& sceneLoadPath, const std::filesystem::path& sceneSavePath, bool saveOnDestroy) :
+	Scene::Scene(const std::string& name, const path& sceneLoadPath, const path& sceneSavePath, bool saveOnDestroy) :
 		m_Name{ name },
 		m_SaveOnDestroy{ saveOnDestroy },
 		m_SceneSavePath{ sceneSavePath }
@@ -29,6 +27,11 @@ namespace Pengin
 		{
 			DEBUG_OUT("Saving scene " << m_Name);
 			SerializeScene();
+		}
+
+		if (!SceneManager::GetInstance().SwitchToNextScene())
+		{
+			DEBUG_OUT("No scene to swap to");
 		}
 	}
 
@@ -126,14 +129,14 @@ namespace Pengin
 		return Serializer::GetInstance().SerializeScene(m_Ecs, m_Name, m_SceneSavePath);
 	}
 
-	void Scene::SerializeEntity(const EntityId id) noexcept
-	{
-		Serializer::GetInstance().SerializeEntity(m_Ecs, id, "../Data/jsonTestSerEntity.json");
-	}
+	//void Scene::SerializeEntity(const EntityId id) noexcept
+	//{
+	//	Serializer::GetInstance().SerializeEntity(m_Ecs, id, "../Data/jsonTestSerEntity.json");
+	//}
 
-	void Scene::DeserializeEntity() noexcept
-	{
-		Serializer::GetInstance().DeserializeEntity(m_Ecs, "../Data/jsonTestSerEntity.json");
-	}
+	//void Scene::DeserializeEntity() noexcept
+	//{
+	//	Serializer::GetInstance().DeserializeEntity(m_Ecs, "../Data/jsonTestSerEntity.json");
+	//}
 
 }

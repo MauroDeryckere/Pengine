@@ -1,20 +1,28 @@
 #ifndef SCENEMANAGER
 #define SCENEMANAGER
 
-#include "Singleton.h"
+#include "CoreIncludes.h"
 
 #include <vector>
 #include <string>
+#include <filesystem>
 #include <memory>
 
 namespace Pengin
 {
 	class Scene;
+	using std::filesystem::path;
+
 	class SceneManager final : public dae::Singleton<SceneManager>
 	{
 	public:
-		std::shared_ptr<Scene> CreateScene(const std::string& name, const std::string& sceneLoadPath = {}, const std::string & sceneSavePath = {}, bool saveOnDestroy = false);
-		std::shared_ptr<Scene> GetActiveScene() { return m_ActiveScene; }
+		std::shared_ptr<Scene> CreateScene(const std::string& name, const path& sceneLoadPath = {}, const path& sceneSavePath = {}, bool saveOnDestroy = false, bool swapToNext = true);
+		[[nodiscard]] std::shared_ptr<Scene> GetActiveScene() noexcept { return m_Scenes[m_ActiveSceneIdx]; }
+
+		[[nodiscard]] std::shared_ptr<Scene> GetScene(const std::string& sceneName);
+		void SetSceneActive(const std::string& sceneName, bool destroyActive = true);
+
+		[[nodiscard]] bool SwitchToNextScene() noexcept;
 
 		void Update();
 		void FixedUpdate();
@@ -26,11 +34,11 @@ namespace Pengin
 		friend class dae::Singleton<SceneManager>;
 		SceneManager() = default;
 
-		std::shared_ptr<Scene> m_ActiveScene;
-
 		std::vector<std::shared_ptr<Scene>> m_Scenes;
+		std::unordered_map<std::string, size_t> m_SceneName_IdMap;
 
-		//TODO swpaping scenes
+		size_t m_ActiveSceneIdx{ 0 };
+		unsigned m_SceneCounter{ 0 };
 	};
 }
 
