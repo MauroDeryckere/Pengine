@@ -64,7 +64,7 @@ namespace Pengin
 	private:
 		friend std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name, const path& sceneLoadPath, const path& sceneSavePath, bool saveOnDestroy, bool swapToNext);
 
-		explicit Scene(const std::string& name, const path& sceneLoadPath = { }, const path& sceneSavePath = { }, bool saveOnDestroy = false);
+		explicit Scene(const std::string& name, const path& sceneLoadPath = { }, const path& sceneSavePath = { }, bool saveOnDestroy = false, bool swapToNext = true);
 		friend class Entity;
 		ECS m_Ecs;
 		std::unordered_map<UUID, EntityId> m_UUID_EntityIdMap;
@@ -73,6 +73,8 @@ namespace Pengin
 
 		const path m_SceneSavePath{};
 		bool m_SaveOnDestroy{ false };
+
+		bool m_SwapToNextOnDestroy{ };
 
 		//SYSTEMS----------------------------
 		//Can this be moved to a more generic approach? System queue, manager, ... (base system?)

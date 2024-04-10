@@ -38,7 +38,7 @@ namespace Pengin
 	{
 		++m_ActiveSceneIdx;
 
-		if (m_ActiveSceneIdx > m_SceneCounter)
+		if (m_ActiveSceneIdx >= m_SceneCounter)
 		{
 			DEBUG_OUT("Can't switch to next scene, last scene reached in scene vector.");
 			std::erase(m_Scenes, m_Scenes[m_ActiveSceneIdx - 1]);
@@ -84,7 +84,7 @@ namespace Pengin
 
 	std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name, const path& sceneLoadPath, const path& sceneSavePath, bool saveOnDestroy, bool swapToNext)
 	{
-		const auto& scene = std::shared_ptr<Scene>( new Scene{ name, sceneLoadPath, sceneSavePath, saveOnDestroy } );
+		const auto& scene = std::shared_ptr<Scene>( new Scene{ name, sceneLoadPath, sceneSavePath, saveOnDestroy,  swapToNext } );
 		m_Scenes.emplace_back(scene);
 
 		auto it = m_SceneName_IdMap.find(name);
