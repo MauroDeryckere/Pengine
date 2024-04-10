@@ -3,6 +3,12 @@
 
 #include "CoreIncludes.h"
 
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp> 
+#include <boost/uuid/uuid_io.hpp> 
+
+boost::uuids::uuid;
+
 namespace Pengin
 {
 	class UUID final
@@ -22,7 +28,7 @@ namespace Pengin
 		}
 
 	private:
-		uint64_t m_UUID;
+		boost::uuids::uuid m_UUID;
 	};
 }
 
@@ -31,6 +37,7 @@ namespace std
 	template<>
 	struct hash<Pengin::UUID>
 	{
+		//TODO swap to the boost hash func
 		size_t operator()(const Pengin::UUID& UUID) const noexcept
 		{
 			return hash<std::string>()(UUID.GetUUID_PrettyStr());

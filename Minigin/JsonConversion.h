@@ -13,7 +13,7 @@ namespace Pengin
 	//NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE();
 
 	//Transforms
-	void to_json(json& j, const TransformComponent& transform)
+	void to_json(json& j, const TransformComponent& transform, const ECS& ecs)
 	{
 		j =
 		{
@@ -24,16 +24,16 @@ namespace Pengin
 			{"relation",
 				{
 					{"children", transform.relation.children},
-					{"firstChild", transform.relation.firstChild},
-					{"prevSibling", transform.relation.prevSibling},
-					{"nextSibling", transform.relation.nextSibling},
-					{"parent", transform.relation.parent}
+					{"firstChild", transform.relation.firstChild == NULL_ENTITY_ID ? "NULL_UUID" : ecs.GetComponent<UUIDComponent>(transform.relation.firstChild).uuid.GetUUID_PrettyStr() },
+					{"prevSibling", transform.relation.prevSibling == NULL_ENTITY_ID ? "NULL_UUID" : ecs.GetComponent<UUIDComponent>(transform.relation.prevSibling).uuid.GetUUID_PrettyStr() },
+					{"nextSibling", transform.relation.nextSibling == NULL_ENTITY_ID ? "NULL_UUID" : ecs.GetComponent<UUIDComponent>(transform.relation.nextSibling).uuid.GetUUID_PrettyStr() },
+					{"parent", transform.relation.parent == NULL_ENTITY_ID ? "NULL_UUID" : ecs.GetComponent<UUIDComponent>(transform.relation.parent).uuid.GetUUID_PrettyStr() },
 				}
 			},
 			{"isPosDirty", transform.isPosDirty}
 		};
 	}
-	void from_json(const json& j, TransformComponent& transform)
+	void from_json(const json& j, TransformComponent& transform, const std::unordered_map<UUID, EntityId>& entityMap)
 	{
 		transform.worldPos = {
 			j["worldPos"][0].get<float>(),
@@ -57,10 +57,19 @@ namespace Pengin
 		};
 
 		transform.relation.children = j["relation"]["children"].get<size_t>();
-		transform.relation.firstChild = j["relation"]["firstChild"].get<EntityId>();
-		transform.relation.prevSibling = j["relation"]["prevSibling"].get<EntityId>();
-		transform.relation.nextSibling = j["relation"]["nextSibling"].get<EntityId>();
-		transform.relation.parent = j["relation"]["parent"].get<EntityId>();
+
+		const auto fistChildStr = j["relation"]["firstChild"].get<std::string>();
+		transform.relation.firstChild = (fistChildStr == "NULL_UUID" ? NULL_ENTITY_ID : entityMap.at({ fistChildStr }));
+
+		const auto prevSibStr = j["relation"]["prevSibling"].get<std::string>();
+		transform.relation.prevSibling = (prevSibStr == "NULL_UUID" ? NULL_ENTITY_ID : entityMap.at({ prevSibStr }));
+
+		const auto nextSibStr = j["relation"]["nextSibling"].get<std::string>();
+		transform.relation.nextSibling = (nextSibStr == "NULL_UUID" ? NULL_ENTITY_ID : entityMap.at({ nextSibStr }));
+
+		const auto parentStr = j["relation"]["parent"].get<std::string>();
+		transform.relation.parent = (parentStr == "NULL_UUID" ? NULL_ENTITY_ID : entityMap.at({ parentStr }));
+
 		transform.isPosDirty = j["isPosDirty"].get<bool>();
 	}
 	//----------

@@ -127,6 +127,16 @@ namespace Pengin
 
 			if (scene.contains("Entities"))
 			{
+				for (auto& entityData : scene["Entities"]) //First we need to get all the UUIDs and create the entitiees to ensure any dependencies can be converted
+				{
+					const auto entityId = ecs.CreateEntity();
+					const auto& uuid = entityData["UUID"].get<std::string>();
+
+					auto& uuidComp = ecs.AddComponent<UUIDComponent>(entityId, uuid);
+					
+					entityMap[uuidComp.uuid] = entityId;
+				}
+
 				for (const auto& entityData : scene["Entities"])
 				{
 					if (!DeserializeSceneEntity_Json(ecs, entityMap, entityData))
@@ -153,14 +163,13 @@ namespace Pengin
 		assert(ecs.Exists(id));
 		assert(ecs.HasComponent<UUIDComponent>(id));
 
-		j["Entity id"] = static_cast<uint64_t>(id);
 		const auto& uuidComp = ecs.GetComponent<UUIDComponent>(id);
 		j["UUID"] = uuidComp.uuid.GetUUID_PrettyStr();
 
 		if (ecs.HasComponent<TransformComponent>(id))
 		{
 			const auto& transform = ecs.GetComponent<TransformComponent>(id);
-			j["Transform Component"] = transform;
+			to_json(j["Transform Component"], transform, ecs); //conversion to UUID is necessary so we need to pass the ecs
 		}
 		else
 		{
@@ -220,27 +229,24 @@ namespace Pengin
 	{
 		using json = nlohmann::ordered_json;
 
-		if (!entityData.contains("Entity id"))
-		{
-			return false;
-		}
 		if (!entityData.contains("UUID"))
 		{
 			DEBUG_OUT("Need UUID in json file");
 			return false;
 		}
-
-		assert(entityData["Entity id"] != NULL_ENTITY_ID && "Entity was invalid when serialized");
-
-		const auto entity = ecs.CreateEntity();
-		const auto uuid = UUID{ entityData["UUID"].get<std::string>() };
-		ecs.AddComponent<UUIDComponent>(entity, uuid);
-
-		entityMap[uuid] = entity;
 		
+		const auto uuid_Str = entityData["UUID"].get<std::string>();
+		assert(uuid_Str != "NULL_UUID");
+
+		const auto uuid = UUID{ uuid_Str };
+		const EntityId entity = entityMap[uuid];
+
+		assert(entity != NULL_ENTITY_ID);
+
 		if (entityData.contains("Transform Component"))
 		{
-			TransformComponent transform = entityData["Transform Component"];
+			TransformComponent transform;
+			from_json(entityData["Transform Component"], transform, entityMap);
 			ecs.AddComponent<TransformComponent>(entity, std::move(transform));
 		}
 		if (entityData.contains("Sprite Component"))

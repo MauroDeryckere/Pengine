@@ -465,9 +465,6 @@
     <ClInclude Include="DebugOutput.h">
       <Filter>Header Files\Core\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="CoreIncludes.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="InputInfoPanel.h">
       <Filter>Header Files\Rendering\Debug</Filter>
     </ClInclude>
@@ -488,6 +485,9 @@
     </ClInclude>
     <ClInclude Include="SceneData.h">
       <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreIncludes.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
