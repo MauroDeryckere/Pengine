@@ -115,9 +115,6 @@
     <Filter Include="3rd Party\Json">
       <UniqueIdentifier>{8ad16287-e09e-478a-953f-f7788bb5d37e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd Party\UUID">
-      <UniqueIdentifier>{2d1c7d16-3ebf-4686-bef0-59daf4c81dc2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3rd Party\Steam">
       <UniqueIdentifier>{b6f11fd8-58d6-4600-a95b-5a20ec48246b}</UniqueIdentifier>
     </Filter>
@@ -485,12 +482,6 @@
     </ClInclude>
     <ClInclude Include="UUID.h">
       <Filter>Header Files\Core\UUID</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3rdParty\UUID\endianness.h">
-      <Filter>3rd Party\UUID</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3rdParty\UUID\uuid_v4.h">
-      <Filter>3rd Party\UUID</Filter>
     </ClInclude>
     <ClInclude Include="UUIDComponent.h">
       <Filter>Header Files\Components</Filter>

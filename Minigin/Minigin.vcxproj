@@ -267,8 +267,6 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api_flat.h" />
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api_internal.h" />
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_gameserver.h" />
-    <ClInclude Include="..\3rdParty\UUID\endianness.h" />
-    <ClInclude Include="..\3rdParty\UUID\uuid_v4.h" />
     <ClInclude Include="AchievementSystem.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AnimationSystem.h" />

@@ -1,12 +1,7 @@
 #ifndef PENGIN_UUID
 #define PENGIN_UUID
 
-#include <xhash>
-
-#pragma warning (push)
-	#pragma warning (disable: 4244)
-	#include <uuid_v4.h>
-#pragma warning (pop)
+#include "CoreIncludes.h"
 
 namespace Pengin
 {
@@ -14,32 +9,7 @@ namespace Pengin
 	{
 	public:
 		UUID() noexcept;
-		//UUID(const UUIDv4::UUID& id) noexcept;
 		UUID(const std::string& id, bool isPrettyStr = true) noexcept;
-
-		/*UUID(const UUID& id) :
-			m_UUID{ id.GetUUID_Str() } {}
-
-		UUID(UUID&& id) :
-			m_UUID{ std::move(id.GetUUID_Str()) } {}
-
-		UUID& operator=(const UUID& id)
-		{
-			if (this != &id) 
-			{
-				m_UUID = id.m_UUID;
-			}
-			return *this;
-		}
-
-		UUID& operator=(const UUID&& id)
-		{
-			if (this != &id)
-			{
-				m_UUID = std::move(id.m_UUID);
-			}
-			return *this;
-		}*/
 
 		~UUID() = default;
 
@@ -52,7 +22,7 @@ namespace Pengin
 		}
 
 	private:
-		UUIDv4::UUID m_UUID;
+		uint64_t m_UUID;
 	};
 }
 
@@ -63,8 +33,7 @@ namespace std
 	{
 		size_t operator()(const Pengin::UUID& UUID) const noexcept
 		{
-			//return UUIDv4::UUID{ UUID.GetUUID_Str() }.hash();
-			return hash<std::string>()(UUID.GetUUID_Str());
+			return hash<std::string>()(UUID.GetUUID_PrettyStr());
 		}
 	};
 }
