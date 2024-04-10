@@ -211,6 +211,33 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\basic_name_generator.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\config.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\md5.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_arc4random.ipp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_bcrypt.ipp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_detect_platform.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_getentropy.ipp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_getrandom.ipp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_include_platform.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_posix.ipp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_wincrypt.ipp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\sha1.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\uuid_generic.ipp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\uuid_x86.ipp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\entropy_error.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\name_generator.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\name_generator_md5.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\name_generator_sha1.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\nil_generator.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\random_generator.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\string_generator.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_generators.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_hash.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_io.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_serialize.hpp" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl2.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdlrenderer2.h" />

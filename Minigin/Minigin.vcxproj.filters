@@ -489,6 +489,87 @@
     <ClInclude Include="CoreIncludes.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_serialize.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\config.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\md5.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_arc4random.ipp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_bcrypt.ipp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_detect_platform.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_getentropy.ipp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_getrandom.ipp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_include_platform.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_posix.ipp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_wincrypt.ipp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\sha1.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\uuid_generic.ipp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\uuid_x86.ipp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\basic_name_generator.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\entropy_error.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\name_generator.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\name_generator_md5.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\name_generator_sha1.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\nil_generator.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\random_generator.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\string_generator.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_generators.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_hash.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_io.hpp">
+      <Filter>3rd Party</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">

@@ -7,8 +7,6 @@
 #include <boost/uuid/uuid_generators.hpp> 
 #include <boost/uuid/uuid_io.hpp> 
 
-boost::uuids::uuid;
-
 namespace Pengin
 {
 	class UUID final

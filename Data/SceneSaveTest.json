@@ -549,8 +549,8 @@
             },
             "Sprite Component": {
                 "Source rect": [
-                    48,
-                    16,
+                    32,
+                    0,
                     16,
                     16
                 ],
@@ -581,8 +581,8 @@
                     }
                 ],
                 "CurrentAnimationIndex": 0,
-                "CurrentAnimationFrame": 1,
-                "CurrentFrameTime": 0.34711989760398865,
+                "CurrentAnimationFrame": 0,
+                "CurrentFrameTime": 0.051871322095394135,
                 "IsPlaying": true
             }
         },
@@ -629,7 +629,7 @@
                 "path": "NO PATH"
             },
             "Text Component": {
-                "Text": "58.2",
+                "Text": "58.6",
                 "Path": "Lingua.otf",
                 "FontSize": 36,
                 "Color": [
