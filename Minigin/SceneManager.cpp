@@ -2,8 +2,6 @@
 #include "Scene.h"
 
 #include "EventManager.h"
-
-#include <ranges>
 #include <algorithm>
 
 namespace Pengin
@@ -19,7 +17,7 @@ namespace Pengin
 
 		if (it == end(m_SceneName_IdMap))
 		{
-			DEBUG_OUT("Invalid scene");
+			DEBUG_OUT("Invalid scene: " << sceneName);
 			return;
 		}
 
@@ -27,25 +25,42 @@ namespace Pengin
 
 		if (destroyActive)
 		{
-			DEBUG_OUT("Destroying scene: " << m_ActiveSceneIdx);
+			DEBUG_OUT("Destroying scene: " << m_ActiveSceneIdx << "Name: " << m_Scenes[m_ActiveSceneIdx]->GetName());
+			m_SceneName_IdMap.erase(m_Scenes[m_ActiveSceneIdx]->GetName());
 			std::erase(m_Scenes, m_Scenes[m_ActiveSceneIdx]);
 		}
 
 		m_ActiveSceneIdx = idx;
 	}
 
+	void SceneManager::DestroyScene(const std::string& sceneName)
+	{
+		auto it = m_SceneName_IdMap.find(sceneName);
+
+		if (it == end(m_SceneName_IdMap))
+		{
+			DEBUG_OUT(sceneName << " does not exist");
+			return;
+		}
+
+		DEBUG_OUT("Destroying scene: " << sceneName);
+		std::erase(m_Scenes, m_Scenes[(*it).second]);
+		m_SceneName_IdMap.erase(it);
+	}
+
 	bool SceneManager::SwitchToNextScene() noexcept
 	{
 		++m_ActiveSceneIdx;
 
+		m_SceneName_IdMap.erase(m_Scenes[m_ActiveSceneIdx - 1]->GetName());
+		std::erase(m_Scenes, m_Scenes[m_ActiveSceneIdx - 1]);
+
 		if (m_ActiveSceneIdx >= m_SceneCounter)
 		{
 			DEBUG_OUT("Can't switch to next scene, last scene reached in scene vector.");
-			std::erase(m_Scenes, m_Scenes[m_ActiveSceneIdx - 1]);
 			return false;
 		}
 
-		std::erase(m_Scenes, m_Scenes[m_ActiveSceneIdx - 1]);
 		return true;
 	}
 	void SceneManager::Update()
@@ -84,14 +99,14 @@ namespace Pengin
 
 	std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name, const path& sceneLoadPath, const path& sceneSavePath, bool saveOnDestroy, bool swapToNext)
 	{
-		const auto& scene = std::shared_ptr<Scene>( new Scene{ name, sceneLoadPath, sceneSavePath, saveOnDestroy,  swapToNext } );
+		const auto& scene = std::shared_ptr<Scene>( new Scene{ name, sceneLoadPath, sceneSavePath, saveOnDestroy } );
 		m_Scenes.emplace_back(scene);
 
 		auto it = m_SceneName_IdMap.find(name);
 		assert(it == end(m_SceneName_IdMap) && "Don't have 2 scenes with same name.");
 
 		++m_SceneCounter;
-		m_SceneName_IdMap.insert(it, { name, m_SceneCounter} );
+		m_SceneName_IdMap.insert( { name, m_SceneCounter} );
 
 		if (swapToNext)
 		{

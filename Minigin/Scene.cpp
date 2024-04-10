@@ -7,11 +7,10 @@
 
 namespace Pengin
 {
-	Scene::Scene(const std::string& name, const path& sceneLoadPath, const path& sceneSavePath, bool saveOnDestroy, bool swapToNext) :
+	Scene::Scene(const std::string& name, const path& sceneLoadPath, const path& sceneSavePath, bool saveOnDestroy) :
 		m_Name{ name },
 		m_SaveOnDestroy{ saveOnDestroy },
-		m_SceneSavePath{ sceneSavePath },
-		m_SwapToNextOnDestroy { swapToNext }
+		m_SceneSavePath{ sceneSavePath }
 	{
 		if (!sceneLoadPath.empty())
 		{
@@ -28,14 +27,6 @@ namespace Pengin
 		{
 			DEBUG_OUT("Saving scene " << m_Name);
 			SerializeScene();
-		}
-
-		if (m_SwapToNextOnDestroy)
-		{
-			if (!SceneManager::GetInstance().SwitchToNextScene())
-			{
-				DEBUG_OUT("failed to swap to next scene");
-			}
 		}
 	}
 

@@ -22,6 +22,8 @@ namespace Pengin
 		[[nodiscard]] std::shared_ptr<Scene> GetScene(const std::string& sceneName);
 		void SetSceneActive(const std::string& sceneName, bool destroyActive = true);
 
+		void DestroyScene(const std::string& sceneName);
+
 		[[nodiscard]] bool SwitchToNextScene() noexcept;
 
 		void Update();
