@@ -39,6 +39,10 @@ namespace Pengin
 		bool DestroyEntity(const EntityId entityId, bool keepChildren = true);
 
 		[[nodiscard]] ECS& GetECS() { return m_Ecs; }
+		[[nodiscard]] const UUID& GetUUID(const Entity entity) const;
+		[[nodiscard]] const UUID& GetUUID(const EntityId id);
+
+		[[nodiscard]] const EntityId GetEntityId(const UUID& uuid) const;
 
 		void FixedUpdate();
 		void Update();
@@ -81,7 +85,7 @@ namespace Pengin
 		std::unique_ptr<CollisionSystem> m_CollSystem{ std::make_unique<CollisionSystem>(m_Ecs) };
 		std::unique_ptr<WorldPositionSystem> m_WorldPosSystem{ std::make_unique<WorldPositionSystem>(m_Ecs) };
 
-		std::unique_ptr<UIDisplaySystem> m_UIDisplaySystem{ std::make_unique<UIDisplaySystem>(m_Ecs) };
+		std::unique_ptr<UIDisplaySystem> m_UIDisplaySystem{ std::make_unique<UIDisplaySystem>(m_Ecs, this) };
 
 		std::unique_ptr<AchievementSystem> m_AchSys{ std::make_unique<AchievementSystem>() };
 		//-----------------------------------

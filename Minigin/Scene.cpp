@@ -70,6 +70,26 @@ namespace Pengin
 		return DestroyEntity({entityId, shared_from_this() }, keepChildren);
 	}
 
+	const UUID& Scene::GetUUID(const Entity entity) const
+	{
+		return entity.GetUUID();
+	}
+	const UUID& Scene::GetUUID(const EntityId id)
+	{
+		return Entity{ id, shared_from_this() }.GetUUID();
+	}
+
+	const EntityId Scene::GetEntityId(const UUID& uuid) const
+	{
+		auto it = m_UUID_EntityIdMap.find(uuid);
+
+		if (it == end(m_UUID_EntityIdMap))
+		{
+			return NULL_ENTITY_ID;
+		}
+		return (*it).second;
+	}
+
 	void Scene::FixedUpdate()
 	{
 	}

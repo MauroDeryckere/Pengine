@@ -107,7 +107,34 @@ namespace Pengin
 			{"Color", { text.m_Color.r, text.m_Color.g, text.m_Color.b, text.m_Color.a } }
 		};
 	}
-	//---------------s
+	//---------------
+
+	//Score
+	void to_json(json& j, const ScoreComponent& score)
+	{
+		json displays;
+		for (const auto& e : score.m_ScoreDisplays)
+		{
+			displays.emplace_back(e.GetUUID_PrettyStr());
+		}
+
+		j =
+		{
+			{"Score", score.m_Score},
+			{"ScoreDisplayUUIDS", displays }
+		};
+	}
+	void from_json(const json& j, ScoreComponent& score)
+	{
+		score.m_Score = j["Score"].get<unsigned>();
+
+		const std::vector<std::string> id_Str = j["ScoreDisplayUUIDS"].get<std::vector<std::string>>();
+		for (const auto& uuid : id_Str)
+		{
+			score.m_ScoreDisplays.emplace_back(uuid);
+		}
+	}
+	//-------------
 
 	//Rect colliider
 	void to_json(json& j, const RectColliderComponent& rectColl)
@@ -127,6 +154,33 @@ namespace Pengin
 		};
 	}
 	//---------------
+
+	//Health
+	void to_json(json& j, const HealthComponent& health)
+	{
+		json displays;
+		for (const auto& e : health.m_HealthDisplayIds)
+		{
+			displays.emplace_back(e.GetUUID_PrettyStr());
+		}
+
+		j =
+		{
+			{"Health", health.m_Health},
+			{"HealthDisplayUUIDS", displays }
+		};
+	}
+	void from_json(const json& j, HealthComponent& health)
+	{
+		health.m_Health = j["Health"].get<unsigned>();
+
+		const std::vector<std::string> id_Str = j["HealthDisplayUUIDS"].get<std::vector<std::string>>();
+		for (const auto& uuid : id_Str)
+		{
+			health.m_HealthDisplayIds.emplace_back(uuid);
+		}
+	}
+	//-------------
 
 	//Animation
 	void to_json(json& j, const AnimationData& aniData)
@@ -168,6 +222,22 @@ namespace Pengin
 		ani.m_IsPlaying = j["IsPlaying"];
 	}
 	//---------------
+
+	//TextDisplay
+	void to_json(json& j, const TxtDisplayComponent& dis)
+	{
+		j =
+		{
+			{"Prefix", dis.m_Prefix},
+			{"Postfix", dis.m_Postfix}
+		};
+	}
+	void from_json(const json& j, TxtDisplayComponent& dis)
+	{
+		dis.m_Prefix = j["Prefix"].get<std::string>();
+		dis.m_Postfix = j["Postfix"].get<std::string>();
+	}
+	//-----------
 }
 
 #endif

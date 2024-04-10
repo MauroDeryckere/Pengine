@@ -3,7 +3,7 @@
     "Entities": [
         {
             "Entity id": 0,
-            "UUID": "e253bf00-2354-4593-afbd-2e45f9deb060",
+            "UUID": "c4aaa047-ef4f-46f6-96b4-b447ec7c8de7",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -44,6 +44,19 @@
                 "is visible": true,
                 "path": "pengoLowQualityFortesting.png"
             },
+            "Velocity Component": {
+                "Velocity": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            },
+            "Score Component": {
+                "Score": 270,
+                "ScoreDisplayUUIDS": [
+                    "cb803af1-f8ea-472a-9337-ccea2389ee8e"
+                ]
+            },
             "RectCollider Component": {
                 "CollRect": [
                     0,
@@ -51,11 +64,135 @@
                     20,
                     20
                 ]
+            },
+            "Health Component": {
+                "Health": 5,
+                "HealthDisplayUUIDS": [
+                    "76b8f5bf-f36b-404d-a2d7-c222d4896229"
+                ]
             }
         },
         {
             "Entity id": 1,
-            "UUID": "5640f475-1d0d-4ff8-a933-3ad86fcf835a",
+            "UUID": "76b8f5bf-f36b-404d-a2d7-c222d4896229",
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    200.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "NO PATH"
+            },
+            "Text Component": {
+                "Text": "<EMPTY STRING>",
+                "Path": "Lingua.otf",
+                "FontSize": 18,
+                "Color": [
+                    255,
+                    255,
+                    255,
+                    255
+                ]
+            },
+            "TextDisplay Component": {
+                "Prefix": "Player health: ",
+                "Postfix": ""
+            }
+        },
+        {
+            "Entity id": 2,
+            "UUID": "cb803af1-f8ea-472a-9337-ccea2389ee8e",
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    250.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    250.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "NO PATH"
+            },
+            "Text Component": {
+                "Text": "Player Score: 270",
+                "Path": "Lingua.otf",
+                "FontSize": 18,
+                "Color": [
+                    255,
+                    255,
+                    255,
+                    255
+                ]
+            },
+            "TextDisplay Component": {
+                "Prefix": "Player Score: ",
+                "Postfix": ""
+            }
+        },
+        {
+            "Entity id": 3,
+            "UUID": "ceb29f3c-928d-49d4-a2b4-768af5a8a943",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -109,76 +246,8 @@
             }
         },
         {
-            "Entity id": 2,
-            "UUID": "dc2f3a75-b695-4768-9be4-434b8322a102",
-            "Transform Component": {
-                "worldPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "localPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": 4294967295,
-                    "prevSibling": 4294967295,
-                    "nextSibling": 4294967295,
-                    "parent": 4294967295
-                },
-                "isPosDirty": false
-            }
-        },
-        {
-            "Entity id": 3,
-            "UUID": "329e6edf-9ffb-4ed6-98cc-e339eb130903",
-            "Transform Component": {
-                "worldPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "localPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": 4294967295,
-                    "prevSibling": 4294967295,
-                    "nextSibling": 4294967295,
-                    "parent": 4294967295
-                },
-                "isPosDirty": false
-            }
-        },
-        {
             "Entity id": 4,
-            "UUID": "82f8c335-f331-452e-96bf-2c95ea68b164",
+            "UUID": "999c0954-909b-4d57-8565-bd8b363f2a47",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -212,7 +281,7 @@
         },
         {
             "Entity id": 5,
-            "UUID": "65797ffa-46e1-4c77-b4a6-242889225f82",
+            "UUID": "bacee479-150c-40a4-a6a4-9abeb9845eb2",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -246,7 +315,7 @@
         },
         {
             "Entity id": 6,
-            "UUID": "73794b4f-0be3-4181-9c4c-e9e74f723c24",
+            "UUID": "a4cf746f-ae72-458f-994b-62c1e0e3f547",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -280,7 +349,7 @@
         },
         {
             "Entity id": 7,
-            "UUID": "84f02607-9c89-4ed0-960e-0a0531ff8881",
+            "UUID": "828a882a-92e4-43f3-99be-82abe3ec4d2b",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -314,7 +383,7 @@
         },
         {
             "Entity id": 8,
-            "UUID": "22ebb023-1eff-43c4-b2da-9d9f1f496b31",
+            "UUID": "fbb079d8-6b04-4b37-8654-f8d68d05e169",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -348,7 +417,75 @@
         },
         {
             "Entity id": 9,
-            "UUID": "9b2efb67-0f9f-4d33-bde1-0a6a05e7a75b",
+            "UUID": "08139538-3cfa-4198-9ea9-8e74cb75041f",
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            }
+        },
+        {
+            "Entity id": 10,
+            "UUID": "0c8fb2cb-5ef9-446f-b6cd-b2113fd5caa6",
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": 4294967295,
+                    "prevSibling": 4294967295,
+                    "nextSibling": 4294967295,
+                    "parent": 4294967295
+                },
+                "isPosDirty": false
+            }
+        },
+        {
+            "Entity id": 11,
+            "UUID": "ed18af47-71f9-4389-9c69-d9a8696dfe00",
             "Transform Component": {
                 "worldPos": [
                     200.0,
@@ -391,8 +528,8 @@
             }
         },
         {
-            "Entity id": 10,
-            "UUID": "83b1305b-cb96-4df8-95b1-1810204077c0",
+            "Entity id": 12,
+            "UUID": "10e9dc0a-339c-4796-ae6d-056c4c42cd97",
             "Transform Component": {
                 "worldPos": [
                     200.0,
@@ -425,8 +562,8 @@
             },
             "Sprite Component": {
                 "Source rect": [
-                    32,
-                    0,
+                    48,
+                    16,
                     16,
                     16
                 ],
@@ -457,14 +594,14 @@
                     }
                 ],
                 "CurrentAnimationIndex": 0,
-                "CurrentAnimationFrame": 0,
-                "CurrentFrameTime": 0.41999900341033936,
+                "CurrentAnimationFrame": 1,
+                "CurrentFrameTime": 0.20028050243854523,
                 "IsPlaying": true
             }
         },
         {
-            "Entity id": 11,
-            "UUID": "7c5668a4-50c6-4873-8dbf-76a4921c4ac2",
+            "Entity id": 13,
+            "UUID": "5fbd81a2-dce7-47ac-b18b-a5b9dbf44625",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -506,7 +643,7 @@
                 "path": "NO PATH"
             },
             "Text Component": {
-                "Text": "39.2",
+                "Text": "58.3",
                 "Path": "Lingua.otf",
                 "FontSize": 36,
                 "Color": [

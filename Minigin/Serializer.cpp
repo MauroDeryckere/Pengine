@@ -185,7 +185,8 @@ namespace Pengin
 		}
 		if (ecs.HasComponent<ScoreComponent>(id))
 		{
-			//TODO - requires UUID
+			const auto& score = ecs.GetComponent<ScoreComponent>(id);
+			j["Score Component"] = score;
 		}
 		if (ecs.HasComponent<RectColliderComponent>(id))
 		{
@@ -194,7 +195,8 @@ namespace Pengin
 		}
 		if (ecs.HasComponent<HealthComponent>(id))
 		{
-			//TODO - requires UUID
+			const auto& health = ecs.GetComponent<HealthComponent>(id);
+			j["Health Component"] = health;
 		}
 		if (ecs.HasComponent<FPSCounterComponent>(id))
 		{
@@ -204,6 +206,11 @@ namespace Pengin
 		{
 			const auto& ani = ecs.GetComponent<AnimationComponent>(id);
 			j["Animation Component"] = ani;
+		}
+		if (ecs.HasComponent<TxtDisplayComponent>(id))
+		{
+			const auto& dis = ecs.GetComponent<TxtDisplayComponent>(id);
+			j["TextDisplay Component"] = dis;
 		}
 
 		return true;
@@ -272,10 +279,20 @@ namespace Pengin
 
 			textComp.needsTextureChange = true; //Always need to generate a texture upon deserializing
 		}
+		if (entityData.contains("Score Component"))
+		{
+			ScoreComponent score = entityData["Score Component"];
+			ecs.AddComponent<ScoreComponent>(entity, std::move(score));
+		}
 		if (entityData.contains("RectCollider Component"))
 		{
 			RectColliderComponent rectColl = entityData["RectCollider Component"];
 			ecs.AddComponent<RectColliderComponent>(entity, std::move(rectColl));
+		}
+		if (entityData.contains("Health Component"))
+		{
+			HealthComponent health = entityData["Health Component"];
+			ecs.AddComponent<HealthComponent>(entity, std::move(health));
 		}
 		if (entityData.contains("Animation Component"))
 		{
@@ -286,7 +303,11 @@ namespace Pengin
 		{
 			ecs.AddComponent<FPSCounterComponent>(entity);
 		}
-
+		if (entityData.contains("TextDisplay Component"))
+		{
+			TxtDisplayComponent dis = entityData["TextDisplay Component"];
+			ecs.AddComponent<TxtDisplayComponent>(entity, std::move(dis));
+		}
 		return true;
 	}
 

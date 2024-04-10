@@ -8,6 +8,7 @@
 #include <cassert>
 
 #include "TransformComponent.h"
+#include "UUIDComponent.h"
 
 namespace Pengin
 {
@@ -75,6 +76,8 @@ namespace Pengin
 		void SetLocalPosition(const glm::vec3& position);
 
 		const EntityId GetEntityId() const noexcept { return m_EntityId; }
+		const UUID& GetUUID() const { return GetComponent<UUIDComponent>().uuid; }
+
 		operator bool() const noexcept { return (m_EntityId != NULL_ENTITY_ID && !m_pScene.expired()); }
 
 		Entity(const Entity& other) = default;

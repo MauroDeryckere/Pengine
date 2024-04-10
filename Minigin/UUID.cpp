@@ -8,9 +8,9 @@ namespace Pengin
 		m_UUID{ s_UUIDGenerator.getUUID() }
 	{ }
 
-	UUID::UUID(const UUIDv4::UUID& id) noexcept :
-		m_UUID{ id }
-	{ }
+	//UUID::UUID(const UUIDv4::UUID& id) noexcept :
+	//	m_UUID{ id }
+	//{ }
 
 	UUID::UUID(const std::string& id, bool isPrettyStr) noexcept
 	{ 

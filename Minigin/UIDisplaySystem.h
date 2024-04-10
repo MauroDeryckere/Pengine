@@ -6,12 +6,13 @@
 namespace Pengin
 {
 	class ECS;
+	class Scene;
 	class Observer;
 
 	class UIDisplaySystem final
 	{
 	public:
-		UIDisplaySystem(ECS& ecs);
+		UIDisplaySystem(ECS& ecs, Scene* pScene);
 		~UIDisplaySystem() = default;
 
 		UIDisplaySystem(const UIDisplaySystem&) = delete;
@@ -21,6 +22,7 @@ namespace Pengin
 
 	private:
 		ECS& m_ECS;
+		Scene* m_pScene;
 
 		std::shared_ptr<Observer> m_pObserver;
 

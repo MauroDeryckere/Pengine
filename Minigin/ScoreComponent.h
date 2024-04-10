@@ -1,8 +1,7 @@
 #ifndef SCORECOMPONENT
 #define SCORECOMPONENT
 
-#include "EntityId.h"
-
+#include "CoreIncludes.h"
 #include <vector>
 
 namespace Pengin
@@ -10,7 +9,7 @@ namespace Pengin
 	struct ScoreComponent final
 	{
 	public:
-		ScoreComponent(const std::vector<EntityId> scoreDisplayIds = { }) :
+		ScoreComponent(const std::vector<UUID>& scoreDisplayIds = { }) :
 			m_Score{ 0 },
 			m_ScoreDisplays{ scoreDisplayIds }
 		{
@@ -20,7 +19,7 @@ namespace Pengin
 		~ScoreComponent() = default;
 
 		unsigned m_Score{};
-		std::vector<EntityId> m_ScoreDisplays{};
+		std::vector<UUID> m_ScoreDisplays{};
 	};
 }
 
