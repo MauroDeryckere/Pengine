@@ -2,6 +2,7 @@
 
 #include "Serializer.h"
 #include "Entity.h"
+#include "PlayerComponent.h"
 #include "TransformComponent.h"
 #include "UUIDComponent.h"
 
@@ -55,6 +56,37 @@ namespace Pengin
 
 		const auto id = entity.GetEntityId();
 		const auto& uuid = entity.GetComponent<UUIDComponent>().uuid;
+
+		if (entity.HasComponent<PlayerComponent>())
+		{
+			const auto& playerComp = entity.GetComponent<PlayerComponent>();
+			const auto userIdx = playerComp.userIdx;
+
+			auto it = m_SceneData.user_UUIDVecIdxMap.find(userIdx);
+
+			if (it != end(m_SceneData.user_UUIDVecIdxMap))
+			{
+				const auto vecIdx = it->second;
+				assert(vecIdx < m_SceneData.playerUUIDs.size());
+				
+				if (m_SceneData.playerUUIDs.size() > 1)
+				{
+					const EntityId lastEntityId = m_UUID_EntityIdMap.at(m_SceneData.playerUUIDs.back());
+					const auto lastPlayerUserIdx = m_Ecs.GetComponent<PlayerComponent>(lastEntityId).userIdx;
+
+					m_SceneData.playerUUIDs[vecIdx] = std::move(m_SceneData.playerUUIDs.back());
+					m_SceneData.user_UUIDVecIdxMap.at(lastPlayerUserIdx) = vecIdx;
+				}
+
+				m_SceneData.user_UUIDVecIdxMap.erase(it);
+				m_SceneData.playerUUIDs.pop_back();
+
+			}
+			else
+			{
+				DEBUG_OUT("player component was never set as a player, ensure this is intened behaviour");
+			}
+		}
 
 		auto it = m_UUID_EntityIdMap.find(uuid);
 		assert(it != end(m_UUID_EntityIdMap));

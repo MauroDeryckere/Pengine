@@ -573,6 +573,9 @@
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_serialize.hpp">
       <Filter>3rd Party\UUID</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">

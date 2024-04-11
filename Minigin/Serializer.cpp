@@ -124,6 +124,13 @@ namespace Pengin
 		const auto& uuidComp = ecs.GetComponent<UUIDComponent>(id);
 		j["UUID"] = uuidComp.uuid.GetUUID_PrettyStr();
 
+		if (ecs.HasComponent<PlayerComponent>(id))
+		{
+			const auto& player = ecs.GetComponent<PlayerComponent>(id);
+			j["Player Component"];
+			j["Player Component"]["UserIdx"] = player.userIdx;
+		}
+
 		if (ecs.HasComponent<TransformComponent>(id))
 		{
 			const auto& transform = ecs.GetComponent<TransformComponent>(id);
@@ -200,6 +207,12 @@ namespace Pengin
 		const EntityId entity = entityMap[uuid];
 
 		assert(entity != NULL_ENTITY_ID);
+
+		if (entityData.contains("Player Component"))
+		{
+			const auto userIdx = entityData["Player Component"]["UserIdx"].get<size_t>();
+			ecs.AddComponent<PlayerComponent>(entity, userIdx);
+		}
 
 		if (entityData.contains("Transform Component"))
 		{

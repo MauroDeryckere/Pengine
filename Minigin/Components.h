@@ -4,6 +4,8 @@
 #include "TransformComponent.h"
 #include "UUIDComponent.h"
 
+#include "PlayerComponent.h"
+
 #include "VelocityComponent.h"
 
 #include "RectColliderComponent.h"

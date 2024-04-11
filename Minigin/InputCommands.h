@@ -30,7 +30,16 @@ namespace Pengin
 		virtual void Execute() override 
 		{ 
 			auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
-			const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[pActiveScene->GetSceneData().user_UUIDVecIdxMap.at(m_UserIdx)];
+
+			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find(m_UserIdx);
+
+			if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
+			{
+				DEBUG_OUT("movement for a deleted useridx");
+				return;
+			}
+
+			const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
 			 
 			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
 			Entity playerEntity{ entityId, pActiveScene };
