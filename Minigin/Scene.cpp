@@ -37,7 +37,7 @@ namespace Pengin
 		return Serializer::GetInstance().DeserializeScene(m_SceneData, m_UUID_EntityIdMap, m_Ecs, scenePath);
 	}
 
-	Entity Scene::CreateEntity(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
+	Entity Scene::CreateEntity(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale, size_t userIdx)
 	{
 		const auto id{ m_Ecs.CreateEntity() };
 
@@ -46,6 +46,12 @@ namespace Pengin
 		const auto& uuidComp = entity.AddComponent<UUIDComponent>();
 
 		m_UUID_EntityIdMap[uuidComp.uuid] = id;
+
+		if (userIdx != SIZE_MAX)
+		{
+			entity.AddComponent<PlayerComponent>(userIdx);
+			SetPlayer(userIdx, uuidComp.uuid);
+		}
 
 		return entity;
 	}
@@ -69,7 +75,7 @@ namespace Pengin
 				const auto vecIdx = it->second;
 				assert(vecIdx < m_SceneData.playerUUIDs.size());
 				
-				if (m_SceneData.playerUUIDs.size() > 1)
+				if (m_SceneData.playerUUIDs.size() > 1) //Could possibly also delete the inputUser if necessary (/ the player specific input in future)
 				{
 					const EntityId lastEntityId = m_UUID_EntityIdMap.at(m_SceneData.playerUUIDs.back());
 					const auto lastPlayerUserIdx = m_Ecs.GetComponent<PlayerComponent>(lastEntityId).userIdx;

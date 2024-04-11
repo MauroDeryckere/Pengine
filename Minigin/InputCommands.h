@@ -35,7 +35,7 @@ namespace Pengin
 
 			if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
 			{
-				DEBUG_OUT("movement for a deleted useridx");
+				DEBUG_OUT("movement for a deleted playerIdx");
 				return;
 			}
 
