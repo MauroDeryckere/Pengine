@@ -32,23 +32,22 @@ namespace Pengin
 
 		auto& healthComp = m_ECS.GetComponent<HealthComponent>(id);
 		
-		std::vector<UUID> idsToErase; //Erase deleted displays from the vector
+		std::vector<EntityId> idsToErase; //Erase deleted displays from the vector
 		for (const auto& entity : healthComp.m_HealthDisplayIds)
 		{
-			const auto displayId = m_pScene->GetEntityId(entity);
-			assert(displayId != NULL_ENTITY_ID);
+			assert(entity != NULL_ENTITY_ID);
 
-			if (!m_ECS.Exists(displayId))
+			if (!m_ECS.Exists(entity))
 			{
 				idsToErase.emplace_back(entity);
 				continue;
 			}
 
-			assert(m_ECS.HasComponent<TextComponent>(displayId));
-			assert(m_ECS.HasComponent<TxtDisplayComponent>(displayId));
+			assert(m_ECS.HasComponent<TextComponent>(entity));
+			assert(m_ECS.HasComponent<TxtDisplayComponent>(entity));
 
-			auto& textComp = m_ECS.GetComponent<TextComponent>(displayId);
-			auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(displayId);
+			auto& textComp = m_ECS.GetComponent<TextComponent>(entity);
+			auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(entity);
 
 			const std::string newText{ displayComp.m_Prefix + std::to_string(healthComp.m_Health) + displayComp.m_Postfix };
 
@@ -56,7 +55,7 @@ namespace Pengin
 			textComp.needsTextureChange = true;
 		}
 
-		std::erase_if(healthComp.m_HealthDisplayIds, [&idsToErase](const UUID& id) 
+		std::erase_if(healthComp.m_HealthDisplayIds, [&idsToErase](const EntityId id)
 			{
 				return std::find(idsToErase.begin(), idsToErase.end(), id) != idsToErase.end();
 			});
@@ -69,22 +68,22 @@ namespace Pengin
 
 		auto& scoreComp = m_ECS.GetComponent<ScoreComponent>(id);
 
-		std::vector<UUID> idsToErase;
+		std::vector<EntityId> idsToErase;
 		for (const auto& entity : scoreComp.m_ScoreDisplays)
 		{
-			const auto displayId = m_pScene->GetEntityId(entity);
+			assert(entity != NULL_ENTITY_ID);
 
-			if (!m_ECS.Exists(displayId))
+			if (!m_ECS.Exists(entity))
 			{
 				idsToErase.emplace_back(entity);
 				continue;
 			}
 
-			assert(m_ECS.HasComponent<TextComponent>(displayId));
-			assert(m_ECS.HasComponent<TxtDisplayComponent>(displayId));
+			assert(m_ECS.HasComponent<TextComponent>(entity));
+			assert(m_ECS.HasComponent<TxtDisplayComponent>(entity));
 
-			auto& textComp = m_ECS.GetComponent<TextComponent>(displayId);
-			auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(displayId);
+			auto& textComp = m_ECS.GetComponent<TextComponent>(entity);
+			auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(entity);
 
 			const std::string newText{ displayComp.m_Prefix + std::to_string(scoreComp.m_Score) + displayComp.m_Postfix };
 
@@ -92,7 +91,7 @@ namespace Pengin
 			textComp.needsTextureChange = true;
 		}
 
-		std::erase_if(scoreComp.m_ScoreDisplays, [&idsToErase](const UUID& id)
+		std::erase_if(scoreComp.m_ScoreDisplays, [&idsToErase](const EntityId id)
 			{
 				return std::find(idsToErase.begin(), idsToErase.end(), id) != idsToErase.end();
 			});

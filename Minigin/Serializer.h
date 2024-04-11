@@ -9,15 +9,16 @@
 namespace Pengin
 {
 	class ECS;
+	struct SceneData;
 
 	class Serializer final : public dae::Singleton<Serializer>
 	{
 	public:
-		[[nodiscard]] bool SerializeScene(const ECS& ecs, const std::string& sceneName, const std::filesystem::path& scenePath) const noexcept;
-		[[nodiscard]] bool DeserializeScene(std::string& sceneName, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept;
+		[[nodiscard]] bool SerializeScene(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept;
+		[[nodiscard]] bool DeserializeScene(SceneData& sceneData, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept;
 
-		bool SerializeEntity(const ECS& ecs, const EntityId id, const std::filesystem::path& path) const noexcept;
-		bool DeserializeEntity(ECS& ecs, const std::filesystem::path& path) noexcept;
+		//bool SerializeEntity(const ECS& ecs, const EntityId id, const std::filesystem::path& path) const noexcept;
+		//bool DeserializeEntity(ECS& ecs, const std::filesystem::path& path) noexcept;
 
 		Serializer(const Serializer&) = delete;
 		Serializer(Serializer&&) = delete;
@@ -29,8 +30,8 @@ namespace Pengin
 		Serializer() = default;
 		~Serializer() = default;
 
-		[[nodiscard]] bool SerializeScene_Json(const ECS& ecs, const std::string& sceneName, const std::filesystem::path& scenePath) const noexcept;
-		[[nodiscard]] bool DeserializeScene_Json(std::string& sceneName, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept;
+		[[nodiscard]] bool SerializeScene_Json(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept;
+		[[nodiscard]] bool DeserializeScene_Json(SceneData& sceneData, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept;
 
 		using json = nlohmann::ordered_json;
 		[[nodiscard]] bool SerializeSceneEntity_Json(const ECS& ecs, const EntityId id, json& j) const noexcept;

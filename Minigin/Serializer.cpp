@@ -12,12 +12,12 @@
 
 namespace Pengin
 {
-	bool Serializer::SerializeScene(const ECS& ecs, const std::string& sceneName, const std::filesystem::path& scenePath) const noexcept
+	bool Serializer::SerializeScene(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept
 	{
 		const auto extension{ scenePath.extension() };
 		if (extension == ".json")
 		{
-			return SerializeScene_Json(ecs, sceneName, scenePath);
+			return SerializeScene_Json(ecs, sceneData, scenePath);
 		}
 		else
 		{
@@ -26,12 +26,12 @@ namespace Pengin
 		}
 	}
 
-	bool Serializer::DeserializeScene(std::string& sceneName, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
+	bool Serializer::DeserializeScene(SceneData& sceneData, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
 	{
 		const auto extension{ scenePath.extension() };
 		if (extension == ".json")
 		{
-			return DeserializeScene_Json(sceneName, entityMap, ecs, scenePath);
+			return DeserializeScene_Json(sceneData, entityMap, ecs, scenePath);
 		}
 		else
 		{
@@ -40,55 +40,11 @@ namespace Pengin
 		}
 	}
 
-	bool Serializer::SerializeEntity(const ECS& ecs, const EntityId id, const std::filesystem::path& path) const noexcept
-	{
-		ecs;
-		id;
-		path;
-		return false;
-		//assert(id != NULL_ENTITY_ID);
-
-		//const auto extension{ path.extension() };		
-		//if (extension == ".json")
-		//{
-		//	if (!SerializeEntity_Json(ecs, id, path))
-		//	{
-		//		return false;
-		//	}
-		//}
-		//else
-		//{
-		//	DEBUG_OUT("wrong file extension, only support .json");
-		//	return false;
-		//}
-		//return true;
-	}
-
-	bool Serializer::DeserializeEntity(ECS& ecs, const std::filesystem::path& path) noexcept
-	{
-		ecs;
-		path;
-		return false;
-		//const auto extension{ path.extension() };
-		//if (extension == ".json")
-		//{
-		//	if (!DeserializeEntity_Json(ecs, path))
-		//	{
-		//		return false;
-		//	}
-		//}
-		//else
-		//{
-		//	DEBUG_OUT("wrong file extension, only support .json");
-		//	return false;
-		//}
-		//return true;
-	}
-
-	bool Serializer::SerializeScene_Json(const ECS& ecs, const std::string& sceneName, const std::filesystem::path& scenePath) const noexcept
+	bool Serializer::SerializeScene_Json(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept
 	{
 		json scene;
-		scene["Scene name"] = sceneName;
+
+		scene["Scene Data"] = sceneData;
 
 		const auto& allIds = ecs.GetAllEntities();
 
@@ -110,7 +66,7 @@ namespace Pengin
 		return false;
 	}
 
-	bool Serializer::DeserializeScene_Json(std::string& sceneName, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
+	bool Serializer::DeserializeScene_Json(SceneData& sceneData, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
 	{
 		using json = nlohmann::ordered_json;
 
@@ -118,16 +74,18 @@ namespace Pengin
 		{
 			json scene;
 			file >> scene;
-			if (!scene.contains("Scene name"))
+			if (!scene.contains("Scene Data"))
 			{
+				DEBUG_OUT("Scene data instane is required in the json file to be able to deserialize");
 				return false;
 			}
 
-			sceneName = scene["Scene name"].get<std::string>();
-
+			const SceneData& ser_sceneData = scene["Scene Data"];
+			sceneData = std::move(ser_sceneData);
+			
 			if (scene.contains("Entities"))
 			{
-				for (auto& entityData : scene["Entities"]) //First we need to get all the UUIDs and create the entitiees to ensure any dependencies can be converted
+				for (auto& entityData : scene["Entities"]) //First we need to get all the UUIDs and create the entities to ensure any dependencies can be converted
 				{
 					const auto entityId = ecs.CreateEntity();
 					const auto& uuid = entityData["UUID"].get<std::string>();
@@ -147,7 +105,7 @@ namespace Pengin
 			}
 			else
 			{
-				DEBUG_OUT("Scene " << sceneName << " does not contain entities");
+				DEBUG_OUT("Scene " << sceneData.name << " does not contain entities");
 			}
 
 			return true;
@@ -195,7 +153,7 @@ namespace Pengin
 		if (ecs.HasComponent<ScoreComponent>(id))
 		{
 			const auto& score = ecs.GetComponent<ScoreComponent>(id);
-			j["Score Component"] = score;
+			to_json(j["Score Component"], score, ecs);
 		}
 		if (ecs.HasComponent<RectColliderComponent>(id))
 		{
@@ -205,7 +163,7 @@ namespace Pengin
 		if (ecs.HasComponent<HealthComponent>(id))
 		{
 			const auto& health = ecs.GetComponent<HealthComponent>(id);
-			j["Health Component"] = health;
+			to_json(j["Health Component"], health, ecs);
 		}
 		if (ecs.HasComponent<FPSCounterComponent>(id))
 		{
@@ -287,7 +245,8 @@ namespace Pengin
 		}
 		if (entityData.contains("Score Component"))
 		{
-			ScoreComponent score = entityData["Score Component"];
+			ScoreComponent score;
+			from_json(entityData["Score Component"], score, entityMap);
 			ecs.AddComponent<ScoreComponent>(entity, std::move(score));
 		}
 		if (entityData.contains("RectCollider Component"))
@@ -297,7 +256,8 @@ namespace Pengin
 		}
 		if (entityData.contains("Health Component"))
 		{
-			HealthComponent health = entityData["Health Component"];
+			HealthComponent health;
+			from_json(entityData["Health Component"], health, entityMap);
 			ecs.AddComponent<HealthComponent>(entity, std::move(health));
 		}
 		if (entityData.contains("Animation Component"))

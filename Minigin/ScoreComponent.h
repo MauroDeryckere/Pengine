@@ -9,7 +9,7 @@ namespace Pengin
 	struct ScoreComponent final
 	{
 	public:
-		ScoreComponent(const std::vector<UUID>& scoreDisplayIds = { }) :
+		ScoreComponent(const std::vector<EntityId>& scoreDisplayIds = { }) :
 			m_Score{ 0 },
 			m_ScoreDisplays{ scoreDisplayIds }
 		{
@@ -19,7 +19,7 @@ namespace Pengin
 		~ScoreComponent() = default;
 
 		unsigned m_Score{};
-		std::vector<UUID> m_ScoreDisplays{};
+		std::vector<EntityId> m_ScoreDisplays{};
 	};
 }
 

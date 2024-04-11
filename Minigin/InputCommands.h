@@ -17,38 +17,25 @@
 
 namespace Pengin
 {
-	class ConsolePrint final : public InputCommand
-	{
-	public:
-		ConsolePrint(const std::string& message) : InputCommand{}, m_Message{message} {}
-
-		virtual void Execute() override { std::cout << m_Message << "\n"; }
-		virtual ~ConsolePrint() override = default;
-
-		ConsolePrint(const ConsolePrint&) = delete;
-		ConsolePrint& operator=(const ConsolePrint&) = delete;
-		ConsolePrint(ConsolePrint&&) noexcept = delete;
-		ConsolePrint& operator=(ConsolePrint&&) noexcept = delete;
-
-	private:
-		const std::string m_Message;
-	};
-
 	class CharacterMovement final : public InputCommand
 	{
 	public:
-		CharacterMovement(const glm::vec3& direction, EntityId id, float movementSpeed = 100.f) :
+		CharacterMovement(const glm::vec3& direction, float movementSpeed = 100.f) :
 			InputCommand{},
 			m_Direction{direction},
-			m_Id{ id },
 			m_MovementSpeed{ movementSpeed }
-		{
-		}
+		{ }
 
 		virtual void Execute() override 
 		{ 
-			auto& ecs = SceneManager::GetInstance().GetActiveScene()->GetECS();
-			ecs.GetComponent<VelocityComponent>(m_Id).m_Velocity += m_Direction * m_MovementSpeed;
+			auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
+			const auto playerUUID = pActiveScene->GetSceneData().playerUUIDs[0]; //TODO mapping
+			 
+			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
+
+			Entity playerEntity{ entityId, pActiveScene };
+
+			playerEntity.GetComponent<VelocityComponent>().m_Velocity += (m_Direction * m_MovementSpeed);
 		}
 
 		virtual ~CharacterMovement() override = default;
@@ -60,11 +47,10 @@ namespace Pengin
 
 	private:
 		const glm::vec3 m_Direction;
-		const EntityId m_Id;
 		const float m_MovementSpeed;
 	};
 
-	class AttackPlayer final : public InputCommand //bound to input for now
+	class AttackPlayer final : public InputCommand //bound to input for now - need to use UUID if want to use this input bound action again
 	{
 	public:
 		AttackPlayer(const EntityId id) :
@@ -93,7 +79,7 @@ namespace Pengin
 		const EntityId m_Id;
 	};
 
-	class CollectScore final : public InputCommand //bound to input for now
+	class CollectScore final : public InputCommand //bound to input for now - need to use UUID if want to use this input bound action again
 	{
 	public:
 		CollectScore(const EntityId id, unsigned score = 10) :

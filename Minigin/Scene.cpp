@@ -8,10 +8,11 @@
 namespace Pengin
 {
 	Scene::Scene(const std::string& name, const path& sceneLoadPath, const path& sceneSavePath, bool saveOnDestroy) :
-		m_Name{ name },
 		m_SaveOnDestroy{ saveOnDestroy },
 		m_SceneSavePath{ sceneSavePath }
 	{
+		m_SceneData.name = name;
+
 		if (!sceneLoadPath.empty())
 		{
 			if (!DeserializeScene(sceneLoadPath))
@@ -25,14 +26,14 @@ namespace Pengin
 	{
 		if (m_SaveOnDestroy)
 		{
-			DEBUG_OUT("Saving scene " << m_Name);
+			DEBUG_OUT("Saving scene " << m_SceneData.name);
 			SerializeScene();
 		}
 	}
 
 	bool Scene::DeserializeScene(const std::filesystem::path& scenePath) noexcept
 	{
-		return Serializer::GetInstance().DeserializeScene(m_Name, m_UUID_EntityIdMap, m_Ecs, scenePath);
+		return Serializer::GetInstance().DeserializeScene(m_SceneData, m_UUID_EntityIdMap, m_Ecs, scenePath);
 	}
 
 	Entity Scene::CreateEntity(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
@@ -88,6 +89,27 @@ namespace Pengin
 		return (*it).second;
 	}
 
+	void Scene::SetPlayer(const size_t userIdx, const UUID& uuid) noexcept
+	{
+		m_SceneData.isUUIDInit = true;
+
+		m_SceneData.playerUUIDs.emplace_back(uuid);
+		m_SceneData.userIdx.emplace_back(userIdx);
+	}
+
+	void Scene::SetPlayer(const size_t userIdx, const EntityId id) noexcept
+	{
+		assert(m_Ecs.HasComponent<UUIDComponent>(id));
+		const auto uuid = m_Ecs.GetComponent<UUIDComponent>(id).uuid;
+		SetPlayer(userIdx, uuid);
+	}
+
+	void Scene::SetPlayer(const size_t userIdx, const Entity entity) noexcept
+	{
+		assert(entity.GetEntityId() != NULL_ENTITY_ID);
+		SetPlayer(userIdx, entity.GetEntityId());
+	}
+
 	void Scene::FixedUpdate()
 	{
 	}
@@ -121,7 +143,8 @@ namespace Pengin
 
 	bool Scene::SerializeScene() const noexcept
 	{
-		return Serializer::GetInstance().SerializeScene(m_Ecs, m_Name, m_SceneSavePath);
+		assert(m_SceneData.isUUIDInit && "Must init a player to serialize the scene (SetPlayer or scene data in load file)");
+		return Serializer::GetInstance().SerializeScene(m_Ecs, m_SceneData, m_SceneSavePath);
 	}
 
 	//void Scene::SerializeEntity(const EntityId id) noexcept

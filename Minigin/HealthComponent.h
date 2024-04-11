@@ -9,7 +9,7 @@ namespace Pengin
 	struct HealthComponent final
 	{
 	public:
-		HealthComponent(unsigned health = 0, const std::vector<UUID>& healthbarIds = { }) :
+		HealthComponent(unsigned health = 0, const std::vector<EntityId>& healthbarIds = { }) :
 			m_Health{ health },
 			m_HealthDisplayIds{ healthbarIds }
 		{
@@ -19,7 +19,7 @@ namespace Pengin
 		~HealthComponent() = default; 
 
 		unsigned m_Health;
-		std::vector<UUID> m_HealthDisplayIds;
+		std::vector<EntityId> m_HealthDisplayIds;
 	};
 }
 

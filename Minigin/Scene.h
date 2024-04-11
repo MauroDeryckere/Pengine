@@ -4,6 +4,7 @@
 #include "CoreIncludes.h"
 
 #include "SceneManager.h"
+#include "SceneData.h"
 
 #include "ECS.h"
 #include "glm/vec3.hpp"
@@ -28,7 +29,7 @@ namespace Pengin
 {
 	class Entity;
 	using std::filesystem::path;
-	
+
 	class Scene final : public std::enable_shared_from_this<Scene>
 	{
 	public:
@@ -38,18 +39,9 @@ namespace Pengin
 		bool DestroyEntity(Entity entity, bool keepChildren = true);
 		bool DestroyEntity(const EntityId entityId, bool keepChildren = true);
 
-		[[nodiscard]] ECS& GetECS() { return m_Ecs; }
-		[[nodiscard]] const UUID& GetUUID(const Entity entity) const;
-		[[nodiscard]] const UUID& GetUUID(const EntityId id);
-
-		[[nodiscard]] const EntityId GetEntityId(const UUID& uuid) const;
-
-		[[nodiscard]] const std::string& GetName() const noexcept { return m_Name; }
-
 		void FixedUpdate();
 		void Update();
 		void Render() const;
-
 		void RenderImGUI();
 
 		bool SerializeScene() const noexcept;
@@ -58,20 +50,34 @@ namespace Pengin
 		//void SerializeEntity(const EntityId id) noexcept;
 		//void DeserializeEntity() noexcept;
 
-		Scene(const Scene& other) = delete;
-		Scene(Scene&& other) = delete;
-		Scene& operator=(const Scene& other) = delete;
-		Scene& operator=(Scene&& other) = delete;
+		[[nodiscard]] ECS& GetECS() noexcept { return m_Ecs; }
+		[[nodiscard]] const ECS& GetECS() const noexcept { return m_Ecs; }
+
+		[[nodiscard]] const UUID& GetUUID(const Entity entity) const;
+		[[nodiscard]] const UUID& GetUUID(const EntityId id);
+		[[nodiscard]] const EntityId GetEntityId(const UUID& uuid) const;
+
+		[[nodiscard]] const std::string& GetName() const noexcept    { return m_SceneData.name; }
+		[[nodiscard]] const SceneData& GetSceneData() const noexcept { return m_SceneData; }
+
+		void SetPlayer(const size_t userIdx, const UUID& uuid) noexcept;
+		void SetPlayer(const size_t userIdx, const EntityId id) noexcept;
+		void SetPlayer(const size_t userIdx, const Entity entity) noexcept;
+
+		Scene(const Scene&) = delete;
+		Scene(Scene&&) = delete;
+		Scene& operator=(const Scene&) = delete;
+		Scene& operator=(Scene&&) = delete;
 
 	private:
 		friend std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name, const path& sceneLoadPath, const path& sceneSavePath, bool saveOnDestroy, bool swapToNext);
+		Scene(const std::string& name, const path& sceneLoadPath = { }, const path& sceneSavePath = { }, bool saveOnDestroy = false);
 
-		explicit Scene(const std::string& name, const path& sceneLoadPath = { }, const path& sceneSavePath = { }, bool saveOnDestroy = false);
 		friend class Entity;
 		ECS m_Ecs;
 		std::unordered_map<UUID, EntityId> m_UUID_EntityIdMap;
 
-		std::string m_Name;
+		SceneData m_SceneData;
 
 		const path m_SceneSavePath{};
 		bool m_SaveOnDestroy{ false };

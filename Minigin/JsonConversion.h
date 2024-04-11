@@ -4,6 +4,7 @@
 //provide the json specialization functions to convert components
 
 #include "Components.h"
+#include "SceneData.h"
 #include <json.hpp>
 
 namespace Pengin
@@ -11,6 +12,46 @@ namespace Pengin
 	using json = nlohmann::ordered_json;
 
 	//NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE();
+
+	//SceneData
+	//UUID
+	void to_json(json& j, const UUID& uuid)
+	{
+		j = uuid.GetUUID_PrettyStr();
+	}
+
+	void to_json(json& j, const SceneData& sceneData)
+	{
+		assert(sceneData.isUUIDInit);
+
+		j =
+		{
+			{"SceneName", sceneData.name},
+
+			{"PlayerUUIDs", sceneData.playerUUIDs },
+			{"UserIds", sceneData.userIdx },
+
+			{"IsUUIDInit", sceneData.isUUIDInit }
+		};
+	}
+	void from_json(const json& j, SceneData& sceneData)
+	{
+		sceneData.name = j["SceneName"].get<std::string>();
+
+		for (const auto& player : j["PlayerUUIDs"])
+		{
+			sceneData.playerUUIDs.emplace_back(UUID{ player.get<std::string>() });
+		}
+		for (const auto& user : j["UserIds"])
+		{
+			sceneData.userIdx.emplace_back(user.get<size_t>());
+		}
+
+		sceneData.isUUIDInit = j["IsUUIDInit"].get<bool>();
+
+		assert(sceneData.isUUIDInit);
+	}
+	//---------
 
 	//Transforms
 	void to_json(json& j, const TransformComponent& transform, const ECS& ecs)
@@ -119,28 +160,28 @@ namespace Pengin
 	//---------------
 
 	//Score
-	void to_json(json& j, const ScoreComponent& score)
+	void to_json(json& j, const ScoreComponent& score, const ECS& ecs)
 	{
 		json displays;
 		for (const auto& e : score.m_ScoreDisplays)
 		{
-			displays.emplace_back(e.GetUUID_PrettyStr());
+			displays.emplace_back(e == NULL_ENTITY_ID ? "NULL_UUID" : ecs.GetComponent<UUIDComponent>(e).uuid.GetUUID_PrettyStr());
 		}
-
+		
 		j =
 		{
 			{"Score", score.m_Score},
 			{"ScoreDisplayUUIDS", displays }
 		};
 	}
-	void from_json(const json& j, ScoreComponent& score)
+	void from_json(const json& j, ScoreComponent& score, const std::unordered_map<UUID, EntityId>& entityMap)
 	{
 		score.m_Score = j["Score"].get<unsigned>();
 
 		const std::vector<std::string> id_Str = j["ScoreDisplayUUIDS"].get<std::vector<std::string>>();
 		for (const auto& uuid : id_Str)
 		{
-			score.m_ScoreDisplays.emplace_back(uuid);
+			score.m_ScoreDisplays.emplace_back(entityMap.at({ uuid }));
 		}
 	}
 	//-------------
@@ -165,12 +206,12 @@ namespace Pengin
 	//---------------
 
 	//Health
-	void to_json(json& j, const HealthComponent& health)
+	void to_json(json& j, const HealthComponent& health, const ECS& ecs)
 	{
 		json displays;
 		for (const auto& e : health.m_HealthDisplayIds)
 		{
-			displays.emplace_back(e.GetUUID_PrettyStr());
+			displays.emplace_back( e == NULL_ENTITY_ID ? "NULL_UUID" : ecs.GetComponent<UUIDComponent>(e).uuid.GetUUID_PrettyStr());
 		}
 
 		j =
@@ -179,14 +220,14 @@ namespace Pengin
 			{"HealthDisplayUUIDS", displays }
 		};
 	}
-	void from_json(const json& j, HealthComponent& health)
+	void from_json(const json& j, HealthComponent& health, const std::unordered_map<UUID, EntityId>& entityMap)
 	{
 		health.m_Health = j["Health"].get<unsigned>();
 
 		const std::vector<std::string> id_Str = j["HealthDisplayUUIDS"].get<std::vector<std::string>>();
 		for (const auto& uuid : id_Str)
 		{
-			health.m_HealthDisplayIds.emplace_back(uuid);
+			health.m_HealthDisplayIds.emplace_back(entityMap.at({ uuid }));
 		}
 	}
 	//-------------

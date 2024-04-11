@@ -1,8 +1,19 @@
 {
-    "Scene name": "Demo Scene",
+    "Scene Data": {
+        "SceneName": "Demo Scene",
+        "PlayerUUIDs": [
+            "28e918b2-e8f9-4efc-bbeb-7afd7e47cbd8",
+            "dcd92748-fde6-48de-a0dd-8226afdd1516"
+        ],
+        "UserIds": [
+            0,
+            1
+        ],
+        "IsUUIDInit": true
+    },
     "Entities": [
         {
-            "UUID": "bfe35547-1dde-4423-b50e-4f7df28658fb",
+            "UUID": "43e69f84-d312-4f33-abe5-f541dd6b693d",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -12,6 +23,503 @@
                 "localPos": [
                     0.0,
                     0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "background.tga"
+            },
+            "RectCollider Component": {
+                "CollRect": [
+                    0,
+                    0,
+                    100,
+                    100
+                ]
+            }
+        },
+        {
+            "UUID": "57fa4765-0c81-457a-abd4-d088cbfbc315",
+            "Transform Component": {
+                "worldPos": [
+                    216.0,
+                    180.0,
+                    0.0
+                ],
+                "localPos": [
+                    216.0,
+                    180.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "logo.tga"
+            }
+        },
+        {
+            "UUID": "b98317ab-62b8-4f50-b4ff-b90b1c13104c",
+            "Transform Component": {
+                "worldPos": [
+                    80.0,
+                    20.0,
+                    0.0
+                ],
+                "localPos": [
+                    80.0,
+                    20.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "NO PATH"
+            },
+            "Text Component": {
+                "Text": "Programming 4 Assignment",
+                "Path": "Lingua.otf",
+                "FontSize": 36,
+                "Color": [
+                    255,
+                    255,
+                    255,
+                    255
+                ]
+            }
+        },
+        {
+            "UUID": "d27dc849-0857-4d93-84cb-da5211b2eb38",
+            "Transform Component": {
+                "worldPos": [
+                    100.0,
+                    75.0,
+                    0.0
+                ],
+                "localPos": [
+                    100.0,
+                    75.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "NO PATH"
+            },
+            "Text Component": {
+                "Text": "WASD to move, C attack, B score",
+                "Path": "Lingua.otf",
+                "FontSize": 20,
+                "Color": [
+                    255,
+                    255,
+                    255,
+                    255
+                ]
+            }
+        },
+        {
+            "UUID": "a00b4473-3f09-43cd-b877-a4d91dc480b3",
+            "Transform Component": {
+                "worldPos": [
+                    100.0,
+                    100.0,
+                    0.0
+                ],
+                "localPos": [
+                    100.0,
+                    100.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "NO PATH"
+            },
+            "Text Component": {
+                "Text": "IJKL/D-Pad to move, V attack, N score",
+                "Path": "Lingua.otf",
+                "FontSize": 20,
+                "Color": [
+                    255,
+                    255,
+                    255,
+                    255
+                ]
+            }
+        },
+        {
+            "UUID": "f8cd44c7-2bc7-4271-b12f-479811748ab5",
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "NO PATH"
+            },
+            "Text Component": {
+                "Text": "58.6",
+                "Path": "Lingua.otf",
+                "FontSize": 36,
+                "Color": [
+                    255,
+                    255,
+                    255,
+                    255
+                ]
+            },
+            "FPS Component": null
+        },
+        {
+            "UUID": "28e918b2-e8f9-4efc-bbeb-7afd7e47cbd8",
+            "Transform Component": {
+                "worldPos": [
+                    200.0,
+                    200.0,
+                    0.0
+                ],
+                "localPos": [
+                    200.0,
+                    200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    2.0,
+                    2.0,
+                    0.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "pengoLowQualityFortesting.png"
+            },
+            "Velocity Component": {
+                "Velocity": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            },
+            "Score Component": {
+                "Score": 0,
+                "ScoreDisplayUUIDS": [
+                    "3edba76f-7c22-4749-91a0-bf27d4b29102"
+                ]
+            },
+            "RectCollider Component": {
+                "CollRect": [
+                    10,
+                    10,
+                    100,
+                    100
+                ]
+            },
+            "Health Component": {
+                "Health": 3,
+                "HealthDisplayUUIDS": [
+                    "e6073eb4-18dd-4423-bd08-c4d871a4dcf5"
+                ]
+            }
+        },
+        {
+            "UUID": "e6073eb4-18dd-4423-bd08-c4d871a4dcf5",
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    150.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "NO PATH"
+            },
+            "Text Component": {
+                "Text": "Player 1 Health: 3",
+                "Path": "Lingua.otf",
+                "FontSize": 18,
+                "Color": [
+                    255,
+                    255,
+                    255,
+                    255
+                ]
+            },
+            "TextDisplay Component": {
+                "Prefix": "Player 1 Health: ",
+                "Postfix": ""
+            }
+        },
+        {
+            "UUID": "3edba76f-7c22-4749-91a0-bf27d4b29102",
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    175.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    175.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "NO PATH"
+            },
+            "Text Component": {
+                "Text": "Player 1 Score: 0",
+                "Path": "Lingua.otf",
+                "FontSize": 18,
+                "Color": [
+                    255,
+                    255,
+                    255,
+                    255
+                ]
+            },
+            "TextDisplay Component": {
+                "Prefix": "Player 1 Score: ",
+                "Postfix": ""
+            }
+        },
+        {
+            "UUID": "dcd92748-fde6-48de-a0dd-8226afdd1516",
+            "Transform Component": {
+                "worldPos": [
+                    100.0,
+                    200.0,
+                    0.0
+                ],
+                "localPos": [
+                    100.0,
+                    200.0,
                     0.0
                 ],
                 "rotation": [
@@ -53,26 +561,18 @@
             "Score Component": {
                 "Score": 0,
                 "ScoreDisplayUUIDS": [
-                    "63141d09-41fe-4646-8ee3-28183eb22dfb"
-                ]
-            },
-            "RectCollider Component": {
-                "CollRect": [
-                    0,
-                    0,
-                    20,
-                    20
+                    "ad25c0c7-6e19-4a7e-b35d-1ad8036ac11b"
                 ]
             },
             "Health Component": {
-                "Health": 5,
+                "Health": 3,
                 "HealthDisplayUUIDS": [
-                    "ef907218-a7d9-4e0c-92c5-8e5ce80952f0"
+                    "c6c9ab83-5b20-480b-8a0b-3200b232d974"
                 ]
             }
         },
         {
-            "UUID": "ef907218-a7d9-4e0c-92c5-8e5ce80952f0",
+            "UUID": "c6c9ab83-5b20-480b-8a0b-3200b232d974",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -114,7 +614,7 @@
                 "path": "NO PATH"
             },
             "Text Component": {
-                "Text": "<EMPTY STRING>",
+                "Text": "Player 2 Health: 3",
                 "Path": "Lingua.otf",
                 "FontSize": 18,
                 "Color": [
@@ -125,21 +625,21 @@
                 ]
             },
             "TextDisplay Component": {
-                "Prefix": "Player health: ",
+                "Prefix": "Player 2 Health: ",
                 "Postfix": ""
             }
         },
         {
-            "UUID": "63141d09-41fe-4646-8ee3-28183eb22dfb",
+            "UUID": "ad25c0c7-6e19-4a7e-b35d-1ad8036ac11b",
             "Transform Component": {
                 "worldPos": [
                     0.0,
-                    250.0,
+                    225.0,
                     0.0
                 ],
                 "localPos": [
                     0.0,
-                    250.0,
+                    225.0,
                     0.0
                 ],
                 "rotation": [
@@ -172,7 +672,7 @@
                 "path": "NO PATH"
             },
             "Text Component": {
-                "Text": "<EMPTY STRING>",
+                "Text": "Player 2 Score: 0",
                 "Path": "Lingua.otf",
                 "FontSize": 18,
                 "Color": [
@@ -183,340 +683,12 @@
                 ]
             },
             "TextDisplay Component": {
-                "Prefix": "Player Score: ",
+                "Prefix": "Player 2 Score: ",
                 "Postfix": ""
             }
         },
         {
-            "UUID": "cdd54714-7582-4206-a921-51a3910ffe1f",
-            "Transform Component": {
-                "worldPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "localPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            },
-            "Sprite Component": {
-                "Source rect": [
-                    0,
-                    0,
-                    0,
-                    0
-                ],
-                "is visible": true,
-                "path": "NO PATH"
-            },
-            "Text Component": {
-                "Text": "Demo background text",
-                "Path": "Lingua.otf",
-                "FontSize": 36,
-                "Color": [
-                    255,
-                    255,
-                    255,
-                    255
-                ]
-            }
-        },
-        {
-            "UUID": "4b574834-52cc-4f43-b0b0-2b6061b12f13",
-            "Transform Component": {
-                "worldPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "localPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            }
-        },
-        {
-            "UUID": "50a4744d-a2e1-4957-aa0c-45cb0a9a86ce",
-            "Transform Component": {
-                "worldPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "localPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            }
-        },
-        {
-            "UUID": "ecbe86e2-393a-4bad-903b-f64f478f2543",
-            "Transform Component": {
-                "worldPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "localPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            }
-        },
-        {
-            "UUID": "56c24404-b291-425a-882c-0e74c6e10c34",
-            "Transform Component": {
-                "worldPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "localPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            }
-        },
-        {
-            "UUID": "07d52cb5-59b9-48d5-9455-beb966301f01",
-            "Transform Component": {
-                "worldPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "localPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            }
-        },
-        {
-            "UUID": "94762595-7ee6-4730-95a3-184a9543a274",
-            "Transform Component": {
-                "worldPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "localPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            }
-        },
-        {
-            "UUID": "5f2874df-8517-4e17-92cf-4352115f08f0",
-            "Transform Component": {
-                "worldPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "localPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            }
-        },
-        {
-            "UUID": "3be8ac28-c786-429c-9638-4c9eb289dc14",
-            "Transform Component": {
-                "worldPos": [
-                    200.0,
-                    200.0,
-                    0.0
-                ],
-                "localPos": [
-                    200.0,
-                    200.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            },
-            "Sprite Component": {
-                "Source rect": [
-                    2,
-                    3,
-                    40,
-                    50
-                ],
-                "is visible": true,
-                "path": "pengoLowQualityFortesting.png"
-            }
-        },
-        {
-            "UUID": "46ee201e-fa90-45be-a0b8-1473656ec03b",
+            "UUID": "dbbbbbb0-db5c-4459-a05f-7bca0a35a0bc",
             "Transform Component": {
                 "worldPos": [
                     200.0,
@@ -582,64 +754,9 @@
                 ],
                 "CurrentAnimationIndex": 0,
                 "CurrentAnimationFrame": 0,
-                "CurrentFrameTime": 0.051871322095394135,
+                "CurrentFrameTime": 0.5348908305168152,
                 "IsPlaying": true
             }
-        },
-        {
-            "UUID": "df03abcc-e229-4925-9ed4-3919b12744d4",
-            "Transform Component": {
-                "worldPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "localPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            },
-            "Sprite Component": {
-                "Source rect": [
-                    0,
-                    0,
-                    0,
-                    0
-                ],
-                "is visible": true,
-                "path": "NO PATH"
-            },
-            "Text Component": {
-                "Text": "58.6",
-                "Path": "Lingua.otf",
-                "FontSize": 36,
-                "Color": [
-                    255,
-                    255,
-                    255,
-                    255
-                ]
-            },
-            "FPS Component": null
         }
     ]
 }
