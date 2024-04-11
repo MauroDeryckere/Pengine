@@ -10,7 +10,7 @@ namespace Pengin
 		std::string name{ "No Scene Name" };
 		
 		std::vector<UUID> playerUUIDs;
-		std::vector<size_t> userIdx;
+		std::unordered_map<size_t, size_t> user_UUIDVecIdxMap;
 
 		bool isUUIDInit{ false };
 	};

@@ -93,8 +93,18 @@ namespace Pengin
 	{
 		m_SceneData.isUUIDInit = true;
 
-		m_SceneData.playerUUIDs.emplace_back(uuid);
-		m_SceneData.userIdx.emplace_back(userIdx);
+		auto it = m_SceneData.user_UUIDVecIdxMap.find(userIdx);
+
+		if (it == end(m_SceneData.user_UUIDVecIdxMap))
+		{
+			m_SceneData.playerUUIDs.emplace_back(uuid);
+			m_SceneData.user_UUIDVecIdxMap[userIdx] = m_SceneData.playerUUIDs.size() - 1;
+		}
+		else
+		{
+			DEBUG_OUT("Setting uuid for useridx that already exists, ensure this is the intended behaviour");
+			m_SceneData.playerUUIDs[(*it).second] = uuid;
+		}
 	}
 
 	void Scene::SetPlayer(const size_t userIdx, const EntityId id) noexcept

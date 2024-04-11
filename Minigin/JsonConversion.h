@@ -29,7 +29,7 @@ namespace Pengin
 			{"SceneName", sceneData.name},
 
 			{"PlayerUUIDs", sceneData.playerUUIDs },
-			{"UserIds", sceneData.userIdx },
+			{"UserIds", sceneData.user_UUIDVecIdxMap },
 
 			{"IsUUIDInit", sceneData.isUUIDInit }
 		};
@@ -44,7 +44,7 @@ namespace Pengin
 		}
 		for (const auto& user : j["UserIds"])
 		{
-			sceneData.userIdx.emplace_back(user.get<size_t>());
+			sceneData.user_UUIDVecIdxMap[user[0].get<size_t>()] = user[1].get<size_t>();
 		}
 
 		sceneData.isUUIDInit = j["IsUUIDInit"].get<bool>();
