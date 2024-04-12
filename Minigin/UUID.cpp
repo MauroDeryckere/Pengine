@@ -1,11 +1,15 @@
 #include "UUID.h"
 
 #include <cassert>
+#include <array>
+
+thread_local static boost::uuids::random_generator s_NumGen;
+thread_local static boost::uuids::string_generator s_StrGen;
 
 namespace Pengin 
 {
 	UUID::UUID() noexcept:
-		m_UUID{ boost::uuids::random_generator()() }
+		m_UUID{ s_NumGen() }
 	{
 
 	}
@@ -14,21 +18,28 @@ namespace Pengin
 	{ 
 		if (isPrettyStr)
 		{
-			m_UUID = boost::uuids::string_generator()(id);
+			m_UUID = s_StrGen(id);
 		}
 		else
 		{
-			//TODO
+			assert(id.size() == 16);
+			for (size_t i = 0; i < 16; ++i) 
+			{
+				m_UUID.data[i] = static_cast<uint8_t>(id.data()[i]);
+			}
 		}
 	}
 
-	const std::string UUID::GetUUID_Str() const noexcept //TODO
-	{
-		const std::string bytes{ };
-		return bytes;
-	}
 	const std::string UUID::GetUUID_PrettyStr() const noexcept
 	{
 		return to_string(m_UUID);
+	}
+
+	const std::vector<uint8_t> UUID::GetUUID_Bytes() const noexcept 
+	{
+		std::vector<uint8_t> v(m_UUID.size());
+		std::copy(m_UUID.begin(), m_UUID.end(), v.begin());
+
+		return v;
 	}
 }

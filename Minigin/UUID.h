@@ -17,8 +17,8 @@ namespace Pengin
 
 		~UUID() = default;
 
-		const std::string GetUUID_Str() const noexcept;
 		const std::string GetUUID_PrettyStr() const noexcept;
+		const std::vector<uint8_t> GetUUID_Bytes() const noexcept;
 
 		bool operator==(const UUID& other) const noexcept
 		{
@@ -26,6 +26,8 @@ namespace Pengin
 		}
 
 	private:
+		friend struct std::hash<UUID>;
+
 		boost::uuids::uuid m_UUID;
 	};
 }
@@ -35,10 +37,9 @@ namespace std
 	template<>
 	struct hash<Pengin::UUID>
 	{
-		//TODO swap to the boost hash func
 		size_t operator()(const Pengin::UUID& UUID) const noexcept
 		{
-			return hash<std::string>()(UUID.GetUUID_PrettyStr());
+			return boost::uuids::hash_value(UUID.m_UUID);
 		}
 	};
 }
