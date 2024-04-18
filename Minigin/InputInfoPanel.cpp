@@ -20,13 +20,14 @@ namespace Pengin
 
 		if (ImGui::TreeNode("Registered Users "))
 		{
-			for (size_t idx{0}; const auto& user : input.m_RegisteredUsers)
+			for (const auto& [userUUID, userIdx] : input.m_UserIdx_VecIdxMap)
 			{
-				ImGui::Text("User index: %d", idx);
+				ImGui::Text("User index: %d", userIdx);
+				ImGui::Text("User UUID: %s", userUUID.GetUUID_PrettyStr().c_str());
 
 				const char* userType;
 
-				switch (user.first)
+				switch (input.m_RegisteredUsers.at(userIdx).first)
 				{
 				case Pengin::UserType::Keyboard:
 					userType = "Keyboard";
@@ -57,7 +58,6 @@ namespace Pengin
 
 				//	ImGui::TreePop();
 				//}
-				++idx;
 			}
 
 			ImGui::TreePop();

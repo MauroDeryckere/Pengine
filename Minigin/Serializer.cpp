@@ -86,6 +86,14 @@ namespace Pengin
 			{
 				return { false, NULL_ENTITY_ID };
 			}
+
+			const auto entityId = ecs.CreateEntity();
+			const auto& uuid = entityData["UUID"].get<std::string>();
+
+			auto& uuidComp = ecs.AddComponent<UUIDComponent>(entityId, uuid);
+
+			entityMap[uuidComp.uuid] = entityId;
+
 			return DeserializeSceneEntity_Json(ecs, entityMap, entityData);
 		}
 		else
@@ -280,7 +288,11 @@ namespace Pengin
 		assert(uuid_Str != "NULL_UUID");
 
 		const auto uuid = UUID{ uuid_Str };
-		const EntityId entity = entityMap[uuid];
+		auto it = entityMap.find(uuid);
+
+		assert(it != end(entityMap));
+
+		const EntityId entity = it->second;
 
 		assert(entity != NULL_ENTITY_ID);
 

@@ -20,7 +20,7 @@
             "InputFilePath": "../Data/InputTest.json",
             "SceneLoadPath": "../Data/DemoScene.json",
             "SceneSavePath": "../Data/DemoScene.json",
-            "SaveSceneOnDestroy": true,
+            "SaveSceneOnDestroy": false,
             "AutoSaveTime": 0.0,
             "KeepPrevInput": false
         }
@@ -325,7 +325,7 @@
                 "path": "NO PATH"
             },
             "Text Component": {
-                "Text": "58.6",
+                "Text": "58.4",
                 "Path": "Lingua.otf",
                 "FontSize": 36,
                 "Color": [
@@ -345,13 +345,13 @@
             },
             "Transform Component": {
                 "worldPos": [
-                    167.639404296875,
-                    67.05277252197266,
+                    285.72119140625,
+                    137.79119873046875,
                     0.0
                 ],
                 "localPos": [
-                    167.639404296875,
-                    67.05277252197266,
+                    285.72119140625,
+                    137.79119873046875,
                     0.0
                 ],
                 "rotation": [
@@ -776,7 +776,7 @@
                 ],
                 "CurrentAnimationIndex": 0,
                 "CurrentAnimationFrame": 1,
-                "CurrentFrameTime": 0.5196177959442139,
+                "CurrentFrameTime": 0.20244275033473969,
                 "IsPlaying": true
             }
         }

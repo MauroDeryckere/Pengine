@@ -195,7 +195,7 @@ namespace Pengin
 		const auto& deserVal = Serializer::GetInstance().DerserializeSceneEntity(m_Ecs, m_UUID_EntityIdMap, entityLoadPath);
 		if (!deserVal.first)
 		{
-			throw std::exception();
+			throw std::exception("");
 		}
 
 		return Entity{ deserVal.second, shared_from_this() };
