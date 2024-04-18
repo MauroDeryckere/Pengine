@@ -150,7 +150,7 @@ namespace Pengin
 		DEBUG_OUT("registered user UservecIdx: " << userVecIdx << " user uuid: " << index.GetUUID_PrettyStr());
 	}
 
-	void InputManager::MapControllerAction(UserIndex userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept
+	void InputManager::MapControllerAction(const UserIndex& userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept
 	{
 		auto it = m_UserIdx_VecIdxMap.find(userIdx);
 		assert(it != end(m_UserIdx_VecIdxMap) && "user not added");
@@ -166,7 +166,7 @@ namespace Pengin
 		m_RegisteredUsers[it->second].second[0]->MapActionToInput(static_cast<unsigned>(button), inputState, std::move(pInputAction));
 	}
 
-	void InputManager::MapKeyboardAction(UserIndex userIdx, KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept
+	void InputManager::MapKeyboardAction(const UserIndex& userIdx, KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept
 	{
 		auto it = m_UserIdx_VecIdxMap.find(userIdx);
 
@@ -208,7 +208,7 @@ namespace Pengin
 		}
 	}
 
-	void InputManager::MapCombo(UserIndex userIdx, const InputCombo& combo) noexcept
+	void InputManager::MapCombo(const UserIndex& userIdx, const InputCombo& combo) noexcept
 	{
 		auto it = m_UserIdx_VecIdxMap.find(userIdx);
 

@@ -30,24 +30,25 @@ namespace Pengin
 	{
 	public:
 		~Scene();
-
 		void Start();
 
-		[[nodiscard]] Entity CreateEntity(const glm::vec3& position = { }, const glm::vec3& rotation = { }, const glm::vec3& scale = { 1, 1, 1 }, const UserIndex& = UUID{ true });
+		[[nodiscard]] Entity CreateEntity(const glm::vec3& position = { }, const glm::vec3& rotation = { }, const glm::vec3& scale = { 1, 1, 1 }, const UserIndex& = UUID{ true } );
 		bool DestroyEntity(Entity entity, bool keepChildren = true);
 		bool DestroyEntity(const EntityId entityId, bool keepChildren = true);
+
+		//Entity AddEntityByFile(filepath);
+			//DeserSceneEntity - Add entity to scene
+			//Return to allow edits	
 
 		void FixedUpdate();
 		void Update();
 		void Render() const;
 		void RenderImGUI();
 
-		[[nodiscard]] ECS& GetECS() noexcept { return m_Ecs; }
-		[[nodiscard]] const ECS& GetECS() const noexcept { return m_Ecs; }
-
 		[[nodiscard]] const UUID& GetUUID(const Entity entity) const;
 		[[nodiscard]] const UUID& GetUUID(const EntityId id);
 		[[nodiscard]] const EntityId GetEntityId(const UUID& uuid) const;
+		[[nodiscard]] const Entity GetEntity(const UUID& uuid);
 
 		[[nodiscard]] const std::string& GetName() const noexcept    { return m_SceneData.name; }
 		[[nodiscard]] const SceneData& GetSceneData() const noexcept { return m_SceneData; }

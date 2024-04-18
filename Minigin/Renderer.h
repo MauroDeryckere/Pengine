@@ -37,9 +37,7 @@ namespace dae
 		//Debug rendering functions
 		void DrawLine(int x1, int y1, int x2, int y2, SDL_Color color) const;
 
-		void FillRect(Rectu16 dst, SDL_Color color) const;
 		void FillRect(Rect16 dst, SDL_Color color) const;
-		void DrawRect(Rectu16 dst, SDL_Color color) const;
 		void DrawRect(Rect16 dst, SDL_Color color) const;
 
 		[[nodiscard]] SDL_Renderer* GetSDLRenderer() const;

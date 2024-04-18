@@ -167,6 +167,11 @@ namespace Pengin
 		return (*it).second;
 	}
 
+	const Entity Scene::GetEntity(const UUID& uuid)
+	{
+		return Entity{ GetEntityId(uuid), shared_from_this() };
+	}
+
 	void Scene::SetPlayer(const UserIndex& userIdx, const UUID& uuid) noexcept
 	{
 		m_SceneData.SetPlayer(userIdx, uuid);

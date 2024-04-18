@@ -65,16 +65,16 @@ namespace Pengin
 			InputCommand{ {} },
 			m_Id{ id }
 		{
-			assert(SceneManager::GetInstance().GetActiveScene()->GetECS().HasComponent<HealthComponent>(m_Id));
+			//assert(SceneManager::GetInstance().GetActiveScene()->GetECS().HasComponent<HealthComponent>(m_Id));
 		}
 
 		virtual void Execute() override
 		{
-			auto& ecs = SceneManager::GetInstance().GetActiveScene()->GetECS();
-			ecs.GetComponent<HealthComponent>(m_Id).m_Health--;
+			//auto& ecs = SceneManager::GetInstance().GetActiveScene()->GetECS();
+			//ecs.GetComponent<HealthComponent>(m_Id).m_Health--;
 
-			Event healthchangeEvent{"OnHealthChangeEvent", &m_Id};
-			EventManager::GetInstance().BroadcoastEvent(healthchangeEvent);
+			//Event healthchangeEvent{"OnHealthChangeEvent", &m_Id};
+			//EventManager::GetInstance().BroadcoastEvent(healthchangeEvent);
 		}
 
 		virtual ~AttackPlayer() override = default;
@@ -99,11 +99,11 @@ namespace Pengin
 
 		virtual void Execute() override
 		{
-			auto& ecs = SceneManager::GetInstance().GetActiveScene()->GetECS();
-			ecs.GetComponent<ScoreComponent>(m_EntityId).m_Score += m_ScoreVal;
+			//auto& ecs = SceneManager::GetInstance().GetActiveScene()->GetECS();
+			//ecs.GetComponent<ScoreComponent>(m_EntityId).m_Score += m_ScoreVal;
 
-			Event scoreEvent{ "OnScoreCollectEvent" , &m_EntityId };
-			EventManager::GetInstance().BroadcoastEvent(scoreEvent);
+			//Event scoreEvent{ "OnScoreCollectEvent" , &m_EntityId };
+			//EventManager::GetInstance().BroadcoastEvent(scoreEvent);
 		}
 
 		virtual ~CollectScore() override = default;

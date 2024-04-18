@@ -78,7 +78,7 @@ namespace Pengin
 	bool Entity::IsParentChildOfThis(const TransformComponent& thisTransform, const EntityId parentId) const
 	{
 		auto pScene{ m_pScene.lock() };
-		auto& ecs{ pScene->GetECS() };
+		auto& ecs{ pScene->m_Ecs };
 
 		if (thisTransform.relation.children == 0)
 		{

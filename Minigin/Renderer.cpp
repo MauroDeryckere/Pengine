@@ -126,13 +126,6 @@ void dae::Renderer::DrawLine(int x1, int y1, int x2, int y2, SDL_Color color) co
 	SDL_RenderDrawLine(m_renderer, x1, y1, x2, y2);
 }
 
-void dae::Renderer::FillRect(Rectu16 dst, SDL_Color color) const
-{
-	SDL_Rect rect = { static_cast<int>(dst.x), static_cast<int>(dst.y), static_cast<int>(dst.width), static_cast<int>(dst.height) };
-
-	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
-	SDL_RenderFillRect(m_renderer, &rect);
-}
 
 void dae::Renderer::FillRect(Rect16 dst, SDL_Color color) const
 {
@@ -140,14 +133,6 @@ void dae::Renderer::FillRect(Rect16 dst, SDL_Color color) const
 
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderFillRect(m_renderer, &rect);
-}
-
-void dae::Renderer::DrawRect(Rectu16 dst, SDL_Color color) const
-{
-	SDL_Rect rect = { static_cast<int>(dst.x), static_cast<int>(dst.y), static_cast<int>(dst.width), static_cast<int>(dst.height) };
-
-	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
-	SDL_RenderDrawRect(m_renderer, &rect);
 }
 
 void dae::Renderer::DrawRect(Rect16 dst, SDL_Color color) const
