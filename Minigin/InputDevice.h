@@ -3,6 +3,8 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_map>
+#include <memory>
 
 #include "InputCommand.h"
 
@@ -23,7 +25,9 @@ namespace Pengin
 
 		virtual void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) = 0;
 
-		virtual void* GetMappedActions() = 0;
+		virtual const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& GetMappedActions() = 0;
+
+		virtual void Clear() noexcept = 0;
 
 	protected:
 		virtual [[nodiscard]] unsigned GetCodeFromKey(unsigned key) const = 0;

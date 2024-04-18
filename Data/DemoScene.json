@@ -2,24 +2,32 @@
     "Scene Data": {
         "SceneName": "Demo Scene",
         "PlayerUUIDs": [
-            "698fb17a-98f1-4b19-947f-722e34df0d9c",
-            "54deb6cc-0ef5-497b-b8aa-d481e6918ab7"
+            "df5d6864-0292-484b-b637-46f6538ae910",
+            "471778f0-4732-4024-8bfc-b935133bb93d"
         ],
         "UserIds": [
             [
-                0,
+                "e70aa396-1599-4fa8-b72a-b3853796dd1e",
                 0
             ],
             [
-                1,
+                "18c5bed5-31ba-479a-89d1-45b5ec7f52ec",
                 1
             ]
         ],
-        "IsUUIDInit": true
+        "IsUUIDInit": true,
+        "SceneFileData": {
+            "InputFilePath": "../Data/InputTest.json",
+            "SceneLoadPath": "../Data/DemoScene.json",
+            "SceneSavePath": "../Data/DemoScene.json",
+            "SaveSceneOnDestroy": true,
+            "AutoSaveTime": 0.0,
+            "KeepPrevInput": false
+        }
     },
     "Entities": [
         {
-            "UUID": "d262bb1c-2a79-47aa-b159-04c26ef34095",
+            "UUID": "805bcced-aada-4958-ae70-38c307474276",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -70,7 +78,7 @@
             }
         },
         {
-            "UUID": "ffb61a50-380b-4eb9-b989-900011e7407e",
+            "UUID": "8e8c14c5-5097-4d2f-87f3-fe0ffb20b2d2",
             "Transform Component": {
                 "worldPos": [
                     216.0,
@@ -113,7 +121,7 @@
             }
         },
         {
-            "UUID": "43e8c4d6-9fc4-4859-96bd-898b710dd694",
+            "UUID": "cc795e2e-7aa0-497d-b580-cb7d8b62dcdb",
             "Transform Component": {
                 "worldPos": [
                     80.0,
@@ -167,7 +175,7 @@
             }
         },
         {
-            "UUID": "0adad418-9f8b-4705-a9af-c69535579f13",
+            "UUID": "5ec5e959-d083-48ac-8dfb-244e7be2eea8",
             "Transform Component": {
                 "worldPos": [
                     100.0,
@@ -221,7 +229,7 @@
             }
         },
         {
-            "UUID": "9787561c-cddb-43c7-8063-bbf0650f6967",
+            "UUID": "1661d8dd-fdb6-41b0-a953-e999a7273246",
             "Transform Component": {
                 "worldPos": [
                     100.0,
@@ -275,7 +283,7 @@
             }
         },
         {
-            "UUID": "70aef1b0-f097-4138-8514-75ced54dc765",
+            "UUID": "7bf8b157-f404-4445-b202-ff05a6a4fafe",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -317,7 +325,7 @@
                 "path": "NO PATH"
             },
             "Text Component": {
-                "Text": "59.0",
+                "Text": "58.7",
                 "Path": "Lingua.otf",
                 "FontSize": 36,
                 "Color": [
@@ -330,19 +338,20 @@
             "FPS Component": null
         },
         {
-            "UUID": "698fb17a-98f1-4b19-947f-722e34df0d9c",
+            "UUID": "df5d6864-0292-484b-b637-46f6538ae910",
             "Player Component": {
-                "UserIdx": 0
+                "UserIdx": "e70aa396-1599-4fa8-b72a-b3853796dd1e",
+                "MovementSpeed": 100.0
             },
             "Transform Component": {
                 "worldPos": [
-                    196.79127502441406,
-                    218.55296325683594,
+                    141.886474609375,
+                    55.20773696899414,
                     0.0
                 ],
                 "localPos": [
-                    196.79127502441406,
-                    218.55296325683594,
+                    141.886474609375,
+                    55.20773696899414,
                     0.0
                 ],
                 "rotation": [
@@ -384,7 +393,7 @@
             "Score Component": {
                 "Score": 0,
                 "ScoreDisplayUUIDS": [
-                    "cd23259b-b6c8-4a8c-beca-ae59f2a8833a"
+                    "db3b6b03-46ef-41d3-a513-53256c8033eb"
                 ]
             },
             "RectCollider Component": {
@@ -398,12 +407,12 @@
             "Health Component": {
                 "Health": 3,
                 "HealthDisplayUUIDS": [
-                    "53a9d37c-da4a-44ee-808d-61c4f9e9760d"
+                    "6a8b421c-d614-4bea-a499-202a39f008bd"
                 ]
             }
         },
         {
-            "UUID": "53a9d37c-da4a-44ee-808d-61c4f9e9760d",
+            "UUID": "6a8b421c-d614-4bea-a499-202a39f008bd",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -461,7 +470,7 @@
             }
         },
         {
-            "UUID": "cd23259b-b6c8-4a8c-beca-ae59f2a8833a",
+            "UUID": "db3b6b03-46ef-41d3-a513-53256c8033eb",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -519,9 +528,10 @@
             }
         },
         {
-            "UUID": "54deb6cc-0ef5-497b-b8aa-d481e6918ab7",
+            "UUID": "471778f0-4732-4024-8bfc-b935133bb93d",
             "Player Component": {
-                "UserIdx": 1
+                "UserIdx": "18c5bed5-31ba-479a-89d1-45b5ec7f52ec",
+                "MovementSpeed": 50.0
             },
             "Transform Component": {
                 "worldPos": [
@@ -573,18 +583,18 @@
             "Score Component": {
                 "Score": 0,
                 "ScoreDisplayUUIDS": [
-                    "606bb611-95cd-4d5f-9b58-6b3c9e9d289e"
+                    "11e7ceed-95c4-4e21-a472-ea195fc03cb1"
                 ]
             },
             "Health Component": {
                 "Health": 3,
                 "HealthDisplayUUIDS": [
-                    "9b99f0c1-3e2e-4b0d-8bc4-5e2e45113464"
+                    "57a33316-f7b9-40e3-8b58-0939cd2440ed"
                 ]
             }
         },
         {
-            "UUID": "9b99f0c1-3e2e-4b0d-8bc4-5e2e45113464",
+            "UUID": "57a33316-f7b9-40e3-8b58-0939cd2440ed",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -642,7 +652,7 @@
             }
         },
         {
-            "UUID": "606bb611-95cd-4d5f-9b58-6b3c9e9d289e",
+            "UUID": "11e7ceed-95c4-4e21-a472-ea195fc03cb1",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -700,7 +710,7 @@
             }
         },
         {
-            "UUID": "77db7779-a2d5-484a-b67e-d66effc6d639",
+            "UUID": "dc53ac6b-acf5-491d-9a9c-13ff6dd0ebf1",
             "Transform Component": {
                 "worldPos": [
                     200.0,
@@ -733,8 +743,8 @@
             },
             "Sprite Component": {
                 "Source rect": [
-                    48,
-                    16,
+                    32,
+                    0,
                     16,
                     16
                 ],
@@ -765,8 +775,8 @@
                     }
                 ],
                 "CurrentAnimationIndex": 0,
-                "CurrentAnimationFrame": 1,
-                "CurrentFrameTime": 0.15262718498706818,
+                "CurrentAnimationFrame": 0,
+                "CurrentFrameTime": 0.8693141937255859,
                 "IsPlaying": true
             }
         }

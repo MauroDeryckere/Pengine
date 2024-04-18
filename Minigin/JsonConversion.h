@@ -1,7 +1,7 @@
 #ifndef JSONCONVERSION
 #define JSONCONVERSION
 
-//provide the json specialization functions to convert components
+//provide the json specialization functions to convert data structures
 
 #include "Components.h"
 #include "SceneData.h"
@@ -12,18 +12,34 @@ namespace Pengin
 	using json = nlohmann::ordered_json;
 
 	//NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE();
+	
+	using UserIndex = UUID;
 
-	//SceneData
 	//UUID
 	void to_json(json& j, const UUID& uuid)
 	{
 		j = uuid.GetUUID_PrettyStr();
 	}
+	//------------
 
+	//SceneFileData
+	void to_json(json& j, const SceneFileData& sceneFileData)
+	{
+		j =
+		{
+			{"InputFilePath" ,sceneFileData.inputFilePath },
+			{"SceneLoadPath" ,sceneFileData.sceneLoadPath },
+			{"SceneSavePath" ,sceneFileData.sceneSavePath },
+			{"SaveSceneOnDestroy" ,sceneFileData.saveSceneOnDestroy },
+			{"AutoSaveTime" ,sceneFileData.autoSaveTime },
+			{"KeepPrevInput" ,sceneFileData.keepPrevInput }
+		};
+	}
+	//-------
+	//SceneData
 	void to_json(json& j, const SceneData& sceneData)
 	{
 		assert(sceneData.isUUIDInit);
-
 		j =
 		{
 			{"SceneName", sceneData.name},
@@ -31,25 +47,10 @@ namespace Pengin
 			{"PlayerUUIDs", sceneData.playerUUIDs },
 			{"UserIds", sceneData.user_UUIDVecIdxMap },
 
-			{"IsUUIDInit", sceneData.isUUIDInit }
+			{"IsUUIDInit", sceneData.isUUIDInit },
+
+			{"SceneFileData", sceneData.sceneFileData}
 		};
-	}
-	void from_json(const json& j, SceneData& sceneData)
-	{
-		sceneData.name = j["SceneName"].get<std::string>();
-
-		for (const auto& player : j["PlayerUUIDs"])
-		{
-			sceneData.playerUUIDs.emplace_back(UUID{ player.get<std::string>() });
-		}
-		for (const auto& user : j["UserIds"])
-		{
-			sceneData.user_UUIDVecIdxMap[user[0].get<size_t>()] = user[1].get<size_t>();
-		}
-
-		sceneData.isUUIDInit = j["IsUUIDInit"].get<bool>();
-
-		assert(sceneData.isUUIDInit);
 	}
 	//---------
 
@@ -266,10 +267,10 @@ namespace Pengin
 	void from_json(const json& j, AnimationComponent& ani)
 	{
 		ani.m_Animations = j["Animations"].get<std::vector<AnimationData>>();
-		ani.m_CurrAnimationIdx = j["CurrentAnimationIndex"];
-		ani.m_CurrFrame = j["CurrentAnimationFrame"];
-		ani.m_FrameTimer = j["CurrentFrameTime"];
-		ani.m_IsPlaying = j["IsPlaying"];
+		ani.m_CurrAnimationIdx = j["CurrentAnimationIndex"].get<uint8_t>();
+		ani.m_CurrFrame = j["CurrentAnimationFrame"].get<uint8_t>();
+		ani.m_FrameTimer = j["CurrentFrameTime"].get<float>();
+		ani.m_IsPlaying = j["IsPlaying"].get<bool>();
 	}
 	//---------------
 

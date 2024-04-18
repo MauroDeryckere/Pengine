@@ -5,14 +5,13 @@
 
 thread_local static boost::uuids::random_generator s_NumGen;
 thread_local static boost::uuids::string_generator s_StrGen;
+thread_local static boost::uuids::nil_generator s_NilGen;
 
 namespace Pengin 
 {
-	UUID::UUID() noexcept:
-		m_UUID{ s_NumGen() }
-	{
-
-	}
+	UUID::UUID(bool isNull) noexcept:
+		m_UUID{ isNull ? s_NilGen() : s_NumGen() }
+	{}
 
 	UUID::UUID(const std::string& id, bool isPrettyStr) noexcept
 	{ 

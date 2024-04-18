@@ -310,6 +310,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="RectColliderComponent.h" />
     <ClInclude Include="SceneData.h" />
+    <ClInclude Include="SceneFileData.h" />
     <ClInclude Include="SceneInfoPanel.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="Serializer.h" />
@@ -402,7 +403,6 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClCompile Include="SceneInfoPanel.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Serializer.cpp" />
-    <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="TextSystem.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Time.cpp" />

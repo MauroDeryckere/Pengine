@@ -19,7 +19,10 @@ namespace Pengin
 		virtual void ProcessMappedActions(InputBuffer* const inputBuffer) override;
 
 		virtual void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) override;
-		virtual void* GetMappedActions() override;
+		virtual const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& GetMappedActions() override;
+
+		virtual void Clear() noexcept override;
+
 	private:
 		std::unique_ptr<WindowsKeyboardImpl> m_WinImpl;
 

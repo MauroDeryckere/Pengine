@@ -8,7 +8,11 @@
 #include <unordered_map>
 
 #include <string>
+#include <memory>
 #include "JsonConversion.h"
+
+#include "InputManager.h"
+#include "InputCommands.h"
 
 namespace Pengin
 {
@@ -40,6 +44,34 @@ namespace Pengin
 		}
 	}
 
+	bool Serializer::SerializeInput(const std::filesystem::path& filePath) const noexcept
+	{
+		const auto extension{ filePath.extension() };
+		if (extension == ".json")
+		{
+			return SerializeInput_Json(filePath);
+		}
+		else
+		{
+			DEBUG_OUT("wrong file extension, only support .json");
+			return false;
+		}
+	}
+
+	std::pair<bool, InputDataVec> Serializer::DeserializeInput(const std::filesystem::path& filePath) noexcept
+	{
+		const auto extension{ filePath.extension() };
+		if (extension == ".json")
+		{
+			return DeserializeInput_Json(filePath);
+		}
+		else
+		{
+			DEBUG_OUT("wrong file extension, only support .json");
+			return { false, {} };
+		}
+	}
+
 	bool Serializer::SerializeScene_Json(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept
 	{
 		json scene;
@@ -51,7 +83,7 @@ namespace Pengin
 		for (const auto id : allIds)
 		{
 			json entityData;
-			if (!SerializeSceneEntity_Json(ecs, id, entityData))
+			if (!SerializeSceneEntity_Json(ecs, id, entityData)) //async?
 			{
 				return false;
 			}
@@ -80,8 +112,26 @@ namespace Pengin
 				return false;
 			}
 
-			const SceneData& ser_sceneData = scene["Scene Data"];
-			sceneData = std::move(ser_sceneData);
+			//TODO func
+			const auto& inpSceneData_Json = scene["Scene Data"];
+			sceneData.name = inpSceneData_Json["SceneName"].get<std::string>();
+			for (const auto& player : inpSceneData_Json["PlayerUUIDs"])
+			{
+				sceneData.playerUUIDs.emplace_back(UUID{ player.get<std::string>() });
+			}
+			for (const auto& user : inpSceneData_Json["UserIds"])
+			{
+				sceneData.user_UUIDVecIdxMap[UUID{ user[0].get<std::string>() }] = user[1].get<size_t>();
+			}
+			sceneData.isUUIDInit = inpSceneData_Json["IsUUIDInit"].get<bool>();
+			assert(sceneData.isUUIDInit);
+				
+			sceneData.sceneFileData.inputFilePath = inpSceneData_Json["SceneFileData"]["InputFilePath"].get<std::string>();
+			sceneData.sceneFileData.sceneLoadPath = inpSceneData_Json["SceneFileData"]["SceneLoadPath"].get<std::string>();
+			sceneData.sceneFileData.sceneSavePath = inpSceneData_Json["SceneFileData"]["SceneSavePath"].get<std::string>();
+			sceneData.sceneFileData.saveSceneOnDestroy = inpSceneData_Json["SceneFileData"]["SaveSceneOnDestroy"].get<bool>();
+			sceneData.sceneFileData.autoSaveTime = inpSceneData_Json["SceneFileData"]["AutoSaveTime"].get<float>();
+			sceneData.sceneFileData.keepPrevInput = inpSceneData_Json["SceneFileData"]["KeepPrevInput"].get<bool>();
 			
 			if (scene.contains("Entities"))
 			{
@@ -97,7 +147,7 @@ namespace Pengin
 
 				for (const auto& entityData : scene["Entities"])
 				{
-					if (!DeserializeSceneEntity_Json(ecs, entityMap, entityData))
+					if (!DeserializeSceneEntity_Json(ecs, entityMap, entityData)) //async ?
 					{
 						return false;
 					}
@@ -128,7 +178,8 @@ namespace Pengin
 		{
 			const auto& player = ecs.GetComponent<PlayerComponent>(id);
 			j["Player Component"];
-			j["Player Component"]["UserIdx"] = player.userIdx;
+			j["Player Component"]["UserIdx"] = player.userIdx.GetUUID_PrettyStr();
+			j["Player Component"]["MovementSpeed"] = player.movementSpeed;
 		}
 
 		if (ecs.HasComponent<TransformComponent>(id))
@@ -210,8 +261,9 @@ namespace Pengin
 
 		if (entityData.contains("Player Component"))
 		{
-			const auto userIdx = entityData["Player Component"]["UserIdx"].get<size_t>();
-			ecs.AddComponent<PlayerComponent>(entity, userIdx);
+			const auto userIdx = UUID{ entityData["Player Component"]["UserIdx"].get<std::string>() };
+			const auto movementSpeed = entityData["Player Component"]["MovementSpeed"].get<float>();
+			ecs.AddComponent<PlayerComponent>(entity, userIdx, movementSpeed);
 		}
 
 		if (entityData.contains("Transform Component"))
@@ -290,38 +342,59 @@ namespace Pengin
 		return true;
 	}
 
-	void Serializer::OutputEntityData(const ECS& ecs, const EntityId id) const noexcept
+	bool Serializer::SerializeInput_Json(const std::filesystem::path& filePath) const noexcept //TODO
 	{
-		if (ecs.HasComponent<TransformComponent>(id))
+		using json = nlohmann::ordered_json;
+		const auto& input = InputManager::GetInstance();
+
+		const auto& userMap = input.m_UserIdx_VecIdxMap;
+		const auto& users = input.m_RegisteredUsers;
+		//const auto& combos = input.m_InputCombos; combos;
+
+		json inputData; //Serialize using map?
+
+		for (const auto& [userUUID, userIdx] : userMap)
 		{
-			//unused in release
-			const auto& transform [[maybe_unused]] = ecs.GetComponent<TransformComponent>(id);
+			json userInputData;
 
-			DEBUG_OUT("Transform Component\n");
+			userInputData["UserUUID"] = userUUID.GetUUID_PrettyStr();
+			const UserType uType = users[userIdx].first;
+			userInputData["UserType"] = static_cast<unsigned>(uType);
 
-			DEBUG_OUT("World pos " << transform.worldPos.x << " " << transform.worldPos.y << " " << transform.worldPos.z);
-			DEBUG_OUT("Local pos " << transform.localPos.x << " " << transform.localPos.y << " " << transform.localPos.z);
-			DEBUG_OUT("Rotation " << transform.rotation.x << " " << transform.rotation.y << " " << transform.rotation.z);
-			DEBUG_OUT("Scale " << transform.scale.x << " " << transform.scale.y << " " << transform.scale.z);
-
-			DEBUG_OUT("Relation ");
-			DEBUG_OUT("Children " << transform.relation.children);
-			DEBUG_OUT("First Child  " << transform.relation.firstChild);
-			DEBUG_OUT("Previous Sibling " << transform.relation.prevSibling);
-			DEBUG_OUT("Next Sibling " << transform.relation.nextSibling);
-			DEBUG_OUT("Parent " << transform.relation.parent);
-
-			DEBUG_OUT("Is pos dirty " << transform.isPosDirty << "\n");
+			inputData["Users"].emplace_back(userInputData);
 		}
-		if (ecs.HasComponent<SpriteComponent>(id))
+
+		if (std::ofstream file{ filePath, std::ios::out }; file.is_open())
 		{
-			const auto& sprite [[maybe_unused]] = ecs.GetComponent<SpriteComponent>(id);
-			DEBUG_OUT("Sprite Component\n");
-
-			DEBUG_OUT("Is Visible " << sprite.isVisible);
-			DEBUG_OUT("Source rect " << sprite.m_SourceRect.x << " " << sprite.m_SourceRect.y << " " << sprite.m_SourceRect.width << " " << sprite.m_SourceRect.height);
-			DEBUG_OUT("Texture " << sprite.m_pTexture->GetPath() << "\n");
+			file << inputData.dump(4);
+			return true;
 		}
-		//....
+
+		return false;
+	}
+
+	std::pair<bool, InputDataVec> Serializer::DeserializeInput_Json(const std::filesystem::path& filePath) noexcept //TOOD
+	{
+		using json = nlohmann::ordered_json;
+
+		if (std::ifstream file{ filePath, std::ios::in }; file.is_open())
+		{
+			json inputData;
+			file >> inputData;
+
+			InputDataVec inpVec{};
+
+			for (const auto& user : inputData["Users"])
+			{	
+				const std::string uIdx_Str{ user["UserUUID"].get<std::string>() };	
+				const UserIndex uIdx = UUID{ uIdx_Str };
+				const unsigned uType = user["UserType"].get<unsigned>();
+
+				inpVec.emplace_back(std::tuple{ uIdx, uType });
+			}
+
+			return { true, inpVec };
+		}
+		return { false, {} };
 	}
 }

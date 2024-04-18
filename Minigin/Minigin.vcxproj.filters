@@ -576,6 +576,9 @@
     <ClInclude Include="PlayerComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="SceneFileData.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -676,9 +679,6 @@
     </ClCompile>
     <ClCompile Include="TextSystem.cpp">
       <Filter>Source Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="TextComponent.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MovementSystem.cpp">
       <Filter>Source Files\Systems</Filter>

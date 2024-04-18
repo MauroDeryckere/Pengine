@@ -2,21 +2,21 @@
 #define SCENEMANAGER
 
 #include "CoreIncludes.h"
+#include "SceneFileData.h"
+#include "Scene.h"
 
 #include <vector>
 #include <string>
-#include <filesystem>
 #include <memory>
+#include <unordered_map>
 
 namespace Pengin
 {
-	class Scene;
-	using std::filesystem::path;
-
 	class SceneManager final : public dae::Singleton<SceneManager>
 	{
 	public:
-		std::shared_ptr<Scene> CreateScene(const std::string& name, const path& sceneLoadPath = {}, const path& sceneSavePath = {}, bool saveOnDestroy = false, bool swapToNext = true);
+		std::shared_ptr<Scene> CreateScene(const std::string& name, const SceneFileData& sceneFileData = {}, bool swapToNext = true);
+
 		[[nodiscard]] std::shared_ptr<Scene> GetActiveScene() noexcept { return m_Scenes[m_ActiveSceneIdx]; }
 
 		[[nodiscard]] std::shared_ptr<Scene> GetScene(const std::string& sceneName);

@@ -1,4 +1,4 @@
-#include "Scene.h"
+#include "InputManager.h"
 
 #include "Serializer.h"
 #include "Entity.h"
@@ -8,36 +8,77 @@
 
 namespace Pengin
 {
-	Scene::Scene(const std::string& name, const path& sceneLoadPath, const path& sceneSavePath, bool saveOnDestroy) :
-		m_SaveOnDestroy{ saveOnDestroy },
-		m_SceneSavePath{ sceneSavePath }
+	Scene::Scene(const std::string& name, const SceneFileData& sceneFileData)
 	{
 		m_SceneData.name = name;
+		m_SceneData.sceneFileData = sceneFileData;
 
-		if (!sceneLoadPath.empty())
+		if (!sceneFileData.sceneLoadPath.empty())
 		{
-			if (!DeserializeScene(sceneLoadPath))
+			if (!DeserializeScene())
 			{
-				throw std::runtime_error("Failed to deserialize scene at: " + sceneLoadPath.string());
+				throw std::runtime_error("Failed to deserialize scene at: " + sceneFileData.sceneLoadPath.string());
 			}
 		}
 	}
 
 	Scene::~Scene()
 	{
-		if (m_SaveOnDestroy)
+		if (m_SceneData.sceneFileData.saveSceneOnDestroy && !m_SceneData.sceneFileData.sceneSavePath.empty())
 		{
 			DEBUG_OUT("Saving scene " << m_SceneData.name);
 			SerializeScene();
 		}
 	}
 
-	bool Scene::DeserializeScene(const std::filesystem::path& scenePath) noexcept
+	void Scene::Start()
 	{
-		return Serializer::GetInstance().DeserializeScene(m_SceneData, m_UUID_EntityIdMap, m_Ecs, scenePath);
+		if (m_SceneData.sceneFileData.keepPrevInput)
+		{
+			return;
+		}
+
+		if ((!m_SceneData.sceneFileData.f_RegControllerInput && !m_SceneData.sceneFileData.f_RegKeyboardInput) 
+			|| m_SceneData.sceneFileData.inputFilePath.empty())
+		{
+			return;
+		}
+
+		const auto inp = Serializer::GetInstance().DeserializeInput(m_SceneData.sceneFileData.inputFilePath);
+		
+		if (!inp.first)
+		{
+			DEBUG_OUT("Failed to deserialize"); //likely have to throw here in fut
+			return;
+		}
+
+		auto& input = InputManager::GetInstance();
+		input.Clear();
+
+		for (const auto& user : inp.second)
+		{
+			const auto& userIndex = std::get<0>(user);
+			const auto uType = static_cast<UserType>(std::get<1>(user));
+
+			input.RegisterUser(userIndex, uType);
+
+			if (uType == UserType::Keyboard) 
+			{
+				m_SceneData.sceneFileData.f_RegKeyboardInput(user);
+			}
+			else if (uType == UserType::Controller)
+			{
+				m_SceneData.sceneFileData.f_RegControllerInput(user);
+			}
+		}
 	}
 
-	Entity Scene::CreateEntity(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale, size_t userIdx)
+	bool Scene::DeserializeScene() noexcept
+	{
+		return Serializer::GetInstance().DeserializeScene(m_SceneData, m_UUID_EntityIdMap, m_Ecs, m_SceneData.sceneFileData.sceneLoadPath);
+	}
+
+	Entity Scene::CreateEntity(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale, const UserIndex& userIdx)
 	{
 		const auto id{ m_Ecs.CreateEntity() };
 
@@ -47,7 +88,7 @@ namespace Pengin
 
 		m_UUID_EntityIdMap[uuidComp.uuid] = id;
 
-		if (userIdx != SIZE_MAX)
+		if (userIdx)
 		{
 			entity.AddComponent<PlayerComponent>(userIdx);
 			SetPlayer(userIdx, uuidComp.uuid);
@@ -86,7 +127,6 @@ namespace Pengin
 
 				m_SceneData.user_UUIDVecIdxMap.erase(it);
 				m_SceneData.playerUUIDs.pop_back();
-
 			}
 			else
 			{
@@ -127,32 +167,19 @@ namespace Pengin
 		return (*it).second;
 	}
 
-	void Scene::SetPlayer(const size_t userIdx, const UUID& uuid) noexcept
+	void Scene::SetPlayer(const UserIndex& userIdx, const UUID& uuid) noexcept
 	{
-		m_SceneData.isUUIDInit = true;
-
-		auto it = m_SceneData.user_UUIDVecIdxMap.find(userIdx);
-
-		if (it == end(m_SceneData.user_UUIDVecIdxMap))
-		{
-			m_SceneData.playerUUIDs.emplace_back(uuid);
-			m_SceneData.user_UUIDVecIdxMap[userIdx] = m_SceneData.playerUUIDs.size() - 1;
-		}
-		else
-		{
-			DEBUG_OUT("Setting uuid for useridx that already exists, ensure this is the intended behaviour");
-			m_SceneData.playerUUIDs[(*it).second] = uuid;
-		}
+		m_SceneData.SetPlayer(userIdx, uuid);
 	}
 
-	void Scene::SetPlayer(const size_t userIdx, const EntityId id) noexcept
+	void Scene::SetPlayer(const UserIndex& userIdx, const EntityId id) noexcept
 	{
 		assert(m_Ecs.HasComponent<UUIDComponent>(id));
 		const auto uuid = m_Ecs.GetComponent<UUIDComponent>(id).uuid;
 		SetPlayer(userIdx, uuid);
 	}
 
-	void Scene::SetPlayer(const size_t userIdx, const Entity entity) noexcept
+	void Scene::SetPlayer(const UserIndex& userIdx, const Entity entity) noexcept
 	{
 		assert(entity.GetEntityId() != NULL_ENTITY_ID);
 		SetPlayer(userIdx, entity.GetEntityId());
@@ -191,18 +218,9 @@ namespace Pengin
 
 	bool Scene::SerializeScene() const noexcept
 	{
+		assert(!m_SceneData.sceneFileData.sceneSavePath.empty());
+
 		assert(m_SceneData.isUUIDInit && "Must init a player to serialize the scene (SetPlayer or scene data in load file)");
-		return Serializer::GetInstance().SerializeScene(m_Ecs, m_SceneData, m_SceneSavePath);
+		return Serializer::GetInstance().SerializeScene(m_Ecs, m_SceneData, m_SceneData.sceneFileData.sceneSavePath);
 	}
-
-	//void Scene::SerializeEntity(const EntityId id) noexcept
-	//{
-	//	Serializer::GetInstance().SerializeEntity(m_Ecs, id, "../Data/jsonTestSerEntity.json");
-	//}
-
-	//void Scene::DeserializeEntity() noexcept
-	//{
-	//	Serializer::GetInstance().DeserializeEntity(m_Ecs, "../Data/jsonTestSerEntity.json");
-	//}
-
 }

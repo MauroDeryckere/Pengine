@@ -3,6 +3,8 @@
 
 #include "Singleton.h"
 
+#include "CoreIncludes.h"
+
 #include "InputCommand.h"
 #include "InputDevice.h"
 #include "InputBuffer.h"
@@ -16,7 +18,7 @@ namespace Pengin
 {
     class InputBuffer;
 
-    enum class UserType : char
+    enum class UserType : unsigned
     {
         Keyboard,
         Controller
@@ -30,21 +32,23 @@ namespace Pengin
         std::vector<float> allowedDelay;
     }; 
 
+    using UserIndex = UUID;
     class InputManager final : public dae::Singleton<InputManager>
     {
     public:
         [[nodiscard]] bool ProcessInput() noexcept;
+        [[nodiscard]] const UserIndex RegisterUser(UserType usertype) noexcept;
+        void RegisterUser(const UserIndex& index, UserType usertype) noexcept;
 
-        [[nodiscard]] size_t RegisterUser(UserType usertype) noexcept; //returns the userIndex
+        void MapControllerAction(UserIndex userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
+        void MapKeyboardAction(UserIndex userIdx, KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
 
-        void MapControllerAction(size_t userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
-        void MapKeyboardAction(size_t userIdx, KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
+        void Clear() noexcept; //this clears evrything, including users
+        void Reset() noexcept; //this clears eveything, but keeps the users and devices
 
-        //void MapMouseAction(userIdx, MouseButton button, InputState inputState, std::unique_ptr<InputCommand> pInputAction);
+        //unmapping specific actions TODO (remapping)
 
-        //unmapping TODO
-
-        void MapCombo(size_t userIdx, const InputCombo& combo) noexcept;
+        void MapCombo(UserIndex userIdx, const InputCombo& combo) noexcept;
 
         InputManager(const InputManager&) = delete;
         InputManager(InputManager&&) = delete;
@@ -56,8 +60,12 @@ namespace Pengin
         InputManager() = default;
         ~InputManager() = default;
 
+        friend class Serializer; //Serialize / Deserialize input - TODO
+
+        std::unordered_map<UserIndex, size_t> m_UserIdx_VecIdxMap;
+
         std::vector<std::pair<UserType, std::vector<std::unique_ptr<InputDevice>>>> m_RegisteredUsers;
-        std::vector<std::vector<InputCombo>> m_NewInputCombos;
+        std::vector<std::vector<InputCombo>> m_InputCombos;
         std::vector<std::unique_ptr<InputBuffer>> m_InputBuffers;
 
         static constexpr unsigned MAX_ALLOWED_CONTROLLERS{ 4 };

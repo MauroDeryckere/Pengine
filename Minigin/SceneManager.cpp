@@ -31,6 +31,7 @@ namespace Pengin
 		}
 
 		m_ActiveSceneIdx = idx;
+		m_Scenes[idx]->Start();
 	}
 
 	void SceneManager::DestroyScene(const std::string& sceneName)
@@ -61,6 +62,8 @@ namespace Pengin
 			return false;
 		}
 
+
+		m_Scenes[m_ActiveSceneIdx]->Start();
 		return true;
 	}
 	void SceneManager::Update()
@@ -97,20 +100,21 @@ namespace Pengin
 		}
 	}
 
-	std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name, const path& sceneLoadPath, const path& sceneSavePath, bool saveOnDestroy, bool swapToNext)
+	std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name, const SceneFileData& sceneFileData, bool swapToNext)
 	{
-		const auto& scene = std::shared_ptr<Scene>( new Scene{ name, sceneLoadPath, sceneSavePath, saveOnDestroy } );
+		const auto& scene = std::shared_ptr<Scene>(new Scene{ name, sceneFileData });
 		m_Scenes.emplace_back(scene);
 
 		auto it = m_SceneName_IdMap.find(name);
 		assert(it == end(m_SceneName_IdMap) && "Don't have 2 scenes with same name.");
 
 		++m_SceneCounter;
-		m_SceneName_IdMap.insert( { name, m_SceneCounter} );
+		m_SceneName_IdMap.insert({ name, m_SceneCounter });
 
 		if (swapToNext)
 		{
 			m_ActiveSceneIdx = m_SceneCounter - 1;
+			m_Scenes[m_ActiveSceneIdx]->Start();
 		}
 
 		return scene;

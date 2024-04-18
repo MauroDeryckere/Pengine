@@ -18,7 +18,9 @@ namespace Pengin
 		void ProcessMappedActions(InputBuffer* const inputBuffer);
 		void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
 
-		void* GetMappedActions();
+		const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& GetMappedActions();
+
+		void Clear() noexcept;
 
 		//Pivate in InputKeyboard
 		unsigned GetCodeFromKey(unsigned key) const;
@@ -27,7 +29,7 @@ namespace Pengin
 		bool IsPressed(unsigned btn) const;
 
 	private:
-		std::vector<std::unordered_map<KeyBoardKey, std::shared_ptr<InputCommand>>> m_KeyboardActionMapping;
+		std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>> m_KeyboardActionMapping;
 
 		BYTE m_CurrentKBState[256];
 		BYTE m_KBButtonsPressedThisFrame[256];
@@ -37,9 +39,7 @@ namespace Pengin
 
 	WindowsKeyboardImpl::WindowsKeyboardImpl() :
 		m_KeyboardActionMapping(static_cast<size_t>(InputState::STATE_COUNT))	
-	{
-		m_KeyboardActionMapping.resize(static_cast<size_t>(InputState::STATE_COUNT));
-	}
+	{ }
 
 	void WindowsKeyboardImpl::ProcessInputState()
 	{
@@ -59,21 +59,21 @@ namespace Pengin
 	void WindowsKeyboardImpl::ProcessMappedActions(InputBuffer* const inputBuffer)
 	{
 		for (auto& pair : m_KeyboardActionMapping[static_cast<size_t>(InputState::DownThisFrame)]) {
-			if (IsDownThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
+			if (IsDownThisFrame(GetCodeFromKey(pair.first)))
 			{
 				pair.second->Execute();
 				inputBuffer->RecordInput(pair.second);
 			}
 		}
 		for (auto& pair : m_KeyboardActionMapping[static_cast<size_t>(InputState::UpThisFrame)]) {
-			if (IsUpThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
+			if (IsUpThisFrame(GetCodeFromKey(pair.first)))
 			{
 				pair.second->Execute();
 				inputBuffer->RecordInput(pair.second);
 			}			
 		}
 		for (auto& pair : m_KeyboardActionMapping[static_cast<size_t>(InputState::Pressed)]) {
-			if (IsPressed(GetCodeFromKey(static_cast<unsigned>(pair.first))))
+			if (IsPressed(GetCodeFromKey(pair.first)))
 			{
 				pair.second->Execute();
 				inputBuffer->RecordInput(pair.second);
@@ -83,12 +83,18 @@ namespace Pengin
 
 	void WindowsKeyboardImpl::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
-		m_KeyboardActionMapping[static_cast<size_t>(inputState)][static_cast<KeyBoardKey>(key)] = std::move(pInputAction);
+		m_KeyboardActionMapping[static_cast<size_t>(inputState)][key] = std::move(pInputAction);
 	}
 
-	void* WindowsKeyboardImpl::GetMappedActions()
+	const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& WindowsKeyboardImpl::GetMappedActions()
 	{
-		return &m_KeyboardActionMapping;
+		return m_KeyboardActionMapping;
+	}
+
+	void WindowsKeyboardImpl::Clear() noexcept
+	{	
+		m_KeyboardActionMapping.clear();
+		m_KeyboardActionMapping.resize(static_cast<size_t>(InputState::STATE_COUNT));
 	}
 
 	unsigned WindowsKeyboardImpl::GetCodeFromKey(unsigned key) const
@@ -228,9 +234,14 @@ namespace Pengin
 		m_WinImpl->MapActionToInput(key, inputState, pInputAction);
 	}
 
-	void* InputKeyboard::GetMappedActions()
+	const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& InputKeyboard::GetMappedActions()
 	{
 		return m_WinImpl->GetMappedActions();
+	}
+
+	void InputKeyboard::Clear() noexcept
+	{
+		m_WinImpl->Clear();
 	}
 
 	unsigned InputKeyboard::GetCodeFromKey(unsigned key) const

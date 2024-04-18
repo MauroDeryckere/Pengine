@@ -24,7 +24,9 @@ namespace Pengin
 		void ProcessMappedActions(InputBuffer* const inputBuffer);
 		void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
 
-		void* GetMappedActions();
+		const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& GetMappedActions();
+
+		void Clear() noexcept;
 
 		//Pivate in InputController
 		unsigned GetCodeFromKey(unsigned key) const;
@@ -40,7 +42,7 @@ namespace Pengin
 		XINPUT_STATE m_CurrentState;
 		unsigned m_ButtonsPressedThisFrame;
 		unsigned m_ButtonsReleasedThisFrame;
-		std::vector<std::unordered_map<ControllerButton, std::shared_ptr<InputCommand>>> m_ControllerActionMapping;
+		std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>> m_ControllerActionMapping;
 
 		static constexpr DWORD INVALID_CONTROLLER_VALUE { 100 } ;
 		
@@ -96,21 +98,21 @@ namespace Pengin
 	void WindowsInputControllerImpl::ProcessMappedActions(InputBuffer * const inputBuffer)
 	{
 		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::DownThisFrame)]) {
-			if (IsDownThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
+			if (IsDownThisFrame(GetCodeFromKey(pair.first)))
 			{
 				pair.second->Execute();
 				inputBuffer->RecordInput(pair.second);
 			}
 		}
 		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::UpThisFrame)]) {
-			if (IsUpThisFrame(GetCodeFromKey(static_cast<unsigned>(pair.first))))
+			if (IsUpThisFrame(GetCodeFromKey(pair.first)))
 			{
 				pair.second->Execute();
 				inputBuffer->RecordInput(pair.second);
 			}
 		}
 		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::Pressed)]) {
-			if (IsPressed(GetCodeFromKey(static_cast<unsigned>(pair.first))))
+			if (IsPressed(GetCodeFromKey(pair.first)))
 			{
 				pair.second->Execute();
 				inputBuffer->RecordInput(pair.second);
@@ -120,14 +122,19 @@ namespace Pengin
 
 	void WindowsInputControllerImpl::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
-		m_ControllerActionMapping[static_cast<size_t>(inputState)][static_cast<ControllerButton>(key)] = std::move(pInputAction);
+		m_ControllerActionMapping[static_cast<size_t>(inputState)][key] = std::move(pInputAction);
 	}
 
-	void* WindowsInputControllerImpl::GetMappedActions()
+	const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& WindowsInputControllerImpl::GetMappedActions()
 	{
-		return &m_ControllerActionMapping;
+		return m_ControllerActionMapping;
 	}
 
+	void WindowsInputControllerImpl::Clear() noexcept
+	{
+		m_ControllerActionMapping.clear();
+		m_ControllerActionMapping.resize(static_cast<size_t>(InputState::STATE_COUNT));
+	}
 
 	unsigned WindowsInputControllerImpl::GetCodeFromKey(unsigned key) const
 	{
@@ -218,9 +225,14 @@ namespace Pengin
 		m_WinImpl->MapActionToInput(key, inputState, pInputAction);
 	}
 
-	void* InputController::GetMappedActions()
+	const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& InputController::GetMappedActions()
 	{
 		return m_WinImpl->GetMappedActions();
+	}
+
+	void InputController::Clear() noexcept
+	{
+		m_WinImpl->Clear();
 	}
 
 	unsigned InputController::GetCodeFromKey(unsigned key) const

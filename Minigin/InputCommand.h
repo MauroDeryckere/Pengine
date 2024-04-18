@@ -1,8 +1,19 @@
 #ifndef INPUTCOMMAND
 #define INPUTCOMMAND
 
+#include "CoreIncludes.h"
+
+#include "UUID.h"
+#include "glm/vec3.hpp"
+
+#include <unordered_map>
+#include <string>
+#include <any>
+#include <memory>
+
 namespace Pengin
 {
+	using UserIndex = UUID;
 	class InputCommand abstract
 	{
 	public:
@@ -15,7 +26,15 @@ namespace Pengin
 		InputCommand& operator=(InputCommand&&) noexcept = delete;
 
 	protected:
-		InputCommand() = default;
+		InputCommand(const UserIndex& user) :
+			m_UserIdx{ user }
+		{ }
+
+		const UserIndex& GetUserIdx() const noexcept { return m_UserIdx; }
+
+	private:
+		UserIndex m_UserIdx;
 	};
 }
+
 #endif

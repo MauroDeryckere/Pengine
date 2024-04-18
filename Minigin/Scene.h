@@ -2,8 +2,6 @@
 #define SCENE
 
 #include "CoreIncludes.h"
-
-#include "SceneManager.h"
 #include "SceneData.h"
 
 #include "ECS.h"
@@ -28,14 +26,14 @@
 namespace Pengin
 {
 	class Entity;
-	using std::filesystem::path;
-
 	class Scene final : public std::enable_shared_from_this<Scene>
 	{
 	public:
 		~Scene();
 
-		[[nodiscard]] Entity CreateEntity(const glm::vec3& position = { }, const glm::vec3& rotation = { }, const glm::vec3& scale = { 1, 1, 1 }, size_t userIdx = { SIZE_MAX });
+		void Start();
+
+		[[nodiscard]] Entity CreateEntity(const glm::vec3& position = { }, const glm::vec3& rotation = { }, const glm::vec3& scale = { 1, 1, 1 }, const UserIndex& = UUID{ true });
 		bool DestroyEntity(Entity entity, bool keepChildren = true);
 		bool DestroyEntity(const EntityId entityId, bool keepChildren = true);
 
@@ -43,12 +41,6 @@ namespace Pengin
 		void Update();
 		void Render() const;
 		void RenderImGUI();
-
-		bool SerializeScene() const noexcept;
-		
-		//Single entity desirialization / serialization - TODO allow to select a file for it,...
-		//void SerializeEntity(const EntityId id) noexcept;
-		//void DeserializeEntity() noexcept;
 
 		[[nodiscard]] ECS& GetECS() noexcept { return m_Ecs; }
 		[[nodiscard]] const ECS& GetECS() const noexcept { return m_Ecs; }
@@ -60,9 +52,9 @@ namespace Pengin
 		[[nodiscard]] const std::string& GetName() const noexcept    { return m_SceneData.name; }
 		[[nodiscard]] const SceneData& GetSceneData() const noexcept { return m_SceneData; }
 
-		void SetPlayer(const size_t userIdx, const UUID& uuid) noexcept;
-		void SetPlayer(const size_t userIdx, const EntityId id) noexcept;
-		void SetPlayer(const size_t userIdx, const Entity entity) noexcept;
+		void SetPlayer(const UserIndex& userIdx, const UUID& uuid) noexcept;
+		void SetPlayer(const UserIndex& userIdx, const EntityId id) noexcept;
+		void SetPlayer(const UserIndex& userIdx, const Entity entity) noexcept;
 
 		Scene(const Scene&) = delete;
 		Scene(Scene&&) = delete;
@@ -70,17 +62,16 @@ namespace Pengin
 		Scene& operator=(Scene&&) = delete;
 
 	private:
-		friend std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name, const path& sceneLoadPath, const path& sceneSavePath, bool saveOnDestroy, bool swapToNext);
-		Scene(const std::string& name, const path& sceneLoadPath = { }, const path& sceneSavePath = { }, bool saveOnDestroy = false);
+		friend class SceneManager;
+		Scene(const std::string& name, const SceneFileData& sceneFileData);
+
+		bool SerializeScene() const noexcept;
 
 		friend class Entity;
 		ECS m_Ecs;
 		std::unordered_map<UUID, EntityId> m_UUID_EntityIdMap;
 
 		SceneData m_SceneData;
-
-		const path m_SceneSavePath{};
-		bool m_SaveOnDestroy{ false };
 
 		//SYSTEMS----------------------------
 		//Can this be moved to a more generic approach? System queue, manager, ... (base system?)
@@ -102,7 +93,7 @@ namespace Pengin
 		std::unique_ptr<InputInfoPanel> m_InputInfoPanel{ std::make_unique<InputInfoPanel>() };
 		//-----------------------------------
 
-		bool DeserializeScene(const path& scenePath) noexcept;
+		bool DeserializeScene() noexcept;
 	};
 }
 

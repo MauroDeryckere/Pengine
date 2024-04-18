@@ -7,7 +7,7 @@
 #include "EventManager.h"
 
 #include "ECS.h"
-
+#include "Entity.h"
 #include "Components.h"
 
 #include "glm/vec3.hpp"
@@ -17,21 +17,20 @@
 
 namespace Pengin
 {
-	class CharacterMovement final : public InputCommand
+	class Movement final : public InputCommand
 	{
 	public:
-		CharacterMovement(size_t user, const glm::vec3& direction, float movementSpeed = 100.f) :
-			InputCommand{},
-			m_UserIdx{user},
-			m_Direction{direction},
-			m_MovementSpeed{ movementSpeed }
+		
+		Movement(const UserIndex& user, const glm::vec3& direction) :
+			InputCommand{ user },
+			m_Direction{direction}
 		{ }
 
 		virtual void Execute() override 
 		{ 
 			auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
 
-			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find(m_UserIdx);
+			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find(InputCommand::GetUserIdx());
 
 			if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
 			{
@@ -44,26 +43,26 @@ namespace Pengin
 			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
 			Entity playerEntity{ entityId, pActiveScene };
 
-			playerEntity.GetComponent<VelocityComponent>().m_Velocity += (m_Direction * m_MovementSpeed);
+			const auto movementSpeed = playerEntity.GetComponent<PlayerComponent>().movementSpeed;
+			playerEntity.GetComponent<VelocityComponent>().m_Velocity += (m_Direction * movementSpeed);
 		}
 
-		virtual ~CharacterMovement() override = default;
+		virtual ~Movement() override = default;
 
-		CharacterMovement(const CharacterMovement&) = delete;
-		CharacterMovement& operator=(const CharacterMovement&) = delete;
-		CharacterMovement(CharacterMovement&&) noexcept = delete;
-		CharacterMovement& operator=(CharacterMovement&&) noexcept = delete;
+		Movement(const Movement&) = delete;
+		Movement& operator=(const Movement&) = delete;
+		Movement(Movement&&) noexcept = delete;
+		Movement& operator=(Movement&&) noexcept = delete;
 
 	private:
-		const size_t m_UserIdx;
 		const glm::vec3 m_Direction;
-		const float m_MovementSpeed;
 	};
 
 	class AttackPlayer final : public InputCommand //bound to input for now - need to use UUID if want to use this input bound action again
 	{
 	public:
 		AttackPlayer(const EntityId id) :
+			InputCommand{ {} },
 			m_Id{ id }
 		{
 			assert(SceneManager::GetInstance().GetActiveScene()->GetECS().HasComponent<HealthComponent>(m_Id));
@@ -93,6 +92,7 @@ namespace Pengin
 	{
 	public:
 		CollectScore(const EntityId id, unsigned score = 10) :
+			InputCommand{ {} },
 			m_EntityId { id },
 			m_ScoreVal{ score }
 		{ }
