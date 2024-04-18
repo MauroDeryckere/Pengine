@@ -24,6 +24,17 @@ namespace Pengin
 
 		~TextComponent() = default;
 
+		void SetText(const std::string& text, const glm::u8vec4 color = {}) //allows to change the text without having to set all variables manually
+		{
+			m_Text = text;
+			needsTextureChange = true;
+
+			if (color != glm::u8vec4{})
+			{
+				m_Color = color;
+			}
+		}
+
 		std::string m_Text;
 		std::shared_ptr<dae::Font> m_pFont;
 		glm::u8vec4 m_Color{ 255, 255, 255, 255 };

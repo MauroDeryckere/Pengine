@@ -72,6 +72,30 @@ namespace Pengin
 		}
 	}
 
+	bool Serializer::SerializeSceneEntity(const ECS& ecs, const EntityId entityId, const std::filesystem::path& filePath) const noexcept
+	{
+		const auto extension{ filePath.extension() };
+		if (extension == ".json")
+		{
+			json entity;
+			if (!SerializeSceneEntity_Json(ecs, entityId, entity))
+			{
+				return false;
+			}
+			if (std::ofstream file{ filePath, std::ios::out }; file.is_open())
+			{
+				file << entity.dump(4);
+				return true;
+			}
+			return false;
+		}
+		else
+		{
+			DEBUG_OUT("wrong file extension, only support .json");
+			return false;
+		}
+	}
+
 	std::pair<bool, EntityId> Serializer::DerserializeSceneEntity(ECS& ecs, std::unordered_map<UUID, EntityId>& entityMap, const std::filesystem::path& filePath) noexcept
 	{
 		const auto extension{ filePath.extension() };

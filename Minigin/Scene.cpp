@@ -195,10 +195,15 @@ namespace Pengin
 		const auto& deserVal = Serializer::GetInstance().DerserializeSceneEntity(m_Ecs, m_UUID_EntityIdMap, entityLoadPath);
 		if (!deserVal.first)
 		{
-			throw std::exception("");
+			throw std::runtime_error("Failed to deserialize entity from file");
 		}
 
 		return Entity{ deserVal.second, shared_from_this() };
+	}
+
+	bool Scene::SerializeEntity(const Entity entity, const std::filesystem::path& entitySavePath) const noexcept
+	{
+		return Serializer::GetInstance().SerializeSceneEntity(m_Ecs, entity.GetEntityId(), entitySavePath);
 	}
 
 	void Scene::FixedUpdate()
