@@ -40,8 +40,8 @@ namespace Pengin
         [[nodiscard]] const UserIndex RegisterUser(UserType usertype) noexcept;
         void RegisterUser(const UserIndex& index, UserType usertype) noexcept;
 
-        void MapControllerAction(const UserIndex& userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
-        void MapKeyboardAction(const UserIndex& userIdx, KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
+        std::shared_ptr<InputCommand> MapControllerAction(const UserIndex& userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
+        std::shared_ptr<InputCommand> MapKeyboardAction(const UserIndex& userIdx, KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
 
         void Clear() noexcept; //this clears evrything, including users
         void Reset() noexcept; //this clears eveything, but keeps the users and devices

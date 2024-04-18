@@ -150,7 +150,7 @@ namespace Pengin
 		DEBUG_OUT("registered user UservecIdx: " << userVecIdx << " user uuid: " << index.GetUUID_PrettyStr());
 	}
 
-	void InputManager::MapControllerAction(const UserIndex& userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept
+	std::shared_ptr<InputCommand> InputManager::MapControllerAction(const UserIndex& userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept
 	{
 		auto it = m_UserIdx_VecIdxMap.find(userIdx);
 		assert(it != end(m_UserIdx_VecIdxMap) && "user not added");
@@ -163,10 +163,11 @@ namespace Pengin
 		assert(std::count_if(m_RegisteredUsers.begin(), m_RegisteredUsers.end(), [](const auto& user) { return user.first == UserType::Controller; }) <= MAX_ALLOWED_CONTROLLERS && "Exceeded max allowed controllers");
 
 		//only has a controller right now
-		m_RegisteredUsers[it->second].second[0]->MapActionToInput(static_cast<unsigned>(button), inputState, std::move(pInputAction));
+		m_RegisteredUsers[it->second].second[0]->MapActionToInput(static_cast<unsigned>(button), inputState, pInputAction);
+		return pInputAction;
 	}
 
-	void InputManager::MapKeyboardAction(const UserIndex& userIdx, KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept
+	std::shared_ptr<InputCommand> InputManager::MapKeyboardAction(const UserIndex& userIdx, KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept
 	{
 		auto it = m_UserIdx_VecIdxMap.find(userIdx);
 
@@ -176,7 +177,8 @@ namespace Pengin
 		assert(m_RegisteredUsers[it->second].first == UserType::Keyboard && "User error: registered user does not have Usertype: keyboard");
 
 		//only keyboard for now 
-		m_RegisteredUsers[it->second].second[0]->MapActionToInput(static_cast<unsigned>(key), inputState, std::move(pInputAction));
+		m_RegisteredUsers[it->second].second[0]->MapActionToInput(static_cast<unsigned>(key), inputState, pInputAction);
+		return pInputAction;
 	}
 
 	void InputManager::Clear() noexcept

@@ -58,6 +58,33 @@ namespace Pengin
 		const glm::vec3 m_Direction;
 	};
 
+	class InpDebugCommand final : public InputCommand
+	{
+	public:
+
+		InpDebugCommand(const UserIndex& user, const std::string& msg) :
+			InputCommand{ user },
+			m_Message{ msg }
+		{ }
+
+		virtual void Execute() override
+		{
+			DEBUG_OUT(m_Message);
+			DEBUG_OUT("on user: " << GetUserIdx().GetUUID_PrettyStr());
+		}
+
+		virtual ~InpDebugCommand() override = default;
+
+		InpDebugCommand(const InpDebugCommand&) = delete;
+		InpDebugCommand& operator=(const InpDebugCommand&) = delete;
+		InpDebugCommand(InpDebugCommand&&) noexcept = delete;
+		InpDebugCommand& operator=(InpDebugCommand&&) noexcept = delete;
+
+	private:
+		const std::string m_Message;
+	};
+
+
 	class AttackPlayer final : public InputCommand //bound to input for now - need to use UUID if want to use this input bound action again
 	{
 	public:
