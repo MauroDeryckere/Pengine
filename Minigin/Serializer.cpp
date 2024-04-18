@@ -72,6 +72,29 @@ namespace Pengin
 		}
 	}
 
+	std::pair<bool, EntityId> Serializer::DerserializeSceneEntity(ECS& ecs, std::unordered_map<UUID, EntityId>& entityMap, const std::filesystem::path& filePath) noexcept
+	{
+		const auto extension{ filePath.extension() };
+		if (extension == ".json")
+		{
+			json entityData;
+			if (std::ifstream file{ filePath, std::ios::in }; file.is_open())
+			{
+				file >> entityData;
+			}
+			else
+			{
+				return { false, NULL_ENTITY_ID };
+			}
+			return DeserializeSceneEntity_Json(ecs, entityMap, entityData);
+		}
+		else
+		{
+			DEBUG_OUT("wrong file extension, only support .json");
+			return { false, NULL_ENTITY_ID };
+		}
+	}
+
 	bool Serializer::SerializeScene_Json(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept
 	{
 		json scene;
@@ -101,66 +124,68 @@ namespace Pengin
 	bool Serializer::DeserializeScene_Json(SceneData& sceneData, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
 	{
 		using json = nlohmann::ordered_json;
+		json scene;
 
 		if (std::ifstream file{ scenePath, std::ios::in }; file.is_open())
 		{
-			json scene;
 			file >> scene;
-			if (!scene.contains("Scene Data"))
-			{
-				DEBUG_OUT("Scene data instane is required in the json file to be able to deserialize");
-				return false;
-			}
-
-			//TODO func
-			const auto& inpSceneData_Json = scene["Scene Data"];
-			sceneData.name = inpSceneData_Json["SceneName"].get<std::string>();
-			for (const auto& player : inpSceneData_Json["PlayerUUIDs"])
-			{
-				sceneData.playerUUIDs.emplace_back(UUID{ player.get<std::string>() });
-			}
-			for (const auto& user : inpSceneData_Json["UserIds"])
-			{
-				sceneData.user_UUIDVecIdxMap[UUID{ user[0].get<std::string>() }] = user[1].get<size_t>();
-			}
-			sceneData.isUUIDInit = inpSceneData_Json["IsUUIDInit"].get<bool>();
-			assert(sceneData.isUUIDInit);
-				
-			sceneData.sceneFileData.inputFilePath = inpSceneData_Json["SceneFileData"]["InputFilePath"].get<std::string>();
-			sceneData.sceneFileData.sceneLoadPath = inpSceneData_Json["SceneFileData"]["SceneLoadPath"].get<std::string>();
-			sceneData.sceneFileData.sceneSavePath = inpSceneData_Json["SceneFileData"]["SceneSavePath"].get<std::string>();
-			sceneData.sceneFileData.saveSceneOnDestroy = inpSceneData_Json["SceneFileData"]["SaveSceneOnDestroy"].get<bool>();
-			sceneData.sceneFileData.autoSaveTime = inpSceneData_Json["SceneFileData"]["AutoSaveTime"].get<float>();
-			sceneData.sceneFileData.keepPrevInput = inpSceneData_Json["SceneFileData"]["KeepPrevInput"].get<bool>();
-			
-			if (scene.contains("Entities"))
-			{
-				for (auto& entityData : scene["Entities"]) //First we need to get all the UUIDs and create the entities to ensure any dependencies can be converted
-				{
-					const auto entityId = ecs.CreateEntity();
-					const auto& uuid = entityData["UUID"].get<std::string>();
-
-					auto& uuidComp = ecs.AddComponent<UUIDComponent>(entityId, uuid);
-					
-					entityMap[uuidComp.uuid] = entityId;
-				}
-
-				for (const auto& entityData : scene["Entities"])
-				{
-					if (!DeserializeSceneEntity_Json(ecs, entityMap, entityData)) //async ?
-					{
-						return false;
-					}
-				}
-			}
-			else
-			{
-				DEBUG_OUT("Scene " << sceneData.name << " does not contain entities");
-			}
-
-			return true;
 		}
-		return false;
+		else
+		{
+			return false;
+		}
+
+		if (!scene.contains("Scene Data"))
+		{
+			DEBUG_OUT("Scene data instane is required in the json file to be able to deserialize");
+			return false;
+		}
+
+		const auto& inpSceneData_Json = scene["Scene Data"];
+		sceneData.name = inpSceneData_Json["SceneName"].get<std::string>();
+		for (const auto& player : inpSceneData_Json["PlayerUUIDs"])
+		{
+			sceneData.playerUUIDs.emplace_back(UUID{ player.get<std::string>() });
+		}
+		for (const auto& user : inpSceneData_Json["UserIds"])
+		{
+			sceneData.user_UUIDVecIdxMap[UUID{ user[0].get<std::string>() }] = user[1].get<size_t>();
+		}
+		sceneData.isUUIDInit = inpSceneData_Json["IsUUIDInit"].get<bool>();
+		assert(sceneData.isUUIDInit);
+				
+		sceneData.sceneFileData.inputFilePath = inpSceneData_Json["SceneFileData"]["InputFilePath"].get<std::string>();
+		sceneData.sceneFileData.sceneLoadPath = inpSceneData_Json["SceneFileData"]["SceneLoadPath"].get<std::string>();
+		sceneData.sceneFileData.sceneSavePath = inpSceneData_Json["SceneFileData"]["SceneSavePath"].get<std::string>();
+		sceneData.sceneFileData.saveSceneOnDestroy = inpSceneData_Json["SceneFileData"]["SaveSceneOnDestroy"].get<bool>();
+		sceneData.sceneFileData.autoSaveTime = inpSceneData_Json["SceneFileData"]["AutoSaveTime"].get<float>();
+		sceneData.sceneFileData.keepPrevInput = inpSceneData_Json["SceneFileData"]["KeepPrevInput"].get<bool>();
+			
+		if (scene.contains("Entities"))
+		{
+			for (auto& entityData : scene["Entities"]) //First we need to get all the UUIDs and create the entities to ensure any dependencies can be converted
+			{
+				const auto entityId = ecs.CreateEntity();
+				const auto& uuid = entityData["UUID"].get<std::string>();
+
+				auto& uuidComp = ecs.AddComponent<UUIDComponent>(entityId, uuid);
+					
+				entityMap[uuidComp.uuid] = entityId;
+			}
+
+			for (const auto& entityData : scene["Entities"])
+			{
+				if (!DeserializeSceneEntity_Json(ecs, entityMap, entityData).first) //async ?
+				{
+					return false;
+				}
+			}
+		}
+		else
+		{
+			DEBUG_OUT("Scene " << sceneData.name << " does not contain entities");
+		}
+		return true;
 	}
 
 	bool Serializer::SerializeSceneEntity_Json(const ECS& ecs, const EntityId id, json& j) const noexcept
@@ -241,14 +266,14 @@ namespace Pengin
 		return true;
 	}
 
-	bool Serializer::DeserializeSceneEntity_Json(ECS& ecs, std::unordered_map<UUID, EntityId>& entityMap, const json& entityData) noexcept
+	std::pair<bool, EntityId> Serializer::DeserializeSceneEntity_Json(ECS& ecs, std::unordered_map<UUID, EntityId>& entityMap, const json& entityData) noexcept
 	{
 		using json = nlohmann::ordered_json;
 
 		if (!entityData.contains("UUID"))
 		{
 			DEBUG_OUT("Need UUID in json file");
-			return false;
+			return {false, NULL_ENTITY_ID};
 		}
 		
 		const auto uuid_Str = entityData["UUID"].get<std::string>();
@@ -339,7 +364,7 @@ namespace Pengin
 			TxtDisplayComponent dis = entityData["TextDisplay Component"];
 			ecs.AddComponent<TxtDisplayComponent>(entity, std::move(dis));
 		}
-		return true;
+		return { true,  entity };
 	}
 
 	bool Serializer::SerializeInput_Json(const std::filesystem::path& filePath) const noexcept //TODO
@@ -376,25 +401,28 @@ namespace Pengin
 	std::pair<bool, InputDataVec> Serializer::DeserializeInput_Json(const std::filesystem::path& filePath) noexcept //TOOD
 	{
 		using json = nlohmann::ordered_json;
+		json inputData;
 
 		if (std::ifstream file{ filePath, std::ios::in }; file.is_open())
 		{
-			json inputData;
 			file >> inputData;
-
-			InputDataVec inpVec{};
-
-			for (const auto& user : inputData["Users"])
-			{	
-				const std::string uIdx_Str{ user["UserUUID"].get<std::string>() };	
-				const UserIndex uIdx = UUID{ uIdx_Str };
-				const unsigned uType = user["UserType"].get<unsigned>();
-
-				inpVec.emplace_back(std::tuple{ uIdx, uType });
-			}
-
-			return { true, inpVec };
 		}
-		return { false, {} };
+		else
+		{
+			return { false, {} };
+		}
+
+		InputDataVec inpVec{};
+
+		for (const auto& user : inputData["Users"])
+		{	
+			const std::string uIdx_Str{ user["UserUUID"].get<std::string>() };	
+			const UserIndex uIdx = UUID{ uIdx_Str };
+			const unsigned uType = user["UserType"].get<unsigned>();
+
+			inpVec.emplace_back(std::tuple{ uIdx, uType });
+		}
+
+		return { true, inpVec };
 	}
 }

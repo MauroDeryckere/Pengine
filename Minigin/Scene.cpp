@@ -190,6 +190,17 @@ namespace Pengin
 		SetPlayer(userIdx, entity.GetEntityId());
 	}
 
+	Entity Scene::AddEntityFromFile(const std::filesystem::path& entityLoadPath)
+	{
+		const auto& deserVal = Serializer::GetInstance().DerserializeSceneEntity(m_Ecs, m_UUID_EntityIdMap, entityLoadPath);
+		if (!deserVal.first)
+		{
+			throw std::exception();
+		}
+
+		return Entity{ deserVal.second, shared_from_this() };
+	}
+
 	void Scene::FixedUpdate()
 	{
 	}

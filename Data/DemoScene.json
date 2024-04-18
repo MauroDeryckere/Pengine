@@ -325,7 +325,7 @@
                 "path": "NO PATH"
             },
             "Text Component": {
-                "Text": "58.2",
+                "Text": "58.6",
                 "Path": "Lingua.otf",
                 "FontSize": 36,
                 "Color": [
@@ -345,13 +345,13 @@
             },
             "Transform Component": {
                 "worldPos": [
-                    179.20278930664063,
-                    65.15262603759766,
+                    167.639404296875,
+                    67.05277252197266,
                     0.0
                 ],
                 "localPos": [
-                    179.20278930664063,
-                    65.15262603759766,
+                    167.639404296875,
+                    67.05277252197266,
                     0.0
                 ],
                 "rotation": [
@@ -776,7 +776,7 @@
                 ],
                 "CurrentAnimationIndex": 0,
                 "CurrentAnimationFrame": 1,
-                "CurrentFrameTime": 0.278349369764328,
+                "CurrentFrameTime": 0.5196177959442139,
                 "IsPlaying": true
             }
         }
