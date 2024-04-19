@@ -20,4 +20,11 @@
 #include "DisplayComponent.h"
 #include "FPSCounterComponent.h"
 
+//template<typename... Component>
+//struct ComponentGroup
+//{
+//};
+//
+//using AllComponents = ComponentGroup<>;
+
 #endif

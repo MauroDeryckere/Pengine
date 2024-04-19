@@ -190,9 +190,9 @@ namespace Pengin
 		SetPlayer(userIdx, entity.GetEntityId());
 	}
 
-	Entity Scene::AddEntityFromFile(const std::filesystem::path& entityLoadPath)
+	Entity Scene::AddEntityFromFile(const std::filesystem::path& entityLoadPath, bool newUUID)
 	{
-		const auto& deserVal = Serializer::GetInstance().DerserializeSceneEntity(m_Ecs, m_UUID_EntityIdMap, entityLoadPath);
+		const auto& deserVal = Serializer::GetInstance().DerserializeSceneEntity(m_Ecs, m_UUID_EntityIdMap, entityLoadPath, newUUID);
 		if (!deserVal.first)
 		{
 			throw std::runtime_error("Failed to deserialize entity from file");
@@ -201,9 +201,9 @@ namespace Pengin
 		return Entity{ deserVal.second, shared_from_this() };
 	}
 
-	bool Scene::SerializeEntity(const Entity entity, const std::filesystem::path& entitySavePath) const noexcept
+	bool Scene::SerializeEntity(const Entity entity, const std::filesystem::path& entitySavePath, bool keepUUID) const noexcept
 	{
-		return Serializer::GetInstance().SerializeSceneEntity(m_Ecs, entity.GetEntityId(), entitySavePath);
+		return Serializer::GetInstance().SerializeSceneEntity(m_Ecs, entity.GetEntityId(), entitySavePath, keepUUID);
 	}
 
 	void Scene::FixedUpdate()

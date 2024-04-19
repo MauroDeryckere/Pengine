@@ -36,9 +36,9 @@ namespace Pengin
 		bool DestroyEntity(Entity entity, bool keepChildren = true);
 		bool DestroyEntity(const EntityId entityId, bool keepChildren = true);
 
-		Entity AddEntityFromFile(const std::filesystem::path& entityLoadPath); //Load a specific entity from file into the scene
-		bool SerializeEntity(const Entity entity, const std::filesystem::path& entitySavePath) const noexcept; //Save a specific entity to a file
-
+		Entity AddEntityFromFile(const std::filesystem::path& entityLoadPath, bool newUUID = true); //Load a specific entity from file into the scene
+		bool SerializeEntity(const Entity entity, const std::filesystem::path& entitySavePath, bool keepUUID = false) const noexcept; //Save a specific entity to a file
+		
 		void FixedUpdate();
 		void Update();
 		void Render() const;

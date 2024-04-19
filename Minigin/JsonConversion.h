@@ -101,16 +101,16 @@ namespace Pengin
 		transform.relation.children = j["relation"]["children"].get<size_t>();
 
 		const auto fistChildStr = j["relation"]["firstChild"].get<std::string>();
-		transform.relation.firstChild = (fistChildStr == "NULL_UUID" ? NULL_ENTITY_ID : entityMap.at({ fistChildStr }));
+		transform.relation.firstChild = (fistChildStr == "NULL_UUID" || "" ? NULL_ENTITY_ID : entityMap.at({fistChildStr}));
 
 		const auto prevSibStr = j["relation"]["prevSibling"].get<std::string>();
-		transform.relation.prevSibling = (prevSibStr == "NULL_UUID" ? NULL_ENTITY_ID : entityMap.at({ prevSibStr }));
+		transform.relation.prevSibling = (prevSibStr == "NULL_UUID" || "" ? NULL_ENTITY_ID : entityMap.at({prevSibStr}));
 
 		const auto nextSibStr = j["relation"]["nextSibling"].get<std::string>();
-		transform.relation.nextSibling = (nextSibStr == "NULL_UUID" ? NULL_ENTITY_ID : entityMap.at({ nextSibStr }));
+		transform.relation.nextSibling = (nextSibStr == "NULL_UUID" || "" ? NULL_ENTITY_ID : entityMap.at({nextSibStr}));
 
 		const auto parentStr = j["relation"]["parent"].get<std::string>();
-		transform.relation.parent = (parentStr == "NULL_UUID" ? NULL_ENTITY_ID : entityMap.at({ parentStr }));
+		transform.relation.parent = (parentStr == "NULL_UUID" || "" ? NULL_ENTITY_ID : entityMap.at({parentStr}));
 
 		transform.isPosDirty = j["isPosDirty"].get<bool>();
 	}

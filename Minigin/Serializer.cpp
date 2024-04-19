@@ -72,13 +72,13 @@ namespace Pengin
 		}
 	}
 
-	bool Serializer::SerializeSceneEntity(const ECS& ecs, const EntityId entityId, const std::filesystem::path& filePath) const noexcept
+	bool Serializer::SerializeSceneEntity(const ECS& ecs, const EntityId entityId, const std::filesystem::path& filePath, bool keepUUID) const noexcept
 	{
 		const auto extension{ filePath.extension() };
 		if (extension == ".json")
 		{
 			json entity;
-			if (!SerializeSceneEntity_Json(ecs, entityId, entity))
+			if (!SerializeSceneEntity_Json(ecs, entityId, entity, keepUUID))
 			{
 				return false;
 			}
@@ -96,7 +96,7 @@ namespace Pengin
 		}
 	}
 
-	std::pair<bool, EntityId> Serializer::DerserializeSceneEntity(ECS& ecs, std::unordered_map<UUID, EntityId>& entityMap, const std::filesystem::path& filePath) noexcept
+	std::pair<bool, EntityId> Serializer::DerserializeSceneEntity(ECS& ecs, std::unordered_map<UUID, EntityId>& entityMap, const std::filesystem::path& filePath, bool newUUID) noexcept
 	{
 		const auto extension{ filePath.extension() };
 		if (extension == ".json")
@@ -112,13 +112,15 @@ namespace Pengin
 			}
 
 			const auto entityId = ecs.CreateEntity();
-			const auto& uuid = entityData["UUID"].get<std::string>();
 
-			auto& uuidComp = ecs.AddComponent<UUIDComponent>(entityId, uuid);
+			const auto fileUUIDStr = entityData["UUID"].get<std::string>();
+			assert(fileUUIDStr != "");
+			const UUID fileUUID{ ( !UUID{ fileUUIDStr } || newUUID) ? UUID{ } : UUID{fileUUIDStr} }; //regen if null or need new UUID
+			auto& uuidComp = ecs.AddComponent<UUIDComponent>(entityId, fileUUID);
 
 			entityMap[uuidComp.uuid] = entityId;
 
-			return DeserializeSceneEntity_Json(ecs, entityMap, entityData);
+			return DeserializeSceneEntity_Json(ecs, entityMap, entityId, entityData);
 		}
 		else
 		{
@@ -138,7 +140,7 @@ namespace Pengin
 		for (const auto id : allIds)
 		{
 			json entityData;
-			if (!SerializeSceneEntity_Json(ecs, id, entityData)) //async?
+			if (!SerializeSceneEntity_Json(ecs, id, entityData, true)) //async?
 			{
 				return false;
 			}
@@ -207,7 +209,9 @@ namespace Pengin
 
 			for (const auto& entityData : scene["Entities"])
 			{
-				if (!DeserializeSceneEntity_Json(ecs, entityMap, entityData).first) //async ?
+				const auto& uuid = entityData["UUID"].get<std::string>();
+				const auto entityId = entityMap.at(uuid);
+				if (!DeserializeSceneEntity_Json(ecs, entityMap, entityId, entityData).first) //async ?
 				{
 					return false;
 				}
@@ -220,7 +224,7 @@ namespace Pengin
 		return true;
 	}
 
-	bool Serializer::SerializeSceneEntity_Json(const ECS& ecs, const EntityId id, json& j) const noexcept
+	bool Serializer::SerializeSceneEntity_Json(const ECS& ecs, const EntityId id, json& j, bool keepUUID) const noexcept
 	{
 		using json = nlohmann::ordered_json;
 
@@ -228,8 +232,16 @@ namespace Pengin
 		assert(ecs.Exists(id));
 		assert(ecs.HasComponent<UUIDComponent>(id));
 
-		const auto& uuidComp = ecs.GetComponent<UUIDComponent>(id);
-		j["UUID"] = uuidComp.uuid.GetUUID_PrettyStr();
+		if (keepUUID)
+		{
+			const auto& uuidComp = ecs.GetComponent<UUIDComponent>(id);
+			j["UUID"] = uuidComp.uuid.GetUUID_PrettyStr();
+		}
+		else
+		{
+			const auto uuidComp = UUIDComponent{ UUID{true} };
+			j["UUID"] = uuidComp.uuid.GetUUID_PrettyStr();
+		}
 
 		if (ecs.HasComponent<PlayerComponent>(id))
 		{
@@ -298,7 +310,7 @@ namespace Pengin
 		return true;
 	}
 
-	std::pair<bool, EntityId> Serializer::DeserializeSceneEntity_Json(ECS& ecs, std::unordered_map<UUID, EntityId>& entityMap, const json& entityData) noexcept
+	std::pair<bool, EntityId> Serializer::DeserializeSceneEntity_Json(ECS& ecs, std::unordered_map<UUID, EntityId>& entityMap, const EntityId entity, const json& entityData) noexcept
 	{
 		using json = nlohmann::ordered_json;
 
@@ -307,16 +319,6 @@ namespace Pengin
 			DEBUG_OUT("Need UUID in json file");
 			return {false, NULL_ENTITY_ID};
 		}
-		
-		const auto uuid_Str = entityData["UUID"].get<std::string>();
-		assert(uuid_Str != "NULL_UUID");
-
-		const auto uuid = UUID{ uuid_Str };
-		auto it = entityMap.find(uuid);
-
-		assert(it != end(entityMap));
-
-		const EntityId entity = it->second;
 
 		assert(entity != NULL_ENTITY_ID);
 
