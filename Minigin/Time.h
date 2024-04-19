@@ -10,16 +10,25 @@ namespace Pengin
 	class Time final : public dae::Singleton<Time>
 	{
 	public:
-		[[nodiscard]] float GetElapsedSec() const { return m_ElapsedSec; }
-		[[nodiscard]] float GetFixedTimeStep() const { return (m_FixedTimeStep / 1000.f); }
+		[[nodiscard]] inline float GetElapsedSec() const noexcept { return m_ElapsedSec; }
+		[[nodiscard]] inline float GetFixedTimeStep() const { return (m_MsFixedTimeStep / 1000.f); }
 
-		[[nodiscard]] bool IsLag() const { return m_Lag >= m_FixedTimeStep;  }
+		[[nodiscard]] inline bool IsLag() const noexcept { return m_MsLag >= m_MsFixedTimeStep;  }
+		inline void ProcessLag() noexcept { m_MsLag -= m_MsFixedTimeStep;}
 
-		void ProcessLag() { m_Lag -= m_FixedTimeStep;}
+		inline void Update() noexcept
+		{
+			using std::chrono::high_resolution_clock;
+			using std::chrono::duration;
 
-		void Update();
+			const auto currentTime{ high_resolution_clock::now() };
+			m_ElapsedSec = duration<float>(currentTime - m_LastTime).count();
 
-		[[nodiscard]] auto GetSleepTime() const
+			m_LastTime = currentTime;
+			m_MsLag += m_ElapsedSec * 1000.f;
+		}
+
+		[[nodiscard]] inline auto GetSleepTime() const noexcept
 		{
 			const auto sleepTime{ m_LastTime + std::chrono::milliseconds(static_cast<long>(m_MsPerFrame)) - std::chrono::high_resolution_clock::now() };
 			return sleepTime;
@@ -38,10 +47,10 @@ namespace Pengin
 		std::chrono::steady_clock::time_point m_LastTime{ std::chrono::high_resolution_clock::now() };
 
 		const float m_MsPerFrame{ 16.7f };
-		const float m_FixedTimeStep{ 20.f };
+		const float m_MsFixedTimeStep{ 20.f };
 
 		float m_ElapsedSec{ 0.f };
-		float m_Lag{ 0.f };
+		float m_MsLag{ 0.f };
 	};
 }
 

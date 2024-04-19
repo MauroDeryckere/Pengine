@@ -644,9 +644,6 @@
     <ClCompile Include="InputMouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Time.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="InputBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

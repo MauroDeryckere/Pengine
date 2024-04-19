@@ -113,7 +113,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& sceneManager{ Pengin::SceneManager::GetInstance() };
 	auto& input{ Pengin::InputManager::GetInstance() };
 	auto& time{ Pengin::Time::GetInstance() };
-
 	bool doContinue{ true };
 
 	while (doContinue)
