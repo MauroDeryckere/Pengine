@@ -298,6 +298,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="BaseComponentStorage.h" />
+    <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="Bitset.h" />
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="CoreIncludes.h" />
@@ -314,6 +315,8 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="SceneInfoPanel.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="Serializer.h" />
+    <ClInclude Include="SystemManager.h" />
+    <ClInclude Include="SystemRegistry.h" />
     <ClInclude Include="UIDisplaySystem.h" />
     <ClInclude Include="UUID.h" />
     <ClInclude Include="UUIDComponent.h" />
@@ -403,6 +406,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClCompile Include="SceneInfoPanel.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Serializer.cpp" />
+    <ClCompile Include="SystemManager.cpp" />
     <ClCompile Include="TextSystem.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="UIDisplaySystem.cpp" />

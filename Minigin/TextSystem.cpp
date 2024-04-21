@@ -17,6 +17,7 @@
 namespace Pengin
 {
 	TextSystem::TextSystem(ECS& ecs):
+		BaseSystem{ },
 		m_ECS{ecs},
 		m_pObserver{ EventManager::GetInstance().CreateObserver() }
 	{

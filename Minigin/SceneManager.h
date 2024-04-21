@@ -32,6 +32,11 @@ namespace Pengin
 
 		void RenderImGUI();
 
+		SceneManager(const SceneManager&) = delete;
+		SceneManager(SceneManager&&) = delete;
+		SceneManager& operator=(const SceneManager&) = delete;
+		SceneManager& operator=(const SceneManager&&) = delete;
+
 	private:
 		friend class dae::Singleton<SceneManager>;
 		SceneManager() = default;

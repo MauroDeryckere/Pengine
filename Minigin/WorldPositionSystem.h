@@ -1,21 +1,24 @@
 #ifndef WORLDPOSSYSTEM
 #define WORLDPOSSYSTEM
 
+#include "BaseSystem.h"
+
 namespace Pengin
 {
 	class ECS;
 	struct TransformComponent;
 
-	class WorldPositionSystem final
+	class WorldPositionSystem final : public BaseSystem
 	{
 	public:
 		WorldPositionSystem(ECS& ecs) :
+			BaseSystem{ }, 
 			m_ECS{ ecs }
 		{}
 
-		~WorldPositionSystem() = default;
+		virtual ~WorldPositionSystem() override = default;
 
-		void Update();
+		virtual void Update() override;
 
 		WorldPositionSystem(const WorldPositionSystem&) = delete;
 		WorldPositionSystem(WorldPositionSystem&&) = delete;

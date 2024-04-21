@@ -23,6 +23,11 @@ namespace Pengin
 		[[nodiscard]] bool UsedMouse() const noexcept;
 		[[nodiscard]] bool UsedKeyboard() const noexcept;
 
+		ImGUIWindow(const ImGUIWindow&) = delete;
+		ImGUIWindow(ImGUIWindow&&) = delete;
+		ImGUIWindow& operator=(const ImGUIWindow&) = delete;
+		ImGUIWindow& operator=(const ImGUIWindow&&) = delete;
+
 	private:
 		void SetupImGuiStyle(float alpha = 1.f);
 	};

@@ -1,6 +1,8 @@
 #ifndef UIDISPLAYSYSTEM
 #define UIDISPLAYSYSTEM
 
+#include "BaseSystem.h"
+
 #include <memory>
 
 namespace Pengin
@@ -9,11 +11,11 @@ namespace Pengin
 	class Scene;
 	class Observer;
 
-	class UIDisplaySystem final
+	class UIDisplaySystem final : public BaseSystem
 	{
 	public:
 		UIDisplaySystem(ECS& ecs, Scene* pScene);
-		~UIDisplaySystem() = default;
+		virtual ~UIDisplaySystem() override = default;
 
 		UIDisplaySystem(const UIDisplaySystem&) = delete;
 		UIDisplaySystem(UIDisplaySystem&&) = delete;

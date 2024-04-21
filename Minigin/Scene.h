@@ -8,17 +8,11 @@
 #include "glm/vec3.hpp"
 
 #include "AchievementSystem.h"
-#include "RenderSystem.h"
-#include "TextSystem.h"
-#include "WorldPositionSystem.h"
-#include "MovementSystem.h"
-#include "FPSSystem.h"
-#include "AnimationSystem.h"
-#include "CollisionSystem.h"
-#include "UIDisplaySystem.h"
 
 #include "SceneInfoPanel.h"
 #include "InputInfoPanel.h"
+
+#include "SystemManager.h"
 
 #include <memory>
 #include <filesystem>
@@ -73,18 +67,21 @@ namespace Pengin
 
 		SceneData m_SceneData;
 
+		std::unique_ptr<SystemManager> m_pSysManager{};
+
 		//SYSTEMS----------------------------
 		//Can this be moved to a more generic approach? System queue, manager, ... (base system?)
-		std::unique_ptr<RenderSystem> m_RenderSystem{ std::make_unique<RenderSystem>(m_Ecs) };
-		std::unique_ptr<TextSystem> m_TextSystem{ std::make_unique<TextSystem>(m_Ecs) };
-		std::unique_ptr<FPSSystem> m_FPSSystem{ std::make_unique<FPSSystem>(m_Ecs) };
-		std::unique_ptr<AnimationSystem> m_AnimationSystem{ std::make_unique<AnimationSystem>(m_Ecs) };
-		std::unique_ptr<MovementSystem> m_MovementSystem{ std::make_unique<MovementSystem>(m_Ecs) };
-		std::unique_ptr<CollisionSystem> m_CollSystem{ std::make_unique<CollisionSystem>(m_Ecs) };
-		std::unique_ptr<WorldPositionSystem> m_WorldPosSystem{ std::make_unique<WorldPositionSystem>(m_Ecs) };
+		//std::unique_ptr<RenderSystem> m_RenderSystem{ std::make_unique<RenderSystem>(m_Ecs) };
+		//std::unique_ptr<TextSystem> m_TextSystem{ std::make_unique<TextSystem>(m_Ecs) };
+		//std::unique_ptr<FPSSystem> m_FPSSystem{ std::make_unique<FPSSystem>(m_Ecs) };
+		//std::unique_ptr<AnimationSystem> m_AnimationSystem{ std::make_unique<AnimationSystem>(m_Ecs) };
+		//std::unique_ptr<MovementSystem> m_MovementSystem{ std::make_unique<MovementSystem>(m_Ecs) };
+		//std::unique_ptr<CollisionSystem> m_CollSystem{ std::make_unique<CollisionSystem>(m_Ecs) };
+		//std::unique_ptr<WorldPositionSystem> m_WorldPosSystem{ std::make_unique<WorldPositionSystem>(m_Ecs) };
 
-		std::unique_ptr<UIDisplaySystem> m_UIDisplaySystem{ std::make_unique<UIDisplaySystem>(m_Ecs, this) };
-
+		//std::unique_ptr<UIDisplaySystem> m_UIDisplaySystem{ std::make_unique<UIDisplaySystem>(m_Ecs, this) };
+		
+		//----------------------------------
 		std::unique_ptr<AchievementSystem> m_AchSys{ std::make_unique<AchievementSystem>() };
 		//-----------------------------------
 

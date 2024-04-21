@@ -1,22 +1,25 @@
 #ifndef COLLISIONSYSTEM
 #define COLLISIONSYSTEM
 
+#include "BaseSystem.h"
+
 #include "UtilStructs.h"
 
 namespace Pengin
 {
 	class ECS;
 
-	class CollisionSystem final
+	class CollisionSystem final : public BaseSystem
 	{
 	public:
 		CollisionSystem(ECS& ecs) :
+			BaseSystem{ },
 			m_ECS{ ecs }
 		{}
 
-		~CollisionSystem() = default;
+		virtual ~CollisionSystem() override = default;
 
-		void Update();
+		virtual void Update() override;
 
 		CollisionSystem(const CollisionSystem&) = delete;
 		CollisionSystem(CollisionSystem&&) = delete;

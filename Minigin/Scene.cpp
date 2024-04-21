@@ -6,12 +6,38 @@
 #include "TransformComponent.h"
 #include "UUIDComponent.h"
 
+#include "SystemManager.h"
+
+#include "BaseSystem.h"
+
+#include "RenderSystem.h"
+#include "TextSystem.h"
+#include "WorldPositionSystem.h"
+#include "MovementSystem.h"
+#include "FPSSystem.h"
+#include "AnimationSystem.h"
+#include "CollisionSystem.h"
+#include "UIDisplaySystem.h"
+
 #include "Time.h"
 
 namespace Pengin
 {
 	Scene::Scene(const std::string& name, const SceneFileData& sceneFileData)
 	{
+		m_pSysManager = std::make_unique<SystemManager>();
+
+		m_pSysManager->RegisterSystem(std::make_shared<FPSSystem>(m_Ecs));
+		m_pSysManager->RegisterSystem(std::make_shared<UIDisplaySystem>(m_Ecs));
+		m_pSysManager->RegisterSystem(std::make_shared<TextSystem>(m_Ecs));
+		m_pSysManager->RegisterSystem(std::make_shared<AnimationSystem>(m_Ecs));
+
+		auto pColl = m_pSysManager->RegisterSystem(std::make_shared<CollisionSystem>(m_Ecs));
+		auto pMovement = m_pSysManager->RegisterSystem(std::make_shared<MovementSystem>(m_Ecs), { pColl });
+		m_pSysManager->RegisterSystem(std::make_shared<WorldPositionSystem>(m_Ecs), { pColl, pMovement });
+
+		m_pSysManager->RegisterSystem(std::make_shared<RenderSystem>(m_Ecs));
+
 		m_SceneData.name = name;
 		m_SceneData.sceneFileData = sceneFileData;
 
@@ -226,22 +252,12 @@ namespace Pengin
 
 	void Scene::FixedUpdate()
 	{
+		m_pSysManager->FixedUpdate();
 	}
 
 	void Scene::Update()
-	{
-		//Order doesnt matter
-		m_TextSystem->Update();
-		m_FPSSystem->Update();
-		m_AnimationSystem->Update(); 
-		//-------------------
-		
-		//Detect collision (and respond) - might adjust velocity so update the positions | no complex phjysics so not required to be in fixed update rn
-		m_CollSystem->Update(); 
-		//Update the character positions based on velocity - might set dirty
-		m_MovementSystem->Update();
-		//Update the dirty world positions that are left
-		m_WorldPosSystem->Update();
+	{	
+		m_pSysManager->Update();
 
 		if (m_SceneData.sceneFileData.autoSaveTime > 0.f) //this should possibly be sent to a separate thread if very large save file
 		{
@@ -259,7 +275,7 @@ namespace Pengin
 
 	void Scene::Render() const
 	{
-		m_RenderSystem->Render();
+		m_pSysManager->Render();
 	}
 
 	void Scene::RenderImGUI()

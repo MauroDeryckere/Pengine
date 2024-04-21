@@ -1,20 +1,23 @@
 #ifndef RENDERSYSTEM
 #define RENDERSYSTEM
 
+#include "BaseSystem.h"
+
 namespace Pengin
 {
 	class ECS;
 
-	class RenderSystem final
+	class RenderSystem final : public BaseSystem
 	{
 	public:
 		RenderSystem(const ECS& ecs) :
+			BaseSystem{ },
 			m_ECS{ ecs }
 		{}
 
-		~RenderSystem() = default;
+		virtual ~RenderSystem() override = default;
 
-		void Render() const;
+		virtual void Render() const override;
 
 		RenderSystem(const RenderSystem&) = delete;
 		RenderSystem(RenderSystem&&) = delete;

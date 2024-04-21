@@ -1,20 +1,23 @@
 #ifndef ANIMATIONSYSTEM
 #define ANIMATIONSYSTEM
 
+#include "BaseSystem.h"
+
 namespace Pengin
 {
 	class ECS;
 
-	class AnimationSystem final
+	class AnimationSystem final : public BaseSystem
 	{
 	public:
 		AnimationSystem(ECS& ecs) :
+			BaseSystem{ },
 			m_ECS{ ecs }
 		{}
 
-		~AnimationSystem() = default;
+		virtual ~AnimationSystem() override = default;
 
-		void Update();
+		virtual void Update() override;
 
 		AnimationSystem(const AnimationSystem&) = delete;
 		AnimationSystem(AnimationSystem&&) = delete;

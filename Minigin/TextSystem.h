@@ -1,28 +1,30 @@
 #ifndef TEXTSYSTEM
 #define TEXTSYSTEM
 
-#include <memory>
-#include <string>
+#include "BaseSystem.h"
 
 #include "EntityId.h"
+
+#include <memory>
+#include <string>
 
 namespace Pengin
 {
 	class ECS;
 	class Observer;
 
-	class TextSystem final
+	class TextSystem final : public BaseSystem
 	{
 	public:
 		TextSystem(ECS& ecs);
-		~TextSystem() = default;
+		virtual ~TextSystem() override = default;
 
 		TextSystem(const TextSystem&) = delete;
 		TextSystem(TextSystem&&) = delete;
 		TextSystem& operator=(const TextSystem&) = delete;
 		TextSystem& operator=(const TextSystem&&) = delete;
 
-		void Update();
+		virtual void Update() override;
 
 		void SetText(const EntityId id, const std::string& text); 
 

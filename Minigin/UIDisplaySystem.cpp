@@ -17,6 +17,7 @@
 namespace Pengin
 {
 	UIDisplaySystem::UIDisplaySystem(ECS& ecs, Scene* pScene) :
+		BaseSystem{ },
 		m_ECS { ecs },
 		m_pScene { pScene },
 		m_pObserver{ EventManager::GetInstance().CreateObserver() }

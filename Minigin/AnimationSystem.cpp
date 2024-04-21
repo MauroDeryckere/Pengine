@@ -7,7 +7,7 @@
 #include "Time.h"
 
 namespace Pengin
-{
+{ 
 	void AnimationSystem::Update()
 	{
 		const float elapsedSec = Time::GetInstance().GetElapsedSec();

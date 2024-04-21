@@ -1,20 +1,23 @@
 #ifndef FPSSYSTEM
 #define FPSSYSTEM
 
+#include "BaseSystem.h"
+
 namespace Pengin
 {
 	class ECS;
 
-	class FPSSystem final
+	class FPSSystem final : public BaseSystem
 	{
 	public:
 		FPSSystem(ECS& ecs) :
+			BaseSystem{ },
 			m_ECS{ ecs }
 		{}
 
-		~FPSSystem() = default;
+		virtual ~FPSSystem() override = default;
 
-		void Update();
+		virtual void Update() override;
 
 		FPSSystem(const FPSSystem&) = delete;
 		FPSSystem(FPSSystem&&) = delete;

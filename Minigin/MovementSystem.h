@@ -1,21 +1,24 @@
 #ifndef MOVEMENTSYSTEM
 #define MOVEMENTSYSTEM
 
+#include "BaseSystem.h"
+
 namespace Pengin
 {
 	class ECS;
 	struct TransformComponent;
 
-	class MovementSystem final
+	class MovementSystem final : public BaseSystem
 	{
 	public:
 		MovementSystem(ECS& ecs) :
+			BaseSystem{ },
 			m_ECS{ ecs }
 		{}
 
-		~MovementSystem() = default;
+		virtual ~MovementSystem() override = default;
 
-		void Update();
+		virtual void Update() override;
 
 		MovementSystem(const MovementSystem&) = delete;
 		MovementSystem(MovementSystem&&) = delete;
