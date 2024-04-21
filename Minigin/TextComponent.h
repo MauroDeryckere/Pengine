@@ -24,12 +24,12 @@ namespace Pengin
 
 		~TextComponent() = default;
 
-		void SetText(const std::string& newText, const glm::u8vec4 newColor = {}) //allows to change the text without having to set all variables manually
+		void SetText(const std::string& newText, const glm::u8vec4 newColor = {  }) //allows to change the text without having to set all variables manually
 		{
 			text = newText;
 			needsTextureChange = true;
 
-			if (color != glm::u8vec4{})
+			if (newColor != glm::u8vec4{})
 			{
 				color = newColor;
 			}
