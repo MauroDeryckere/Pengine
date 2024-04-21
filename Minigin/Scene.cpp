@@ -28,7 +28,7 @@ namespace Pengin
 		m_pSysManager = std::make_unique<SystemManager>();
 
 		m_pSysManager->RegisterSystem(std::make_shared<FPSSystem>(m_Ecs));
-		m_pSysManager->RegisterSystem(std::make_shared<UIDisplaySystem>(m_Ecs));
+		m_pSysManager->RegisterSystem(std::make_shared<UIDisplaySystem>(m_Ecs, this));
 		m_pSysManager->RegisterSystem(std::make_shared<TextSystem>(m_Ecs));
 		m_pSysManager->RegisterSystem(std::make_shared<AnimationSystem>(m_Ecs));
 
