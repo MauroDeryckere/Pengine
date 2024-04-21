@@ -10,16 +10,16 @@ namespace Pengin
 	{
 	public:
 		HealthComponent(unsigned health = 0, const std::vector<EntityId>& healthbarIds = { }) :
-			m_Health{ health },
-			m_HealthDisplayIds{ healthbarIds }
+			health{ health },
+			healthDisplayIds{ healthbarIds }
 		{
-			m_HealthDisplayIds.shrink_to_fit();
+			healthDisplayIds.shrink_to_fit();
 		}
 
 		~HealthComponent() = default; 
 
-		unsigned m_Health;
-		std::vector<EntityId> m_HealthDisplayIds;
+		unsigned health;
+		std::vector<EntityId> healthDisplayIds;
 	};
 }
 

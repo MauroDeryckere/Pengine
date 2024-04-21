@@ -44,7 +44,7 @@ namespace Pengin
 			Entity playerEntity{ entityId, pActiveScene };
 
 			const auto movementSpeed = playerEntity.GetComponent<PlayerComponent>().movementSpeed;
-			playerEntity.GetComponent<VelocityComponent>().m_Velocity += (m_Direction * movementSpeed);
+			playerEntity.GetComponent<VelocityComponent>().velocity += (m_Direction * movementSpeed);
 		}
 
 		virtual ~Movement() override = default;

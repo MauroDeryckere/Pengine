@@ -33,7 +33,7 @@ namespace Pengin
 		auto& healthComp = m_ECS.GetComponent<HealthComponent>(id);
 		
 		std::vector<EntityId> idsToErase; //Erase deleted displays from the vector
-		for (const auto& entity : healthComp.m_HealthDisplayIds)
+		for (const auto& entity : healthComp.healthDisplayIds)
 		{
 			assert(entity != NULL_ENTITY_ID);
 
@@ -49,13 +49,13 @@ namespace Pengin
 			auto& textComp = m_ECS.GetComponent<TextComponent>(entity);
 			auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(entity);
 
-			const std::string newText{ displayComp.m_Prefix + std::to_string(healthComp.m_Health) + displayComp.m_Postfix };
+			const std::string newText{ displayComp.prefix + std::to_string(healthComp.health) + displayComp.postfix };
 
-			textComp.m_Text = newText; //TODO change (text system)
+			textComp.text = newText; //TODO change (text system)
 			textComp.needsTextureChange = true;
 		}
 
-		std::erase_if(healthComp.m_HealthDisplayIds, [&idsToErase](const EntityId id)
+		std::erase_if(healthComp.healthDisplayIds, [&idsToErase](const EntityId id)
 			{
 				return std::find(idsToErase.begin(), idsToErase.end(), id) != idsToErase.end();
 			});
@@ -69,7 +69,7 @@ namespace Pengin
 		auto& scoreComp = m_ECS.GetComponent<ScoreComponent>(id);
 
 		std::vector<EntityId> idsToErase;
-		for (const auto& entity : scoreComp.m_ScoreDisplays)
+		for (const auto& entity : scoreComp.scoreDisplays)
 		{
 			assert(entity != NULL_ENTITY_ID);
 
@@ -85,13 +85,13 @@ namespace Pengin
 			auto& textComp = m_ECS.GetComponent<TextComponent>(entity);
 			auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(entity);
 
-			const std::string newText{ displayComp.m_Prefix + std::to_string(scoreComp.m_Score) + displayComp.m_Postfix };
+			const std::string newText{ displayComp.prefix + std::to_string(scoreComp.score) + displayComp.postfix };
 
-			textComp.m_Text = newText; //TODO change
+			textComp.text = newText; //TODO change
 			textComp.needsTextureChange = true;
 		}
 
-		std::erase_if(scoreComp.m_ScoreDisplays, [&idsToErase](const EntityId id)
+		std::erase_if(scoreComp.scoreDisplays, [&idsToErase](const EntityId id)
 			{
 				return std::find(idsToErase.begin(), idsToErase.end(), id) != idsToErase.end();
 			});

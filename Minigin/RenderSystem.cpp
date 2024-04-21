@@ -19,12 +19,12 @@ namespace Pengin
 		{
 			auto entityId{ textureComponents.GetIdFromIterator(it) };
 
-			auto& pTexture = entity.m_pTexture;
+			auto& pTexture = entity.pTexture;
 
 			if (pTexture && entity.isVisible)
 			{
 				auto& transform = m_ECS.GetComponent<TransformComponent>(entityId);
-				renderer.RenderTexture((*pTexture), static_cast<int>(transform.worldPos.x), static_cast<int>(transform.worldPos.y), transform.scale, entity.m_SourceRect);
+				renderer.RenderTexture((*pTexture), static_cast<int>(transform.worldPos.x), static_cast<int>(transform.worldPos.y), transform.scale, entity.sourceRect);
 			}
 
 			++it;

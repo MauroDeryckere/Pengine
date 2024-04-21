@@ -20,9 +20,9 @@ namespace Pengin
 	struct AnimationComponent final
 	{
 		AnimationComponent(const std::vector<AnimationData>& animations = {}, uint8_t initAnimationIdx = 0, bool playOnInit = true) :
-			m_Animations{ animations },
-			m_IsPlaying{ playOnInit },
-			m_CurrAnimationIdx{ initAnimationIdx }
+			animations{ animations },
+			isPlaying{ playOnInit },
+			currAnimationIdx{ initAnimationIdx }
 		{
 
 			assert(std::all_of(animations.begin(), animations.end(), [](const AnimationData& animation) { return animation.frameCt > 0; }) && "Can not have an animation with 0 frames");
@@ -32,14 +32,14 @@ namespace Pengin
 		
 		~AnimationComponent() = default;
 
-		std::vector<AnimationData> m_Animations { };
+		std::vector<AnimationData> animations { };
 		
 		float m_FrameTimer { 0.f };
 
-		uint8_t m_CurrAnimationIdx { 0 };
-		uint8_t m_CurrFrame { 0 };
+		uint8_t currAnimationIdx { 0 };
+		uint8_t currFrame { 0 };
 
-		bool m_IsPlaying { true };
+		bool isPlaying { true };
 	};
 }
 

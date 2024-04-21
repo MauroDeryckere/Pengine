@@ -325,7 +325,7 @@
                 "path": "NO PATH"
             },
             "Text Component": {
-                "Text": "58.4",
+                "Text": "59.0",
                 "Path": "Lingua.otf",
                 "FontSize": 36,
                 "Color": [
@@ -345,13 +345,13 @@
             },
             "Transform Component": {
                 "worldPos": [
-                    285.72119140625,
-                    137.79119873046875,
+                    63.37361145019531,
+                    249.83787536621094,
                     0.0
                 ],
                 "localPos": [
-                    285.72119140625,
-                    137.79119873046875,
+                    63.37361145019531,
+                    249.83787536621094,
                     0.0
                 ],
                 "rotation": [
@@ -743,8 +743,8 @@
             },
             "Sprite Component": {
                 "Source rect": [
-                    48,
-                    16,
+                    32,
+                    0,
                     16,
                     16
                 ],
@@ -775,9 +775,117 @@
                     }
                 ],
                 "CurrentAnimationIndex": 0,
-                "CurrentAnimationFrame": 1,
-                "CurrentFrameTime": 0.20244275033473969,
+                "CurrentAnimationFrame": 0,
+                "CurrentFrameTime": 0.7914499640464783,
                 "IsPlaying": true
+            }
+        },
+        {
+            "UUID": "e5c57af4-d049-46e9-b099-ee447ba8c21b",
+            "Transform Component": {
+                "worldPos": [
+                    200.0,
+                    100.0,
+                    0.0
+                ],
+                "localPos": [
+                    200.0,
+                    100.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "NO PATH"
+            },
+            "Text Component": {
+                "Text": "TEXT TEST",
+                "Path": "Lingua.otf",
+                "FontSize": 40,
+                "Color": [
+                    255,
+                    255,
+                    255,
+                    255
+                ]
+            }
+        },
+        {
+            "UUID": "7ea824be-c435-4f27-bc55-465443730786",
+            "Transform Component": {
+                "worldPos": [
+                    200.0,
+                    100.0,
+                    0.0
+                ],
+                "localPos": [
+                    200.0,
+                    100.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "Sprite Component": {
+                "Source rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "is visible": true,
+                "path": "NO PATH"
+            },
+            "Text Component": {
+                "Text": "TEXT TEST",
+                "Path": "Lingua.otf",
+                "FontSize": 40,
+                "Color": [
+                    255,
+                    255,
+                    255,
+                    255
+                ]
             }
         }
     ]

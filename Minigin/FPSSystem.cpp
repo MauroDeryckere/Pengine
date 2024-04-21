@@ -16,22 +16,22 @@ namespace Pengin
 
 		for (auto it{ fpsComps.begin() }; auto & entity : fpsComps)
 		{
-			entity.m_AccumulatedTime += Time::GetInstance().GetElapsedSec();
+			entity.accumulatedTime += Time::GetInstance().GetElapsedSec();
 
-			++entity.m_FrameCount;
+			++entity.frameCount;
 
-			if (entity.m_AccumulatedTime >= 1.0f)
+			if (entity.accumulatedTime >= 1.0f)
 			{
-				const auto txt{ std::format("{:.1f}", entity.m_FrameCount / entity.m_AccumulatedTime) };
+				const auto txt{ std::format("{:.1f}", entity.frameCount / entity.accumulatedTime) };
 
 				auto id = fpsComps.GetIdFromIterator(it);
 				auto& textComp{ m_ECS.GetComponent<TextComponent>(id) };
 
-				textComp.m_Text = txt; //TODO Change
+				textComp.text = txt; //TODO Change
 				textComp.needsTextureChange = true;
 
-				entity.m_FrameCount = 0;
-				entity.m_AccumulatedTime -= 1.f;
+				entity.frameCount = 0;
+				entity.accumulatedTime -= 1.f;
 			}
 
 			++it;

@@ -10,14 +10,14 @@ namespace Pengin
 		TxtDisplayComponent() = default;
 
 		TxtDisplayComponent(const std::string& prefix, const std::string& postfix = {}) :
-			m_Prefix{ prefix },
-			m_Postfix{ postfix }
+			prefix{ prefix },
+			postfix{ postfix }
 		{}
 
 		~TxtDisplayComponent() = default;
 
-		std::string m_Prefix{};
-		std::string m_Postfix{};
+		std::string prefix{};
+		std::string postfix{};
 	};
 }
 

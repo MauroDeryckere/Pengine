@@ -8,8 +8,8 @@ namespace Pengin
 		FPSCounterComponent() = default;
 		~FPSCounterComponent() = default;
 
-		unsigned m_FrameCount{ 0 };
-		float m_AccumulatedTime{ 0.f };
+		unsigned frameCount{ 0 };
+		float accumulatedTime{ 0.f };
 	};
 }
 

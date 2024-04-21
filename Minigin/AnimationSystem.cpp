@@ -17,20 +17,20 @@ namespace Pengin
 		{
 			entity.m_FrameTimer += elapsedSec;
 
-			if (entity.m_FrameTimer >= entity.m_Animations[entity.m_CurrAnimationIdx].frameDuration)
+			if (entity.m_FrameTimer >= entity.animations[entity.currAnimationIdx].frameDuration)
 			{
-				++entity.m_CurrFrame %= entity.m_Animations[entity.m_CurrAnimationIdx].frameCt;
+				++entity.currFrame %= entity.animations[entity.currAnimationIdx].frameCt;
 
 				const auto id = animationComps.GetIdFromIterator(it);
 				auto& spriteComp = m_ECS.GetComponent<SpriteComponent>(id);
 
-				auto newSrcRect = entity.m_Animations[entity.m_CurrAnimationIdx].frame0sourceRect;
-				newSrcRect.x += entity.m_CurrFrame * newSrcRect.width;
-				newSrcRect.y += entity.m_CurrFrame * newSrcRect.height;
+				auto newSrcRect = entity.animations[entity.currAnimationIdx].frame0sourceRect;
+				newSrcRect.x += entity.currFrame * newSrcRect.width;
+				newSrcRect.y += entity.currFrame * newSrcRect.height;
 
-				spriteComp.m_SourceRect = newSrcRect;
+				spriteComp.sourceRect = newSrcRect;
 
-				entity.m_FrameTimer -= entity.m_Animations[entity.m_CurrAnimationIdx].frameDuration;
+				entity.m_FrameTimer -= entity.animations[entity.currAnimationIdx].frameDuration;
 			}
 
 			++it;

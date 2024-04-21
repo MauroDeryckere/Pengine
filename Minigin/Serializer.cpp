@@ -342,7 +342,7 @@ namespace Pengin
 			const std::string texturePath = spriteData["path"];
 			auto& sprite = (texturePath == "NO PATH" ?  ecs.AddComponent<SpriteComponent>(entity) : ecs.AddComponent<SpriteComponent>(entity, texturePath));
 
-			sprite.m_SourceRect = UtilStructs::Rectu16{ spriteData["Source rect"][0].get<uint16_t>(),
+			sprite.sourceRect = UtilStructs::Rectu16{ spriteData["Source rect"][0].get<uint16_t>(),
 														spriteData["Source rect"][1].get<uint16_t>(),
 														spriteData["Source rect"][2].get<uint16_t>(),
 														spriteData["Source rect"][3].get<uint16_t>() };
@@ -362,12 +362,12 @@ namespace Pengin
 			unsigned fontSize = static_cast<unsigned>(textData["FontSize"].get<uint64_t>());
 
 			auto& textComp = ecs.AddComponent<TextComponent>(entity, fontPath, fontSize);
-			textComp.m_Color = glm::u8vec4{ textData["Color"][0].get<uint8_t>(),
+			textComp.color = glm::u8vec4{ textData["Color"][0].get<uint8_t>(),
 											textData["Color"][1].get<uint8_t>(),
 											textData["Color"][2].get<uint8_t>(),
 											textData["Color"][3].get<uint8_t>() };
 
-			textComp.m_Text = textData["Text"].get<std::string>();
+			textComp.text = textData["Text"].get<std::string>();
 
 			textComp.needsTextureChange = true; //Always need to generate a texture upon deserializing
 		}

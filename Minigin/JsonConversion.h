@@ -121,9 +121,9 @@ namespace Pengin
 	{
 		j =
 		{
-			{"Source rect", { sprite.m_SourceRect.x, sprite.m_SourceRect.y, sprite.m_SourceRect.width, sprite.m_SourceRect.height } },
+			{"Source rect", { sprite.sourceRect.x, sprite.sourceRect.y, sprite.sourceRect.width, sprite.sourceRect.height } },
 			{"is visible", sprite.isVisible },
-			{"path", sprite.m_pTexture ? sprite.m_pTexture->GetPath() : "NO PATH" },
+			{"path", sprite.pTexture ? sprite.pTexture->GetPath() : "NO PATH" },
 
 		};
 	}
@@ -134,12 +134,12 @@ namespace Pengin
 	{
 		j =
 		{
-			{"Velocity", { velocity.m_Velocity.x, velocity.m_Velocity.y, velocity.m_Velocity.z } }
+			{"Velocity", { velocity.velocity.x, velocity.velocity.y, velocity.velocity.z } }
 		};
 	}
 	void from_json(const json& j, VelocityComponent& velocity)
 	{
-		velocity.m_Velocity = {
+		velocity.velocity = {
 			j["Velocity"][0].get<float>(),
 			j["Velocity"][1].get<float>(),
 			j["Velocity"][2].get<float>()
@@ -152,10 +152,10 @@ namespace Pengin
 	{
 		j =
 		{
-			{"Text", text.m_Text},
-			{"Path", text.m_pFont->GetPath() },
-			{"FontSize", text.m_pFont->GetFontSize() },
-			{"Color", { text.m_Color.r, text.m_Color.g, text.m_Color.b, text.m_Color.a } }
+			{"Text", text.text},
+			{"Path", text.pFont->GetPath() },
+			{"FontSize", text.pFont->GetFontSize() },
+			{"Color", { text.color.r, text.color.g, text.color.b, text.color.a } }
 		};
 	}
 	//---------------
@@ -164,25 +164,25 @@ namespace Pengin
 	void to_json(json& j, const ScoreComponent& score, const ECS& ecs)
 	{
 		json displays;
-		for (const auto& e : score.m_ScoreDisplays)
+		for (const auto& e : score.scoreDisplays)
 		{
 			displays.emplace_back(e == NULL_ENTITY_ID ? "NULL_UUID" : ecs.GetComponent<UUIDComponent>(e).uuid.GetUUID_PrettyStr());
 		}
 		
 		j =
 		{
-			{"Score", score.m_Score},
+			{"Score", score.score},
 			{"ScoreDisplayUUIDS", displays }
 		};
 	}
 	void from_json(const json& j, ScoreComponent& score, const std::unordered_map<UUID, EntityId>& entityMap)
 	{
-		score.m_Score = j["Score"].get<unsigned>();
+		score.score = j["Score"].get<unsigned>();
 
 		const std::vector<std::string> id_Str = j["ScoreDisplayUUIDS"].get<std::vector<std::string>>();
 		for (const auto& uuid : id_Str)
 		{
-			score.m_ScoreDisplays.emplace_back(entityMap.at({ uuid }));
+			score.scoreDisplays.emplace_back(entityMap.at({ uuid }));
 		}
 	}
 	//-------------
@@ -192,12 +192,12 @@ namespace Pengin
 	{
 		j =
 		{
-			{"CollRect",{ rectColl.m_CollRect.x,  rectColl.m_CollRect.y,  rectColl.m_CollRect.width,  rectColl.m_CollRect.height }}
+			{"CollRect",{ rectColl.collRect.x,  rectColl.collRect.y,  rectColl.collRect.width,  rectColl.collRect.height }}
 		};
 	}
 	void from_json(const json& j, RectColliderComponent& rectColl)
 	{
-		rectColl.m_CollRect = UtilStructs::Rectu16{ 
+		rectColl.collRect = UtilStructs::Rectu16{ 
 			j["CollRect"][0].get<uint16_t>(),
 			j["CollRect"][1].get<uint16_t>(),
 			j["CollRect"][2].get<uint16_t>(),
@@ -210,25 +210,25 @@ namespace Pengin
 	void to_json(json& j, const HealthComponent& health, const ECS& ecs)
 	{
 		json displays;
-		for (const auto& e : health.m_HealthDisplayIds)
+		for (const auto& e : health.healthDisplayIds)
 		{
 			displays.emplace_back( e == NULL_ENTITY_ID ? "NULL_UUID" : ecs.GetComponent<UUIDComponent>(e).uuid.GetUUID_PrettyStr());
 		}
 
 		j =
 		{
-			{"Health", health.m_Health},
+			{"Health", health.health},
 			{"HealthDisplayUUIDS", displays }
 		};
 	}
 	void from_json(const json& j, HealthComponent& health, const std::unordered_map<UUID, EntityId>& entityMap)
 	{
-		health.m_Health = j["Health"].get<unsigned>();
+		health.health = j["Health"].get<unsigned>();
 
 		const std::vector<std::string> id_Str = j["HealthDisplayUUIDS"].get<std::vector<std::string>>();
 		for (const auto& uuid : id_Str)
 		{
-			health.m_HealthDisplayIds.emplace_back(entityMap.at({ uuid }));
+			health.healthDisplayIds.emplace_back(entityMap.at({ uuid }));
 		}
 	}
 	//-------------
@@ -257,20 +257,20 @@ namespace Pengin
 	{
 		j =
 		{
-			{"Animations", ani.m_Animations },
-			{"CurrentAnimationIndex", ani.m_CurrAnimationIdx},
-			{"CurrentAnimationFrame",ani.m_CurrFrame},
+			{"Animations", ani.animations },
+			{"CurrentAnimationIndex", ani.currAnimationIdx},
+			{"CurrentAnimationFrame",ani.currFrame},
 			{"CurrentFrameTime", ani.m_FrameTimer},
-			{"IsPlaying", ani.m_IsPlaying}
+			{"IsPlaying", ani.isPlaying}
 		};
 	}
 	void from_json(const json& j, AnimationComponent& ani)
 	{
-		ani.m_Animations = j["Animations"].get<std::vector<AnimationData>>();
-		ani.m_CurrAnimationIdx = j["CurrentAnimationIndex"].get<uint8_t>();
-		ani.m_CurrFrame = j["CurrentAnimationFrame"].get<uint8_t>();
+		ani.animations = j["Animations"].get<std::vector<AnimationData>>();
+		ani.currAnimationIdx = j["CurrentAnimationIndex"].get<uint8_t>();
+		ani.currFrame = j["CurrentAnimationFrame"].get<uint8_t>();
 		ani.m_FrameTimer = j["CurrentFrameTime"].get<float>();
-		ani.m_IsPlaying = j["IsPlaying"].get<bool>();
+		ani.isPlaying = j["IsPlaying"].get<bool>();
 	}
 	//---------------
 
@@ -279,14 +279,14 @@ namespace Pengin
 	{
 		j =
 		{
-			{"Prefix", dis.m_Prefix},
-			{"Postfix", dis.m_Postfix}
+			{"Prefix", dis.prefix},
+			{"Postfix", dis.postfix}
 		};
 	}
 	void from_json(const json& j, TxtDisplayComponent& dis)
 	{
-		dis.m_Prefix = j["Prefix"].get<std::string>();
-		dis.m_Postfix = j["Postfix"].get<std::string>();
+		dis.prefix = j["Prefix"].get<std::string>();
+		dis.postfix = j["Postfix"].get<std::string>();
 	}
 	//-----------
 }

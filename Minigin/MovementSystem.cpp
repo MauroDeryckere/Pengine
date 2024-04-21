@@ -19,11 +19,11 @@ namespace Pengin
 			auto id = velocityComps.GetIdFromIterator(it);
 			auto& transform = m_ECS.GetComponent<TransformComponent>(id);
 			
-			transform.localPos += entity.m_Velocity * Time::GetInstance().GetElapsedSec();
+			transform.localPos += entity.velocity * Time::GetInstance().GetElapsedSec();
 
 			SetPosDirty(transform);
 
-			entity.m_Velocity = {};
+			entity.velocity = {};
 
 			++it;
 		}

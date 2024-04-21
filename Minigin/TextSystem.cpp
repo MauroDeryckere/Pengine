@@ -30,8 +30,8 @@ namespace Pengin
 		{
 			if (entity.needsTextureChange)
 			{
-				const SDL_Color color{ entity.m_Color.w, entity.m_Color.x, entity.m_Color.y, entity.m_Color.z };
-				const auto surf = TTF_RenderText_Blended(entity.m_pFont->GetFont(), entity.m_Text.c_str(), color);
+				const SDL_Color color{ entity.color.w, entity.color.x, entity.color.y, entity.color.z };
+				const auto surf = TTF_RenderText_Blended(entity.pFont->GetFont(), entity.text.c_str(), color);
 				if (!surf)
 				{
 					throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
@@ -47,7 +47,7 @@ namespace Pengin
 				auto pTexture = std::make_shared<dae::Texture2D>(texture, "NO PATH"); //TODO
 
 				auto& textureComp = m_ECS.GetComponent<SpriteComponent>(textComps.GetIdFromIterator(it));
-				textureComp.m_pTexture = pTexture;
+				textureComp.pTexture = pTexture;
 
 				entity.needsTextureChange = false;
 			}
@@ -62,10 +62,10 @@ namespace Pengin
 		assert(m_ECS.HasComponent<TextComponent>(id));
 
 		auto& textComp = m_ECS.GetComponent<TextComponent>(id);
-		textComp.m_Text = text;
+		textComp.text = text;
 
-		const SDL_Color color{ textComp.m_Color.w, textComp.m_Color.x, textComp.m_Color.y, textComp.m_Color.z };
-		const auto surf = TTF_RenderText_Blended(textComp.m_pFont->GetFont(), textComp.m_Text.c_str(), color);
+		const SDL_Color color{ textComp.color.w, textComp.color.x, textComp.color.y, textComp.color.z };
+		const auto surf = TTF_RenderText_Blended(textComp.pFont->GetFont(), textComp.text.c_str(), color);
 		if (!surf)
 		{
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
@@ -81,7 +81,7 @@ namespace Pengin
 		auto pTexture = std::make_shared<dae::Texture2D>(texture, "NO PATH"); //TODO
 
 		auto& textureComp = m_ECS.GetComponent<SpriteComponent>(id);
-		textureComp.m_pTexture = pTexture;
+		textureComp.pTexture = pTexture;
 
 		textComp.needsTextureChange = false;
 	}

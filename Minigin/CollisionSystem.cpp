@@ -26,14 +26,14 @@ namespace Pengin
 				const auto& outerTrans{ m_ECS.GetComponent<TransformComponent>(rectCollComps.GetIdFromIterator(outerIt)) };
 				const auto& innerTrans{ m_ECS.GetComponent<TransformComponent>(rectCollComps.GetIdFromIterator(innerIt)) };
 
-				UtilStructs::Rect16 outerRect{ outerEntity.m_CollRect };
+				UtilStructs::Rect16 outerRect{ outerEntity.collRect };
 				outerRect.x = static_cast<int16_t>(outerTrans.worldPos.x) + outerRect.x * static_cast<int16_t>(outerTrans.scale.x);
 				outerRect.y = static_cast<int16_t>(outerTrans.worldPos.y) + outerRect.y * static_cast<int16_t>(outerTrans.scale.y);
 
 				outerRect.width *= static_cast<int16_t>(outerTrans.scale.x);
 				outerRect.height *= static_cast<int16_t>(outerTrans.scale.y);
 
-				UtilStructs::Rect16 innerRect{ innerEntity.m_CollRect };
+				UtilStructs::Rect16 innerRect{ innerEntity.collRect };
 				innerRect.x = static_cast<int16_t>(innerTrans.worldPos.x) + innerRect.x * static_cast<int16_t>(innerTrans.scale.x);
 				innerRect.y = static_cast<int16_t>(innerTrans.worldPos.y) + innerRect.y * static_cast<int16_t>(innerTrans.scale.y);
 

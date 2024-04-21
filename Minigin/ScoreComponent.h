@@ -10,16 +10,16 @@ namespace Pengin
 	{
 	public:
 		ScoreComponent(const std::vector<EntityId>& scoreDisplayIds = { }) :
-			m_Score{ 0 },
-			m_ScoreDisplays{ scoreDisplayIds }
+			score{ 0 },
+			scoreDisplays{ scoreDisplayIds }
 		{
-			m_ScoreDisplays.shrink_to_fit();
+			scoreDisplays.shrink_to_fit();
 		}
 
 		~ScoreComponent() = default;
 
-		unsigned m_Score{};
-		std::vector<EntityId> m_ScoreDisplays{};
+		unsigned score{};
+		std::vector<EntityId> scoreDisplays{};
 	};
 }
 

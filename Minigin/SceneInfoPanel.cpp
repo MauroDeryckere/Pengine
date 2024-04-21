@@ -233,16 +233,16 @@ namespace Pengin
 				ImGui::TableNextColumn();
 				ImGui::TextUnformatted("Collider Rect");
 				ImGui::TableNextColumn();
-				ImGui::Text("(%d, %d, %d, %d)", rectColl.m_CollRect.x, rectColl.m_CollRect.y, rectColl.m_CollRect.width, rectColl.m_CollRect.height);
+				ImGui::Text("(%d, %d, %d, %d)", rectColl.collRect.x, rectColl.collRect.y, rectColl.collRect.width, rectColl.collRect.height);
 
 				ImGui::TableNextRow();
 				ImGui::TableNextColumn();
 				ImGui::TextUnformatted("World Location Rect");
 				ImGui::TableNextColumn();
-				ImGui::Text("(%d, %d, %d, %d)", static_cast<int>(transform.worldPos.x + rectColl.m_CollRect.x * transform.scale.x),
-												static_cast<int>(transform.worldPos.y + rectColl.m_CollRect.y  * transform.scale.y),
-												rectColl.m_CollRect.width * static_cast<int>(transform.scale.x), 
-												rectColl.m_CollRect.height * static_cast<int>(transform.scale.y));
+				ImGui::Text("(%d, %d, %d, %d)", static_cast<int>(transform.worldPos.x + rectColl.collRect.x * transform.scale.x),
+												static_cast<int>(transform.worldPos.y + rectColl.collRect.y  * transform.scale.y),
+												rectColl.collRect.width * static_cast<int>(transform.scale.x), 
+												rectColl.collRect.height * static_cast<int>(transform.scale.y));
 
 				ImGui::TableNextRow();
 				ImGui::TableNextColumn();
@@ -257,10 +257,10 @@ namespace Pengin
 
 				if (enableCollider)
 				{
-					dae::Renderer::GetInstance().DrawRect(UtilStructs::Rect16{ static_cast<int16_t>(transform.worldPos.x + rectColl.m_CollRect.x * transform.scale.x),
-																				static_cast<int16_t>(transform.worldPos.y + rectColl.m_CollRect.y * transform.scale.y),
-																				static_cast<int16_t>(rectColl.m_CollRect.width * transform.scale.x), 
-																				static_cast<int16_t>(rectColl.m_CollRect.height * transform.scale.y)}, 
+					dae::Renderer::GetInstance().DrawRect(UtilStructs::Rect16{ static_cast<int16_t>(transform.worldPos.x + rectColl.collRect.x * transform.scale.x),
+																				static_cast<int16_t>(transform.worldPos.y + rectColl.collRect.y * transform.scale.y),
+																				static_cast<int16_t>(rectColl.collRect.width * transform.scale.x), 
+																				static_cast<int16_t>(rectColl.collRect.height * transform.scale.y)}, 
 																				SDL_Color{255, 0, 0, 255});
 				}
 			}
@@ -284,7 +284,7 @@ namespace Pengin
 				ImGui::TableNextColumn();
 				ImGui::TextUnformatted("Source Rect");
 				ImGui::TableNextColumn();
-				ImGui::Text("(%d, %d, %d, %d)", sprite.m_SourceRect.x, sprite.m_SourceRect.y, sprite.m_SourceRect.width, sprite.m_SourceRect.height);
+				ImGui::Text("(%d, %d, %d, %d)", sprite.sourceRect.x, sprite.sourceRect.y, sprite.sourceRect.width, sprite.sourceRect.height);
 
 				ImGui::TableNextRow();
 				ImGui::TableNextColumn();
@@ -302,7 +302,7 @@ namespace Pengin
 	void SceneInfoPanel::RenderAnimationInfo(ECS& ecs, const EntityId id)
 	{
 		const auto& aniComp = ecs.GetComponent<AnimationComponent>(id);
-		const bool isAniDataEmpty{ aniComp.m_Animations.empty() };
+		const bool isAniDataEmpty{ aniComp.animations.empty() };
 
 		if (ImGui::TreeNode("Animation Component"))
 		{
@@ -318,19 +318,19 @@ namespace Pengin
 					ImGui::TableNextColumn();
 					ImGui::TextUnformatted("Is playing");
 					ImGui::TableNextColumn();
-					ImGui::Text("%s", aniComp.m_IsPlaying ? "True" : "False");
+					ImGui::Text("%s", aniComp.isPlaying ? "True" : "False");
 
 					ImGui::TableNextRow();
 					ImGui::TableNextColumn();
 					ImGui::TextUnformatted("Current animation index");
 					ImGui::TableNextColumn();
-					ImGui::Text("%d", aniComp.m_CurrAnimationIdx);
+					ImGui::Text("%d", aniComp.currAnimationIdx);
 
 					ImGui::TableNextRow();
 					ImGui::TableNextColumn();
 					ImGui::TextUnformatted("Current frame index");
 					ImGui::TableNextColumn();
-					ImGui::Text("%d", aniComp.m_CurrFrame);
+					ImGui::Text("%d", aniComp.currFrame);
 
 					ImGui::TableNextRow();
 					ImGui::TableNextColumn();
@@ -343,7 +343,7 @@ namespace Pengin
 
 				if (ImGui::TreeNode("Animations"))
 				{
-					for (size_t idx{ 0 }; const auto & animation : aniComp.m_Animations)
+					for (size_t idx{ 0 }; const auto & animation : aniComp.animations)
 					{
 						const std::string label{ "Animation " + std::to_string(idx) + " data" };
 

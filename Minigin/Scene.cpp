@@ -6,6 +6,8 @@
 #include "TransformComponent.h"
 #include "UUIDComponent.h"
 
+#include "Time.h"
+
 namespace Pengin
 {
 	Scene::Scene(const std::string& name, const SceneFileData& sceneFileData)
@@ -38,37 +40,53 @@ namespace Pengin
 			return;
 		}
 
-		if ((!m_SceneData.sceneFileData.f_RegControllerInput && !m_SceneData.sceneFileData.f_RegKeyboardInput) 
-			|| m_SceneData.sceneFileData.inputFilePath.empty())
+		const bool isKeyboarsFunc{ m_SceneData.sceneFileData.f_RegKeyboardInput };
+		const bool isControllerFunc{ m_SceneData.sceneFileData.f_RegControllerInput };
+
+		if (!isKeyboarsFunc && !isControllerFunc)
 		{
 			return;
 		}
 
-		const auto inp = Serializer::GetInstance().DeserializeInput(m_SceneData.sceneFileData.inputFilePath);
-		
-		if (!inp.first)
+		if (m_SceneData.sceneFileData.inputFilePath.empty()) //no path but still provided a function (empty inpData)
 		{
-			DEBUG_OUT("Failed to deserialize"); //likely have to throw here in fut
-			return;
-		}
-
-		auto& input = InputManager::GetInstance();
-		input.Clear();
-
-		for (const auto& user : inp.second)
-		{
-			const auto& userIndex = std::get<0>(user);
-			const auto uType = static_cast<UserType>(std::get<1>(user));
-
-			input.RegisterUser(userIndex, uType);
-
-			if (uType == UserType::Keyboard) 
+			if (isKeyboarsFunc)
 			{
-				m_SceneData.sceneFileData.f_RegKeyboardInput(user);
+				m_SceneData.sceneFileData.f_RegKeyboardInput({});
 			}
-			else if (uType == UserType::Controller)
+			if (isControllerFunc)
 			{
-				m_SceneData.sceneFileData.f_RegControllerInput(user);
+				m_SceneData.sceneFileData.f_RegControllerInput({});
+			}
+		}
+		else
+		{
+			const auto inp = Serializer::GetInstance().DeserializeInput(m_SceneData.sceneFileData.inputFilePath);
+
+			if (!inp.first)
+			{
+				DEBUG_OUT("Failed to deserialize"); //likely have to throw here in future
+				return;
+			}
+
+			auto& input = InputManager::GetInstance();
+			input.Clear();
+
+			for (const auto& user : inp.second)
+			{
+				const auto& userIndex = std::get<0>(user);
+				const auto uType = static_cast<UserType>(std::get<1>(user));
+
+				input.RegisterUser(userIndex, uType);
+
+				if (uType == UserType::Keyboard && isKeyboarsFunc)
+				{
+					m_SceneData.sceneFileData.f_RegKeyboardInput(user);
+				}
+				else if (uType == UserType::Controller && isControllerFunc)
+				{
+					m_SceneData.sceneFileData.f_RegControllerInput(user);
+				}
 			}
 		}
 	}
@@ -224,6 +242,19 @@ namespace Pengin
 		m_MovementSystem->Update();
 		//Update the dirty world positions that are left
 		m_WorldPosSystem->Update();
+
+		if (m_SceneData.sceneFileData.autoSaveTime > 0.f) //this should possibly be sent to a separate thread if very large save file
+		{
+			static float currTime{ 0.f };
+			currTime += Time::GetInstance().GetElapsedSec();
+
+			if (currTime >= m_SceneData.sceneFileData.autoSaveTime)
+			{
+				DEBUG_OUT("Auto saving scene: " << m_SceneData.name);
+				SerializeScene();
+				currTime = 0.f;
+			}
+		}
 	}
 
 	void Scene::Render() const

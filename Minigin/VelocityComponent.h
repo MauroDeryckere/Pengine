@@ -10,12 +10,12 @@ namespace Pengin
 		VelocityComponent() = default;
 
 		VelocityComponent(const glm::vec3& vel) :
-			m_Velocity{ vel }
+			velocity{ vel }
 		{}
 
 		~VelocityComponent() = default;
 
-		glm::vec3 m_Velocity{ 0, 0, 0 };
+		glm::vec3 velocity{ 0, 0, 0 };
 	};
 }
 
