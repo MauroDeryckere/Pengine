@@ -1,11 +1,10 @@
-#pragma once
+#ifndef PENGIN_EVENT
+#define PENGIN_EVENT
 
 #include <string>
 
 namespace Pengin
 {
-	//event args obj or templetized?
-
 	class Event final
 	{
 	public:
@@ -30,5 +29,4 @@ namespace Pengin
 	};
 }
 
-
-
+#endif

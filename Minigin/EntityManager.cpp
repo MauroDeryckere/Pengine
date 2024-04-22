@@ -1,7 +1,7 @@
 #include "EntityManager.h"
 #include "UniqueTypeTracker.h"
 #include "ComponentManager.h"
-#include "ECSEventInter.h"
+
 #include <algorithm>
 
 namespace Pengin
@@ -27,14 +27,12 @@ namespace Pengin
 		return m_EntityCompFlags.Contains(id);
 	}
 
-	bool EntityManager::DestroyEntity(const EntityId id, EcsEventInter& eventInter) noexcept
+	bool EntityManager::DestroyEntity(const EntityId id) noexcept
 	{
 		const auto& ownedCompTypes{ GetAllCompTypes(id) };
 		
 		for (const auto& comp : ownedCompTypes)
 		{
-			eventInter.SetObserverDirty(id, comp); //This does result in some redundant calls upon remove if a component does not have an observer but plan on moving away from observers inside components anyway (well be depracated)
-
 			if (!m_ComponentManagerRef.RemoveComponent(comp, id))
 			{
 				return false;

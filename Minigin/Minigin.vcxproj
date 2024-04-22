@@ -498,16 +498,13 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="ConstComponentWrapper.h" />
     <ClInclude Include="Defines.h" />
-    <ClInclude Include="EcsEventInter.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityId.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventManager.h" />
-    <ClInclude Include="CompObserver.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="TextSystem.h" />
     <ClInclude Include="UtilStructs.h" />
-    <ClInclude Include="TypedCompObserver.h" />
     <ClInclude Include="DisplayComponent.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="EntityManager.h" />
@@ -550,7 +547,6 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_widgets.cpp" />
     <ClCompile Include="AnimationSystem.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
-    <ClCompile Include="EcsEventInter.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Event.cpp" />
@@ -566,7 +562,6 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="InputMouse.cpp" />
     <ClCompile Include="Minigin.cpp" />
-    <ClCompile Include="CompObserver.cpp" />
     <ClCompile Include="MovementSystem.cpp" />
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -580,7 +575,6 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClCompile Include="TextSystem.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="UIDisplaySystem.cpp" />
-    <ClCompile Include="UniqueTypesTracker.cpp" />
     <ClCompile Include="GameUUID.cpp" />
     <ClCompile Include="WorldPositionSystem.cpp" />
   </ItemGroup>

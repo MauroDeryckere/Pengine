@@ -5,7 +5,6 @@
 
 #include "Event.h"
 #include "Observer.h"
-#include "TypedCompObserver.h"
 
 #include <unordered_map>
 #include <functional>
@@ -26,21 +25,10 @@ namespace Pengin
 		void BroadcoastEvent(const Event& event) noexcept;
 		void BroadcastBlockingEvent(const Event& event) noexcept;
 
-		template<typename ComponentType>
-		requires CompObserverConcept<ComponentType>
-		[[nodiscard]] std::shared_ptr<CompObserver> CreateComponentObserver(EntityId entityId) const noexcept
-		{
-			static_assert(CompObserverConcept<ComponentType>, "Must provide a valid function in the component class");
-
-			return std::make_shared<TypedCompObserver<ComponentType>>(entityId);
-		}
-
 		[[nodiscard]] std::shared_ptr<Observer> CreateObserver() const noexcept
 		{
 			return std::make_shared<Observer>();
 		}
-
-		void SetObserverDirty(EntityId entiyId, std::type_index typeIdx) noexcept;
 
 		EventManager(const EventManager&) = delete;
 		EventManager(EventManager&&) = delete;
@@ -49,7 +37,6 @@ namespace Pengin
 
 		void RemoveEvent(const std::string& eventName) 
 		{ 
-			m_CompEventCallbacks.erase(eventName); 
 			m_EventCallbacks.erase(eventName);
 		}
 
@@ -60,12 +47,8 @@ namespace Pengin
 		EventManager() = default;
 		~EventManager() = default;
 
-		friend class CompObserver;
-		void RegisterObserver(std::weak_ptr<CompObserver> pObserver, fEventCallback fCallback, const std::string& eventName) noexcept;
-
 		friend class Observer;
 		void RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& eventName) noexcept;
-
 		void ProcessEvent(const Event& event) noexcept;
 
 		using ObserverIdentifier = std::pair<EntityId, std::type_index>;
@@ -80,11 +63,7 @@ namespace Pengin
 			}
 		};
 
-		std::unordered_map<ObserverIdentifier, std::weak_ptr<CompObserver>, ObserverIdentifierHash> m_CompObservers;
-
-		using CompObsCallbacks = std::vector<std::pair<std::weak_ptr<CompObserver>, fEventCallback>>;
 		using ObsCallbacks = std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>;
-		std::unordered_map<std::string, CompObsCallbacks> m_CompEventCallbacks;
 		std::unordered_map<std::string, ObsCallbacks> m_EventCallbacks;
 
 		std::queue<Event> m_EventQueue;
