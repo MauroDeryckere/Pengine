@@ -16,7 +16,7 @@ namespace Pengin
 {
 	GameUUID::GameUUID(bool isNull) noexcept:
 		m_UUID{ isNull ? s_NilGen() : s_NumGen() }
-	{}
+	{ }
 
 	GameUUID::GameUUID(const std::string& id, bool isPrettyStr) noexcept
 	{ 
@@ -36,7 +36,7 @@ namespace Pengin
 
 	const std::string GameUUID::GetUUID_PrettyStr() const noexcept
 	{
-		return to_string(m_UUID);
+		return boost::uuids::to_string(m_UUID);
 	}
 
 	const std::vector<uint8_t> GameUUID::GetUUID_Bytes() const noexcept 
@@ -45,5 +45,21 @@ namespace Pengin
 		std::copy(m_UUID.begin(), m_UUID.end(), v.begin());
 
 		return v;
+	}
+
+	GameUUID::operator bool() const noexcept
+	{
+		return !m_UUID.is_nil();
+		
+	}
+
+	bool GameUUID::operator==(const GameUUID& other) const noexcept
+	{
+		return m_UUID == other.m_UUID;
+	}
+
+	size_t GameUUID::Hash() const noexcept
+	{
+		return boost::uuids::hash_value(m_UUID);
 	}
 }
