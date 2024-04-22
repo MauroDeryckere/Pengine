@@ -9,7 +9,7 @@ namespace Pengin
 	class SystemManager final
 	{
 	public:
-		SystemManager();
+		SystemManager() = default;
 		~SystemManager() = default;
 
 		std::shared_ptr<BaseSystem> RegisterSystem(std::shared_ptr<BaseSystem> pSystem, std::vector<std::shared_ptr<BaseSystem>> pDependencies = {}) noexcept;
@@ -25,7 +25,7 @@ namespace Pengin
 		SystemManager& operator=(const SystemManager&&) = delete;
 		
 	private:
-		std::unique_ptr<Impl::SystemRegistry> m_pSysReg;
+		Impl::SystemRegistry m_SysReg{};
 	};
 }
 

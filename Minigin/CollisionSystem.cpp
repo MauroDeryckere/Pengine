@@ -40,7 +40,7 @@ namespace Pengin
 				innerRect.width += static_cast<int16_t>(innerTrans.worldPos.x);
 				innerRect.height += static_cast<int16_t>(innerTrans.worldPos.y);
 
-				if (IsCollidingABBA(outerRect, innerRect))
+				if (UtilFuncs::IsCollidingABBA(outerRect, innerRect))
 				{
 					//Can broadcast event, ...
 					std::cout << "COLLISION: entity id "  << rectCollComps.GetIdFromIterator(outerIt) << " on entity id " << rectCollComps.GetIdFromIterator(innerIt) << "\n";
@@ -51,19 +51,5 @@ namespace Pengin
 
 			++outerIt;
 		}
-	}
-	inline constexpr bool CollisionSystem::IsCollidingABBA(UtilStructs::Rect16 rect1, UtilStructs::Rect16 rect2) const noexcept
-	{
-		if ((rect1.x + rect1.width) < rect2.x || (rect2.x + rect2.width) < rect1.x)
-		{
-			return false;
-		}
-
-		if (rect1.y > (rect2.y + rect2.height) || rect2.y > (rect1.y + rect1.height))
-		{
-			return false;
-		}
-
-		return true;
 	}
 }

@@ -196,7 +196,7 @@ namespace Pengin
 			}
 		}
 		
-		m_DisconnectedTime += Time::GetInstance().GetElapsedSec();
+		m_DisconnectedTime += GameTime::GetInstance().GetElapsedSec();
 
 		if (m_DisconnectedTime >= MAX_ALLOWED_DISCONNECTED_TIME && !displayMessage)
 		{

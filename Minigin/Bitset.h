@@ -10,32 +10,32 @@
 
 namespace Pengin
 {
-    class Bitset final
+    class RunTimeBitset final
     {
     public:
-        explicit Bitset(size_t amtOfBits) noexcept :
+        explicit RunTimeBitset(size_t amtOfBits) noexcept :
             m_AmountOfBits{ amtOfBits },
             m_Bits(static_cast<unsigned>((amtOfBits + BITS_PER_UINT - 1) / BITS_PER_UINT))
         {
             m_Bits.shrink_to_fit();
         }
 
-        Bitset() = default;
+        RunTimeBitset() = default;
 
-        Bitset(const Bitset& other) noexcept :
+        RunTimeBitset(const RunTimeBitset& other) noexcept :
             m_AmountOfBits{ other.m_AmountOfBits },
             m_Bits{ other.m_Bits }
         {
         }
 
-        Bitset(Bitset&& other) noexcept :
+        RunTimeBitset(RunTimeBitset&& other) noexcept :
             m_AmountOfBits{ other.m_AmountOfBits },
             m_Bits{ std::move(other.m_Bits) }
         {
         }
 
 
-        Bitset& operator=(Bitset&& other) noexcept
+        RunTimeBitset& operator=(RunTimeBitset&& other) noexcept
         {
             try
             {
@@ -55,7 +55,7 @@ namespace Pengin
             return *this;
         }
 
-        Bitset& operator=(const Bitset& other)
+        RunTimeBitset& operator=(const RunTimeBitset& other)
         {
             if (this != &other)
             {
@@ -106,9 +106,9 @@ namespace Pengin
             }
         }
 
-        Bitset operator&(const Bitset& other) const noexcept
+        RunTimeBitset operator&(const RunTimeBitset& other) const noexcept
         {
-            Bitset result(m_AmountOfBits);
+            RunTimeBitset result(m_AmountOfBits);
 
             for (size_t i{ 0 }; i < m_Bits.size(); ++i)
             {
@@ -118,9 +118,9 @@ namespace Pengin
             return result;
         }
 
-        Bitset operator|(const Bitset& other) const noexcept
+        RunTimeBitset operator|(const RunTimeBitset& other) const noexcept
         {
-            Bitset result{m_AmountOfBits};
+            RunTimeBitset result{m_AmountOfBits};
 
             for (size_t i{ 0 }; i < m_Bits.size(); ++i)
             {
@@ -129,9 +129,9 @@ namespace Pengin
             return result;
         }
 
-        Bitset operator^(const Bitset& other) const noexcept
+        RunTimeBitset operator^(const RunTimeBitset& other) const noexcept
         {
-            Bitset result{ m_AmountOfBits };
+            RunTimeBitset result{ m_AmountOfBits };
 
             for (size_t i{ 0 }; i < m_Bits.size(); ++i)
             {
@@ -139,9 +139,9 @@ namespace Pengin
             }
             return result;
         }
-        Bitset operator~() const noexcept
+        RunTimeBitset operator~() const noexcept
         {
-            Bitset result{ m_AmountOfBits };
+            RunTimeBitset result{ m_AmountOfBits };
 
             for (size_t i{ 0 }; i < m_Bits.size(); ++i)
             {
@@ -150,7 +150,7 @@ namespace Pengin
             return result;
         }
 
-        Bitset& operator&=(const Bitset& other) noexcept
+        RunTimeBitset& operator&=(const RunTimeBitset& other) noexcept
         {
             for (size_t i = 0; i < m_Bits.size(); ++i)
             {
@@ -159,7 +159,7 @@ namespace Pengin
             return *this;
         }
 
-        Bitset& operator|=(const Bitset& other) noexcept
+        RunTimeBitset& operator|=(const RunTimeBitset& other) noexcept
         {
             for (size_t i = 0; i < m_Bits.size(); ++i)
             {
@@ -168,7 +168,7 @@ namespace Pengin
             return *this;
         }
 
-        Bitset& operator^=(const Bitset& other) noexcept
+        RunTimeBitset& operator^=(const RunTimeBitset& other) noexcept
         {
             for (size_t i = 0; i < m_Bits.size(); ++i)
             {

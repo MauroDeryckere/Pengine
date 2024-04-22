@@ -10,7 +10,7 @@ namespace Pengin
 { 
 	void AnimationSystem::Update()
 	{
-		const float elapsedSec = Time::GetInstance().GetElapsedSec();
+		const float elapsedSec = GameTime::GetInstance().GetElapsedSec();
 		auto animationComps{ m_ECS.GetComponents<AnimationComponent>() };
 		
 		for (auto it{ animationComps.begin() }; auto& entity : animationComps)

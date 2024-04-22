@@ -65,6 +65,24 @@ namespace Pengin
 		using Rectu16 = Rect<uint16_t>; 
 		using Rectu = Rect<unsigned>;
 	}
+
+	namespace UtilFuncs
+	{
+		[[nodiscard]] inline constexpr bool IsCollidingABBA(UtilStructs::Rect16 rect1, UtilStructs::Rect16 rect2) noexcept
+		{
+			if ((rect1.x + rect1.width) < rect2.x || (rect2.x + rect2.width) < rect1.x)
+			{
+				return false;
+			}
+
+			if (rect1.y > (rect2.y + rect2.height) || rect2.y > (rect1.y + rect1.height))
+			{
+				return false;
+			}
+
+			return true;
+		}
+	}
 }
 
 

@@ -7,7 +7,7 @@
 
 namespace Pengin
 {
-	class Time final : public dae::Singleton<Time>
+	class GameTime final : public dae::Singleton<GameTime>
 	{
 	public:
 		[[nodiscard]] inline float GetElapsedSec() const noexcept { return m_ElapsedSec; }
@@ -34,15 +34,15 @@ namespace Pengin
 			return sleepTime;
 		}
 
-		Time(const Time&) = delete;
-		Time(Time&&) = delete;
-		Time& operator=(const Time&) = delete;
-		Time& operator=(const Time&&) = delete;
+		GameTime(const GameTime&) = delete;
+		GameTime(GameTime&&) = delete;
+		GameTime& operator=(const GameTime&) = delete;
+		GameTime& operator=(const GameTime&&) = delete;
 
 	private:
-		friend class dae::Singleton<Time>;
-		Time() = default;
-		~Time() = default;
+		friend class dae::Singleton<GameTime>;
+		GameTime() = default;
+		~GameTime() = default;
 
 		std::chrono::steady_clock::time_point m_LastTime{ std::chrono::high_resolution_clock::now() };
 

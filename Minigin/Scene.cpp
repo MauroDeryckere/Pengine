@@ -25,18 +25,7 @@ namespace Pengin
 {
 	Scene::Scene(const std::string& name, const SceneFileData& sceneFileData)
 	{
-		m_pSysManager = std::make_unique<SystemManager>();
-
-		m_pSysManager->RegisterSystem(std::make_shared<FPSSystem>(m_Ecs));
-		m_pSysManager->RegisterSystem(std::make_shared<UIDisplaySystem>(m_Ecs, this));
-		m_pSysManager->RegisterSystem(std::make_shared<TextSystem>(m_Ecs));
-		m_pSysManager->RegisterSystem(std::make_shared<AnimationSystem>(m_Ecs));
-
-		auto pColl = m_pSysManager->RegisterSystem(std::make_shared<CollisionSystem>(m_Ecs));
-		auto pMovement = m_pSysManager->RegisterSystem(std::make_shared<MovementSystem>(m_Ecs), { pColl });
-		m_pSysManager->RegisterSystem(std::make_shared<WorldPositionSystem>(m_Ecs), { pColl, pMovement });
-
-		m_pSysManager->RegisterSystem(std::make_shared<RenderSystem>(m_Ecs));
+		RegisterSystems();
 
 		m_SceneData.name = name;
 		m_SceneData.sceneFileData = sceneFileData;
@@ -48,6 +37,20 @@ namespace Pengin
 				throw std::runtime_error("Failed to deserialize scene at: " + sceneFileData.sceneLoadPath.string());
 			}
 		}
+	}
+
+	void Scene::RegisterSystems()
+	{
+		m_SysManager.RegisterSystem(std::make_shared<FPSSystem>(m_Ecs));
+		m_SysManager.RegisterSystem(std::make_shared<UIDisplaySystem>(m_Ecs, this));
+		m_SysManager.RegisterSystem(std::make_shared<TextSystem>(m_Ecs));
+		m_SysManager.RegisterSystem(std::make_shared<AnimationSystem>(m_Ecs));
+
+		auto pColl = m_SysManager.RegisterSystem(std::make_shared<CollisionSystem>(m_Ecs));
+		auto pMovement = m_SysManager.RegisterSystem(std::make_shared<MovementSystem>(m_Ecs), { pColl });
+		m_SysManager.RegisterSystem(std::make_shared<WorldPositionSystem>(m_Ecs), { pColl, pMovement });
+
+		m_SysManager.RegisterSystem(std::make_shared<RenderSystem>(m_Ecs));
 	}
 
 	Scene::~Scene()
@@ -252,17 +255,17 @@ namespace Pengin
 
 	void Scene::FixedUpdate()
 	{
-		m_pSysManager->FixedUpdate();
+		m_SysManager.FixedUpdate();
 	}
 
 	void Scene::Update()
 	{	
-		m_pSysManager->Update();
+		m_SysManager.Update();
 
 		if (m_SceneData.sceneFileData.autoSaveTime > 0.f) //this should possibly be sent to a separate thread if very large save file
 		{
 			static float currTime{ 0.f };
-			currTime += Time::GetInstance().GetElapsedSec();
+			currTime += GameTime::GetInstance().GetElapsedSec();
 
 			if (currTime >= m_SceneData.sceneFileData.autoSaveTime)
 			{
@@ -275,7 +278,7 @@ namespace Pengin
 
 	void Scene::Render() const
 	{
-		m_pSysManager->Render();
+		m_SysManager.Render();
 	}
 
 	void Scene::RenderImGUI()
