@@ -13,10 +13,10 @@ namespace Pengin
 
 	//NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE();
 	
-	using UserIndex = UUID;
+	using UserIndex = GameUUID;
 
 	//UUID
-	void to_json(json& j, const UUID& uuid)
+	void to_json(json& j, const GameUUID& uuid)
 	{
 		j = uuid.GetUUID_PrettyStr();
 	}
@@ -75,7 +75,7 @@ namespace Pengin
 			{"isPosDirty", transform.isPosDirty}
 		};
 	}
-	void from_json(const json& j, TransformComponent& transform, const std::unordered_map<UUID, EntityId>& entityMap)
+	void from_json(const json& j, TransformComponent& transform, const std::unordered_map<GameUUID, EntityId>& entityMap)
 	{
 		transform.worldPos = {
 			j["worldPos"][0].get<float>(),
@@ -175,7 +175,7 @@ namespace Pengin
 			{"ScoreDisplayUUIDS", displays }
 		};
 	}
-	void from_json(const json& j, ScoreComponent& score, const std::unordered_map<UUID, EntityId>& entityMap)
+	void from_json(const json& j, ScoreComponent& score, const std::unordered_map<GameUUID, EntityId>& entityMap)
 	{
 		score.score = j["Score"].get<unsigned>();
 
@@ -221,7 +221,7 @@ namespace Pengin
 			{"HealthDisplayUUIDS", displays }
 		};
 	}
-	void from_json(const json& j, HealthComponent& health, const std::unordered_map<UUID, EntityId>& entityMap)
+	void from_json(const json& j, HealthComponent& health, const std::unordered_map<GameUUID, EntityId>& entityMap)
 	{
 		health.health = j["Health"].get<unsigned>();
 

@@ -1,4 +1,9 @@
-#include "UUID.h"
+#include "GameUUID.h"
+
+#include "boost/uuid/uuid.hpp"
+#include "boost/uuid/uuid_generators.hpp"
+#include "boost/uuid/uuid_io.hpp"
+#include "boost/uuid/uuid_hash.hpp"
 
 #include <cassert>
 #include <array>
@@ -9,11 +14,11 @@ thread_local static boost::uuids::nil_generator s_NilGen;
 
 namespace Pengin 
 {
-	UUID::UUID(bool isNull) noexcept:
+	GameUUID::GameUUID(bool isNull) noexcept:
 		m_UUID{ isNull ? s_NilGen() : s_NumGen() }
 	{}
 
-	UUID::UUID(const std::string& id, bool isPrettyStr) noexcept
+	GameUUID::GameUUID(const std::string& id, bool isPrettyStr) noexcept
 	{ 
 		if (isPrettyStr)
 		{
@@ -29,12 +34,12 @@ namespace Pengin
 		}
 	}
 
-	const std::string UUID::GetUUID_PrettyStr() const noexcept
+	const std::string GameUUID::GetUUID_PrettyStr() const noexcept
 	{
 		return to_string(m_UUID);
 	}
 
-	const std::vector<uint8_t> UUID::GetUUID_Bytes() const noexcept 
+	const std::vector<uint8_t> GameUUID::GetUUID_Bytes() const noexcept 
 	{
 		std::vector<uint8_t> v(m_UUID.size());
 		std::copy(m_UUID.begin(), m_UUID.end(), v.begin());

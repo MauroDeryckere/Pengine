@@ -26,26 +26,26 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -117,6 +117,9 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPath) /Y</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>xinput.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -146,6 +149,9 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\win64\*
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPath) /Y
 </Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>xinput.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -176,6 +182,9 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPath) /Y</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>xinput.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -209,8 +218,164 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\win64\*
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPath) /Y
 </Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>xinput.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\align.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\aligned_storage.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\any.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\array.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\asio.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\assert.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\assign.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\atomic.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\beast.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\bimap.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\bind.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\blank.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\blank_fwd.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\callable_traits.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\call_traits.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cast.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cerrno.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\checked_delete.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\chrono.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\circular_buffer.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\circular_buffer_fwd.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cobalt.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\compressed_pair.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\compute.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\concept_archetype.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\concept_check.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\config.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\contract.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\contract_macro.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\convert.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\crc.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cregex.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cstdfloat.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cstdint.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cstdlib.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\current_function.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cxx11_char_types.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\date_time.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\describe.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\dll.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\dynamic_bitset.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\dynamic_bitset_fwd.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\enable_shared_from_this.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\endian.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\exception_ptr.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\filesystem.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\flyweight.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\foreach.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\foreach_fwd.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\format.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\function.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\functional.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\function_equal.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\function_output_iterator.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\generator_iterator.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\geometry.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\get_pointer.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\gil.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\hana.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\histogram.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\hof.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\implicit_cast.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\indirect_reference.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\integer.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\integer_fwd.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\integer_traits.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\intrusive_ptr.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\io_fwd.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\is_placeholder.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\iterator.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\iterator_adaptors.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\json.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\lambda2.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\leaf.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\lexical_cast.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\limits.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\locale.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\local_function.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\make_default.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\make_shared.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\make_unique.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\math_fwd.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\memory_order.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\mem_fn.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\metaparse.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\mp11.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\mpi.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\multi_array.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\multi_index_container.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\multi_index_container_fwd.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\mysql.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\next_prior.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\noncopyable.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\nondet_random.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\none.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\none_t.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\non_type.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\operators.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\operators_v1.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\optional.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\outcome.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\parameter.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\pfr.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\phoenix.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\pointee.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\pointer_cast.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\pointer_to_other.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\polymorphic_cast.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\polymorphic_pointer_cast.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\predef.h" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\preprocessor.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\process.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\program_options.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\progress.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\python.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\qvm.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\qvm_lite.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\random.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\range.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\ratio.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\rational.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\redis.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\ref.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\regex.h" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\regex.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\regex_fwd.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\scoped_array.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\scoped_ptr.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\scope_exit.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\shared_array.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\shared_container_iterator.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\shared_ptr.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\signals2.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\smart_ptr.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\spirit.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\stacktrace.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\static_assert.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\static_string.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\swap.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\system.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\thread.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\throw_exception.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\timer.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\tokenizer.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\token_functions.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\token_iterator.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\type.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\type_index.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\type_traits.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\unordered_map.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\unordered_set.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\url.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\utility.hpp" />
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\basic_name_generator.hpp" />
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\config.hpp" />
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\md5.hpp" />
@@ -238,6 +403,12 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_hash.hpp" />
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_io.hpp" />
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_serialize.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\variant.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\variant2.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\version.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\visit_each.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\wave.hpp" />
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\weak_ptr.hpp" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl2.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdlrenderer2.h" />
@@ -318,7 +489,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="SystemManager.h" />
     <ClInclude Include="SystemRegistry.h" />
     <ClInclude Include="UIDisplaySystem.h" />
-    <ClInclude Include="UUID.h" />
+    <ClInclude Include="GameUUID.h" />
     <ClInclude Include="UUIDComponent.h" />
     <ClInclude Include="VelocityComponent.h" />
     <ClInclude Include="ComponentStorage.h" />
@@ -362,7 +533,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="SpriteComponent.h" />
-    <ClInclude Include="Time.h" />
+    <ClInclude Include="GameTime.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="UniqueTypeTracker.h" />
     <ClInclude Include="WorldPositionSystem.h" />
@@ -394,7 +565,6 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClCompile Include="InputKeyboard.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="InputMouse.cpp" />
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="CompObserver.cpp" />
     <ClCompile Include="MovementSystem.cpp" />
@@ -411,7 +581,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="UIDisplaySystem.cpp" />
     <ClCompile Include="UniqueTypesTracker.cpp" />
-    <ClCompile Include="UUID.cpp" />
+    <ClCompile Include="GameUUID.cpp" />
     <ClCompile Include="WorldPositionSystem.cpp" />
   </ItemGroup>
   <ItemGroup>

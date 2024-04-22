@@ -32,7 +32,7 @@ namespace Pengin
         std::vector<float> allowedDelay;
     }; 
 
-    using UserIndex = UUID;
+    using UserIndex = GameUUID;
     class InputManager final : public dae::Singleton<InputManager>
     {
     public:

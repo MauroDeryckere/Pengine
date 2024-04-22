@@ -2,7 +2,6 @@
 #define TIME
 
 #include "Singleton.h"
-
 #include <chrono>
 
 namespace Pengin

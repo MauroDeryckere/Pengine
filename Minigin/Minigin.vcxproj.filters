@@ -118,14 +118,17 @@
     <Filter Include="3rd Party\Steam">
       <UniqueIdentifier>{b6f11fd8-58d6-4600-a95b-5a20ec48246b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd Party\UUID">
-      <UniqueIdentifier>{51a816e7-9b9c-4025-b671-708c008dea0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Systems\Sub">
       <UniqueIdentifier>{d793c37e-f28b-484c-b03d-5c20b56927ca}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Systems\Handling">
       <UniqueIdentifier>{d12d81d6-e08e-49f2-94e0-5cee84dd334f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd Party\Boost">
+      <UniqueIdentifier>{8ff50a6b-bb36-4103-92ab-f4d4c971a8e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd Party\Boost\UUID">
+      <UniqueIdentifier>{51a816e7-9b9c-4025-b671-708c008dea0b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -438,7 +441,7 @@
     <ClInclude Include="Singleton.h">
       <Filter>Header Files\Core\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Time.h">
+    <ClInclude Include="GameTime.h">
       <Filter>Header Files\Core\Game</Filter>
     </ClInclude>
     <ClInclude Include="Defines.h">
@@ -462,7 +465,7 @@
     <ClInclude Include="JsonConversion.h">
       <Filter>Header Files\FileSystem</Filter>
     </ClInclude>
-    <ClInclude Include="UUID.h">
+    <ClInclude Include="GameUUID.h">
       <Filter>Header Files\Core\UUID</Filter>
     </ClInclude>
     <ClInclude Include="UUIDComponent.h">
@@ -475,85 +478,85 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\uuid_x86.ipp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\basic_name_generator.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\config.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\entropy_error.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\md5.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\name_generator.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\name_generator_md5.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\name_generator_sha1.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\nil_generator.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\random_generator.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_arc4random.ipp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_bcrypt.ipp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_detect_platform.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_getentropy.ipp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_getrandom.ipp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_include_platform.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_posix.ipp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\random_provider_wincrypt.ipp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\sha1.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\string_generator.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_generators.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\detail\uuid_generic.ipp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_hash.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_io.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_serialize.hpp">
-      <Filter>3rd Party\UUID</Filter>
+      <Filter>3rd Party\Boost\UUID</Filter>
     </ClInclude>
     <ClInclude Include="PlayerComponent.h">
       <Filter>Header Files\Components</Filter>
@@ -593,6 +596,483 @@
     </ClInclude>
     <ClInclude Include="SystemRegistry.h">
       <Filter>Header Files\Systems\Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\align.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\aligned_storage.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\any.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\array.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\asio.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\assert.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\assign.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\atomic.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\beast.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\bimap.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\bind.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\blank.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\blank_fwd.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\call_traits.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\callable_traits.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cast.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cerrno.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\checked_delete.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\chrono.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\circular_buffer.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\circular_buffer_fwd.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cobalt.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\compressed_pair.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\compute.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\concept_archetype.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\concept_check.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\config.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\contract.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\contract_macro.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\convert.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\crc.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cregex.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cstdfloat.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cstdint.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cstdlib.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\current_function.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\cxx11_char_types.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\date_time.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\describe.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\dll.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\dynamic_bitset.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\dynamic_bitset_fwd.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\enable_shared_from_this.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\endian.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\exception_ptr.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\filesystem.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\flyweight.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\foreach.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\foreach_fwd.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\format.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\function.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\function_equal.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\function_output_iterator.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\functional.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\generator_iterator.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\geometry.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\get_pointer.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\gil.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\hana.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\histogram.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\hof.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\implicit_cast.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\indirect_reference.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\integer.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\integer_fwd.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\integer_traits.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\intrusive_ptr.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\io_fwd.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\is_placeholder.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\iterator.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\iterator_adaptors.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\json.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\lambda2.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\leaf.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\lexical_cast.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\limits.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\local_function.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\locale.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\make_default.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\make_shared.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\make_unique.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\math_fwd.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\mem_fn.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\memory_order.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\metaparse.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\mp11.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\mpi.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\multi_array.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\multi_index_container.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\multi_index_container_fwd.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\mysql.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\next_prior.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\non_type.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\noncopyable.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\nondet_random.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\none.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\none_t.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\operators.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\operators_v1.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\optional.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\outcome.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\parameter.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\pfr.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\phoenix.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\pointee.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\pointer_cast.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\pointer_to_other.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\polymorphic_cast.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\polymorphic_pointer_cast.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\predef.h">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\preprocessor.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\process.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\program_options.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\progress.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\python.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\qvm.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\qvm_lite.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\random.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\range.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\ratio.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\rational.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\redis.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\ref.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\regex.h">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\regex.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\regex_fwd.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\scope_exit.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\scoped_array.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\scoped_ptr.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\shared_array.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\shared_container_iterator.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\shared_ptr.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\signals2.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\smart_ptr.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\spirit.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\stacktrace.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\static_assert.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\static_string.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\swap.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\system.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\thread.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\throw_exception.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\timer.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\token_functions.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\token_iterator.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\tokenizer.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\type.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\type_index.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\type_traits.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\unordered_map.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\unordered_set.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\url.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\utility.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\variant.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\variant2.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\version.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\visit_each.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\wave.hpp">
+      <Filter>3rd Party\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\boost_1_84_0\boost\weak_ptr.hpp">
+      <Filter>3rd Party\Boost</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -716,16 +1196,13 @@
     <ClCompile Include="SceneInfoPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Header Files\Core\Game</Filter>
-    </ClCompile>
     <ClCompile Include="InputInfoPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Serializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UUID.cpp">
+    <ClCompile Include="GameUUID.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SystemManager.cpp">

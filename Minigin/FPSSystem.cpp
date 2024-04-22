@@ -4,7 +4,7 @@
 #include "FPSCounterComponent.h"
 #include "TextComponent.h"
 
-#include "Time.h"
+#include "GameTime.h"
 
 #include <format>
 

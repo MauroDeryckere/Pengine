@@ -76,7 +76,7 @@ namespace Pengin
 		void SetLocalPosition(const glm::vec3& position);
 
 		const EntityId GetEntityId() const noexcept { return m_EntityId; }
-		const UUID& GetUUID() const 
+		const GameUUID& GetUUID() const 
 		{
 			assert(HasComponent<UUIDComponent>() && "ERROR - entity without UUIDComp");
 			return GetComponent<UUIDComponent>().uuid; 

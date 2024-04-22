@@ -3,7 +3,7 @@
 #include "ECS.h"
 #include "Entity.h"
 
-#include "Time.h"
+#include "GameTime.h"
 
 #include "TransformComponent.h"
 #include "VelocityComponent.h"

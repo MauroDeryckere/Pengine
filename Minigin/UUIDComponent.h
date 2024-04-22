@@ -7,7 +7,7 @@ namespace Pengin
 {
 	struct UUIDComponent final
 	{
-		UUIDComponent(const UUID& uuid = UUID{ }) :
+		UUIDComponent(const GameUUID& uuid = GameUUID{ }) :
 			uuid{ uuid }
 		{ }
 
@@ -15,7 +15,7 @@ namespace Pengin
 
 		~UUIDComponent() = default;
 
-		UUID uuid;
+		GameUUID uuid;
 	};
 }
 

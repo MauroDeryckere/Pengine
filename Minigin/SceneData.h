@@ -6,13 +6,13 @@
 
 namespace Pengin
 {
-	using UserIndex = UUID;
+	using UserIndex = GameUUID;
 
 	struct SceneData final
 	{
 		std::string name{ "No Scene Name" };
 		
-		std::vector<UUID> playerUUIDs{};
+		std::vector<GameUUID> playerUUIDs{};
 		std::unordered_map<UserIndex, size_t> user_UUIDVecIdxMap{};
 
 		SceneFileData sceneFileData{};
@@ -20,7 +20,7 @@ namespace Pengin
 		bool isUUIDInit{ false };
 
 		//Functions
-		void SetPlayer(const UserIndex& userIdx, UUID playerUUID) noexcept
+		void SetPlayer(const UserIndex& userIdx, GameUUID playerUUID) noexcept
 		{
 			isUUIDInit = true;
 

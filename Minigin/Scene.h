@@ -7,12 +7,11 @@
 #include "ECS.h"
 #include "glm/vec3.hpp"
 
-#include "AchievementSystem.h"
-
 #include "SceneInfoPanel.h"
 #include "InputInfoPanel.h"
 
 #include "SystemManager.h"
+#include "AchievementSystem.h"
 
 #include <memory>
 #include <filesystem>
@@ -26,7 +25,7 @@ namespace Pengin
 		~Scene();
 		void Start();
 
-		[[nodiscard]] Entity CreateEntity(const glm::vec3& position = { }, const glm::vec3& rotation = { }, const glm::vec3& scale = { 1, 1, 1 }, const UserIndex& = UUID{ true } );
+		[[nodiscard]] Entity CreateEntity(const glm::vec3& position = { }, const glm::vec3& rotation = { }, const glm::vec3& scale = { 1, 1, 1 }, const UserIndex& = GameUUID{ true } );
 		bool DestroyEntity(Entity entity, bool keepChildren = true);
 		bool DestroyEntity(const EntityId entityId, bool keepChildren = true);
 
@@ -38,15 +37,15 @@ namespace Pengin
 		void Render() const;
 		void RenderImGUI();
 
-		[[nodiscard]] const UUID& GetUUID(const Entity entity) const;
-		[[nodiscard]] const UUID& GetUUID(const EntityId id);
-		[[nodiscard]] const EntityId GetEntityId(const UUID& uuid) const;
-		[[nodiscard]] const Entity GetEntity(const UUID& uuid);
+		[[nodiscard]] const GameUUID& GetUUID(const Entity entity) const;
+		[[nodiscard]] const GameUUID& GetUUID(const EntityId id);
+		[[nodiscard]] const EntityId GetEntityId(const GameUUID& uuid) const;
+		[[nodiscard]] const Entity GetEntity(const GameUUID& uuid);
 
 		[[nodiscard]] const std::string& GetName() const noexcept    { return m_SceneData.name; }
 		[[nodiscard]] const SceneData& GetSceneData() const noexcept { return m_SceneData; }
 
-		void SetPlayer(const UserIndex& userIdx, const UUID& uuid) noexcept;
+		void SetPlayer(const UserIndex& userIdx, const GameUUID& uuid) noexcept;
 		void SetPlayer(const UserIndex& userIdx, const EntityId id) noexcept;
 		void SetPlayer(const UserIndex& userIdx, const Entity entity) noexcept;
 
@@ -64,7 +63,7 @@ namespace Pengin
 
 		friend class Entity;
 		ECS m_Ecs;
-		std::unordered_map<UUID, EntityId> m_UUID_EntityIdMap;
+		std::unordered_map<GameUUID, EntityId> m_UUID_EntityIdMap;
 
 		SceneData m_SceneData;
 		SystemManager m_SysManager{};

@@ -12,7 +12,7 @@
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
-#include "Time.h"
+#include "GameTime.h"
 #include "ImGUIWindow.h"
 
 #include "ResourceManager.h"

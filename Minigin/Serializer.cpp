@@ -6,22 +6,47 @@
 #include <fstream>
 #include <format>
 #include <unordered_map>
-
 #include <string>
-#include <memory>
+
 #include "JsonConversion.h"
 
 #include "InputManager.h"
 #include "InputCommands.h"
 
+#include "json.hpp"
+
 namespace Pengin
 {
+	class Serializer::SerializerImpl 
+	{
+	public:
+		SerializerImpl() = default;
+		~SerializerImpl() = default;
+
+		using json = nlohmann::ordered_json;
+
+		bool SerializeScene_Json(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept;
+		bool DeserializeScene_Json(SceneData& sceneData, std::unordered_map<GameUUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept;
+
+		bool SerializeInput_Json(const std::filesystem::path& filePath) const noexcept;
+		std::pair<bool, InputDataVec> DeserializeInput_Json(const std::filesystem::path& filePath) noexcept;
+
+		bool SerializeSceneEntity_Json(const ECS& ecs, const EntityId id, json& j, bool keepUUID) const noexcept;
+		std::pair<bool, EntityId> DeserializeSceneEntity_Json(ECS& ecs, std::unordered_map<GameUUID, EntityId>& entityMap, const EntityId entity, const json& entityData) noexcept;
+	};
+
+
+	Serializer::Serializer() :
+		pImpl{std::make_unique<SerializerImpl>() }
+	{ }
+	Serializer::~Serializer() = default;
+
 	bool Serializer::SerializeScene(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept
 	{
 		const auto extension{ scenePath.extension() };
 		if (extension == ".json")
 		{
-			return SerializeScene_Json(ecs, sceneData, scenePath);
+			return pImpl->SerializeScene_Json(ecs, sceneData, scenePath);
 		}
 		else
 		{
@@ -30,12 +55,12 @@ namespace Pengin
 		}
 	}
 
-	bool Serializer::DeserializeScene(SceneData& sceneData, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
+	bool Serializer::DeserializeScene(SceneData& sceneData, std::unordered_map<GameUUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
 	{
 		const auto extension{ scenePath.extension() };
 		if (extension == ".json")
 		{
-			return DeserializeScene_Json(sceneData, entityMap, ecs, scenePath);
+			return pImpl->DeserializeScene_Json(sceneData, entityMap, ecs, scenePath);
 		}
 		else
 		{
@@ -49,7 +74,7 @@ namespace Pengin
 		const auto extension{ filePath.extension() };
 		if (extension == ".json")
 		{
-			return SerializeInput_Json(filePath);
+			return pImpl->SerializeInput_Json(filePath);
 		}
 		else
 		{
@@ -63,7 +88,7 @@ namespace Pengin
 		const auto extension{ filePath.extension() };
 		if (extension == ".json")
 		{
-			return DeserializeInput_Json(filePath);
+			return pImpl->DeserializeInput_Json(filePath);
 		}
 		else
 		{
@@ -78,7 +103,7 @@ namespace Pengin
 		if (extension == ".json")
 		{
 			json entity;
-			if (!SerializeSceneEntity_Json(ecs, entityId, entity, keepUUID))
+			if (!pImpl->SerializeSceneEntity_Json(ecs, entityId, entity, keepUUID))
 			{
 				return false;
 			}
@@ -96,7 +121,7 @@ namespace Pengin
 		}
 	}
 
-	std::pair<bool, EntityId> Serializer::DerserializeSceneEntity(ECS& ecs, std::unordered_map<UUID, EntityId>& entityMap, const std::filesystem::path& filePath, bool newUUID) noexcept
+	std::pair<bool, EntityId> Serializer::DerserializeSceneEntity(ECS& ecs, std::unordered_map<GameUUID, EntityId>& entityMap, const std::filesystem::path& filePath, bool newUUID) noexcept
 	{
 		const auto extension{ filePath.extension() };
 		if (extension == ".json")
@@ -115,12 +140,12 @@ namespace Pengin
 
 			const auto fileUUIDStr = entityData["UUID"].get<std::string>();
 			assert(fileUUIDStr != "");
-			const UUID fileUUID{ ( !UUID{ fileUUIDStr } || newUUID) ? UUID{ } : UUID{fileUUIDStr} }; //regen if null or need new UUID
+			const GameUUID fileUUID{ ( !GameUUID{ fileUUIDStr } || newUUID) ? GameUUID{ } : GameUUID{fileUUIDStr} }; //regen if null or need new UUID
 			auto& uuidComp = ecs.AddComponent<UUIDComponent>(entityId, fileUUID);
 
 			entityMap[uuidComp.uuid] = entityId;
 
-			return DeserializeSceneEntity_Json(ecs, entityMap, entityId, entityData);
+			return pImpl->DeserializeSceneEntity_Json(ecs, entityMap, entityId, entityData);
 		}
 		else
 		{
@@ -129,7 +154,7 @@ namespace Pengin
 		}
 	}
 
-	bool Serializer::SerializeScene_Json(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept
+	bool Serializer::SerializerImpl::SerializeScene_Json(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept
 	{
 		json scene;
 
@@ -155,7 +180,7 @@ namespace Pengin
 		return false;
 	}
 
-	bool Serializer::DeserializeScene_Json(SceneData& sceneData, std::unordered_map<UUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
+	bool Serializer::SerializerImpl::DeserializeScene_Json(SceneData& sceneData, std::unordered_map<GameUUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
 	{
 		using json = nlohmann::ordered_json;
 		json scene;
@@ -179,11 +204,11 @@ namespace Pengin
 		sceneData.name = inpSceneData_Json["SceneName"].get<std::string>();
 		for (const auto& player : inpSceneData_Json["PlayerUUIDs"])
 		{
-			sceneData.playerUUIDs.emplace_back(UUID{ player.get<std::string>() });
+			sceneData.playerUUIDs.emplace_back(GameUUID{ player.get<std::string>() });
 		}
 		for (const auto& user : inpSceneData_Json["UserIds"])
 		{
-			sceneData.user_UUIDVecIdxMap[UUID{ user[0].get<std::string>() }] = user[1].get<size_t>();
+			sceneData.user_UUIDVecIdxMap[GameUUID{ user[0].get<std::string>() }] = user[1].get<size_t>();
 		}
 		sceneData.isUUIDInit = inpSceneData_Json["IsUUIDInit"].get<bool>();
 		assert(sceneData.isUUIDInit);
@@ -224,7 +249,7 @@ namespace Pengin
 		return true;
 	}
 
-	bool Serializer::SerializeSceneEntity_Json(const ECS& ecs, const EntityId id, json& j, bool keepUUID) const noexcept
+	bool Serializer::SerializerImpl::SerializeSceneEntity_Json(const ECS& ecs, const EntityId id, json& j, bool keepUUID) const noexcept
 	{
 		using json = nlohmann::ordered_json;
 
@@ -239,7 +264,7 @@ namespace Pengin
 		}
 		else
 		{
-			const auto uuidComp = UUIDComponent{ UUID{true} };
+			const auto uuidComp = UUIDComponent{ GameUUID{true} };
 			j["UUID"] = uuidComp.uuid.GetUUID_PrettyStr();
 		}
 
@@ -310,7 +335,7 @@ namespace Pengin
 		return true;
 	}
 
-	std::pair<bool, EntityId> Serializer::DeserializeSceneEntity_Json(ECS& ecs, std::unordered_map<UUID, EntityId>& entityMap, const EntityId entity, const json& entityData) noexcept
+	std::pair<bool, EntityId> Serializer::SerializerImpl::DeserializeSceneEntity_Json(ECS& ecs, std::unordered_map<GameUUID, EntityId>& entityMap, const EntityId entity, const json& entityData) noexcept
 	{
 		using json = nlohmann::ordered_json;
 
@@ -324,7 +349,7 @@ namespace Pengin
 
 		if (entityData.contains("Player Component"))
 		{
-			const auto userIdx = UUID{ entityData["Player Component"]["UserIdx"].get<std::string>() };
+			const auto userIdx = GameUUID{ entityData["Player Component"]["UserIdx"].get<std::string>() };
 			const auto movementSpeed = entityData["Player Component"]["MovementSpeed"].get<float>();
 			ecs.AddComponent<PlayerComponent>(entity, userIdx, movementSpeed);
 		}
@@ -405,7 +430,7 @@ namespace Pengin
 		return { true,  entity };
 	}
 
-	bool Serializer::SerializeInput_Json(const std::filesystem::path& filePath) const noexcept //TODO
+	bool Serializer::SerializerImpl::SerializeInput_Json(const std::filesystem::path& filePath) const noexcept //TODO
 	{
 		using json = nlohmann::ordered_json;
 		const auto& input = InputManager::GetInstance();
@@ -436,7 +461,7 @@ namespace Pengin
 		return false;
 	}
 
-	std::pair<bool, InputDataVec> Serializer::DeserializeInput_Json(const std::filesystem::path& filePath) noexcept //TOOD
+	std::pair<bool, InputDataVec> Serializer::SerializerImpl::DeserializeInput_Json(const std::filesystem::path& filePath) noexcept //TOOD
 	{
 		using json = nlohmann::ordered_json;
 		json inputData;
@@ -455,7 +480,7 @@ namespace Pengin
 		for (const auto& user : inputData["Users"])
 		{	
 			const std::string uIdx_Str{ user["UserUUID"].get<std::string>() };	
-			const UserIndex uIdx = UUID{ uIdx_Str };
+			const UserIndex uIdx = GameUUID{ uIdx_Str };
 			const unsigned uType = user["UserType"].get<unsigned>();
 
 			inpVec.emplace_back(std::tuple{ uIdx, uType });

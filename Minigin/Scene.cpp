@@ -19,7 +19,7 @@
 #include "CollisionSystem.h"
 #include "UIDisplaySystem.h"
 
-#include "Time.h"
+#include "GameTime.h"
 
 namespace Pengin
 {
@@ -194,16 +194,16 @@ namespace Pengin
 		return DestroyEntity({entityId, shared_from_this() }, keepChildren);
 	}
 
-	const UUID& Scene::GetUUID(const Entity entity) const
+	const GameUUID& Scene::GetUUID(const Entity entity) const
 	{
 		return entity.GetUUID();
 	}
-	const UUID& Scene::GetUUID(const EntityId id)
+	const GameUUID& Scene::GetUUID(const EntityId id)
 	{
 		return Entity{ id, shared_from_this() }.GetUUID();
 	}
 
-	const EntityId Scene::GetEntityId(const UUID& uuid) const
+	const EntityId Scene::GetEntityId(const GameUUID& uuid) const
 	{
 		auto it = m_UUID_EntityIdMap.find(uuid);
 
@@ -214,12 +214,12 @@ namespace Pengin
 		return (*it).second;
 	}
 
-	const Entity Scene::GetEntity(const UUID& uuid)
+	const Entity Scene::GetEntity(const GameUUID& uuid)
 	{
 		return Entity{ GetEntityId(uuid), shared_from_this() };
 	}
 
-	void Scene::SetPlayer(const UserIndex& userIdx, const UUID& uuid) noexcept
+	void Scene::SetPlayer(const UserIndex& userIdx, const GameUUID& uuid) noexcept
 	{
 		m_SceneData.SetPlayer(userIdx, uuid);
 	}

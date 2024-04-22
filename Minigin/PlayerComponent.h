@@ -5,7 +5,7 @@
 
 namespace Pengin
 {
-	using UserIndex = UUID;
+	using UserIndex = GameUUID;
 	struct PlayerComponent final
 	{
 		PlayerComponent(const UserIndex& userIdx, float movementSpeed = 0.f) :

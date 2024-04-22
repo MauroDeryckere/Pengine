@@ -1,6 +1,6 @@
 #include "InputController.h"
 
-#include "Time.h"
+#include "GameTime.h"
 
 #include "InputManager.h"
 #include "InputBuffer.h"

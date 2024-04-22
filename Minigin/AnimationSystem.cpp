@@ -4,7 +4,7 @@
 #include "AnimationComponent.h"
 #include "SpriteComponent.h"
 
-#include "Time.h"
+#include "GameTime.h"
 
 namespace Pengin
 { 

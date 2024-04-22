@@ -3,7 +3,6 @@
 
 #include "CoreIncludes.h"
 
-#include "UUID.h"
 #include "glm/vec3.hpp"
 
 #include <unordered_map>
@@ -13,7 +12,7 @@
 
 namespace Pengin
 {
-	using UserIndex = UUID;
+	using UserIndex = GameUUID;
 	class InputCommand abstract
 	{
 	public:

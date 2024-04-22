@@ -15,7 +15,7 @@ namespace Pengin
 	const EntityId EntityManager::CreateEntity() noexcept
 	{
 		const EntityId id{ CURRENT_ID_COUNT };
-		m_EntityCompFlags.Emplace(id, Bitset{ m_TypeBitMap.size() });
+		m_EntityCompFlags.Emplace(id, RunTimeBitset{ m_TypeBitMap.size() });
 
 		++CURRENT_ID_COUNT;
 

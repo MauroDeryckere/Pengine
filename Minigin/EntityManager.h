@@ -53,7 +53,7 @@ namespace Pengin
         const std::unordered_map<std::type_index, size_t> m_TypeBitMap;
         const std::vector<std::type_index> m_TypeBitVector; //rev mapping
 
-        SparseSet<Bitset, EntityId> m_EntityCompFlags;
+        SparseSet<RunTimeBitset, EntityId> m_EntityCompFlags;
 
         [[nodiscard]] const std::unordered_map<std::type_index, size_t> InitTypeBitMapping() noexcept;
         [[nodiscard]] const std::vector<std::type_index> InitTypeBitVector() noexcept;

@@ -9,4 +9,4 @@
 
 #include "EntityId.h"
 
-#include "UUID.h"
+#include "GameUUID.h"
