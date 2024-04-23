@@ -15,13 +15,10 @@
 #endif
 
 #include "SceneManager.h"
+#include "Entity.h"
 #include "Scene.h"
 
-#include "ResourceManager.h"
 #include "InputManager.h"
-#include "EventManager.h"
-
-#include "Entity.h"
 #include "Components.h"
 
 #include "InputCommands.h"

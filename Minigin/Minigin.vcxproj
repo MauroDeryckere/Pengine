@@ -99,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\fsbank\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -128,7 +128,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\fsbank\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -162,7 +162,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\fsbank\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -195,7 +195,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\fsbank\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -486,6 +486,7 @@ xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPat
     <ClInclude Include="SceneInfoPanel.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="Serializer.h" />
+    <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="SystemManager.h" />
     <ClInclude Include="SystemRegistry.h" />
     <ClInclude Include="UIDisplaySystem.h" />

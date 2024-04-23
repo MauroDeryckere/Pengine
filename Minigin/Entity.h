@@ -33,13 +33,14 @@ namespace Pengin
 		}
 
 		template <typename ComponentType>
-		void RemoveComponent()
+		void RemoveComponent() noexcept
 		{
 			if (auto pScene{ m_pScene.lock() }; pScene)
 			{
 				pScene->m_Ecs.RemoveComponent<ComponentType>(m_EntityId);
+				return;
 			}
-			throw std::runtime_error("Attempted to remove component of an entity with invalid scene pointer");
+			DEBUG_OUT("Attempting to remove component for invalid scene Entity: " << m_EntityId << " Comp: " << typeid(ComponentType).name());
 		}
 
 		template <typename ComponentType>
@@ -63,13 +64,13 @@ namespace Pengin
 		}
 
 		template <typename ComponentType>
-		[[nodiscard]] bool HasComponent() const
+		[[nodiscard]] bool HasComponent() const noexcept
 		{
 			if (auto pScene{ m_pScene.lock() }; pScene)
 			{
 				return pScene->m_Ecs.HasComponent<ComponentType>(m_EntityId);
 			}
-			throw std::runtime_error("Attempted to check existance of a component for an entity with invalid scene pointer");
+			return false;
 		}
 
 		void SetParent(Entity parentEntity, bool keepWorldPos = false);

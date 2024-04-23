@@ -16,12 +16,11 @@
 
 namespace Pengin
 {
-    //TODO, expand concepts, maybe provide a 'stable' sparse set where we use erase
     template<typename ValueType, typename KeyType>
         requires std::is_default_constructible_v<KeyType> && 
                  std::is_move_constructible_v<KeyType> &&    
 
-                (std::is_move_constructible_v <ValueType> || std::is_move_assignable_v<ValueType>) //Copy (?)
+                (std::is_move_constructible_v <ValueType> || std::is_move_assignable_v<ValueType>) 
     class SparseSet final
     {
     public:

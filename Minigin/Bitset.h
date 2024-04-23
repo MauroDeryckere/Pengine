@@ -33,7 +33,7 @@ namespace Pengin
             m_Bits{ std::move(other.m_Bits) }
         {
         }
-
+        
 
         RunTimeBitset& operator=(RunTimeBitset&& other) noexcept
         {
