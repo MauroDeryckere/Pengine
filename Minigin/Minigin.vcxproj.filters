@@ -127,11 +127,11 @@
     <Filter Include="Header Files\3rd Party\Boost\UUID">
       <UniqueIdentifier>{51a816e7-9b9c-4025-b671-708c008dea0b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Audio">
-      <UniqueIdentifier>{bde37cd0-3210-4d02-abe0-ab15442cf9c8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\3rd Party\Fmod">
       <UniqueIdentifier>{8d98e222-75be-4663-a5b6-e856788ed6c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Audio">
+      <UniqueIdentifier>{bde37cd0-3210-4d02-abe0-ab15442cf9c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1195,6 +1195,9 @@
     </ClCompile>
     <ClCompile Include="SystemManager.cpp">
       <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioEngine.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
