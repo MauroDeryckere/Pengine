@@ -206,7 +206,7 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x86\fmod.dll"
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\fsbank\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -233,7 +233,7 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll"
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib;opengl32.lib;fmodstudio_vc.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\lib\x64;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\lib\x64;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
