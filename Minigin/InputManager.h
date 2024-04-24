@@ -33,7 +33,7 @@ namespace Pengin
     }; 
 
     using UserIndex = GameUUID;
-    class InputManager final : public dae::Singleton<InputManager>
+    class InputManager final : public Pengin::Singleton<InputManager>
     {
     public:
         [[nodiscard]] bool ProcessInput() noexcept;
@@ -56,7 +56,7 @@ namespace Pengin
         InputManager& operator=(const InputManager&&) = delete;
 
     private:
-        friend class dae::Singleton<InputManager>;
+        friend class Pengin::Singleton<InputManager>;
         InputManager() = default;
         ~InputManager() = default;
 

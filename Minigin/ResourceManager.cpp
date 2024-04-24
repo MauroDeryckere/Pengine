@@ -10,7 +10,7 @@
 
 void dae::ResourceManager::Init(const std::string& dataPath)
 {
-	m_dataPath = dataPath;
+	m_DataPath = dataPath;
 
 	if (TTF_Init() != 0)
 	{
@@ -20,7 +20,7 @@ void dae::ResourceManager::Init(const std::string& dataPath)
 
 std::shared_ptr<dae::Texture2D> dae::ResourceManager::LoadTexture(const std::string& path) const
 {
-	const auto fullPath = m_dataPath + path;
+	const auto fullPath = m_DataPath + path;
 	auto texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
 
 	if (texture == nullptr)
@@ -33,7 +33,7 @@ std::shared_ptr<dae::Texture2D> dae::ResourceManager::LoadTexture(const std::str
 
 std::shared_ptr<dae::Font> dae::ResourceManager::LoadFont(const std::string& path, unsigned size) const
 {
-	const auto fullPath = m_dataPath + path;
+	const auto fullPath = m_DataPath + path;
 
 	auto font = TTF_OpenFont(fullPath.c_str(), size);
 	if (font == nullptr)

@@ -12,7 +12,7 @@
 
 namespace Pengin
 {
-	class SceneManager final : public dae::Singleton<SceneManager>
+	class SceneManager final : public Pengin::Singleton<SceneManager>
 	{
 	public:
 		std::shared_ptr<Scene> CreateScene(const std::string& name, const SceneFileData& sceneFileData = {}, bool swapToNext = true);
@@ -38,8 +38,9 @@ namespace Pengin
 		SceneManager& operator=(const SceneManager&&) = delete;
 
 	private:
-		friend class dae::Singleton<SceneManager>;
+		friend class Pengin::Singleton<SceneManager>;
 		SceneManager() = default;
+		~SceneManager() = default;
 
 		std::vector<std::shared_ptr<Scene>> m_Scenes;
 		std::unordered_map<std::string, size_t> m_SceneName_IdMap;

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef PENGIN_RESOURCEMANAGER
+#define PENGIN_RESOURCEMANAGER
+
 #include <string>
 #include <memory>
 #include "Singleton.h"
@@ -8,7 +10,7 @@
 namespace dae
 {
 	class Font;
-	class ResourceManager final : public Singleton<ResourceManager>
+	class ResourceManager final : public Pengin::Singleton<ResourceManager>
 	{
 	public:
 		void Init(const std::string& data);
@@ -16,10 +18,18 @@ namespace dae
 		[[nodiscard]] std::shared_ptr<Texture2D> LoadTexture(const std::string& path) const;
 		[[nodiscard]] std::shared_ptr<Font> LoadFont(const std::string& path, unsigned size) const;
 
-	private:
-		friend class Singleton<ResourceManager>;
-		ResourceManager() = default;
+		ResourceManager(const ResourceManager&) = delete;
+		ResourceManager(ResourceManager&&) = delete;
+		ResourceManager& operator=(const ResourceManager&) = delete;
+		ResourceManager& operator=(const ResourceManager&&) = delete;
 
-		std::string m_dataPath;
+	private:
+		friend class Pengin::Singleton<ResourceManager>;
+		ResourceManager() = default;
+		~ResourceManager() = default;
+
+		std::string m_DataPath;
 	};
 }
+
+#endif

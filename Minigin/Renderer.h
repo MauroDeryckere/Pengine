@@ -17,7 +17,7 @@ namespace dae
 	/**
 	 * Simple RAII wrapper for the SDL renderer
 	 */
-	class Renderer final : public Singleton<Renderer>
+	class Renderer final : public Pengin::Singleton<Renderer>
 	{
 		SDL_Renderer* m_renderer{};
 		SDL_Window* m_window{};
@@ -47,7 +47,16 @@ namespace dae
 		const SDL_Color& GetBackgroundColor() const { return m_clearColor; }
 		void SetBackgroundColor(const SDL_Color& color) { m_clearColor = color; }
 
+		Renderer(const Renderer&) = delete;
+		Renderer(Renderer&&) = delete;
+		Renderer& operator=(const Renderer&) = delete;
+		Renderer& operator=(const Renderer&&) = delete;
+
 	private:
+		friend class Pengin::Singleton<Renderer>;
+		Renderer() = default;
+		~Renderer() = default;
+
 		void RenderTexture(const Texture2D& texture, SDL_Rect* pDstRect, SDL_Rect* pSrcRect) const;
 	};
 }

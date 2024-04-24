@@ -17,7 +17,7 @@ namespace Pengin
 {
 	using EntityId = unsigned;
 
-	class EventManager final : public dae::Singleton<EventManager>
+	class EventManager final : public Pengin::Singleton<EventManager>
 	{
 	public:
 		void ProcessEventQueue() noexcept;
@@ -30,20 +30,20 @@ namespace Pengin
 			return std::make_shared<Observer>();
 		}
 
+		void RemoveEvent(const std::string& eventName)
+		{
+			m_EventCallbacks.erase(eventName);
+		}
+
 		EventManager(const EventManager&) = delete;
 		EventManager(EventManager&&) = delete;
 		EventManager& operator=(const EventManager&) = delete;
 		EventManager& operator=(const EventManager&&) = delete;
 
-		void RemoveEvent(const std::string& eventName) 
-		{ 
-			m_EventCallbacks.erase(eventName);
-		}
-
 	private:
 		using fEventCallback = std::function<void(const void*)>;
 
-		friend class dae::Singleton<EventManager>;
+		friend class Pengin::Singleton<EventManager>;
 		EventManager() = default;
 		~EventManager() = default;
 

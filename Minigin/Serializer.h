@@ -14,7 +14,7 @@ namespace Pengin
 
 	using InputData = std::tuple <UserIndex, unsigned>;
 	using InputDataVec = std::vector<InputData>;
-	class Serializer final : public dae::Singleton<Serializer>
+	class Serializer final : public Pengin::Singleton<Serializer>
 	{
 	public:
 		[[nodiscard]] bool SerializeScene(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept;
@@ -32,7 +32,7 @@ namespace Pengin
 		Serializer& operator=(const Serializer&&) = delete;
 
 	private:
-		friend class dae::Singleton<Serializer>;
+		friend class Pengin::Singleton<Serializer>;
 		Serializer();
 		~Serializer();
 

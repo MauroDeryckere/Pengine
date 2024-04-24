@@ -1,23 +1,27 @@
-#pragma once
-namespace dae
+#ifndef PENGIN_SINGLETON
+#define PENGIN_SINGLETON
+
+namespace Pengin
 {
 	template <typename T>
 	class Singleton
 	{
 	public:
-		static T& GetInstance()
+		[[nodiscard]] static T& GetInstance() noexcept
 		{
 			static T instance{};
 			return instance;
 		}
 
 		virtual ~Singleton() = default;
-		Singleton(const Singleton& other) = delete;
-		Singleton(Singleton&& other) = delete;
-		Singleton& operator=(const Singleton& other) = delete;
-		Singleton& operator=(Singleton&& other) = delete;
+		Singleton(const Singleton&) = delete;
+		Singleton(Singleton&&) = delete;
+		Singleton& operator=(const Singleton&) = delete;
+		Singleton& operator=(Singleton&&) = delete;
 
 	protected:
 		Singleton() = default;
 	};
 }
+
+#endif 

@@ -6,7 +6,7 @@
 
 namespace Pengin
 {
-	class GameTime final : public dae::Singleton<GameTime>
+	class GameTime final : public Pengin::Singleton<GameTime>
 	{
 	public:
 		[[nodiscard]] inline float GetElapsedSec() const noexcept { return m_ElapsedSec; }
@@ -39,7 +39,7 @@ namespace Pengin
 		GameTime& operator=(const GameTime&&) = delete;
 
 	private:
-		friend class dae::Singleton<GameTime>;
+		friend class Pengin::Singleton<GameTime>;
 		GameTime() = default;
 		~GameTime() = default;
 
