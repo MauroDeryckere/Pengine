@@ -119,7 +119,7 @@ namespace Pengin
 		AudioEngine::ErrorCheck(tFoundIt->second->setVolume(dbToVolume(fVolumedB)));
 	}
 
-	void AudioEngine::LoadBank(const std::string& strBankName, FMOD_STUDIO_LOAD_BANK_FLAGS flags) {
+	/*void AudioEngine::LoadBank(const std::string& strBankName, FMOD_STUDIO_LOAD_BANK_FLAGS flags) {
 		auto tFoundIt = sgpImplementation->mBanks.find(strBankName);
 		if (tFoundIt != sgpImplementation->mBanks.end())
 			return;
@@ -191,7 +191,7 @@ namespace Pengin
 			return;
 
 		AudioEngine::ErrorCheck(tFoundIt->second->setParameterByName(strParameterName.c_str(), fValue));
-	}
+	}*/
 
 	FMOD_VECTOR AudioEngine::VectorToFmod(const glm::vec3& vPosition) {
 		FMOD_VECTOR fVec;

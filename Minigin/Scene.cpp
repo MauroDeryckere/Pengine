@@ -21,10 +21,18 @@
 
 #include "GameTime.h"
 
+#include "AudioEngine.h"
+
 namespace Pengin
 {
 	Scene::Scene(const std::string& name, const SceneFileData& sceneFileData)
 	{
+		m_pTestAudioEngine = std::make_unique<AudioEngine>();
+
+		AudioEngine::Init();
+		m_pTestAudioEngine->LoadSound("../Data/TestSound.wav", true, true);
+		m_pTestAudioEngine->PlaySounds("../Data/TestSound.wav");
+
 		RegisterSystems();
 
 		m_SceneData.name = name;
@@ -55,6 +63,8 @@ namespace Pengin
 
 	Scene::~Scene()
 	{
+		AudioEngine::Shutdown();
+
 		if (m_SceneData.sceneFileData.saveSceneOnDestroy && !m_SceneData.sceneFileData.sceneSavePath.empty())
 		{
 			DEBUG_OUT("Saving scene " << m_SceneData.name);
@@ -260,6 +270,8 @@ namespace Pengin
 
 	void Scene::Update()
 	{	
+		AudioEngine::Update();
+
 		m_SysManager.Update();
 
 		if (m_SceneData.sceneFileData.autoSaveTime > 0.f) //this should possibly be sent to a separate thread if very large save file
