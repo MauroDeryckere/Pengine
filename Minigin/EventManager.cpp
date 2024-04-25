@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cassert>
 #include <ranges>
+#include <iostream>
 
 #include "ThreadManager.h"
 #include "ServiceLocator.h"
@@ -15,6 +16,25 @@ namespace Pengin
 			ProcessEvent(m_EventQueue.front());
 			m_EventQueue.pop();
 		}
+
+		//If soundevent
+		//add soundev to queue - TEMP HARDCODED
+		static int i{ 0 };
+
+		if (i == 2)
+		{
+			ThreadManager::GetInstance().EnqueueSoundTask([]()
+				{
+					std::cout << "TEST \n";
+					ServiceLocator::GetSoundSystem().LoadSound("../Data/TestSound.wav", true, true);
+					ServiceLocator::GetSoundSystem().PlaySounds("../Data/TestSound.wav");
+				}
+			);
+		}
+
+		i++;
+
+		//-------------------------------------
 	}
 
 	void EventManager::BroadcoastEvent(const Event& event) noexcept
@@ -45,21 +65,6 @@ namespace Pengin
 				fCallback(event.GetEventData());
 			}
 		}
-
-		//If soundevent
-		//add soundev to queue - TEMP HARDCODED
-		static int i{0};
-
-		if (i == 1)
-		{
-			ThreadManager::GetInstance().EnqueueSoundTask([]() 
-				{ 
-					ServiceLocator::GetSoundSystem().LoadSound("../Data/TestSound.wav", true, true);
-					ServiceLocator::GetSoundSystem().PlaySounds("../Data/TestSound.wav");				
-				}
-			);
-		}
-		i++;
 	}
 
 	void EventManager::RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event) noexcept

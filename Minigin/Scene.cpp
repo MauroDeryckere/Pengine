@@ -268,6 +268,8 @@ namespace Pengin
 		auto& pTestSoundSys = ServiceLocator::GetSoundSystem();
 		pTestSoundSys.Update();
 
+
+
 		m_SysManager.Update();
 
 		if (m_SceneData.sceneFileData.autoSaveTime > 0.f) //this should possibly be sent to a separate thread if very large save file

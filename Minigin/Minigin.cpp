@@ -16,6 +16,7 @@
 #include "ImGUIWindow.h"
 
 #include "ResourceManager.h"
+#include "ThreadManager.h"
 
 #ifdef USE_STEAMWORKS
 	#pragma warning (push)
@@ -98,6 +99,8 @@ dae::Minigin::Minigin(const std::string &dataPath)
 
 dae::Minigin::~Minigin()
 {
+	Pengin::ThreadManager::GetInstance().Stop();
+
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(g_Window);
 	g_Window = nullptr;
@@ -113,7 +116,12 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& sceneManager{ Pengin::SceneManager::GetInstance() };
 	auto& input{ Pengin::InputManager::GetInstance() };
 	auto& time{ Pengin::GameTime::GetInstance() };
+	
+	Pengin::ThreadManager::GetInstance().Start();
+	
 	bool doContinue{ true };
+
+
 
 	while (doContinue)
 	{
