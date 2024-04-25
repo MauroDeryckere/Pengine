@@ -18,7 +18,7 @@ namespace Pengin
 	void FModSoundSytem::Update() 
 	{
 		std::vector<ChannelMap::iterator> pStoppedChannels;
-		for (auto it = m_Channels.begin(); it != m_Channels.end(); ++it)
+		for (auto it = begin(m_Channels); it != end(m_Channels); ++it)
 		{
 			bool isPlaying = false;
 			it->second->isPlaying(&isPlaying);
@@ -73,9 +73,9 @@ namespace Pengin
 		m_Sounds.erase(it);
 	}
 
-	const int FModSoundSytem::PlaySounds(const std::string& soundName, const glm::vec3& position, float volumedB)
+	const int32_t FModSoundSytem::PlaySounds(const std::string& soundName, const glm::vec3& position, float volumedB)
 	{
-		int channelId{ m_NextChannelId++ };
+		int32_t channelId{ m_NextChannelId++ };
 		auto it{ m_Sounds.find(soundName) };
 
 		if (it == end(m_Sounds)) //Loud sound if not loaded yet
@@ -114,7 +114,7 @@ namespace Pengin
 		return channelId;
 	}
 
-	void FModSoundSytem::SetChannel3DPosition(int channelId, const glm::vec3& position)
+	void FModSoundSytem::SetChannel3DPosition(int32_t channelId, const glm::vec3& position)
 	{
 		auto it{ m_Channels.find(channelId) };
 		if (it == end(m_Channels))
@@ -126,13 +126,15 @@ namespace Pengin
 		FModSoundSytem::ErrorCheck(it->second->set3DAttributes(&fmodPosition, NULL));
 	}
 
-	void FModSoundSytem::SetChannelVolume(int channelId, float volumedB)
+	void FModSoundSytem::SetChannelVolume(int32_t channelId, float volumedB)
 	{
-		auto tFoundIt = m_Channels.find(channelId);
-		if (tFoundIt == m_Channels.end())
+		auto it = m_Channels.find(channelId);
+		if (it == end(m_Channels))
+		{
 			return;
+		}
 
-		FModSoundSytem::ErrorCheck(tFoundIt->second->setVolume(DbToVolume(volumedB)));
+		FModSoundSytem::ErrorCheck(it->second->setVolume(DbToVolume(volumedB)));
 	}
 
 	void FModSoundSytem::ErrorCheck(FMOD_RESULT result) 

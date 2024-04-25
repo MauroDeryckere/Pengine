@@ -55,9 +55,6 @@
     <Filter Include="Header Files\Rendering">
       <UniqueIdentifier>{f4f1c3be-24b6-4a77-82c0-7920db232d07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Events">
-      <UniqueIdentifier>{8972368e-7b72-4b31-b2b4-c48b615851a2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Components">
       <UniqueIdentifier>{a4375382-b3b2-491c-a84f-0f14b20c2d55}</UniqueIdentifier>
     </Filter>
@@ -135,6 +132,12 @@
     </Filter>
     <Filter Include="Header Files\Core\ServiceLocator">
       <UniqueIdentifier>{3a8475bc-fdee-4551-af0a-cfb11e78dc6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\Threading">
+      <UniqueIdentifier>{cfb57397-051a-4e6f-a48e-9e1186ff4622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\Events">
+      <UniqueIdentifier>{8972368e-7b72-4b31-b2b4-c48b615851a2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -262,10 +265,10 @@
       <Filter>Header Files\Input\InputDevices</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
-      <Filter>Header Files\Events</Filter>
+      <Filter>Header Files\Core\Events</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">
-      <Filter>Header Files\Events</Filter>
+      <Filter>Header Files\Core\Events</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamapplist.h">
       <Filter>Header Files\3rd Party\Steam</Filter>
@@ -1080,6 +1083,9 @@
     <ClInclude Include="SoundSystem.h">
       <Filter>Header Files\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadManager.h">
+      <Filter>Header Files\Core\Threading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -1211,11 +1217,14 @@
     <ClCompile Include="ServiceLocator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ThreadManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api.json" />
     <None Include="Observer.h">
-      <Filter>Header Files\Events</Filter>
+      <Filter>Header Files\Core\Events</Filter>
     </None>
   </ItemGroup>
 </Project>

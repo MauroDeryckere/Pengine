@@ -16,10 +16,10 @@ namespace Pengin
 		virtual void LoadSound(const std::string&, bool, bool, bool) {}
 		virtual void UnLoadSound(const std::string&) {}
 
-		virtual const int PlaySounds(const std::string&, const glm::vec3&, float) { return -1; }
+		virtual const int32_t PlaySounds(const std::string&, const glm::vec3&, float) { return -1; }
 
-		virtual void SetChannel3DPosition(int, const glm::vec3&) {}
-		virtual void SetChannelVolume(int, float) {}
+		virtual void SetChannel3DPosition(int32_t, const glm::vec3&) {}
+		virtual void SetChannelVolume(int32_t, float) {}
 
 		NullSoundSystem(const NullSoundSystem&) = delete;
 		NullSoundSystem(NullSoundSystem&&) = delete;

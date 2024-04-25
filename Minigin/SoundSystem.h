@@ -19,10 +19,10 @@ namespace Pengin
 		virtual void UnLoadSound(const std::string& soundName) = 0;
 
 		//Returns the channelId in case specific changes to volume,... have to be made after loading	
-		virtual const int PlaySounds(const std::string& soundName, const glm::vec3& position = { 0, 0, 0 }, float volumedB = 0.f) = 0;
+		virtual const int32_t PlaySounds(const std::string& soundName, const glm::vec3& position = { 0, 0, 0 }, float volumedB = 0.f) = 0;
 
-		virtual void SetChannel3DPosition(int channelId, const glm::vec3& position) = 0;
-		virtual void SetChannelVolume(int channelId, float volumeDb) = 0;
+		virtual void SetChannel3DPosition(int32_t channelId, const glm::vec3& position) = 0;
+		virtual void SetChannelVolume(int32_t channelId, float volumeDb) = 0;
 
 		//Conversion functions
 		[[nodiscard]] static float DbToVolume(const float dB) noexcept
@@ -38,10 +38,6 @@ namespace Pengin
 		SoundSystem(SoundSystem&&) = delete;
 		SoundSystem& operator=(const SoundSystem&) = delete;
 		SoundSystem& operator=(const SoundSystem&&) = delete;
-
-	private:
-
-
 	};
 }
 

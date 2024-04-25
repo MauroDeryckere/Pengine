@@ -28,11 +28,7 @@ namespace Pengin
 {
 	Scene::Scene(const std::string& name, const SceneFileData& sceneFileData)
 	{
-		ServiceLocator::register_sound_system(std::move(std::make_unique<FModSoundSytem>()));
-		auto& pTestSoundSys = ServiceLocator::GetSoundSystem();
-
-		pTestSoundSys.LoadSound("../Data/TestSound.wav", true, true);
-		pTestSoundSys.PlaySounds("../Data/TestSound.wav");
+		ServiceLocator::RegisterSoundSystem(std::move(std::make_unique<FModSoundSytem>())); //TODO move out of scene
 
 		RegisterSystems();
 

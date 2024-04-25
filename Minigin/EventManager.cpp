@@ -3,6 +3,9 @@
 #include <cassert>
 #include <ranges>
 
+#include "ThreadManager.h"
+#include "ServiceLocator.h"
+
 namespace Pengin
 {
 	void EventManager::ProcessEventQueue() noexcept
@@ -42,6 +45,21 @@ namespace Pengin
 				fCallback(event.GetEventData());
 			}
 		}
+
+		//If soundevent
+		//add soundev to queue - TEMP HARDCODED
+		static int i{0};
+
+		if (i == 1)
+		{
+			ThreadManager::GetInstance().EnqueueSoundTask([]() 
+				{ 
+					ServiceLocator::GetSoundSystem().LoadSound("../Data/TestSound.wav", true, true);
+					ServiceLocator::GetSoundSystem().PlaySounds("../Data/TestSound.wav");				
+				}
+			);
+		}
+		i++;
 	}
 
 	void EventManager::RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event) noexcept

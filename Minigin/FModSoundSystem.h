@@ -11,8 +11,12 @@
 #include <vector>
 #include <iostream>
 
-#include <glm/vec3.hpp>
+#include <thread>
+#include <mutex>
+#include <queue>
+#include <condition_variable>
 
+#include <glm/vec3.hpp>
 
 namespace Pengin
 {
@@ -27,10 +31,10 @@ namespace Pengin
 		virtual void UnLoadSound(const std::string& soundName) override;
 
 		//Returns the channelId in case specific changes to volume,... have to be made after loading	
-		virtual const int PlaySounds(const std::string& soundName, const glm::vec3& position = { 0, 0, 0 }, float volumedB = 0.f) override; 
+		virtual const int32_t PlaySounds(const std::string& soundName, const glm::vec3& position = { 0, 0, 0 }, float volumedB = 0.f) override;
 
-		virtual void SetChannel3DPosition(int channelId, const glm::vec3& position) override;
-		virtual void SetChannelVolume(int channelId, float volumedB) override;
+		virtual void SetChannel3DPosition(int32_t channelId, const glm::vec3& position) override;
+		virtual void SetChannelVolume(int32_t channelId, float volumedB) override;
 
 		FModSoundSytem(const FModSoundSytem&) = delete;
 		FModSoundSytem(FModSoundSytem&&) = delete;
@@ -41,7 +45,7 @@ namespace Pengin
 		FMOD::Studio::System* m_pStudio{ nullptr };
 		FMOD::System* m_pSystem{ nullptr };
 
-		int m_NextChannelId;
+		int32_t m_NextChannelId;
 
 		//Currently loaded sounds
 		using SoundMap =	std::map<std::string, FMOD::Sound*>;
@@ -52,8 +56,6 @@ namespace Pengin
 		SoundMap m_Sounds{};
 		ChannelMap m_Channels{};
 		//It could also be a possibility to maintain a reverse mapping here / a relation between sound and channel
-
-
 
 		//using EventMap = std::map<std::string, FMOD::Studio::EventInstance*>;
 		//using BankMap = std::map<std::string, FMOD::Studio::Bank*>;
