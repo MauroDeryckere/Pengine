@@ -37,17 +37,17 @@ namespace Pengin
 		//-------------------------------------
 	}
 
-	void EventManager::BroadcoastEvent(const Event& event) noexcept
+	void EventManager::BroadcoastEvent(const BaseEvent& event) noexcept
 	{
 		m_EventQueue.emplace(event);
 	}
 
-	void EventManager::BroadcastBlockingEvent(const Event& event) noexcept
+	void EventManager::BroadcastBlockingEvent(const BaseEvent& event) noexcept
 	{
 		ProcessEvent(event);
 	}
 	
-	void EventManager::ProcessEvent(const Event& event) noexcept
+	void EventManager::ProcessEvent(const BaseEvent& event) noexcept
 	{
 		auto it{ m_EventCallbacks.find(event.GetEventName()) };
 

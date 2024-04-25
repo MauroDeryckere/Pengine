@@ -502,6 +502,7 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll"
     <ClInclude Include="Serializer.h" />
     <ClInclude Include="FModSoundSystem.h" />
     <ClInclude Include="ServiceLocator.h" />
+    <ClInclude Include="SoundData.h" />
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="SystemManager.h" />
     <ClInclude Include="SystemRegistry.h" />

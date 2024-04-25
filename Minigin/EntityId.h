@@ -12,7 +12,7 @@ namespace Pengin
 
 	static_assert(std::is_unsigned_v<EntityId>, "Engine error: EntityId must be an unsigned integer type");
 
-    inline std::string EntityIdToString(const EntityId& id)
+    inline std::string EntityIdToString(const EntityId& id) noexcept
     {
         if (id == NULL_ENTITY_ID)
             return "NULL";

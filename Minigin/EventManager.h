@@ -22,8 +22,8 @@ namespace Pengin
 	public:
 		void ProcessEventQueue() noexcept;
 
-		void BroadcoastEvent(const Event& event) noexcept;
-		void BroadcastBlockingEvent(const Event& event) noexcept;
+		void BroadcoastEvent(const BaseEvent& event) noexcept;
+		void BroadcastBlockingEvent(const BaseEvent& event) noexcept;
 
 		[[nodiscard]] std::shared_ptr<Observer> CreateObserver() const noexcept
 		{
@@ -49,7 +49,7 @@ namespace Pengin
 
 		friend class Observer;
 		void RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& eventName) noexcept;
-		void ProcessEvent(const Event& event) noexcept;
+		void ProcessEvent(const BaseEvent& event) noexcept;
 
 		using ObserverIdentifier = std::pair<EntityId, std::type_index>;
 		struct ObserverIdentifierHash 
@@ -66,7 +66,7 @@ namespace Pengin
 		using ObsCallbacks = std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>;
 		std::unordered_map<std::string, ObsCallbacks> m_EventCallbacks;
 
-		std::queue<Event> m_EventQueue;
+		std::queue<BaseEvent> m_EventQueue;
 	};
 }
 #endif

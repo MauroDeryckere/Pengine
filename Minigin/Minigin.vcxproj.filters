@@ -1086,6 +1086,9 @@
     <ClInclude Include="ThreadManager.h">
       <Filter>Header Files\Core\Threading</Filter>
     </ClInclude>
+    <ClInclude Include="SoundData.h">
+      <Filter>Header Files\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
