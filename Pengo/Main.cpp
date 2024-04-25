@@ -24,6 +24,8 @@
 #include "InputCommands.h"
 #include "Serializer.h"
 
+void LoadGamePlayScripting();
+
 void LoadDemo();
 void LoadSceneGraphDemo();
 
@@ -55,7 +57,7 @@ int main(int, char* [])
 
 void Load()
 {
-	LoadDemo();
+	//LoadDemo();
 	//LoadSceneGraphDemo();
 }
 
@@ -191,6 +193,15 @@ void LoadDemo()
 	//aniPengo.AddComponent<AnimationComponent>(anis);
 	////---------------------------
 }
+
+void LoadGamePlayScripting()
+{
+	using namespace Pengin;
+
+	SceneFileData sceneData{ };
+	auto pScene = SceneManager::GetInstance().CreateScene("Gameplay Scripting", sceneData);	
+}
+
 
 void RegisterControllerInput_DemoScene(const Pengin::InputData& inpData)
 {

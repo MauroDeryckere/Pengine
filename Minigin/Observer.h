@@ -7,6 +7,8 @@
 
 namespace Pengin
 {
+	class BaseEvent;
+
 	class Observer final
 	{
 	public:
@@ -18,7 +20,7 @@ namespace Pengin
 		Observer& operator=(const Observer&) = delete;
 		Observer& operator=(const Observer&&) = delete;
 
-		void RegisterForEvent(std::weak_ptr<Observer> pObs, const std::string& eventName, std::function<void(const void* eventData)> fCallback);
+		void RegisterForEvent(std::weak_ptr<Observer> pObs, const std::string& eventName, std::function<void(const BaseEvent& event)> fCallback);
 	};
 }
 

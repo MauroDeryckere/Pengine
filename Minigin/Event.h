@@ -17,39 +17,36 @@ namespace Pengin
 
 		[[nodiscard]] const std::string& GetEventName() const noexcept { return m_EventName; }
 		
-		//Event(const Event&) = delete;
-		//Event(Event&&) = delete;
-		//Event& operator=(const Event&) = delete;
-		//Event& operator=(const Event&&) = delete;
+		BaseEvent(const BaseEvent&) = delete;
+		BaseEvent(BaseEvent&&) = delete;
+		BaseEvent& operator=(const BaseEvent&) = delete;
+		BaseEvent& operator=(const BaseEvent&&) = delete;
 
 	private:
 		const std::string m_EventName;
 	};
 
-
-	template<typename EventDataType>
-	class Event final : public BaseEvent
+	//Engine defined sound event
+	class SoundEvent final : public BaseEvent
 	{
 	public:
-		Event(const std::string& eventName, const EventDataType& eventData) :
+		SoundEvent(const std::string& eventName, const SoundData& soundData) :
 			BaseEvent{ eventName },
-			m_EventData{ eventData }
+			m_SoundData{ soundData }
 		{ }
 
-		virtual ~Event() override = default;
+		virtual ~SoundEvent() override = default;
 
-		const EventDataType& GetEventData() const noexcept { return m_EventData; }
+		[[nodiscard]] const SoundData& GetSounData() const noexcept { return m_SoundData; }
 
-		//Event(const Event&) = delete;
-		//Event(Event&&) = delete;
-		//Event& operator=(const Event&) = delete;
-		//Event& operator=(const Event&&) = delete;
+		SoundEvent(const SoundEvent&) = delete;
+		SoundEvent(SoundEvent&&) = delete;
+		SoundEvent& operator=(const SoundEvent&) = delete;
+		SoundEvent& operator=(const SoundEvent&&) = delete;
+
 	private:
-		EventDataType m_EventData;
+		SoundData m_SoundData;
 	};
-
-	using NoParamEvent = BaseEvent;
-	using SoundEvent = Event<SoundData>;
 }
 
 #endif

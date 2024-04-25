@@ -21,7 +21,9 @@ namespace Pengin
 		m_ECS{ecs},
 		m_pObserver{ EventManager::GetInstance().CreateObserver() }
 	{
-		m_pObserver->RegisterForEvent(m_pObserver, "OnTextChangeEvent", [this](const void* eventData) {eventData; });
+
+		//TOOD
+		m_pObserver->RegisterForEvent(m_pObserver, "OnTextChangeEvent", [this](const BaseEvent& event) { std::cout << "text change event\n";  event; });
 	}
 
 	void TextSystem::Update()

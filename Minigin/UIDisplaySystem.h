@@ -10,6 +10,7 @@ namespace Pengin
 	class ECS;
 	class Scene;
 	class Observer;
+	class BaseEvent;
 
 	class UIDisplaySystem final : public BaseSystem
 	{
@@ -28,8 +29,8 @@ namespace Pengin
 
 		std::shared_ptr<Observer> m_pObserver;
 
-		void OnHealthChangeEvent(const void* eventData);
-		void OnScoreCollectEvent(const void* eventData);
+		void OnHealthChangeEvent(const BaseEvent& event);
+		void OnScoreCollectEvent(const BaseEvent& event);
 	};
 }
 

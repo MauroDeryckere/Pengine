@@ -22,8 +22,8 @@ namespace Pengin
 	public:
 		void ProcessEventQueue() noexcept;
 
-		void BroadcoastEvent(const BaseEvent& event) noexcept;
-		void BroadcastBlockingEvent(const BaseEvent& event) noexcept;
+		void BroadcoastEvent(std::unique_ptr<BaseEvent> event) noexcept;
+		void BroadcastBlockingEvent(std::unique_ptr<BaseEvent> event) noexcept;
 
 		[[nodiscard]] std::shared_ptr<Observer> CreateObserver() const noexcept
 		{
@@ -41,7 +41,7 @@ namespace Pengin
 		EventManager& operator=(const EventManager&&) = delete;
 
 	private:
-		using fEventCallback = std::function<void(const void*)>;
+		using fEventCallback = std::function<void(const BaseEvent&)>;
 
 		friend class Pengin::Singleton<EventManager>;
 		EventManager() = default;
@@ -49,7 +49,7 @@ namespace Pengin
 
 		friend class Observer;
 		void RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& eventName) noexcept;
-		void ProcessEvent(const BaseEvent& event) noexcept;
+		void ProcessEvent(BaseEvent* event) noexcept;
 
 		using ObserverIdentifier = std::pair<EntityId, std::type_index>;
 		struct ObserverIdentifierHash 
@@ -66,7 +66,7 @@ namespace Pengin
 		using ObsCallbacks = std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>;
 		std::unordered_map<std::string, ObsCallbacks> m_EventCallbacks;
 
-		std::queue<BaseEvent> m_EventQueue;
+		std::queue<std::unique_ptr<BaseEvent>> m_EventQueue;
 	};
 }
 #endif

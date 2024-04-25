@@ -10,7 +10,7 @@ namespace Pengin
 	{
 		SoundData() = default;
 
-		SoundData(const std::string& soundPath, const glm::vec3& position = {0,0,0}, bool is3D = true, bool isLooping = false, bool IsStream = false, float volumedB):
+		SoundData(const std::string& soundPath, float volumedB, const glm::vec3& position = {0,0,0}, bool is3D = true, bool isLooping = false, bool IsStream = false):
 			soundPath{ soundPath },
 			position{ position },
 

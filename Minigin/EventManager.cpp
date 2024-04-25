@@ -13,7 +13,7 @@ namespace Pengin
 	{		
 		while (!m_EventQueue.empty())
 		{
-			ProcessEvent(m_EventQueue.front());
+			ProcessEvent(m_EventQueue.front().get());
 			m_EventQueue.pop();
 		}
 
@@ -37,19 +37,19 @@ namespace Pengin
 		//-------------------------------------
 	}
 
-	void EventManager::BroadcoastEvent(const BaseEvent& event) noexcept
+	void EventManager::BroadcoastEvent(std::unique_ptr<BaseEvent> event) noexcept
 	{
-		m_EventQueue.emplace(event);
+		m_EventQueue.emplace(std::move(event));
 	}
 
-	void EventManager::BroadcastBlockingEvent(const BaseEvent& event) noexcept
+	void EventManager::BroadcastBlockingEvent(std::unique_ptr<BaseEvent> event) noexcept
 	{
-		ProcessEvent(event);
+		ProcessEvent(event.get());
 	}
 	
-	void EventManager::ProcessEvent(const BaseEvent& event) noexcept
+	void EventManager::ProcessEvent(BaseEvent* event) noexcept
 	{
-		auto it{ m_EventCallbacks.find(event.GetEventName()) };
+		auto it{ m_EventCallbacks.find(event->GetEventName()) };
 
 		if (it != end(m_EventCallbacks))
 		{
@@ -62,7 +62,7 @@ namespace Pengin
 
 			for (auto& [observer, fCallback] : observers)
 			{
-				fCallback(event.GetEventData());
+				fCallback(*event);	
 			}
 		}
 	}

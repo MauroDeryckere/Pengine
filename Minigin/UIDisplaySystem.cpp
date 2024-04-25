@@ -22,80 +22,89 @@ namespace Pengin
 		m_pScene { pScene },
 		m_pObserver{ EventManager::GetInstance().CreateObserver() }
 	{
-		m_pObserver->RegisterForEvent(m_pObserver, "OnHealthChangeEvent", [this](const void* eventData) { OnHealthChangeEvent(eventData); } );
-		m_pObserver->RegisterForEvent(m_pObserver, "OnScoreCollectEvent", [this](const void* eventData) { OnScoreCollectEvent(eventData); } );
+		m_pObserver->RegisterForEvent(m_pObserver, "OnHealthChangeEvent", [this](const BaseEvent& event) { OnHealthChangeEvent(event); } );
+		m_pObserver->RegisterForEvent(m_pObserver, "OnScoreCollectEvent", [this](const BaseEvent& event) { OnScoreCollectEvent(event); } );
 	}
 
-	void UIDisplaySystem::OnHealthChangeEvent(const void* eventData)
+	void UIDisplaySystem::OnHealthChangeEvent(const BaseEvent& event)
 	{
-		const EntityId id{ *static_cast<const EntityId*>(eventData) };
-		assert(m_ECS.HasComponent<HealthComponent>(id));
-
-		auto& healthComp = m_ECS.GetComponent<HealthComponent>(id);
+		event;
+		//TODO
 		
-		std::vector<EntityId> idsToErase; //Erase deleted displays from the vector
-		for (const auto& entity : healthComp.healthDisplayIds)
-		{
-			assert(entity != NULL_ENTITY_ID);
 
-			if (!m_ECS.Exists(entity))
-			{
-				idsToErase.emplace_back(entity);
-				continue;
-			}
+		//const EntityId id{ *static_cast<const EntityId*>(eventData) };
+		//assert(m_ECS.HasComponent<HealthComponent>(id));
 
-			assert(m_ECS.HasComponent<TextComponent>(entity));
-			assert(m_ECS.HasComponent<TxtDisplayComponent>(entity));
+		//auto& healthComp = m_ECS.GetComponent<HealthComponent>(id);
+		//
+		//std::vector<EntityId> idsToErase; //Erase deleted displays from the vector
+		//for (const auto& entity : healthComp.healthDisplayIds)
+		//{
+		//	assert(entity != NULL_ENTITY_ID);
 
-			auto& textComp = m_ECS.GetComponent<TextComponent>(entity);
-			auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(entity);
+		//	if (!m_ECS.Exists(entity))
+		//	{
+		//		idsToErase.emplace_back(entity);
+		//		continue;
+		//	}
 
-			const std::string newText{ displayComp.prefix + std::to_string(healthComp.health) + displayComp.postfix };
+		//	assert(m_ECS.HasComponent<TextComponent>(entity));
+		//	assert(m_ECS.HasComponent<TxtDisplayComponent>(entity));
 
-			textComp.text = newText; //TODO change (text system)
-			textComp.needsTextureChange = true;
-		}
+		//	auto& textComp = m_ECS.GetComponent<TextComponent>(entity);
+		//	auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(entity);
 
-		std::erase_if(healthComp.healthDisplayIds, [&idsToErase](const EntityId id)
-			{
-				return std::find(idsToErase.begin(), idsToErase.end(), id) != idsToErase.end();
-			});
+		//	const std::string newText{ displayComp.prefix + std::to_string(healthComp.health) + displayComp.postfix };
+
+		//	textComp.text = newText; //TODO change (text system)
+		//	textComp.needsTextureChange = true;
+		//}
+
+		//std::erase_if(healthComp.healthDisplayIds, [&idsToErase](const EntityId id)
+		//	{
+		//		return std::find(idsToErase.begin(), idsToErase.end(), id) != idsToErase.end();
+		//	});
 	}
 
-	void UIDisplaySystem::OnScoreCollectEvent(const void* eventData)
+	void UIDisplaySystem::OnScoreCollectEvent(const BaseEvent& event)
 	{
-		const EntityId id{ *static_cast<const EntityId*>(eventData) };
-		assert(m_ECS.HasComponent<ScoreComponent>(id));
+		event;
+		//TODO
 
-		auto& scoreComp = m_ECS.GetComponent<ScoreComponent>(id);
 
-		std::vector<EntityId> idsToErase;
-		for (const auto& entity : scoreComp.scoreDisplays)
-		{
-			assert(entity != NULL_ENTITY_ID);
 
-			if (!m_ECS.Exists(entity))
-			{
-				idsToErase.emplace_back(entity);
-				continue;
-			}
+		//const EntityId id{ *static_cast<const EntityId*>(eventData) };
+		//assert(m_ECS.HasComponent<ScoreComponent>(id));
 
-			assert(m_ECS.HasComponent<TextComponent>(entity));
-			assert(m_ECS.HasComponent<TxtDisplayComponent>(entity));
+		//auto& scoreComp = m_ECS.GetComponent<ScoreComponent>(id);
 
-			auto& textComp = m_ECS.GetComponent<TextComponent>(entity);
-			auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(entity);
+		//std::vector<EntityId> idsToErase;
+		//for (const auto& entity : scoreComp.scoreDisplays)
+		//{
+		//	assert(entity != NULL_ENTITY_ID);
 
-			const std::string newText{ displayComp.prefix + std::to_string(scoreComp.score) + displayComp.postfix };
+		//	if (!m_ECS.Exists(entity))
+		//	{
+		//		idsToErase.emplace_back(entity);
+		//		continue;
+		//	}
 
-			textComp.text = newText; //TODO change
-			textComp.needsTextureChange = true;
-		}
+		//	assert(m_ECS.HasComponent<TextComponent>(entity));
+		//	assert(m_ECS.HasComponent<TxtDisplayComponent>(entity));
 
-		std::erase_if(scoreComp.scoreDisplays, [&idsToErase](const EntityId id)
-			{
-				return std::find(idsToErase.begin(), idsToErase.end(), id) != idsToErase.end();
-			});
+		//	auto& textComp = m_ECS.GetComponent<TextComponent>(entity);
+		//	auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(entity);
+
+		//	const std::string newText{ displayComp.prefix + std::to_string(scoreComp.score) + displayComp.postfix };
+
+		//	textComp.text = newText; //TODO change
+		//	textComp.needsTextureChange = true;
+		//}
+
+		//std::erase_if(scoreComp.scoreDisplays, [&idsToErase](const EntityId id)
+		//	{
+		//		return std::find(idsToErase.begin(), idsToErase.end(), id) != idsToErase.end();
+		//	});
 	}
 }
 
