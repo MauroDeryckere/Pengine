@@ -487,8 +487,11 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll"
     <ClInclude Include="Bitset.h" />
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="CoreIncludes.h" />
+    <ClInclude Include="DebugDrawComponent.h" />
+    <ClInclude Include="DebugDrawSystem.h" />
     <ClInclude Include="DebugOutput.h" />
     <ClInclude Include="FPSSystem.h" />
+    <ClInclude Include="HealthChangeEvent.h" />
     <ClInclude Include="ImGUIWindow.h" />
     <ClInclude Include="InputInfoPanel.h" />
     <ClInclude Include="JsonConversion.h" />
@@ -498,11 +501,13 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll"
     <ClInclude Include="SceneData.h" />
     <ClInclude Include="SceneFileData.h" />
     <ClInclude Include="SceneInfoPanel.h" />
+    <ClInclude Include="ScoreChangeEvent.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="Serializer.h" />
     <ClInclude Include="FModSoundSystem.h" />
     <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="SoundData.h" />
+    <ClInclude Include="SoundEvent.h" />
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="SystemManager.h" />
     <ClInclude Include="SystemRegistry.h" />
@@ -565,6 +570,7 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll"
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_widgets.cpp" />
     <ClCompile Include="AnimationSystem.cpp" />
+    <ClCompile Include="DebugDrawSystem.cpp" />
     <ClCompile Include="FModSoundSystem.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Entity.cpp" />

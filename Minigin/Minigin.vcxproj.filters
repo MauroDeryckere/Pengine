@@ -28,9 +28,6 @@
     <Filter Include="Header Files\Resource">
       <UniqueIdentifier>{001430b0-a41f-41b3-b21e-027c1c844598}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ImGui">
-      <UniqueIdentifier>{a93af61a-9c83-448c-94e7-b7c3ada23cbb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{8b62cf3b-514f-4e65-9b34-08d404af42d0}</UniqueIdentifier>
     </Filter>
@@ -73,9 +70,6 @@
     <Filter Include="Source Files\Systems">
       <UniqueIdentifier>{08cb5efa-e948-4b6c-b327-dcb77acf27bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Systems">
-      <UniqueIdentifier>{80d4353f-ef05-471a-8123-a480e7f4da18}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Rendering\ImGui">
       <UniqueIdentifier>{085c28fe-b9fe-4238-ad82-26079554d974}</UniqueIdentifier>
     </Filter>
@@ -99,12 +93,6 @@
     </Filter>
     <Filter Include="Header Files\Core\UUID">
       <UniqueIdentifier>{12c9a460-de28-427b-ac37-a57f12f33cc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Systems\Sub">
-      <UniqueIdentifier>{d793c37e-f28b-484c-b03d-5c20b56927ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Systems\Handling">
-      <UniqueIdentifier>{d12d81d6-e08e-49f2-94e0-5cee84dd334f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\3rd Party">
       <UniqueIdentifier>{0d8575da-926d-4033-9fe7-e76726b65e46}</UniqueIdentifier>
@@ -138,6 +126,51 @@
     </Filter>
     <Filter Include="Header Files\Core\Events">
       <UniqueIdentifier>{8972368e-7b72-4b31-b2b4-c48b615851a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gameplay Systems">
+      <UniqueIdentifier>{80d4353f-ef05-471a-8123-a480e7f4da18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gameplay Systems\Sub">
+      <UniqueIdentifier>{d793c37e-f28b-484c-b03d-5c20b56927ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gameplay Systems\Handling">
+      <UniqueIdentifier>{d12d81d6-e08e-49f2-94e0-5cee84dd334f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\Events\Base">
+      <UniqueIdentifier>{117caf8d-590c-45f1-9330-1fa0ccd4ffac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\Events\Der">
+      <UniqueIdentifier>{d468c070-071b-424a-8c2f-886a9c16e0fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Events">
+      <UniqueIdentifier>{2fea1fc2-174b-42b2-99d1-5b10b0e3705e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ECS">
+      <UniqueIdentifier>{e757bd36-2e34-4427-91f8-101cf8785fd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{bb0b01c2-a1db-4648-b098-01b09509697f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rd Party ImGui">
+      <UniqueIdentifier>{a93af61a-9c83-448c-94e7-b7c3ada23cbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ImGui">
+      <UniqueIdentifier>{766567bb-44bd-4499-b88d-2e73243efb24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core">
+      <UniqueIdentifier>{f24f10ea-1639-407d-90bc-dc86f9d9cd75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sound">
+      <UniqueIdentifier>{0ec8c078-4592-43dc-9a5c-af56b5c73b96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render">
+      <UniqueIdentifier>{6d63696a-60b1-4318-8081-4bb891e90603}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{6dc20ba2-e0d3-4755-b1db-4eeae3b5c130}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FileSys">
+      <UniqueIdentifier>{b957fc6b-a3ff-4da6-83c5-436ab4c00ffd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -265,9 +298,6 @@
       <Filter>Header Files\Input\InputDevices</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
-      <Filter>Header Files\Core\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Event.h">
       <Filter>Header Files\Core\Events</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamapplist.h">
@@ -565,37 +595,37 @@
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="WorldPositionSystem.h">
-      <Filter>Header Files\Systems\Sub</Filter>
+      <Filter>Header Files\Gameplay Systems\Sub</Filter>
     </ClInclude>
     <ClInclude Include="AnimationSystem.h">
-      <Filter>Header Files\Systems\Sub</Filter>
+      <Filter>Header Files\Gameplay Systems\Sub</Filter>
     </ClInclude>
     <ClInclude Include="CollisionSystem.h">
-      <Filter>Header Files\Systems\Sub</Filter>
+      <Filter>Header Files\Gameplay Systems\Sub</Filter>
     </ClInclude>
     <ClInclude Include="FPSSystem.h">
-      <Filter>Header Files\Systems\Sub</Filter>
+      <Filter>Header Files\Gameplay Systems\Sub</Filter>
     </ClInclude>
     <ClInclude Include="MovementSystem.h">
-      <Filter>Header Files\Systems\Sub</Filter>
+      <Filter>Header Files\Gameplay Systems\Sub</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem.h">
-      <Filter>Header Files\Systems\Sub</Filter>
+      <Filter>Header Files\Gameplay Systems\Sub</Filter>
     </ClInclude>
     <ClInclude Include="TextSystem.h">
-      <Filter>Header Files\Systems\Sub</Filter>
+      <Filter>Header Files\Gameplay Systems\Sub</Filter>
     </ClInclude>
     <ClInclude Include="UIDisplaySystem.h">
-      <Filter>Header Files\Systems\Sub</Filter>
+      <Filter>Header Files\Gameplay Systems\Sub</Filter>
     </ClInclude>
     <ClInclude Include="BaseSystem.h">
-      <Filter>Header Files\Systems\Handling</Filter>
+      <Filter>Header Files\Gameplay Systems\Handling</Filter>
     </ClInclude>
     <ClInclude Include="SystemManager.h">
-      <Filter>Header Files\Systems\Handling</Filter>
+      <Filter>Header Files\Gameplay Systems\Handling</Filter>
     </ClInclude>
     <ClInclude Include="SystemRegistry.h">
-      <Filter>Header Files\Systems\Handling</Filter>
+      <Filter>Header Files\Gameplay Systems\Handling</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\align.hpp">
       <Filter>Header Files\3rd Party\Boost</Filter>
@@ -1089,91 +1119,55 @@
     <ClInclude Include="SoundData.h">
       <Filter>Header Files\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="DebugDrawComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugDrawSystem.h">
+      <Filter>Header Files\Gameplay Systems\Sub</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundEvent.h">
+      <Filter>Header Files\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files\Core\Events\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthChangeEvent.h">
+      <Filter>Header Files\Core\Events\Der</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreChangeEvent.h">
+      <Filter>Header Files\Core\Events\Der</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Minigin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_widgets.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>Source Files\3rd Party ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>Source Files\3rd Party ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_demo.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>Source Files\3rd Party ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_draw.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>Source Files\3rd Party ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_tables.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>Source Files\3rd Party ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_opengl2.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>Source Files\3rd Party ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdl2.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>Source Files\3rd Party ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_plot.cpp">
-      <Filter>Source Files\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="InputCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputKeyboard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputMouse.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EventManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Observer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Event.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\3rd Party ImGui</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="WorldPositionSystem.cpp">
       <Filter>Source Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextSystem.cpp">
       <Filter>Source Files\Systems</Filter>
@@ -1187,9 +1181,6 @@
     <ClCompile Include="UIDisplaySystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="ImGUIWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -1197,31 +1188,91 @@
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdlrenderer2.cpp">
-      <Filter>Source Files\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneInfoPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputInfoPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Serializer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameUUID.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\3rd Party ImGui</Filter>
     </ClCompile>
     <ClCompile Include="SystemManager.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="DebugDrawSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>Source Files\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="InputCommand.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="InputBuffer.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUIWindow.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Minigin.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
     <ClCompile Include="FModSoundSystem.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="InputMouse.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="InputInfoPanel.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="InputKeyboard.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="InputController.cpp">
+      <Filter>Source Files\Input</Filter>
     </ClCompile>
     <ClCompile Include="ServiceLocator.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneInfoPanel.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Serializer.cpp">
+      <Filter>Source Files\FileSys</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUUID.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Source Files\Events</Filter>
     </ClCompile>
     <ClCompile Include="ThreadManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Source Files\Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

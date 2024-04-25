@@ -17,7 +17,7 @@ namespace Pengin
 {
 	using EntityId = unsigned;
 
-	class EventManager final : public Pengin::Singleton<EventManager>
+	class EventManager final : public Singleton<EventManager>
 	{
 	public:
 		void ProcessEventQueue() noexcept;
@@ -30,7 +30,7 @@ namespace Pengin
 			return std::make_shared<Observer>();
 		}
 
-		void RemoveEvent(const std::string& eventName)
+		void EraseEvent(const std::string& eventName) noexcept
 		{
 			m_EventCallbacks.erase(eventName);
 		}

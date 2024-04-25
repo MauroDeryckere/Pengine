@@ -14,10 +14,12 @@
 #include "ScoreComponent.h"
 
 #include "SpriteComponent.h"
+#include "DebugDrawComponent.h"
 #include "TextComponent.h"
 #include "AnimationComponent.h"
 
 #include "DisplayComponent.h"
+
 #include "FPSCounterComponent.h"
 
 //template<typename... Component>

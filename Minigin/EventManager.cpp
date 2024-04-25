@@ -1,4 +1,7 @@
 #include "EventManager.h"
+
+#include "DebugOutput.h"
+
 #include <algorithm>
 #include <cassert>
 #include <ranges>
@@ -16,25 +19,6 @@ namespace Pengin
 			ProcessEvent(m_EventQueue.front().get());
 			m_EventQueue.pop();
 		}
-
-		//If soundevent
-		//add soundev to queue - TEMP HARDCODED
-		static int i{ 0 };
-
-		if (i == 2)
-		{
-			ThreadManager::GetInstance().EnqueueSoundTask([]()
-				{
-					std::cout << "TEST \n";
-					ServiceLocator::GetSoundSystem().LoadSound("../Data/TestSound.wav", true, true);
-					ServiceLocator::GetSoundSystem().PlaySounds("../Data/TestSound.wav");
-				}
-			);
-		}
-
-		i++;
-
-		//-------------------------------------
 	}
 
 	void EventManager::BroadcoastEvent(std::unique_ptr<BaseEvent> event) noexcept
@@ -64,7 +48,29 @@ namespace Pengin
 			{
 				fCallback(*event);	
 			}
+
+			return;
 		}
+
+		DEBUG_OUT(event->GetEventName() << "not found");
+
+		//If soundevent
+		//add soundev to queue - TEMP HARDCODED
+		//static int i{ 0 };
+
+		//if (i == 2)
+		//{
+		//	ThreadManager::GetInstance().EnqueueSoundTask([]()
+		//		{
+		//			std::cout << "TEST \n";
+		//			ServiceLocator::GetSoundSystem().LoadSound("../Data/TestSound.wav", true, true);
+		//			ServiceLocator::GetSoundSystem().PlaySounds("../Data/TestSound.wav");
+		//		}
+		//	);
+		//}
+
+		//i++;
+		//-------------------------------------
 	}
 
 	void EventManager::RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event) noexcept

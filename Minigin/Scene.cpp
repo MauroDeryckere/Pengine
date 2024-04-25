@@ -15,6 +15,7 @@
 #include "WorldPositionSystem.h"
 #include "MovementSystem.h"
 #include "FPSSystem.h"
+#include "DebugDrawSystem.h"
 #include "AnimationSystem.h"
 #include "CollisionSystem.h"
 #include "UIDisplaySystem.h"
@@ -47,6 +48,7 @@ namespace Pengin
 	void Scene::RegisterSystems()
 	{
 		m_SysManager.RegisterSystem(std::make_shared<FPSSystem>(m_Ecs));
+		m_SysManager.RegisterSystem(std::make_shared<DebugDrawSystem>(m_Ecs));
 		m_SysManager.RegisterSystem(std::make_shared<UIDisplaySystem>(m_Ecs, this));
 		m_SysManager.RegisterSystem(std::make_shared<TextSystem>(m_Ecs));
 		m_SysManager.RegisterSystem(std::make_shared<AnimationSystem>(m_Ecs));

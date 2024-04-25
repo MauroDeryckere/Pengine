@@ -57,8 +57,10 @@ int main(int, char* [])
 
 void Load()
 {
-	//LoadDemo();
+	LoadDemo();
 	//LoadSceneGraphDemo();
+
+	//LoadGamePlayScripting();
 }
 
 void LoadDemo()
@@ -67,7 +69,8 @@ void LoadDemo()
 
 	SceneFileData data{};
 	data.sceneSavePath = "../Data/DemoScene.json";
-	data.saveSceneOnDestroy = false;
+
+	data.saveSceneOnDestroy = false; //Easier to test if we dont do a runtime save
 	data.sceneLoadPath = "../Data/DemoScene.json";
 
 	data.inputFilePath = "../Data/InputTest.json";
@@ -200,6 +203,12 @@ void LoadGamePlayScripting()
 
 	SceneFileData sceneData{ };
 	auto pScene = SceneManager::GetInstance().CreateScene("Gameplay Scripting", sceneData);	
+
+	auto& input = InputManager::GetInstance();
+	const auto userIdx = input.RegisterUser(UserType::Keyboard);
+
+	auto player = pScene->CreateEntity({ 20, 20, 0 }, {}, {1,1,1}, userIdx);
+	player.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,255,255,255 }, uint16_t{ 100 }, uint16_t{100}, true);
 }
 
 
@@ -234,6 +243,9 @@ void RegisterKeyboardInput_DemoScene(const Pengin::InputData& inpData)
 	input.MapKeyboardAction(userIndex, KeyBoardKey::D, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 1, 0, 0 }));
 	input.MapKeyboardAction(userIndex, KeyBoardKey::W, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, -1, 0 }));
 	input.MapKeyboardAction(userIndex, KeyBoardKey::S, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, 1, 0 }));
+
+	input.MapKeyboardAction(userIndex, KeyBoardKey::C, InputState::UpThisFrame, std::make_shared<AttackPlayer>(userIndex));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::V, InputState::Pressed, std::make_shared<CollectScore>(userIndex));
 
 	auto a1 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::T, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "T down"));
 	auto a2 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::Y, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "Y down"));

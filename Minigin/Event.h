@@ -2,10 +2,9 @@
 #define PENGIN_EVENT
 
 #include <string>
-#include "SoundData.h"
-
 namespace Pengin
 {
+	//the constructor is public here and not protected because it is possible to simply broadcast a BaseEvent (only eventName)
 	class BaseEvent
 	{
 	public:
@@ -24,28 +23,6 @@ namespace Pengin
 
 	private:
 		const std::string m_EventName;
-	};
-
-	//Engine defined sound event
-	class SoundEvent final : public BaseEvent
-	{
-	public:
-		SoundEvent(const std::string& eventName, const SoundData& soundData) :
-			BaseEvent{ eventName },
-			m_SoundData{ soundData }
-		{ }
-
-		virtual ~SoundEvent() override = default;
-
-		[[nodiscard]] const SoundData& GetSounData() const noexcept { return m_SoundData; }
-
-		SoundEvent(const SoundEvent&) = delete;
-		SoundEvent(SoundEvent&&) = delete;
-		SoundEvent& operator=(const SoundEvent&) = delete;
-		SoundEvent& operator=(const SoundEvent&&) = delete;
-
-	private:
-		SoundData m_SoundData;
 	};
 }
 

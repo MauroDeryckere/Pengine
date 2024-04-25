@@ -6,6 +6,9 @@
 #include "InputCommand.h"
 #include "EventManager.h"
 
+#include "HealthChangeEvent.h"
+#include "ScoreChangeEvent.h"
+
 #include "ECS.h"
 #include "Entity.h"
 #include "Components.h"
@@ -85,23 +88,33 @@ namespace Pengin
 	};
 
 
-	class AttackPlayer final : public InputCommand //bound to input for now - need to use UUID if want to use this input bound action again
+	class AttackPlayer final : public InputCommand //bound to input for now
 	{
 	public:
-		AttackPlayer(const EntityId id) :
-			InputCommand{ {} },
-			m_Id{ id }
-		{
-			//assert(SceneManager::GetInstance().GetActiveScene()->GetECS().HasComponent<HealthComponent>(m_Id));
-		}
+		AttackPlayer(const UserIndex& user) :
+			InputCommand{ user }
+		{ }
 
 		virtual void Execute() override
 		{
-			//auto& ecs = SceneManager::GetInstance().GetActiveScene()->GetECS();
-			//ecs.GetComponent<HealthComponent>(m_Id).m_Health--;
+			auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
 
-			//Event healthchangeEvent{"OnHealthChangeEvent", &m_Id};
-			//EventManager::GetInstance().BroadcoastEvent(healthchangeEvent);
+			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find(InputCommand::GetUserIdx());
+
+			if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
+			{
+				DEBUG_OUT("movement for a deleted playerIdx");
+				return;
+			}
+
+			const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
+
+			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
+			Entity playerEntity{ entityId, pActiveScene };
+
+			playerEntity.GetComponent<HealthComponent>().health--;
+
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<HealthChangeEvent>("OnHealthChangeEvent", entityId));
 		}
 
 		virtual ~AttackPlayer() override = default;
@@ -112,25 +125,36 @@ namespace Pengin
 		AttackPlayer& operator=(AttackPlayer&&) noexcept = delete;
 
 	private:
-		const EntityId m_Id;
 	};
 
-	class CollectScore final : public InputCommand //bound to input for now - need to use UUID if want to use this input bound action again
+	class CollectScore final : public InputCommand //bound to input for now
 	{
 	public:
-		CollectScore(const EntityId id, unsigned score = 10) :
-			InputCommand{ {} },
-			m_EntityId { id },
+		CollectScore(const UserIndex& user, unsigned score = 10) :
+			InputCommand{ user },
 			m_ScoreVal{ score }
 		{ }
 
 		virtual void Execute() override
 		{
-			//auto& ecs = SceneManager::GetInstance().GetActiveScene()->GetECS();
-			//ecs.GetComponent<ScoreComponent>(m_EntityId).m_Score += m_ScoreVal;
+			auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
 
-			//Event scoreEvent{ "OnScoreCollectEvent" , &m_EntityId };
-			//EventManager::GetInstance().BroadcoastEvent(scoreEvent);
+			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find(InputCommand::GetUserIdx());
+
+			if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
+			{
+				DEBUG_OUT("movement for a deleted playerIdx");
+				return;
+			}
+
+			const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
+
+			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
+			Entity playerEntity{ entityId, pActiveScene };
+
+			playerEntity.GetComponent<ScoreComponent>().score += m_ScoreVal;
+
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<ScoreChangeEvent>("OnScoreCollectEvent", entityId));
 		}
 
 		virtual ~CollectScore() override = default;
@@ -141,8 +165,6 @@ namespace Pengin
 		CollectScore& operator=(CollectScore&&) noexcept = delete;
 
 	private:
-		const EntityId m_EntityId;
-
 		const unsigned m_ScoreVal;
 	};
 
