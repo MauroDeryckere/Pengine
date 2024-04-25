@@ -27,37 +27,34 @@
 
 namespace Pengin
 {
-	Scene::Scene(const std::string& name, const SceneFileData& sceneFileData)
+	Scene::Scene(const SceneData& sceneData) :
+		m_SceneData{ sceneData }
 	{
 		ServiceLocator::RegisterSoundSystem(std::move(std::make_unique<FModSoundSytem>())); //TODO move out of scene
 
-		RegisterSystems();
+		RegisterEngineSystems();
 
-		m_SceneData.name = name;
-		m_SceneData.sceneFileData = sceneFileData;
-
-		if (!sceneFileData.sceneLoadPath.empty())
+		if (!m_SceneData.sceneFileData.sceneLoadPath.empty())
 		{
 			if (!DeserializeScene())
 			{
-				throw std::runtime_error("Failed to deserialize scene at: " + sceneFileData.sceneLoadPath.string());
+				throw std::runtime_error("Failed to deserialize scene at: " + m_SceneData.sceneFileData.sceneLoadPath.string());
 			}
 		}
 	}
 
-	void Scene::RegisterSystems()
+	void Scene::RegisterEngineSystems()
 	{
-		m_SysManager.RegisterSystem(std::make_shared<FPSSystem>(m_Ecs));
-		m_SysManager.RegisterSystem(std::make_shared<DebugDrawSystem>(m_Ecs));
-		m_SysManager.RegisterSystem(std::make_shared<UIDisplaySystem>(m_Ecs, this));
-		m_SysManager.RegisterSystem(std::make_shared<TextSystem>(m_Ecs));
-		m_SysManager.RegisterSystem(std::make_shared<AnimationSystem>(m_Ecs));
+		m_SysManager.RegisterSystem<FPSSystem>(std::make_shared<FPSSystem>(m_Ecs));
+		m_SysManager.RegisterSystem<UIDisplaySystem>(std::make_shared<UIDisplaySystem>(m_Ecs, this));
+		m_SysManager.RegisterSystem<TextSystem>(std::make_shared<TextSystem>(m_Ecs));
+		m_SysManager.RegisterSystem<AnimationSystem>(std::make_shared<AnimationSystem>(m_Ecs));
 
-		auto pColl = m_SysManager.RegisterSystem(std::make_shared<CollisionSystem>(m_Ecs));
-		auto pMovement = m_SysManager.RegisterSystem(std::make_shared<MovementSystem>(m_Ecs), { pColl });
-		m_SysManager.RegisterSystem(std::make_shared<WorldPositionSystem>(m_Ecs), { pColl, pMovement });
+		auto pColl = m_SysManager.RegisterSystem<CollisionSystem>(std::make_shared<CollisionSystem>(m_Ecs));
+		auto pMovement = m_SysManager.RegisterSystem<MovementSystem>(std::make_shared<MovementSystem>(m_Ecs), { pColl });
+		m_SysManager.RegisterSystem<WorldPositionSystem>(std::make_shared<WorldPositionSystem>(m_Ecs), { pColl, pMovement });
 
-		m_SysManager.RegisterSystem(std::make_shared<RenderSystem>(m_Ecs));
+		m_SysManager.RegisterSystem<RenderSystem>(std::make_shared<RenderSystem>(m_Ecs));
 	}
 
 	Scene::~Scene()
@@ -297,6 +294,13 @@ namespace Pengin
 	{
 		m_SceneInfoPanel->Render(m_Ecs);
 		m_InputInfoPanel->Render();
+	}
+
+	void Scene::RegisterSystems(const std::function<void(SystemManager&, ECS&)>& fRegisterSystems) noexcept
+	{
+		assert(fRegisterSystems);
+
+		fRegisterSystems(m_SysManager, m_Ecs);
 	}
 
 	bool Scene::SerializeScene() const noexcept

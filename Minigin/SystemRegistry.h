@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <memory>
+#include <cassert>
 
 namespace Pengin 
 {
@@ -17,12 +18,21 @@ namespace Pengin
 			SystemRegistry() = default;
 			~SystemRegistry() = default;
 
-			void Register(std::shared_ptr<BaseSystem> sys, const std::vector<std::shared_ptr<BaseSystem>>& dependencies) noexcept
+			const size_t Register(std::shared_ptr<BaseSystem> sys, const std::vector<std::shared_ptr<BaseSystem>>& dependencies) noexcept
 			{
 				m_pSystems.emplace_back(sys);
 				m_pDependencies.emplace_back(dependencies);
 
 				m_Sys_SysVecIdxMap[sys.get()] = (m_pSystems.size() - 1);
+
+				return (m_pSystems.size() - 1);
+			}
+
+			[[nodiscard]] std::shared_ptr<BaseSystem> GetSystem(const size_t idx) const noexcept
+			{
+				assert(idx < m_pSystems.size() && "array idx out of bounds");
+
+				return m_pSystems[idx];
 			}
 
 			void Update()

@@ -15,7 +15,7 @@ namespace Pengin
 	class SceneManager final : public Pengin::Singleton<SceneManager>
 	{
 	public:
-		std::shared_ptr<Scene> CreateScene(const std::string& name, const SceneFileData& sceneFileData = {}, bool swapToNext = true);
+		std::shared_ptr<Scene> CreateScene(const SceneData& sceneData, bool swapToNext = true);
 
 		[[nodiscard]] std::shared_ptr<Scene> GetActiveScene() noexcept { return m_Scenes[m_ActiveSceneIdx]; }
 

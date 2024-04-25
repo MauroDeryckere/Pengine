@@ -24,7 +24,10 @@
 #include "InputCommands.h"
 #include "Serializer.h"
 
+#include "DebugDrawSystem.h"
+
 void LoadGamePlayScripting();
+
 
 void LoadDemo();
 void LoadSceneGraphDemo();
@@ -57,15 +60,17 @@ int main(int, char* [])
 
 void Load()
 {
-	LoadDemo();
+	//LoadDemo();
 	//LoadSceneGraphDemo();
 
-	//LoadGamePlayScripting();
+	LoadGamePlayScripting();
 }
 
 void LoadDemo()
 {
 	using namespace Pengin;
+	SceneData sceneData{};
+	sceneData.name = "Demo Scene";
 
 	SceneFileData data{};
 	data.sceneSavePath = "../Data/DemoScene.json";
@@ -78,7 +83,9 @@ void LoadDemo()
 	data.f_RegKeyboardInput = RegisterKeyboardInput_DemoScene;
 	data.keepPrevInput = false;
 
-	auto pScene = SceneManager::GetInstance().CreateScene("Demo Scene", data);
+	sceneData.sceneFileData = data;
+
+	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
 
 	Entity testLoadedEntity = pScene->AddEntityFromFile("../Data/TestEntityFFile.json");
 	testLoadedEntity.GetComponent<TextComponent>().SetText("TEXT TEST");
@@ -201,11 +208,19 @@ void LoadGamePlayScripting()
 {
 	using namespace Pengin;
 
-	SceneFileData sceneData{ };
-	auto pScene = SceneManager::GetInstance().CreateScene("Gameplay Scripting", sceneData);	
+	SceneData sceneData{};
+	sceneData.name = "Gameplay Scripting";
+
+	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);	
 
 	auto& input = InputManager::GetInstance();
 	const auto userIdx = input.RegisterUser(UserType::Keyboard);
+
+	pScene->RegisterSystems([](SystemManager& sysManager, ECS& ecs)
+		{
+			sysManager.RegisterSystem<DebugDrawSystem>(std::make_shared<DebugDrawSystem>(ecs));
+		}
+	);
 
 	auto player = pScene->CreateEntity({ 20, 20, 0 }, {}, {1,1,1}, userIdx);
 	player.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,255,255,255 }, uint16_t{ 100 }, uint16_t{100}, true);
@@ -266,7 +281,9 @@ void RegisterKeyboardInput_DemoScene(const Pengin::InputData& inpData)
 void LoadSceneGraphDemo()
 {
 	using namespace Pengin;
-	auto scene = SceneManager::GetInstance().CreateScene("Demo Scene");
+	SceneData sceneData{};
+	sceneData.name = "Demo Scene";
+	auto scene = SceneManager::GetInstance().CreateScene(sceneData);
 
 	Entity testPlayer = scene->CreateEntity(glm::vec3{ 100, 100, 0 }, {}, { 2,2,0 });
 	testPlayer.AddComponent<SpriteComponent>("pengoLowQualityFortesting.png", UtilStructs::Rectu16{ 0, 0, 50, 50 });

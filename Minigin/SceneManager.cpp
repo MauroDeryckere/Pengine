@@ -100,16 +100,16 @@ namespace Pengin
 		}
 	}
 
-	std::shared_ptr<Scene> SceneManager::CreateScene(const std::string& name, const SceneFileData& sceneFileData, bool swapToNext)
+	std::shared_ptr<Scene> SceneManager::CreateScene(const SceneData& sceneData, bool swapToNext)
 	{
-		const auto& scene = std::shared_ptr<Scene>(new Scene{ name, sceneFileData });
+		const auto& scene = std::shared_ptr<Scene>(new Scene{ sceneData });
 		m_Scenes.emplace_back(scene);
 
-		auto it = m_SceneName_IdMap.find(name);
+		auto it = m_SceneName_IdMap.find(sceneData.name);
 		assert(it == end(m_SceneName_IdMap) && "Don't have 2 scenes with same name.");
 
 		++m_SceneCounter;
-		m_SceneName_IdMap.insert({ name, m_SceneCounter });
+		m_SceneName_IdMap.insert({ sceneData.name, m_SceneCounter });
 
 		if (swapToNext)
 		{
