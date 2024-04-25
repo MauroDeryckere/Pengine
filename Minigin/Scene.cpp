@@ -21,17 +21,18 @@
 
 #include "GameTime.h"
 
-#include "AudioEngine.h"
+#include "ServiceLocator.h"
+#include "FModSoundSystem.h"
 
 namespace Pengin
 {
 	Scene::Scene(const std::string& name, const SceneFileData& sceneFileData)
 	{
-		m_pTestAudioEngine = std::make_unique<AudioEngine>();
+		ServiceLocator::register_sound_system(std::move(std::make_unique<FModSoundSytem>()));
+		auto& pTestSoundSys = ServiceLocator::GetSoundSystem();
 
-		AudioEngine::Init();
-		m_pTestAudioEngine->LoadSound("../Data/TestSound.wav", true, true);
-		m_pTestAudioEngine->PlaySounds("../Data/TestSound.wav");
+		pTestSoundSys.LoadSound("../Data/TestSound.wav", true, true);
+		pTestSoundSys.PlaySounds("../Data/TestSound.wav");
 
 		RegisterSystems();
 
@@ -63,8 +64,6 @@ namespace Pengin
 
 	Scene::~Scene()
 	{
-		AudioEngine::Shutdown();
-
 		if (m_SceneData.sceneFileData.saveSceneOnDestroy && !m_SceneData.sceneFileData.sceneSavePath.empty())
 		{
 			DEBUG_OUT("Saving scene " << m_SceneData.name);
@@ -270,7 +269,8 @@ namespace Pengin
 
 	void Scene::Update()
 	{	
-		AudioEngine::Update();
+		auto& pTestSoundSys = ServiceLocator::GetSoundSystem();
+		pTestSoundSys.Update();
 
 		m_SysManager.Update();
 

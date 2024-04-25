@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RENDERER
+#define RENDERER
+
 #include "ImGUIWindow.h"
 
 #include <SDL.h>
@@ -61,3 +63,4 @@ namespace dae
 	};
 }
 
+#endif

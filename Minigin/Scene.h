@@ -18,7 +18,6 @@
 
 namespace Pengin
 {
-	class AudioEngine;
 	class Entity;
 	class Scene final : public std::enable_shared_from_this<Scene>
 	{
@@ -61,8 +60,6 @@ namespace Pengin
 		void RegisterSystems();
 
 		bool SerializeScene() const noexcept;
-
-		std::unique_ptr<AudioEngine> m_pTestAudioEngine;
 
 		friend class Entity;
 		ECS m_Ecs;

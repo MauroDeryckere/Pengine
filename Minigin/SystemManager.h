@@ -12,7 +12,7 @@ namespace Pengin
 		SystemManager() = default;
 		~SystemManager() = default;
 
-		std::shared_ptr<BaseSystem> RegisterSystem(std::shared_ptr<BaseSystem> pSystem, std::vector<std::shared_ptr<BaseSystem>> pDependencies = {}) noexcept;
+		std::shared_ptr<BaseSystem> RegisterSystem(std::shared_ptr<BaseSystem> pSystem, const std::vector<std::shared_ptr<BaseSystem>>& pDependencies = {}) noexcept;
 		//RemoveSystem();
 
 		void Update();

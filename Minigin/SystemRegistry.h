@@ -17,7 +17,7 @@ namespace Pengin
 			SystemRegistry() = default;
 			~SystemRegistry() = default;
 
-			void Register(std::shared_ptr<BaseSystem> sys, std::vector<std::shared_ptr<BaseSystem>> dependencies) noexcept
+			void Register(std::shared_ptr<BaseSystem> sys, const std::vector<std::shared_ptr<BaseSystem>>& dependencies) noexcept
 			{
 				m_pSystems.emplace_back(sys);
 				m_pDependencies.emplace_back(dependencies);
