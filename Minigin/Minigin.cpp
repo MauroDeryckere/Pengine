@@ -15,8 +15,11 @@
 #include "GameTime.h"
 #include "ImGUIWindow.h"
 
+#include "ServiceLocator.h"
+#include "FModSoundSystem.h"
+#include "LoggingSoundSystem.h"
+
 #include "ResourceManager.h"
-#include "ThreadManager.h"
 
 #ifdef USE_STEAMWORKS
 	#pragma warning (push)
@@ -95,12 +98,12 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	//SDL_GL_SetSwapInterval(1); // Enable vsync
 
 	ResourceManager::GetInstance().Init(dataPath);
+
+	Pengin::ServiceLocator::RegisterSoundSystem(std::move(std::make_unique<Pengin::LoggingSoundSystem>(std::make_unique<Pengin::FModSoundSytem>())));
 }
 
 dae::Minigin::~Minigin()
 {
-	Pengin::ThreadManager::GetInstance().Stop();
-
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(g_Window);
 	g_Window = nullptr;
@@ -117,11 +120,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& input{ Pengin::InputManager::GetInstance() };
 	auto& time{ Pengin::GameTime::GetInstance() };
 	
-	Pengin::ThreadManager::GetInstance().Start();
-	
 	bool doContinue{ true };
-
-
 
 	while (doContinue)
 	{

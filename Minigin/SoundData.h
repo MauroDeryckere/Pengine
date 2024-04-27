@@ -2,6 +2,7 @@
 #define PENGIN_SOUNDDATA
 
 #include <string>
+#include <filesystem>
 #include <glm/vec3.hpp>
 
 namespace Pengin
@@ -10,7 +11,7 @@ namespace Pengin
 	{
 		SoundData() = default;
 
-		SoundData(const std::string& soundPath, float volumedB, const glm::vec3& position = {0,0,0}, bool is3D = true, bool isLooping = false, bool IsStream = false):
+		SoundData(const std::filesystem::path& soundPath, const glm::vec3& position = { }, bool is3D = true, bool isLooping = false, bool IsStream = false, float volumedB = 0.f):
 			soundPath{ soundPath },
 			position{ position },
 
@@ -23,10 +24,10 @@ namespace Pengin
 
 		~SoundData() = default;
 
-		std::string soundPath{ "NO PATH" };
+		std::filesystem::path soundPath{ "NO PATH" };
 		glm::vec3 position{ 0,0,0 };
 
-		float volumedB{ };
+		float volumedB{ 0.f };
 
 		bool is3D{ true };
 		bool isLooping{ false };

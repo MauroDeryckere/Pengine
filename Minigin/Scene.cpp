@@ -7,6 +7,7 @@
 #include "UUIDComponent.h"
 
 #include "SystemManager.h"
+#include "EventManager.h"
 
 #include "BaseSystem.h"
 
@@ -30,8 +31,6 @@ namespace Pengin
 	Scene::Scene(const SceneData& sceneData) :
 		m_SceneData{ sceneData }
 	{
-		ServiceLocator::RegisterSoundSystem(std::move(std::make_unique<FModSoundSytem>())); //TODO move out of scene
-
 		RegisterEngineSystems();
 
 		if (!m_SceneData.sceneFileData.sceneLoadPath.empty())
@@ -68,6 +67,8 @@ namespace Pengin
 
 	void Scene::Start()
 	{
+		ServiceLocator::GetSoundSystem().PlaySound({ "../Data/TestSound.wav" }); //TEMP
+
 		if (m_SceneData.sceneFileData.keepPrevInput)
 		{
 			return;
@@ -264,11 +265,6 @@ namespace Pengin
 
 	void Scene::Update()
 	{	
-		auto& pTestSoundSys = ServiceLocator::GetSoundSystem();
-		pTestSoundSys.Update();
-
-
-
 		m_SysManager.Update();
 
 		if (m_SceneData.sceneFileData.autoSaveTime > 0.f) //this should possibly be sent to a separate thread if very large save file

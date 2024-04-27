@@ -2,6 +2,8 @@
 #include "Scene.h"
 
 #include "EventManager.h"
+#include "ServiceLocator.h"
+
 #include <algorithm>
 
 namespace Pengin
@@ -68,6 +70,7 @@ namespace Pengin
 	}
 	void SceneManager::Update()
 	{
+		ServiceLocator::GetSoundSystem().Update();
 		EventManager::GetInstance().ProcessEventQueue();
 
 		if (m_SceneCounter > 0)

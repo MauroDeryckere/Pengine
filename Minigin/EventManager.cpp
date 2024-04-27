@@ -1,13 +1,12 @@
 #include "EventManager.h"
-
 #include "DebugOutput.h"
 
 #include <algorithm>
 #include <cassert>
+#include <mutex>
 #include <ranges>
 #include <iostream>
 
-#include "ThreadManager.h"
 #include "ServiceLocator.h"
 
 namespace Pengin
@@ -30,10 +29,17 @@ namespace Pengin
 	{
 		ProcessEvent(event.get());
 	}
+
+	void EventManager::EraseEvent(const std::string& eventName) noexcept
+	{
+		m_EventCallbacks.erase(eventName);
+	}
 	
 	void EventManager::ProcessEvent(BaseEvent* event) noexcept
 	{
-		auto it{ m_EventCallbacks.find(event->GetEventName()) };
+		const auto eventName{ event->GetEventName() };
+
+		auto it{ m_EventCallbacks.find(eventName) };
 
 		if (it != end(m_EventCallbacks))
 		{
@@ -52,25 +58,7 @@ namespace Pengin
 			return;
 		}
 
-		DEBUG_OUT(event->GetEventName() << "not found");
-
-		//If soundevent
-		//add soundev to queue - TEMP HARDCODED
-		//static int i{ 0 };
-
-		//if (i == 2)
-		//{
-		//	ThreadManager::GetInstance().EnqueueSoundTask([]()
-		//		{
-		//			std::cout << "TEST \n";
-		//			ServiceLocator::GetSoundSystem().LoadSound("../Data/TestSound.wav", true, true);
-		//			ServiceLocator::GetSoundSystem().PlaySounds("../Data/TestSound.wav");
-		//		}
-		//	);
-		//}
-
-		//i++;
-		//-------------------------------------
+		DEBUG_OUT(eventName << " event without callback(s)");
 	}
 
 	void EventManager::RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event) noexcept

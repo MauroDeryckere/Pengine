@@ -130,9 +130,6 @@
     <Filter Include="Header Files\Gameplay Systems">
       <UniqueIdentifier>{80d4353f-ef05-471a-8123-a480e7f4da18}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Gameplay Systems\Sub">
-      <UniqueIdentifier>{d793c37e-f28b-484c-b03d-5c20b56927ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Gameplay Systems\Handling">
       <UniqueIdentifier>{d12d81d6-e08e-49f2-94e0-5cee84dd334f}</UniqueIdentifier>
     </Filter>
@@ -593,30 +590,6 @@
     </ClInclude>
     <ClInclude Include="SceneFileData.h">
       <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldPositionSystem.h">
-      <Filter>Header Files\Gameplay Systems\Sub</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimationSystem.h">
-      <Filter>Header Files\Gameplay Systems\Sub</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionSystem.h">
-      <Filter>Header Files\Gameplay Systems\Sub</Filter>
-    </ClInclude>
-    <ClInclude Include="FPSSystem.h">
-      <Filter>Header Files\Gameplay Systems\Sub</Filter>
-    </ClInclude>
-    <ClInclude Include="MovementSystem.h">
-      <Filter>Header Files\Gameplay Systems\Sub</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem.h">
-      <Filter>Header Files\Gameplay Systems\Sub</Filter>
-    </ClInclude>
-    <ClInclude Include="TextSystem.h">
-      <Filter>Header Files\Gameplay Systems\Sub</Filter>
-    </ClInclude>
-    <ClInclude Include="UIDisplaySystem.h">
-      <Filter>Header Files\Gameplay Systems\Sub</Filter>
     </ClInclude>
     <ClInclude Include="BaseSystem.h">
       <Filter>Header Files\Gameplay Systems\Handling</Filter>
@@ -1113,20 +1086,11 @@
     <ClInclude Include="SoundSystem.h">
       <Filter>Header Files\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="ThreadManager.h">
-      <Filter>Header Files\Core\Threading</Filter>
-    </ClInclude>
     <ClInclude Include="SoundData.h">
       <Filter>Header Files\Audio</Filter>
     </ClInclude>
     <ClInclude Include="DebugDrawComponent.h">
       <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugDrawSystem.h">
-      <Filter>Header Files\Gameplay Systems\Sub</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundEvent.h">
-      <Filter>Header Files\Audio</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>Header Files\Core\Events\Base</Filter>
@@ -1136,6 +1100,36 @@
     </ClInclude>
     <ClInclude Include="ScoreChangeEvent.h">
       <Filter>Header Files\Core\Events\Der</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationSystem.h">
+      <Filter>Header Files\Gameplay Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionSystem.h">
+      <Filter>Header Files\Gameplay Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugDrawSystem.h">
+      <Filter>Header Files\Gameplay Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSSystem.h">
+      <Filter>Header Files\Gameplay Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementSystem.h">
+      <Filter>Header Files\Gameplay Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem.h">
+      <Filter>Header Files\Gameplay Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="TextSystem.h">
+      <Filter>Header Files\Gameplay Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="UIDisplaySystem.h">
+      <Filter>Header Files\Gameplay Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldPositionSystem.h">
+      <Filter>Header Files\Gameplay Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggingSoundSystem.h">
+      <Filter>Header Files\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1253,9 +1247,6 @@
     <ClCompile Include="SceneInfoPanel.cpp">
       <Filter>Source Files\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files\ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="Serializer.cpp">
       <Filter>Source Files\FileSys</Filter>
     </ClCompile>
@@ -1268,11 +1259,11 @@
     <ClCompile Include="EventManager.cpp">
       <Filter>Source Files\Events</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadManager.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

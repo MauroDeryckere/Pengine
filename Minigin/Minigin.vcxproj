@@ -495,6 +495,7 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll"
     <ClInclude Include="ImGUIWindow.h" />
     <ClInclude Include="InputInfoPanel.h" />
     <ClInclude Include="JsonConversion.h" />
+    <ClInclude Include="LoggingSoundSystem.h" />
     <ClInclude Include="MovementSystem.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="RectColliderComponent.h" />
@@ -507,11 +508,9 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll"
     <ClInclude Include="FModSoundSystem.h" />
     <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="SoundData.h" />
-    <ClInclude Include="SoundEvent.h" />
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="SystemManager.h" />
     <ClInclude Include="SystemRegistry.h" />
-    <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="UIDisplaySystem.h" />
     <ClInclude Include="GameUUID.h" />
     <ClInclude Include="UUIDComponent.h" />
@@ -601,7 +600,6 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll"
     <ClCompile Include="SystemManager.cpp" />
     <ClCompile Include="TextSystem.cpp" />
     <ClCompile Include="Texture2D.cpp" />
-    <ClCompile Include="ThreadManager.cpp" />
     <ClCompile Include="UIDisplaySystem.cpp" />
     <ClCompile Include="GameUUID.cpp" />
     <ClCompile Include="WorldPositionSystem.cpp" />

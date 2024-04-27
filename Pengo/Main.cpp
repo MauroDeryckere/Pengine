@@ -15,6 +15,7 @@
 #endif
 
 #include "SceneManager.h"
+
 #include "Entity.h"
 #include "Scene.h"
 
@@ -27,7 +28,6 @@
 #include "DebugDrawSystem.h"
 
 void LoadGamePlayScripting();
-
 
 void LoadDemo();
 void LoadSceneGraphDemo();
@@ -60,10 +60,10 @@ int main(int, char* [])
 
 void Load()
 {
-	//LoadDemo();
+	LoadDemo();
 	//LoadSceneGraphDemo();
 
-	LoadGamePlayScripting();
+	//LoadGamePlayScripting();
 }
 
 void LoadDemo()
@@ -225,7 +225,6 @@ void LoadGamePlayScripting()
 	auto player = pScene->CreateEntity({ 20, 20, 0 }, {}, {1,1,1}, userIdx);
 	player.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,255,255,255 }, uint16_t{ 100 }, uint16_t{100}, true);
 }
-
 
 void RegisterControllerInput_DemoScene(const Pengin::InputData& inpData)
 {

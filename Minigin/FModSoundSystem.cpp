@@ -1,120 +1,209 @@
 #include "FModSoundSystem.h"
 
+#include "DebugOutput.h"
+
 namespace Pengin
 {
 	FModSoundSytem::FModSoundSytem()
 	{
-		FModSoundSytem::ErrorCheck(FMOD::Studio::System::create(&m_pStudio));
-		FModSoundSytem::ErrorCheck(m_pStudio->initialize(32, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_PROFILE_ENABLE, NULL));
-		FModSoundSytem::ErrorCheck(m_pStudio->getCoreSystem(&m_pSystem));
+		ErrorCheck(FMOD::Studio::System::create(&m_pStudio));
+		ErrorCheck(m_pStudio->initialize(32, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_PROFILE_ENABLE, NULL));
+		ErrorCheck(m_pStudio->getCoreSystem(&m_pSystem));
+		ErrorCheck(m_pSystem->getMasterChannelGroup(&m_MasterGroup));
 	}
 
 	FModSoundSytem::~FModSoundSytem()
 	{
-		FModSoundSytem::ErrorCheck(m_pStudio->unloadAll());
-		FModSoundSytem::ErrorCheck(m_pStudio->release());
+		ErrorCheck(m_pStudio->unloadAll());
+		ErrorCheck(m_pStudio->release());
 	}
 
-	void FModSoundSytem::Update() 
+	void FModSoundSytem::Update() noexcept
 	{
-		std::vector<ChannelMap::iterator> pStoppedChannels;
-		for (auto it = begin(m_Channels); it != end(m_Channels); ++it)
+		
+		//erase any stopped channels
 		{
-			bool isPlaying = false;
-			it->second->isPlaying(&isPlaying);
-
-			if (!isPlaying)
+			std::vector<ChannelMap::iterator> pStoppedChannels{};
+			for (auto it = begin(m_Channels); it != end(m_Channels); ++it)
 			{
-				pStoppedChannels.emplace_back(it);
+				bool isPlaying{ false };
+				it->second->isPlaying(&isPlaying); //isplaying is still true even if paused (see. FMod API)
+
+				if (!isPlaying)
+				{
+					pStoppedChannels.emplace_back(it);
+				}
+			}
+
+			for (auto& it : pStoppedChannels)
+			{
+				m_Channels.erase(it);
 			}
 		}
+		//-------------------------
 
-		for (auto& it : pStoppedChannels)
+		//Currently loading requests
 		{
-			m_Channels.erase(it);
-		}
+			std::vector<size_t> executedReqs{};
+			for (size_t idx{ 0 }; idx < m_LoadingRequests.size(); ++idx)
+			{
+				auto it = m_LoadingSounds.find(m_LoadingRequests[idx].soundPath.string());
+				assert(it != end(m_LoadingSounds));
 
-		FModSoundSytem::ErrorCheck(m_pStudio->update());
+				FMOD::Sound* pSound{ it->second };
+				assert(pSound);
+
+				FMOD_OPENSTATE openstate;
+				pSound->getOpenState(&openstate, 0, 0, 0);
+
+				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+				{
+					executedReqs.emplace_back(idx);
+					m_LoadingSounds.erase(it);
+
+					PlaySound(pSound, m_LoadingRequests[idx]);
+
+					m_Sounds[m_LoadingRequests[idx].soundPath.string()] = pSound;
+				}
+			}
+
+			for (auto it = executedReqs.rbegin(); it != executedReqs.rend(); ++it)
+			{
+				m_LoadingRequests.erase(m_LoadingRequests.begin() + *it);
+			}
+		}
+		//-------------------------
+
+		//Check if anything was loaded that was not requested to be played
+		{
+			std::vector<LoadingMap::iterator> pLoadedSounds{};
+			for (auto it = begin(m_LoadingSounds); it != end(m_LoadingSounds); ++it)
+			{
+				FMOD::Sound* pSound{ it->second };
+				assert(pSound);
+
+				FMOD_OPENSTATE openstate;
+				pSound->getOpenState(&openstate, 0, 0, 0);
+
+				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+				{
+					pLoadedSounds.emplace_back(it);
+					m_Sounds[it->first] = pSound;
+				}
+			}
+
+			for (auto& it : pLoadedSounds)
+			{
+				m_LoadingSounds.erase(it);
+			}
+		}
+		//-------------------------
+
+		//Currently loading sounds that have been cancelled
+		{
+			std::vector<size_t> loaded{};
+			for (size_t idx{ 0 }; idx < m_ToRelVec.size(); ++idx)
+			{
+				FMOD_OPENSTATE openstate;
+				m_ToRelVec[idx]->getOpenState(&openstate, 0, 0, 0);
+
+				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+				{
+					m_ToRelVec[idx]->release();
+					loaded.emplace_back(idx);
+				}
+			}
+			for (auto it = loaded.rbegin(); it != loaded.rend(); ++it)
+			{
+				m_ToRelVec.erase(m_ToRelVec.begin() + *it);
+			}
+		}
+		//---------------------------------------------------
+
+		//Underlying system and core Update
+		ErrorCheck(m_pStudio->update());
+		
 	}
 
-	void FModSoundSytem::LoadSound(const std::string& soundName, bool is3D, bool isLooping, bool isStream)
+	void FModSoundSytem::LoadSound(const SoundData& soundData) noexcept
 	{
-		auto it{ m_Sounds.find(soundName) };
-
-		if (it != end(m_Sounds))
+		if (m_Sounds.find(soundData.soundPath.string()) != end(m_Sounds))
 		{
+			DEBUG_OUT(soundData.soundPath.string() << " Already loaded");
+			return;
+		}
+		else if (m_LoadingSounds.find(soundData.soundPath.string()) != end(m_LoadingSounds))
+		{
+			DEBUG_OUT(soundData.soundPath.string() << " Is already loading");
 			return;
 		}
 
-		const FMOD_MODE mode = FMOD_DEFAULT | 
-						(is3D ? FMOD_3D : FMOD_2D) | 
-						(isLooping ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF) | 
-						(isStream ? FMOD_CREATESTREAM : FMOD_CREATECOMPRESSEDSAMPLE);
-
-		FMOD::Sound* pSound{ nullptr };
-
-		FModSoundSytem::ErrorCheck(m_pSystem->createSound(soundName.c_str(), mode, nullptr, &pSound));
-
-		if (pSound) 
-		{
-			m_Sounds[soundName] = pSound;
-		}
+		LoadSoundImpl(soundData);
 	}
 
-	void FModSoundSytem::UnLoadSound(const std::string& soundName)
+	void FModSoundSytem::UnLoadSound(const std::filesystem::path& soundPath) noexcept
 	{
-		auto it = m_Sounds.find(soundName);
-		if (it == m_Sounds.end())
+		if (auto it = m_Sounds.find(soundPath.string()); it != m_Sounds.end())
 		{
+			ErrorCheck(it->second->release());
+			m_Sounds.erase(it);
 			return;
 		}
 
-		FModSoundSytem::ErrorCheck(it->second->release());
-		m_Sounds.erase(it);
+		if (auto it = m_LoadingSounds.find(soundPath.string()); it != m_LoadingSounds.end())
+		{
+			FMOD_OPENSTATE openstate;
+			it->second->getOpenState(&openstate, 0, 0, 0);
+
+			if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+			{
+				m_LoadingSounds.erase(it);
+
+				//If the sound has open requests and has to be unloaded
+				std::erase_if(m_LoadingRequests, [&](const SoundData& soundData) 
+					{
+						return soundData.soundPath.string() == soundPath.string();
+					});
+			}
+			else //Not done loading yet, release when loaded
+			{
+				m_ToRelVec.emplace_back(it->second);
+
+				m_LoadingSounds.erase(it);
+
+				//But remove the requests already
+				std::erase_if(m_LoadingRequests, [&](const SoundData& soundData)
+					{
+						return soundData.soundPath.string() == soundPath.string();
+					});
+			}
+
+			return;
+		}
+
+		DEBUG_OUT("trying to unload a sound that was never loaded: " << soundPath.string());
 	}
 
-	const int32_t FModSoundSytem::PlaySounds(const std::string& soundName, const glm::vec3& position, float volumedB)
+	const int32_t FModSoundSytem::PlaySound(const SoundData& soundData) noexcept
 	{
-		int32_t channelId{ m_NextChannelId++ };
-		auto it{ m_Sounds.find(soundName) };
+		auto loadedIt{ m_Sounds.find(soundData.soundPath.string()) };
 
-		if (it == end(m_Sounds)) //Loud sound if not loaded yet
+		if (loadedIt == end(m_Sounds)) //if sound is not loaded yet
 		{
-			LoadSound(soundName);
-			it = m_Sounds.find(soundName);
-
-			if (it == end(m_Sounds))
+			//Is sound not currently loading
+			if (auto loadingIt{ m_LoadingSounds.find(soundData.soundPath.string()) }; loadingIt == end(m_LoadingSounds))
 			{
-				std::cout << "Error:loaded sound is not found in map, likely did not load correctly \n"; //Might need to throw here in future / handle error if we ever end up here
-				return -1;
+				LoadSoundImpl(soundData);
 			}
+			
+			m_LoadingRequests.emplace_back(soundData);
+			return -1;
 		}
 
-		FMOD::Channel* pChannel{ nullptr };
-		//Play the sound paused first
-		FModSoundSytem::ErrorCheck(m_pSystem->playSound(it->second, nullptr, true, &pChannel));
-
-		if (pChannel)
-		{
-			FMOD_MODE currMode;
-			it->second->getMode(&currMode);
-
-			if (currMode & FMOD_3D) 
-			{
-				const FMOD_VECTOR fmodPosition{ VectorToFmod(position) };
-				FModSoundSytem::ErrorCheck(pChannel->set3DAttributes(&fmodPosition, nullptr));
-			}
-
-			FModSoundSytem::ErrorCheck(pChannel->setVolume(DbToVolume(volumedB)));
-			FModSoundSytem::ErrorCheck(pChannel->setPaused(false)); //Unpause the sound
-
-			m_Channels[channelId] = pChannel;
-		}
-
-		return channelId;
+		return PlaySound(loadedIt->second, soundData);
 	}
 
-	void FModSoundSytem::SetChannel3DPosition(int32_t channelId, const glm::vec3& position)
+	void FModSoundSytem::SetChannel3DPosition(int32_t channelId, const glm::vec3& position) noexcept
 	{
 		auto it{ m_Channels.find(channelId) };
 		if (it == end(m_Channels))
@@ -126,98 +215,79 @@ namespace Pengin
 		FModSoundSytem::ErrorCheck(it->second->set3DAttributes(&fmodPosition, NULL));
 	}
 
-	void FModSoundSytem::SetChannelVolume(int32_t channelId, float volumedB)
+	void FModSoundSytem::SetChannelVolume(int32_t channelId, float volumedB) noexcept
 	{
 		auto it = m_Channels.find(channelId);
+
 		if (it == end(m_Channels))
 		{
 			return;
 		}
 
-		FModSoundSytem::ErrorCheck(it->second->setVolume(DbToVolume(volumedB)));
+		ErrorCheck(it->second->setVolume(DbToVolume(volumedB)));
 	}
 
-	void FModSoundSytem::ErrorCheck(FMOD_RESULT result) 
+	void FModSoundSytem::ErrorCheck(FMOD_RESULT result) const noexcept
 	{
 		if (result != FMOD_OK) 
 		{
 			std::cout << "FMOD ERROR: " << result << "\n";
 		}
 	}
-}
+	const int32_t FModSoundSytem::PlaySound(FMOD::Sound* pSound, const SoundData& soundData) noexcept
+	{
+		FMOD::Channel* pChannel{ nullptr };
 
-//Comented functions from ref (need to be updated if used)
+		//Play the sound paused first
+		ErrorCheck(m_pSystem->playSound(pSound, nullptr, true, &pChannel));
 
-/*void AudioEngine::LoadBank(const std::string& strBankName, FMOD_STUDIO_LOAD_BANK_FLAGS flags) {
-		auto tFoundIt = sgpImplementation->mBanks.find(strBankName);
-		if (tFoundIt != sgpImplementation->mBanks.end())
-			return;
-		FMOD::Studio::Bank* pBank;
-		AudioEngine::ErrorCheck(sgpImplementation->mpStudioSystem->loadBankFile(strBankName.c_str(), flags, &pBank));
-		if (pBank) {
-			sgpImplementation->mBanks[strBankName] = pBank;
+		int32_t channelId{ m_NextChannelId++ };
+		if (pChannel)
+		{
+			FMOD_MODE currMode;
+			pSound->getMode(&currMode);
+
+			if (currMode & FMOD_3D)
+			{
+				const FMOD_VECTOR fmodPosition{ VectorToFmod(soundData.position) };
+				ErrorCheck(pChannel->set3DAttributes(&fmodPosition, nullptr));
+			}
+
+			ErrorCheck(pChannel->setVolume(DbToVolume(soundData.volumedB)));
+			ErrorCheck(pChannel->setPaused(false)); //Unpause the sound
+
+			m_Channels[channelId] = pChannel;
 		}
+
+		return channelId;
 	}
 
-	void AudioEngine::LoadEvent(const std::string& strEventName) {
-		auto tFoundit = sgpImplementation->mEvents.find(strEventName);
-		if (tFoundit != sgpImplementation->mEvents.end())
-			return;
-		FMOD::Studio::EventDescription* pEventDescription = NULL;
-		AudioEngine::ErrorCheck(sgpImplementation->mpStudioSystem->getEvent(strEventName.c_str(), &pEventDescription));
-		if (pEventDescription) {
-			FMOD::Studio::EventInstance* pEventInstance = NULL;
-			AudioEngine::ErrorCheck(pEventDescription->createInstance(&pEventInstance));
-			if (pEventInstance) {
-				sgpImplementation->mEvents[strEventName] = pEventInstance;
+	void FModSoundSytem::LoadSoundImpl(const SoundData& soundData) noexcept
+	{
+		const FMOD_MODE flags =
+			FMOD_DEFAULT
+			| (soundData.is3D ? FMOD_3D : FMOD_2D)
+			| (soundData.isLooping ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF)
+			| (soundData.isStream ? FMOD_CREATESTREAM : FMOD_CREATECOMPRESSEDSAMPLE)
+			| FMOD_NONBLOCKING; //Loading on a separate thread
+
+		FMOD::Sound* pSound{ nullptr };
+
+		ErrorCheck(m_pSystem->createSound(soundData.soundPath.string().c_str(), flags, nullptr, &pSound));
+
+		if (pSound)
+		{
+			FMOD_OPENSTATE openstate;
+			pSound->getOpenState(&openstate, 0, 0, 0);
+
+			if (openstate != FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+			{
+				m_LoadingSounds[soundData.soundPath.string()] = pSound;
+			}
+			else
+			{
+				m_Sounds[soundData.soundPath.string()] = pSound;
 			}
 		}
 	}
-
-	void AudioEngine::PlayEvent(const std::string& strEventName) {
-		auto tFoundit = sgpImplementation->mEvents.find(strEventName);
-		if (tFoundit == sgpImplementation->mEvents.end()) {
-			LoadEvent(strEventName);
-			tFoundit = sgpImplementation->mEvents.find(strEventName);
-			if (tFoundit == sgpImplementation->mEvents.end())
-				return;
-		}
-		tFoundit->second->start();
-	}
-
-	void AudioEngine::StopEvent(const std::string& strEventName, bool bImmediate) {
-		auto tFoundIt = sgpImplementation->mEvents.find(strEventName);
-		if (tFoundIt == sgpImplementation->mEvents.end())
-			return;
-		FMOD_STUDIO_STOP_MODE eMode;
-		eMode = bImmediate ? FMOD_STUDIO_STOP_IMMEDIATE : FMOD_STUDIO_STOP_ALLOWFADEOUT;
-		AudioEngine::ErrorCheck(tFoundIt->second->stop(eMode));
-	}
-
-	bool AudioEngine::IsEventPlaying(const std::string& strEventName) const {
-		auto tFoundIt = sgpImplementation->mEvents.find(strEventName);
-		if (tFoundIt == sgpImplementation->mEvents.end())
-			return false;
-
-		FMOD_STUDIO_PLAYBACK_STATE* state = NULL;
-		if (static_cast<unsigned>(tFoundIt->second->getPlaybackState(state)) == static_cast<unsigned>(FMOD_STUDIO_PLAYBACK_PLAYING)) {
-			return true;
-		}
-		return false;
-	}
-
-	void AudioEngine::GetEventParameter(const std::string& strEventName, const std::string& strParameterName, float* parameter) {
-		auto tFoundIt = sgpImplementation->mEvents.find(strEventName);
-		if (tFoundIt == sgpImplementation->mEvents.end())
-			return;
-
-		AudioEngine::ErrorCheck(tFoundIt->second->getParameterByName(strParameterName.c_str(), parameter));
-	}
-
-	void AudioEngine::SetEventParameter(const std::string& strEventName, const std::string& strParameterName, float fValue) {
-		auto tFoundIt = sgpImplementation->mEvents.find(strEventName);
-		if (tFoundIt == sgpImplementation->mEvents.end())
-			return;
-
-		AudioEngine::ErrorCheck(tFoundIt->second->setParameterByName(strParameterName.c_str(), fValue));
-	}*/
+}

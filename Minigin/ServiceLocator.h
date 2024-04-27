@@ -3,30 +3,10 @@
 
 #include "SoundSystem.h"
 #include <memory>
+#include <mutex>
 
 namespace Pengin
 {
-	class NullSoundSystem final : public SoundSystem
-	{
-	public:
-		NullSoundSystem() = default;
-		virtual ~NullSoundSystem() override = default;
-
-		virtual void Update() {}
-		virtual void LoadSound(const std::string&, bool, bool, bool) {}
-		virtual void UnLoadSound(const std::string&) {}
-
-		virtual const int32_t PlaySounds(const std::string&, const glm::vec3&, float) { return -1; }
-
-		virtual void SetChannel3DPosition(int32_t, const glm::vec3&) {}
-		virtual void SetChannelVolume(int32_t, float) {}
-
-		NullSoundSystem(const NullSoundSystem&) = delete;
-		NullSoundSystem(NullSoundSystem&&) = delete;
-		NullSoundSystem& operator=(const NullSoundSystem&) = delete;
-		NullSoundSystem& operator=(const NullSoundSystem&&) = delete;
-	};
-
 	class ServiceLocator final
 	{
 	public:
@@ -36,7 +16,10 @@ namespace Pengin
 			m_pSoundSystem = ( (!pSoundSystem) ? std::make_unique<NullSoundSystem>() : std::move(pSoundSystem));
 		}
 
+		static std::mutex& GetMutex() { return m_Mutex; }
+
 	private:
+		static std::mutex m_Mutex;
 		static std::unique_ptr<SoundSystem> m_pSoundSystem;
 	};
 }

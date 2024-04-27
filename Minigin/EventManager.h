@@ -30,10 +30,7 @@ namespace Pengin
 			return std::make_shared<Observer>();
 		}
 
-		void EraseEvent(const std::string& eventName) noexcept
-		{
-			m_EventCallbacks.erase(eventName);
-		}
+		void EraseEvent(const std::string& eventName) noexcept;
 
 		EventManager(const EventManager&) = delete;
 		EventManager(EventManager&&) = delete;
@@ -50,18 +47,6 @@ namespace Pengin
 		friend class Observer;
 		void RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& eventName) noexcept;
 		void ProcessEvent(BaseEvent* event) noexcept;
-
-		using ObserverIdentifier = std::pair<EntityId, std::type_index>;
-		struct ObserverIdentifierHash 
-		{
-			size_t operator()(const ObserverIdentifier& identifier) const 
-			{
-				const size_t hash1 = std::hash<unsigned>{}(identifier.first);
-				const size_t hash2 = identifier.second.hash_code();
-
-				return hash1 ^ hash2;
-			}
-		};
 
 		using ObsCallbacks = std::vector<std::pair<std::weak_ptr<Observer>, fEventCallback>>;
 		std::unordered_map<std::string, ObsCallbacks> m_EventCallbacks;
