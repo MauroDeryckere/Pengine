@@ -47,9 +47,9 @@ namespace Pengin
 			m_pRealSoundSystem->SetChannel3DPosition(id, position);
 		}
 
-		virtual void SetChannelVolume(const GameUUID& id, float volumeDb) noexcept override
+		virtual void SetChannelVolume(const GameUUID& id, float volume) noexcept override
 		{
-			m_pRealSoundSystem->SetChannelVolume(id, volumeDb);
+			m_pRealSoundSystem->SetChannelVolume(id, volume);
 		}
 
 		virtual void MuteAll() noexcept override

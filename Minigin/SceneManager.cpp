@@ -8,12 +8,12 @@
 
 namespace Pengin
 {
-	std::shared_ptr<Scene> SceneManager::GetScene(const std::string& sceneName)
+	std::shared_ptr<Scene> SceneManager::GetScene(const std::string& sceneName) noexcept
 	{
 		return m_Scenes[m_SceneName_IdMap.at(sceneName)];
 	}
 
-	void SceneManager::SetSceneActive(const std::string& sceneName, bool destroyActive)
+	void SceneManager::SetSceneActive(const std::string& sceneName, bool destroyActive) noexcept
 	{
 		auto it = m_SceneName_IdMap.find(sceneName);
 
@@ -36,7 +36,7 @@ namespace Pengin
 		m_Scenes[idx]->Start();
 	}
 
-	void SceneManager::DestroyScene(const std::string& sceneName)
+	void SceneManager::DestroyScene(const std::string& sceneName) noexcept
 	{
 		auto it = m_SceneName_IdMap.find(sceneName);
 
@@ -103,7 +103,7 @@ namespace Pengin
 		}
 	}
 
-	std::shared_ptr<Scene> SceneManager::CreateScene(const SceneData& sceneData, bool swapToNext)
+	std::shared_ptr<Scene> SceneManager::CreateScene(const SceneData& sceneData, bool swapToNext) noexcept
 	{
 		const auto& scene = std::shared_ptr<Scene>(new Scene{ sceneData });
 		m_Scenes.emplace_back(scene);

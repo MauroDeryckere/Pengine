@@ -238,6 +238,10 @@ void RegisterControllerInput_DemoScene(const Pengin::InputData& inpData)
 	input.MapControllerAction(userIndex, ControllerButton::DPadRight, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 1, 0, 0 }));
 	input.MapControllerAction(userIndex, ControllerButton::DPadUp, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, -1, 0 }));
 	input.MapControllerAction(userIndex, ControllerButton::DPadDown, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, 1, 0 }));
+
+	input.MapControllerAction(userIndex, ControllerButton::A, InputState::UpThisFrame, std::make_shared<AttackPlayer>(userIndex));
+	input.MapControllerAction(userIndex, ControllerButton::B, InputState::Pressed, std::make_shared<CollectScore>(userIndex));
+	input.MapControllerAction(userIndex, ControllerButton::X, InputState::DownThisFrame, std::make_shared<MakeSound>(userIndex, SoundData{"../Data/TestSound.wav"}));
 }
 
 void RegisterKeyboardInput_DemoScene(const Pengin::InputData& inpData)
@@ -260,6 +264,7 @@ void RegisterKeyboardInput_DemoScene(const Pengin::InputData& inpData)
 
 	input.MapKeyboardAction(userIndex, KeyBoardKey::C, InputState::UpThisFrame, std::make_shared<AttackPlayer>(userIndex));
 	input.MapKeyboardAction(userIndex, KeyBoardKey::V, InputState::Pressed, std::make_shared<CollectScore>(userIndex));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::B, InputState::DownThisFrame, std::make_shared<MakeSound>(userIndex, SoundData{ "../Data/TestSound.wav" }));
 
 	auto a1 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::T, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "T down"));
 	auto a2 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::Y, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "Y down"));

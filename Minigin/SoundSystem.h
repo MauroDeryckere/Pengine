@@ -23,7 +23,7 @@ namespace Pengin
 		virtual void PlaySound(const SoundData& soundData) noexcept  = 0;
 
 		virtual void SetChannel3DPosition(const GameUUID& id, const glm::vec3& position) noexcept = 0;
-		virtual void SetChannelVolume(const GameUUID& id, float volumeDb) noexcept = 0;
+		virtual void SetChannelVolume(const GameUUID& id, float volume) noexcept = 0;
 
 		virtual void SetVFXVolume(const float vol) noexcept = 0;
 		virtual void SetMusicVolume(const float vol) noexcept = 0;
@@ -33,11 +33,11 @@ namespace Pengin
 		virtual [[nodiscard]] bool IsMuted() const noexcept = 0;
 
 		//Conversion functions
-		[[nodiscard]] static float DbToVolume(const float dB) noexcept
+		[[nodiscard]] inline static float DbToVolume(const float dB) noexcept
 		{
 			return powf(10.0f, 0.05f * dB);
 		}
-		[[nodiscard]] static float VolumeTodB(const float volume) noexcept
+		[[nodiscard]] inline static float VolumeTodB(const float volume) noexcept
 		{
 			return 20.0f * log10f(volume);
 		}

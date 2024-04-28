@@ -19,9 +19,7 @@ namespace Pengin
 			Music
 		};
 
-
 		SoundData() = default;
-
 		SoundData(const std::filesystem::path& soundPath, SoundType soundType = SoundType::VFX, const glm::vec3& position = { }, bool is3D = true, bool isLooping = false, bool IsStream = false, float volume = 1.f) :
 			soundUUID{},
 			soundType{ soundType },

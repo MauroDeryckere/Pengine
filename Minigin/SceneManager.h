@@ -15,14 +15,14 @@ namespace Pengin
 	class SceneManager final : public Pengin::Singleton<SceneManager>
 	{
 	public:
-		std::shared_ptr<Scene> CreateScene(const SceneData& sceneData, bool swapToNext = true);
+		std::shared_ptr<Scene> CreateScene(const SceneData& sceneData, bool swapToNext = true)  noexcept;
 
 		[[nodiscard]] std::shared_ptr<Scene> GetActiveScene() noexcept { return m_Scenes[m_ActiveSceneIdx]; }
 
-		[[nodiscard]] std::shared_ptr<Scene> GetScene(const std::string& sceneName);
-		void SetSceneActive(const std::string& sceneName, bool destroyActive = true);
+		[[nodiscard]] std::shared_ptr<Scene> GetScene(const std::string& sceneName) noexcept;
+		void SetSceneActive(const std::string& sceneName, bool destroyActive = true) noexcept;
 
-		void DestroyScene(const std::string& sceneName);
+		void DestroyScene(const std::string& sceneName) noexcept;
 
 		[[nodiscard]] bool SwitchToNextScene() noexcept;
 
@@ -46,7 +46,7 @@ namespace Pengin
 		std::unordered_map<std::string, size_t> m_SceneName_IdMap;
 
 		size_t m_ActiveSceneIdx{ 0 };
-		unsigned m_SceneCounter{ 0 };
+		uint32_t m_SceneCounter{ 0 };
 	};
 }
 

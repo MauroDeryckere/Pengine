@@ -6,6 +6,9 @@
 #include "InputCommand.h"
 #include "EventManager.h"
 
+#include "SoundData.h"
+#include "ServiceLocator.h"
+
 #include "HealthChangeEvent.h"
 #include "ScoreChangeEvent.h"
 
@@ -166,6 +169,32 @@ namespace Pengin
 
 	private:
 		const unsigned m_ScoreVal;
+	};
+
+	class MakeSound final : public InputCommand //bound to input for now
+	{
+	public:
+		MakeSound(const UserIndex& user, const SoundData& soundData) :
+			InputCommand{ user },
+			m_SoundData{ soundData }
+		{ 
+			assert(!soundData.soundPath.empty());
+		}
+
+		virtual void Execute() override
+		{
+			ServiceLocator::GetSoundSystem().PlaySound(m_SoundData);
+		}
+
+		virtual ~MakeSound() override = default;
+
+		MakeSound(const MakeSound&) = delete;
+		MakeSound& operator=(const MakeSound&) = delete;
+		MakeSound(MakeSound&&) noexcept = delete;
+		MakeSound& operator=(MakeSound&&) noexcept = delete;
+
+	private:
+		const SoundData m_SoundData;
 	};
 
 }

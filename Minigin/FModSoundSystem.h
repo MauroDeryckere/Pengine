@@ -32,9 +32,6 @@ namespace Pengin
 
 		virtual void PlaySound(const SoundData& soundData) noexcept override;
 
-		virtual void SetChannel3DPosition(const GameUUID& id, const glm::vec3& position) noexcept override;
-		virtual void SetChannelVolume(const GameUUID& id, float volumedB) noexcept override;
-
 		virtual void SetVFXVolume(const float vol) noexcept override;
 		virtual void SetMusicVolume(const float vol) noexcept override;
 
@@ -52,8 +49,11 @@ namespace Pengin
 
 		virtual [[nodiscard]] bool IsMuted() const noexcept override
 		{
-			return m_IsMuted; 
+			return m_IsMuted;
 		}
+
+		virtual void SetChannel3DPosition(const GameUUID& id, const glm::vec3& position) noexcept override;
+		virtual void SetChannelVolume(const GameUUID& id, float volume) noexcept override;
 
 		FModSoundSytem(const FModSoundSytem&) = delete;
 		FModSoundSytem(FModSoundSytem&&) = delete;

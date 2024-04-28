@@ -17,19 +17,18 @@ namespace Pengin
 
 		inline void Update() noexcept
 		{
-			using std::chrono::high_resolution_clock;
-			using std::chrono::duration;
+			using namespace std::chrono;
 
-			const auto currentTime{ high_resolution_clock::now() };
+			const auto currentTime = high_resolution_clock::now();
 			m_ElapsedSec = duration<float>(currentTime - m_LastTime).count();
 
-			m_LastTime = currentTime;
 			m_MsLag += m_ElapsedSec * 1000.f;
+			m_LastTime = std::chrono::high_resolution_clock::now();
 		}
 
 		[[nodiscard]] inline auto GetSleepTime() const noexcept
 		{
-			const auto sleepTime{ m_LastTime + std::chrono::milliseconds(static_cast<long>(m_MsPerFrame)) - std::chrono::high_resolution_clock::now() };
+			const auto sleepTime = m_LastTime + std::chrono::milliseconds(static_cast<long>(m_MsPerFrame)) - std::chrono::high_resolution_clock::now();
 			return sleepTime;
 		}
 

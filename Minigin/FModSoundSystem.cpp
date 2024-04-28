@@ -218,7 +218,7 @@ namespace Pengin
 		ErrorCheck(it->second->set3DAttributes(&fmodPosition, NULL));
 	}
 
-	void FModSoundSytem::SetChannelVolume(const GameUUID& id, float volumedB) noexcept
+	void FModSoundSytem::SetChannelVolume(const GameUUID& id, float volume) noexcept
 	{
 		auto it = m_Channels.find(id);
 		if (it == end(m_Channels))
@@ -227,7 +227,7 @@ namespace Pengin
 			return;
 		}
 
-		ErrorCheck(it->second->setVolume(DbToVolume(volumedB)));
+		ErrorCheck(it->second->setVolume(volume));
 	}
 
 	void FModSoundSytem::SetVFXVolume(const float vol) noexcept

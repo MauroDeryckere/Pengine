@@ -121,9 +121,6 @@
     <Filter Include="Header Files\Core\ServiceLocator">
       <UniqueIdentifier>{3a8475bc-fdee-4551-af0a-cfb11e78dc6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Core\Threading">
-      <UniqueIdentifier>{cfb57397-051a-4e6f-a48e-9e1186ff4622}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Core\Events">
       <UniqueIdentifier>{8972368e-7b72-4b31-b2b4-c48b615851a2}</UniqueIdentifier>
     </Filter>

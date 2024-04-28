@@ -134,6 +134,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 		while (time.IsLag())
 		{
+			std::cout << "FIXED UPD\n";
 			sceneManager.FixedUpdate();
 			time.ProcessLag();
 		}
