@@ -34,7 +34,6 @@ namespace Pengin
 			m_pRealSoundSystem->UnLoadSound(soundPath);
 		}
 
-		//Returns the channelId in case specific changes to volume,... have to be made after loading	
 		virtual void PlaySound(const SoundData& soundData) noexcept override
 		{
 			std::cout << "Playing sound: \n";
@@ -65,6 +64,9 @@ namespace Pengin
 		{
 			return m_pRealSoundSystem->IsMuted();
 		}
+
+		virtual void SetVFXVolume(const float vol) noexcept override { m_pRealSoundSystem->SetVFXVolume(vol); }
+		virtual void SetMusicVolume(const float vol) noexcept override { m_pRealSoundSystem->SetMusicVolume(vol); }
 
 		LoggingSoundSystem(const LoggingSoundSystem&) = delete;
 		LoggingSoundSystem(LoggingSoundSystem&&) = delete;

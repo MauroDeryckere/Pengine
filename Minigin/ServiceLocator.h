@@ -16,10 +16,7 @@ namespace Pengin
 			m_pSoundSystem = ( (!pSoundSystem) ? std::make_unique<NullSoundSystem>() : std::move(pSoundSystem));
 		}
 
-		static std::mutex& GetMutex() { return m_Mutex; }
-
 	private:
-		static std::mutex m_Mutex;
 		static std::unique_ptr<SoundSystem> m_pSoundSystem;
 	};
 }

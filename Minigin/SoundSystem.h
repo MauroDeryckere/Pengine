@@ -25,6 +25,9 @@ namespace Pengin
 		virtual void SetChannel3DPosition(const GameUUID& id, const glm::vec3& position) noexcept = 0;
 		virtual void SetChannelVolume(const GameUUID& id, float volumeDb) noexcept = 0;
 
+		virtual void SetVFXVolume(const float vol) noexcept = 0;
+		virtual void SetMusicVolume(const float vol) noexcept = 0;
+
 		virtual void MuteAll() noexcept = 0;
 		virtual void UnmuteAll() noexcept = 0;
 		virtual [[nodiscard]] bool IsMuted() const noexcept = 0;
@@ -59,6 +62,9 @@ namespace Pengin
 
 		virtual void SetChannel3DPosition(const GameUUID&, const glm::vec3&) noexcept {}
 		virtual void SetChannelVolume(const GameUUID&, float) noexcept {}
+
+		virtual void SetVFXVolume(const float) noexcept {}
+		virtual void SetMusicVolume(const float) noexcept {}
 
 		virtual void MuteAll() noexcept {}
 		virtual void UnmuteAll() noexcept {}

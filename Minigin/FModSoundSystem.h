@@ -30,12 +30,13 @@ namespace Pengin
 		virtual void LoadSound(const SoundData& soundData) noexcept override;
 		virtual void UnLoadSound(const std::filesystem::path& soundPath) noexcept override;
 
-		//-1 == invalid
-		//Returns the channelId in case specific changes to volume,... have to be made after loading	
 		virtual void PlaySound(const SoundData& soundData) noexcept override;
 
 		virtual void SetChannel3DPosition(const GameUUID& id, const glm::vec3& position) noexcept override;
 		virtual void SetChannelVolume(const GameUUID& id, float volumedB) noexcept override;
+
+		virtual void SetVFXVolume(const float vol) noexcept override;
+		virtual void SetMusicVolume(const float vol) noexcept override;
 
 		virtual void MuteAll() noexcept override
 		{
@@ -73,10 +74,12 @@ namespace Pengin
 
 		FMOD::Studio::System* m_pStudio{ nullptr };
 		FMOD::System* m_pSystem{ nullptr }; //Core API
-		FMOD::ChannelGroup* m_MasterGroup{ nullptr };
-		bool m_IsMuted{ false };
 
-		int32_t m_NextChannelId{}; //Simple counter
+		FMOD::ChannelGroup* m_MasterGroup{ nullptr };
+		FMOD::ChannelGroup* m_pVFXGroup{ nullptr };
+		FMOD::ChannelGroup* m_pMusicGroup{ nullptr };
+
+		bool m_IsMuted{ false };
 
 		SoundMap m_Sounds{};
 		ChannelMap m_Channels{};
@@ -96,6 +99,7 @@ namespace Pengin
 		void PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept;
 		//Allows loading without additional checks
 		void LoadSoundImpl(const SoundData& soundData) noexcept;
+
 
 
 		//TODO add support for these systems

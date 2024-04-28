@@ -11,6 +11,9 @@ namespace Pengin
 		ErrorCheck(m_pStudio->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, NULL));
 		ErrorCheck(m_pStudio->getCoreSystem(&m_pSystem));
 		ErrorCheck(m_pSystem->getMasterChannelGroup(&m_MasterGroup));
+
+		m_pSystem->createChannelGroup("VFX", &m_pVFXGroup);
+		m_pSystem->createChannelGroup("Music", &m_pMusicGroup);
 	}
 
 	FModSoundSytem::~FModSoundSytem()
@@ -227,6 +230,18 @@ namespace Pengin
 		ErrorCheck(it->second->setVolume(DbToVolume(volumedB)));
 	}
 
+	void FModSoundSytem::SetVFXVolume(const float vol) noexcept
+	{
+		ErrorCheck(m_pVFXGroup->setVolume(vol));
+	}
+
+	void FModSoundSytem::SetMusicVolume(const float vol) noexcept
+	{
+		ErrorCheck(m_pMusicGroup->setVolume(vol));
+	}
+
+	
+
 	void FModSoundSytem::ErrorCheck(FMOD_RESULT result) const noexcept
 	{
 		if (result != FMOD_OK) 
@@ -239,8 +254,17 @@ namespace Pengin
 	{
 		FMOD::Channel* pChannel{ nullptr };
 
-		//Play the sound paused first
-		ErrorCheck(m_pSystem->playSound(pSound, nullptr, true, &pChannel));
+		switch (soundData.soundType)
+		{
+		case SoundData::SoundType::VFX:
+			ErrorCheck(m_pSystem->playSound(pSound, m_pVFXGroup, true, &pChannel));
+			break;
+		case SoundData::SoundType::Music:
+			ErrorCheck(m_pSystem->playSound(pSound, m_pMusicGroup, true, &pChannel));
+			break;
+		default:
+			break;
+		}
 		
 		if (pChannel)
 		{
@@ -253,7 +277,7 @@ namespace Pengin
 				ErrorCheck(pChannel->set3DAttributes(&fmodPosition, nullptr));
 			}
 
-			ErrorCheck(pChannel->setVolume(DbToVolume(soundData.volumedB)));
+			ErrorCheck(pChannel->setVolume(soundData.volume));
 			ErrorCheck(pChannel->setPaused(false)); //Unpause the sound
 
 			m_Channels[soundData.soundUUID] = pChannel;

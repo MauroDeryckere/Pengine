@@ -13,15 +13,23 @@ namespace Pengin
 {
 	struct SoundData final
 	{
+		enum class SoundType : uint8_t
+		{
+			VFX,
+			Music
+		};
+
+
 		SoundData() = default;
 
-		SoundData(const std::filesystem::path& soundPath, const glm::vec3& position = { }, bool is3D = true, bool isLooping = false, bool IsStream = false, float volumedB = 0.f):
+		SoundData(const std::filesystem::path& soundPath, SoundType soundType = SoundType::VFX, const glm::vec3& position = { }, bool is3D = true, bool isLooping = false, bool IsStream = false, float volume = 1.f) :
 			soundUUID{},
-			
+			soundType{ soundType },
+
 			soundPath{ soundPath },
 			position{ position },
 
-			volumedB{ volumedB },
+			volume{ volume },
 
 			is3D{ is3D },
 			isLooping{ isLooping },
@@ -35,7 +43,7 @@ namespace Pengin
 			std::cout << std::format("SoundId: {}\n", soundUUID.GetUUID_PrettyStr());
 			std::cout << std::format("SoundPath: {}\n", soundPath.string());
 			std::cout << std::format("Position: [{}, {}, {}]\n", position.x, position.y, position.z);
-			std::cout << std::format("Volume (dB): {}\n", volumedB);
+			std::cout << std::format("Volume: {}\n", volume);
 			std::cout << std::format("Is 3D: {}\n", is3D ? "Yes" : "No");
 			std::cout << std::format("Is Looping: {}\n", isLooping ? "Yes" : "No");
 			std::cout << std::format("Is Stream: {}\n", isStream ? "Yes" : "No");
@@ -46,11 +54,12 @@ namespace Pengin
 		std::filesystem::path soundPath{ };
 		glm::vec3 position{ 0,0,0 };
 
-		float volumedB{ 0.f };
+		float volume{ 0.f };
 
 		bool is3D{ true };
 		bool isLooping{ false };
 		bool isStream{ false };
+		SoundType soundType{ SoundType::VFX };
 	};
 }
 
