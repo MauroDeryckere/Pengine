@@ -24,7 +24,7 @@
 #include "GameTime.h"
 
 #include "ServiceLocator.h"
-#include "FModSoundSystem.h"
+#include <thread>
 
 namespace Pengin
 {
@@ -67,8 +67,6 @@ namespace Pengin
 
 	void Scene::Start()
 	{
-		ServiceLocator::GetSoundSystem().PlaySound({ "../Data/TestSound.wav" }); //TEMP
-
 		if (m_SceneData.sceneFileData.keepPrevInput)
 		{
 			return;

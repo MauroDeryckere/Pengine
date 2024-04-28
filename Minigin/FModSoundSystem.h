@@ -32,10 +32,10 @@ namespace Pengin
 
 		//-1 == invalid
 		//Returns the channelId in case specific changes to volume,... have to be made after loading	
-		virtual const int32_t PlaySound(const SoundData& soundData) noexcept override;
+		virtual void PlaySound(const SoundData& soundData) noexcept override;
 
-		virtual void SetChannel3DPosition(int32_t channelId, const glm::vec3& position) noexcept override;
-		virtual void SetChannelVolume(int32_t channelId, float volumedB) noexcept override;
+		virtual void SetChannel3DPosition(const GameUUID& id, const glm::vec3& position) noexcept override;
+		virtual void SetChannelVolume(const GameUUID& id, float volumedB) noexcept override;
 
 		virtual void MuteAll() noexcept override
 		{
@@ -63,14 +63,13 @@ namespace Pengin
 		//Loaded sounds
 		using SoundMap = std::map<std::string, FMOD::Sound*>;
 		//In use channels
-		using ChannelMap = std::map<int32_t, FMOD::Channel*>;
+		using ChannelMap = std::map<GameUUID, FMOD::Channel*>;
 		//The sounds that are being loaded
 		using LoadingMap = std::map<std::string, FMOD::Sound*>;
 		//Requests for sounds that are currently being loaded
 		using RequestVec = std::vector<SoundData>;
-		//Sounds have to be fully loaded before releasing, if a user decides to cancel it, we have to maintain a vector of anyhting to be released
+		//Sounds have to be fully loaded before releasing, if a user decides to cancel it, we have to maintain a vector of anything to be released
 		using ToReleaseVec = std::vector<FMOD::Sound*>;
-
 
 		FMOD::Studio::System* m_pStudio{ nullptr };
 		FMOD::System* m_pSystem{ nullptr }; //Core API
@@ -94,11 +93,12 @@ namespace Pengin
 		}
 
 		//Allows playing the sound without additional map lookups
-		const int32_t PlaySound(FMOD::Sound* pSound, const SoundData& soundData) noexcept;
+		void PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept;
 		//Allows loading without additional checks
 		void LoadSoundImpl(const SoundData& soundData) noexcept;
 
-		//TODO add support for theese systems
+
+		//TODO add support for these systems
 		//using EventMap = std::map<std::string, FMOD::Studio::EventInstance*>;
 		//using BankMap = std::map<std::string, FMOD::Studio::Bank*>;
 

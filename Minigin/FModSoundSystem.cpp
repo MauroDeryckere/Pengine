@@ -7,7 +7,8 @@ namespace Pengin
 	FModSoundSytem::FModSoundSytem()
 	{
 		ErrorCheck(FMOD::Studio::System::create(&m_pStudio));
-		ErrorCheck(m_pStudio->initialize(32, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_PROFILE_ENABLE, NULL));
+
+		ErrorCheck(m_pStudio->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, NULL));
 		ErrorCheck(m_pStudio->getCoreSystem(&m_pSystem));
 		ErrorCheck(m_pSystem->getMasterChannelGroup(&m_MasterGroup));
 	}
@@ -20,8 +21,7 @@ namespace Pengin
 
 	void FModSoundSytem::Update() noexcept
 	{
-		
-		//erase any stopped channels
+		//Erase any stopped channels
 		{
 			std::vector<ChannelMap::iterator> pStoppedChannels{};
 			for (auto it = begin(m_Channels); it != end(m_Channels); ++it)
@@ -42,7 +42,7 @@ namespace Pengin
 		}
 		//-------------------------
 
-		//Currently loading requests
+		//Requests for souns that are loading
 		{
 			std::vector<size_t> executedReqs{};
 			for (size_t idx{ 0 }; idx < m_LoadingRequests.size(); ++idx)
@@ -54,16 +54,13 @@ namespace Pengin
 				assert(pSound);
 
 				FMOD_OPENSTATE openstate;
-				pSound->getOpenState(&openstate, 0, 0, 0);
+				ErrorCheck(pSound->getOpenState(&openstate, 0, 0, 0));
 
-				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY || 
+					openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_PLAYING)  //Either has to be ready or currently playing to be allowed to be played
 				{
 					executedReqs.emplace_back(idx);
-					m_LoadingSounds.erase(it);
-
-					PlaySound(pSound, m_LoadingRequests[idx]);
-
-					m_Sounds[m_LoadingRequests[idx].soundPath.string()] = pSound;
+					PlaySoundImpl(pSound, m_LoadingRequests[idx]);
 				}
 			}
 
@@ -73,8 +70,8 @@ namespace Pengin
 			}
 		}
 		//-------------------------
-
-		//Check if anything was loaded that was not requested to be played
+		
+		//Check if the currently loading sounds have been loaded, and if so add them to the loaded map
 		{
 			std::vector<LoadingMap::iterator> pLoadedSounds{};
 			for (auto it = begin(m_LoadingSounds); it != end(m_LoadingSounds); ++it)
@@ -94,12 +91,13 @@ namespace Pengin
 
 			for (auto& it : pLoadedSounds)
 			{
+				m_Sounds[it->first] = it->second;
 				m_LoadingSounds.erase(it);
 			}
 		}
 		//-------------------------
 
-		//Currently loading sounds that have been cancelled
+		//Currently Loading sounds that have been cancelled
 		{
 			std::vector<size_t> loaded{};
 			for (size_t idx{ 0 }; idx < m_ToRelVec.size(); ++idx)
@@ -122,11 +120,12 @@ namespace Pengin
 
 		//Underlying system and core Update
 		ErrorCheck(m_pStudio->update());
-		
 	}
 
 	void FModSoundSytem::LoadSound(const SoundData& soundData) noexcept
 	{
+		assert(std::filesystem::exists(soundData.soundPath) && "Sound path invalid, doesn't exist");
+
 		if (m_Sounds.find(soundData.soundPath.string()) != end(m_Sounds))
 		{
 			DEBUG_OUT(soundData.soundPath.string() << " Already loaded");
@@ -181,46 +180,47 @@ namespace Pengin
 			return;
 		}
 
-		DEBUG_OUT("trying to unload a sound that was never loaded: " << soundPath.string());
+		DEBUG_OUT("Warning: trying to unload a sound that was never loaded: " << soundPath.string());
 	}
 
-	const int32_t FModSoundSytem::PlaySound(const SoundData& soundData) noexcept
+	void FModSoundSytem::PlaySound(const SoundData& soundData) noexcept
 	{
-		auto loadedIt{ m_Sounds.find(soundData.soundPath.string()) };
+		assert(std::filesystem::exists(soundData.soundPath) && "Sound path invalid, doesn't exist");
 
-		if (loadedIt == end(m_Sounds)) //if sound is not loaded yet
+		if (auto loadedIt{ m_Sounds.find(soundData.soundPath.string()) }; loadedIt != end(m_Sounds))
 		{
-			//Is sound not currently loading
-			if (auto loadingIt{ m_LoadingSounds.find(soundData.soundPath.string()) }; loadingIt == end(m_LoadingSounds))
-			{
-				LoadSoundImpl(soundData);
-			}
-			
-			m_LoadingRequests.emplace_back(soundData);
-			return -1;
+			PlaySoundImpl(loadedIt->second, soundData);
 		}
-
-		return PlaySound(loadedIt->second, soundData);
+		else if (auto loadingIt{ m_LoadingSounds.find(soundData.soundPath.string()) }; loadingIt != end(m_LoadingSounds))
+		{
+			m_LoadingRequests.emplace_back(soundData);
+		}
+		else
+		{
+			LoadSoundImpl(soundData);
+			m_LoadingRequests.emplace_back(soundData);
+		}
 	}
 
-	void FModSoundSytem::SetChannel3DPosition(int32_t channelId, const glm::vec3& position) noexcept
+	void FModSoundSytem::SetChannel3DPosition(const GameUUID& id, const glm::vec3& position) noexcept
 	{
-		auto it{ m_Channels.find(channelId) };
+		auto it{ m_Channels.find(id) };
 		if (it == end(m_Channels))
 		{
+			DEBUG_OUT("Channel for id: " << id.GetUUID_PrettyStr() << "does not exist");
 			return;
 		}
 
 		const FMOD_VECTOR fmodPosition{ VectorToFmod(position) };
-		FModSoundSytem::ErrorCheck(it->second->set3DAttributes(&fmodPosition, NULL));
+		ErrorCheck(it->second->set3DAttributes(&fmodPosition, NULL));
 	}
 
-	void FModSoundSytem::SetChannelVolume(int32_t channelId, float volumedB) noexcept
+	void FModSoundSytem::SetChannelVolume(const GameUUID& id, float volumedB) noexcept
 	{
-		auto it = m_Channels.find(channelId);
-
+		auto it = m_Channels.find(id);
 		if (it == end(m_Channels))
 		{
+			DEBUG_OUT("Channel for id: " << id.GetUUID_PrettyStr() << "does not exist");
 			return;
 		}
 
@@ -234,14 +234,14 @@ namespace Pengin
 			std::cout << "FMOD ERROR: " << result << "\n";
 		}
 	}
-	const int32_t FModSoundSytem::PlaySound(FMOD::Sound* pSound, const SoundData& soundData) noexcept
+
+	void FModSoundSytem::PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept
 	{
 		FMOD::Channel* pChannel{ nullptr };
 
 		//Play the sound paused first
 		ErrorCheck(m_pSystem->playSound(pSound, nullptr, true, &pChannel));
-
-		int32_t channelId{ m_NextChannelId++ };
+		
 		if (pChannel)
 		{
 			FMOD_MODE currMode;
@@ -256,10 +256,8 @@ namespace Pengin
 			ErrorCheck(pChannel->setVolume(DbToVolume(soundData.volumedB)));
 			ErrorCheck(pChannel->setPaused(false)); //Unpause the sound
 
-			m_Channels[channelId] = pChannel;
+			m_Channels[soundData.soundUUID] = pChannel;
 		}
-
-		return channelId;
 	}
 
 	void FModSoundSytem::LoadSoundImpl(const SoundData& soundData) noexcept
@@ -272,7 +270,6 @@ namespace Pengin
 			| FMOD_NONBLOCKING; //Loading on a separate thread
 
 		FMOD::Sound* pSound{ nullptr };
-
 		ErrorCheck(m_pSystem->createSound(soundData.soundPath.string().c_str(), flags, nullptr, &pSound));
 
 		if (pSound)

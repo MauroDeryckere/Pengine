@@ -1,6 +1,8 @@
 #ifndef PENGIN_SOUNDDATA
 #define PENGIN_SOUNDDATA
 
+#include "GameUUID.h"
+
 #include <string>
 #include <filesystem>
 #include <glm/vec3.hpp>
@@ -12,6 +14,8 @@ namespace Pengin
 		SoundData() = default;
 
 		SoundData(const std::filesystem::path& soundPath, const glm::vec3& position = { }, bool is3D = true, bool isLooping = false, bool IsStream = false, float volumedB = 0.f):
+			soundUUID{},
+			
 			soundPath{ soundPath },
 			position{ position },
 
@@ -24,7 +28,9 @@ namespace Pengin
 
 		~SoundData() = default;
 
-		std::filesystem::path soundPath{ "NO PATH" };
+		GameUUID soundUUID{ };
+
+		std::filesystem::path soundPath{ };
 		glm::vec3 position{ 0,0,0 };
 
 		float volumedB{ 0.f };

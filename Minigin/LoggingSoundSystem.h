@@ -35,20 +35,20 @@ namespace Pengin
 		}
 
 		//Returns the channelId in case specific changes to volume,... have to be made after loading	
-		virtual const int32_t PlaySound(const SoundData& soundData) noexcept override
+		virtual void PlaySound(const SoundData& soundData) noexcept override
 		{
 			std::cout << "Playing sound: " << soundData.soundPath.string() << "\n";
-			return m_pRealSoundSystem->PlaySound(soundData);
+			m_pRealSoundSystem->PlaySound(soundData);
 		}
 
-		virtual void SetChannel3DPosition(int32_t channelId, const glm::vec3& position) noexcept override
+		virtual void SetChannel3DPosition(const GameUUID& id, const glm::vec3& position) noexcept override
 		{
-			m_pRealSoundSystem->SetChannel3DPosition(channelId, position);
+			m_pRealSoundSystem->SetChannel3DPosition(id, position);
 		}
 
-		virtual void SetChannelVolume(int32_t channelId, float volumeDb) noexcept override
+		virtual void SetChannelVolume(const GameUUID& id, float volumeDb) noexcept override
 		{
-			m_pRealSoundSystem->SetChannelVolume(channelId, volumeDb);
+			m_pRealSoundSystem->SetChannelVolume(id, volumeDb);
 		}
 
 		virtual void MuteAll() noexcept override
