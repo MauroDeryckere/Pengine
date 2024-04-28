@@ -99,7 +99,11 @@ dae::Minigin::Minigin(const std::string &dataPath)
 
 	ResourceManager::GetInstance().Init(dataPath);
 
-	Pengin::ServiceLocator::RegisterSoundSystem(std::move(std::make_unique<Pengin::LoggingSoundSystem>(std::make_unique<Pengin::FModSoundSytem>())));
+	#ifdef DEBUG_MODE
+		Pengin::ServiceLocator::RegisterSoundSystem(std::make_unique<Pengin::LoggingSoundSystem>(std::make_unique<Pengin::FModSoundSytem>()));
+	#else
+		Pengin::ServiceLocator::RegisterSoundSystem(std::make_unique<Pengin::FModSoundSytem>());
+	#endif
 }
 
 dae::Minigin::~Minigin()

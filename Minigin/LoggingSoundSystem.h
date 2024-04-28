@@ -22,9 +22,9 @@ namespace Pengin
 
 		virtual void LoadSound(const SoundData& soundData) noexcept override
 		{
-			std::cout
-				<< "Loading sound: " << soundData.soundPath.string()
-				<< " Vol: " << soundData.volumedB << "\n";
+			std::cout<< "Loading sound: \n";
+			soundData.PrintSoundInfo();
+
 			m_pRealSoundSystem->LoadSound(soundData);
 		}
 
@@ -37,7 +37,9 @@ namespace Pengin
 		//Returns the channelId in case specific changes to volume,... have to be made after loading	
 		virtual void PlaySound(const SoundData& soundData) noexcept override
 		{
-			std::cout << "Playing sound: " << soundData.soundPath.string() << "\n";
+			std::cout << "Playing sound: \n";
+			soundData.PrintSoundInfo();
+
 			m_pRealSoundSystem->PlaySound(soundData);
 		}
 

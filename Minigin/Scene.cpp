@@ -22,9 +22,7 @@
 #include "UIDisplaySystem.h"
 
 #include "GameTime.h"
-
 #include "ServiceLocator.h"
-#include <thread>
 
 namespace Pengin
 {

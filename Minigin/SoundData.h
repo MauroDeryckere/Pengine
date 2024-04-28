@@ -4,7 +4,9 @@
 #include "GameUUID.h"
 
 #include <string>
+#include <iostream>
 #include <filesystem>
+#include <format> 
 #include <glm/vec3.hpp>
 
 namespace Pengin
@@ -27,6 +29,17 @@ namespace Pengin
 		{ }
 
 		~SoundData() = default;
+
+		void PrintSoundInfo() const noexcept
+		{
+			std::cout << std::format("SoundId: {}\n", soundUUID.GetUUID_PrettyStr());
+			std::cout << std::format("SoundPath: {}\n", soundPath.string());
+			std::cout << std::format("Position: [{}, {}, {}]\n", position.x, position.y, position.z);
+			std::cout << std::format("Volume (dB): {}\n", volumedB);
+			std::cout << std::format("Is 3D: {}\n", is3D ? "Yes" : "No");
+			std::cout << std::format("Is Looping: {}\n", isLooping ? "Yes" : "No");
+			std::cout << std::format("Is Stream: {}\n", isStream ? "Yes" : "No");
+		}
 
 		GameUUID soundUUID{ };
 
