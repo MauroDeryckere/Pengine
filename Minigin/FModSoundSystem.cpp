@@ -8,7 +8,9 @@ namespace Pengin
 	{
 		ErrorCheck(FMOD::Studio::System::create(&m_pStudio));
 
-		ErrorCheck(m_pStudio->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, NULL));
+		constexpr int MAX_CHANNELS{ 512 };
+
+		ErrorCheck(m_pStudio->initialize(MAX_CHANNELS, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, NULL));
 		ErrorCheck(m_pStudio->getCoreSystem(&m_pSystem));
 		ErrorCheck(m_pSystem->getMasterChannelGroup(&m_MasterGroup));
 
@@ -25,23 +27,18 @@ namespace Pengin
 	void FModSoundSytem::Update() noexcept
 	{
 		//Erase any stopped channels
+		for (auto it{ m_Channels.begin() }; it != m_Channels.end(); )
 		{
-			std::vector<ChannelMap::iterator> pStoppedChannels{};
-			for (auto it = begin(m_Channels); it != end(m_Channels); ++it)
-			{
-				bool isPlaying{ false };
-				it->second->isPlaying(&isPlaying); //isplaying is still true even if paused (see. FMod API)
+			auto& channelVec{ it->second };
 
-				if (!isPlaying)
+			std::erase_if(channelVec, [](auto& ptr) 
 				{
-					pStoppedChannels.emplace_back(it);
-				}
-			}
+					bool isPlaying{ false };
+					ptr->isPlaying(&isPlaying);
+					return !isPlaying;
+				});
 
-			for (auto& it : pStoppedChannels)
-			{
-				m_Channels.erase(it);
-			}
+			channelVec.empty() ? it = m_Channels.erase(it) : ++it;
 		}
 		//-------------------------
 
@@ -75,27 +72,21 @@ namespace Pengin
 		//-------------------------
 		
 		//Check if the currently loading sounds have been loaded, and if so add them to the loaded map
+		for (auto it = m_LoadingSounds.begin(); it != m_LoadingSounds.end(); )
 		{
-			std::vector<LoadingMap::iterator> pLoadedSounds{};
-			for (auto it = begin(m_LoadingSounds); it != end(m_LoadingSounds); ++it)
+			FMOD::Sound* pSound = it->second;
+
+			FMOD_OPENSTATE openstate;
+			ErrorCheck(pSound->getOpenState(&openstate, 0, 0, 0));
+
+			if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
 			{
-				FMOD::Sound* pSound{ it->second };
-				assert(pSound);
-
-				FMOD_OPENSTATE openstate;
-				pSound->getOpenState(&openstate, 0, 0, 0);
-
-				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
-				{
-					pLoadedSounds.emplace_back(it);
-					m_Sounds[it->first] = pSound;
-				}
+				m_Sounds[it->first] = pSound;
+				it = m_LoadingSounds.erase(it);
 			}
-
-			for (auto& it : pLoadedSounds)
+			else
 			{
-				m_Sounds[it->first] = it->second;
-				m_LoadingSounds.erase(it);
+				++it;
 			}
 		}
 		//-------------------------
@@ -215,7 +206,12 @@ namespace Pengin
 		}
 
 		const FMOD_VECTOR fmodPosition{ VectorToFmod(position) };
-		ErrorCheck(it->second->set3DAttributes(&fmodPosition, NULL));
+
+		auto& channelVec = it->second;
+		for (auto channel : channelVec)
+		{
+			ErrorCheck(channel->set3DAttributes(&fmodPosition, NULL));
+		}
 	}
 
 	void FModSoundSytem::SetChannelVolume(const GameUUID& id, float volume) noexcept
@@ -227,7 +223,11 @@ namespace Pengin
 			return;
 		}
 
-		ErrorCheck(it->second->setVolume(volume));
+		auto& channelVec = it->second;
+		for (auto channel : channelVec)
+		{
+			ErrorCheck(channel->setVolume(volume));
+		}
 	}
 
 	void FModSoundSytem::SetVFXVolume(const float vol) noexcept
@@ -280,7 +280,7 @@ namespace Pengin
 			ErrorCheck(pChannel->setVolume(soundData.volume));
 			ErrorCheck(pChannel->setPaused(false)); //Unpause the sound
 
-			m_Channels[soundData.soundUUID] = pChannel;
+			m_Channels[soundData.soundUUID].emplace_back(pChannel);
 		}
 	}
 

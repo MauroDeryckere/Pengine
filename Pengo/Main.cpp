@@ -23,7 +23,7 @@
 #include "Components.h"
 
 #include "InputCommands.h"
-#include "Serializer.h"
+#include "ServiceLocator.h"
 
 #include "DebugDrawSystem.h"
 
@@ -62,12 +62,12 @@ void Load()
 {
 	LoadDemo();
 	//LoadSceneGraphDemo();
-
 	//LoadGamePlayScripting();
 }
 
 void LoadDemo()
 {
+	//Most of thesceneData is actually read from a file if you chose a loadPath, just typing it here too for readability
 	using namespace Pengin;
 	SceneData sceneData{};
 	sceneData.name = "Demo Scene";
@@ -75,7 +75,7 @@ void LoadDemo()
 	SceneFileData data{};
 	data.sceneSavePath = "../Data/DemoScene.json";
 
-	data.saveSceneOnDestroy = false; //Easier to test if we dont do a runtime save
+	data.saveSceneOnDestroy = false; //Easier to test if we dont do a runtime save 
 	data.sceneLoadPath = "../Data/DemoScene.json";
 
 	data.inputFilePath = "../Data/InputTest.json";
@@ -93,6 +93,7 @@ void LoadDemo()
 	pScene->SerializeEntity(testLoadedEntity, "../Data/TestEntityToFile.json");
 
 	//Manual scene initialization (no load file)
+	
 	//Background && logo
 	//auto background = pScene->CreateEntity();
 	//background.AddComponent<SpriteComponent>("background.tga");

@@ -13,6 +13,8 @@
 	#pragma warning (pop)
 #endif
 
+//The achievement system does nothing for now since it is not required for the assignment.
+
 namespace Pengin
 {
 	class AchievementSystem final
@@ -34,7 +36,6 @@ namespace Pengin
 	private:
 		void RegisterObservers()
 		{
-			//TODO
 			auto callBack = [this](const BaseEvent& event) { ScoreAchievementCallback(event); };
 			m_Observer->RegisterForEvent(m_Observer,"OnScoreIncreaseEvent", callBack);
 		}
