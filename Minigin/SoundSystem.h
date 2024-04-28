@@ -10,6 +10,9 @@
 
 namespace Pengin
 {
+	using ChannelIndex = int16_t;
+	constexpr ChannelIndex INVALID_CHANNEL_IDX{ -1 };
+
 	class SoundSystem
 	{
 	public:
@@ -20,10 +23,14 @@ namespace Pengin
 		virtual void LoadSound(const SoundData& soundData) noexcept = 0;
 		virtual void UnLoadSound(const std::filesystem::path& soundPath) noexcept = 0;
 
-		virtual void PlaySound(const SoundData& soundData) noexcept  = 0;
+		//It is important to load the sound first if you want a valid channel idx
+		virtual const ChannelIndex PlaySound(const SoundData& soundData) noexcept  = 0;
 
-		virtual void SetChannel3DPosition(const GameUUID& id, const glm::vec3& position) noexcept = 0;
-		virtual void SetChannelVolume(const GameUUID& id, float volume) noexcept = 0;
+		virtual void SetAllChannels3DPosition(const GameUUID& id, const glm::vec3& position) noexcept = 0;
+		virtual void SetAllChannelsVolume(const GameUUID& id, float volume) noexcept = 0;
+
+		virtual void SetChannel3DPosition(const GameUUID& id, ChannelIndex idx, const glm::vec3& position) noexcept = 0;
+		virtual void SetChannelVolume(const GameUUID& id, ChannelIndex idx, float volume) noexcept = 0;
 
 		virtual void SetVFXVolume(const float vol) noexcept = 0;
 		virtual void SetMusicVolume(const float vol) noexcept = 0;
@@ -58,10 +65,13 @@ namespace Pengin
 		virtual void LoadSound(const SoundData&) noexcept {}
 		virtual void UnLoadSound(const std::filesystem::path&) noexcept {}
 
-		virtual void PlaySound(const SoundData&) noexcept { }
+		virtual const ChannelIndex PlaySound(const SoundData&) noexcept { return INVALID_CHANNEL_IDX; }
 
-		virtual void SetChannel3DPosition(const GameUUID&, const glm::vec3&) noexcept {}
-		virtual void SetChannelVolume(const GameUUID&, float) noexcept {}
+		virtual void SetAllChannels3DPosition(const GameUUID&, const glm::vec3&) noexcept {}
+		virtual void SetAllChannelsVolume(const GameUUID&, float) noexcept {}
+
+		virtual void SetChannel3DPosition(const GameUUID&, ChannelIndex, const glm::vec3&) noexcept {}
+		virtual void SetChannelVolume(const GameUUID&, ChannelIndex, float) noexcept {}
 
 		virtual void SetVFXVolume(const float) noexcept {}
 		virtual void SetMusicVolume(const float) noexcept {}

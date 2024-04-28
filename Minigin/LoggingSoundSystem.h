@@ -34,22 +34,30 @@ namespace Pengin
 			m_pRealSoundSystem->UnLoadSound(soundPath);
 		}
 
-		virtual void PlaySound(const SoundData& soundData) noexcept override
+		virtual const ChannelIndex PlaySound(const SoundData& soundData) noexcept override
 		{
 			std::cout << "Playing sound: \n";
 			soundData.PrintSoundInfo();
 
-			m_pRealSoundSystem->PlaySound(soundData);
+			return m_pRealSoundSystem->PlaySound(soundData);
 		}
 
-		virtual void SetChannel3DPosition(const GameUUID& id, const glm::vec3& position) noexcept override
+		virtual void SetAllChannels3DPosition(const GameUUID& id, const glm::vec3& position) noexcept override
 		{
-			m_pRealSoundSystem->SetChannel3DPosition(id, position);
+			m_pRealSoundSystem->SetAllChannels3DPosition(id, position);
+		}
+		virtual void SetAllChannelsVolume(const GameUUID& id, float volume) noexcept override
+		{
+			m_pRealSoundSystem->SetAllChannelsVolume(id, volume);
 		}
 
-		virtual void SetChannelVolume(const GameUUID& id, float volume) noexcept override
+		virtual void SetChannel3DPosition(const GameUUID& id, ChannelIndex idx, const glm::vec3& position) noexcept override
 		{
-			m_pRealSoundSystem->SetChannelVolume(id, volume);
+			m_pRealSoundSystem->SetChannel3DPosition(id, idx, position);
+		}
+		virtual void SetChannelVolume(const GameUUID& id, ChannelIndex idx, float volume) noexcept override
+		{
+			m_pRealSoundSystem->SetChannelVolume(id, idx, volume);
 		}
 
 		virtual void MuteAll() noexcept override
