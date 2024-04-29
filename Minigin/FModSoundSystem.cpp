@@ -248,7 +248,7 @@ namespace Pengin
 		}
 		
 		auto& vec{ it->second };
-		if (idx >= vec.size())
+		if (static_cast<uint16_t>(idx) >= vec.size())
 		{
 			DEBUG_OUT("Channel for id: " << id.GetUUID_PrettyStr() << "does out of bounds (invalid, sound likely already removed)");
 			return;
@@ -274,7 +274,7 @@ namespace Pengin
 		}
 
 		auto& vec{ it->second };
-		if (idx >= vec.size())
+		if (static_cast<uint16_t>(idx) >= vec.size())
 		{
 			DEBUG_OUT("Channel for id: " << id.GetUUID_PrettyStr() << "does out of bounds (invalid, sound likely already removed)");
 			return;

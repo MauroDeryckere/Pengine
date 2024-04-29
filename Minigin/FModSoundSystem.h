@@ -67,7 +67,7 @@ namespace Pengin
 	private:
 		//Loaded sounds
 		using SoundMap = std::unordered_map<std::string, FMOD::Sound*>;
-		//In use channels - We store multiple channels in case the same soundData is played twice (== same UUID), to still allow manipulation of a specific channel in the future (return the idx)
+		//In use channels - We store multiple channels in case the same soundData is played twice (== same UUID), to still allow manipulation of a specific channel
 		using ChannelMap = std::unordered_map<GameUUID, std::vector<FMOD::Channel*>>;
 		//The sounds that are being loaded
 		using LoadingMap = std::unordered_map<std::string, FMOD::Sound*>;
