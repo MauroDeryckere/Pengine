@@ -17,6 +17,20 @@
 //Ref: https://codyclaborn.me/tutorials/making-a-basic-fmod-audio-engine-in-c/
 //	   https://www.fmod.com/docs/2.03/api/welcome.html
 
+/*
+Audio Engine TODO:
+- Pausing all
+- Support velocity for 3D Sound
+- Stop playing a Sound
+
+- FMOD Event / bank support
+- Reverb support
+- Listener && Update the listener (3D audio)
+- Effects
+
+- ImGUI debug window
+*/
+
 namespace Pengin
 {
 	class FModSoundSytem final : public SoundSystem
@@ -36,22 +50,9 @@ namespace Pengin
 		virtual void SetVFXVolume(const float vol) noexcept override;
 		virtual void SetMusicVolume(const float vol) noexcept override;
 
-		virtual void MuteAll() noexcept override
-		{
-			ErrorCheck(m_MasterGroup->setMute(true));
-			m_IsMuted = true;
-		}
-
-		virtual void UnmuteAll() noexcept override
-		{
-			ErrorCheck(m_MasterGroup->setMute(false));
-			m_IsMuted = false;
-		}
-
-		virtual [[nodiscard]] bool IsMuted() const noexcept override
-		{
-			return m_IsMuted;
-		}
+		virtual void MuteAll() noexcept override;
+		virtual void UnmuteAll() noexcept override;
+		virtual [[nodiscard]] bool IsMuted() const noexcept override;
 
 		virtual void SetAllChannels3DPosition(const GameUUID& id, const glm::vec3& position) noexcept override;
 		virtual void SetAllChannelsVolume(const GameUUID& id, float volume) noexcept override;
@@ -103,7 +104,6 @@ namespace Pengin
 		const ChannelIndex PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept;
 		//Allows loading without additional checks
 		void LoadSoundImpl(const SoundData& soundData) noexcept;
-
 
 
 		//TODO add support for these systems

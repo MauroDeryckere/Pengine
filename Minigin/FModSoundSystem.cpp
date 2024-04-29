@@ -293,6 +293,23 @@ namespace Pengin
 		ErrorCheck(m_pMusicGroup->setVolume(vol));
 	}
 
+	void FModSoundSytem::MuteAll() noexcept
+	{
+		ErrorCheck(m_MasterGroup->setMute(true));
+		m_IsMuted = true;
+	}
+
+	void FModSoundSytem::UnmuteAll() noexcept
+	{
+		ErrorCheck(m_MasterGroup->setMute(false));
+		m_IsMuted = false;
+	}
+
+	bool FModSoundSytem::IsMuted() const noexcept
+	{
+		return m_IsMuted;
+	}
+
 	void FModSoundSytem::ErrorCheck(FMOD_RESULT result) const noexcept
 	{
 		if (result != FMOD_OK) 
