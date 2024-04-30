@@ -1,0 +1,33 @@
+{
+    "UUID": "00000000-0000-0000-0000-000000000000",
+    "Transform Component": {
+        "worldPos": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "localPos": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "scale": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "relation": {
+            "children": 0,
+            "firstChild": "NULL_UUID",
+            "prevSibling": "NULL_UUID",
+            "nextSibling": "NULL_UUID",
+            "parent": "NULL_UUID"
+        },
+        "isPosDirty": false
+    }
+}

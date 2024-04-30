@@ -1,9 +1,15 @@
-#ifndef SERIALIZER
-#define SERIALIZER
+#ifndef PENGIN_SERIALIZER
+#define PENGIN_SERIALIZER
 
-#include "CoreIncludes.h"
+#include "GameUUID.h"
+#include "EntityId.h"
+
+#include <vector>
+#include <tuple>
 #include <filesystem>
-#include <memory>
+
+#include "SerializationRegistry.h"
+#include "FieldSerialization.h"
 
 namespace Pengin
 {
@@ -14,30 +20,37 @@ namespace Pengin
 
 	using InputData = std::tuple <UserIndex, unsigned>;
 	using InputDataVec = std::vector<InputData>;
-	class Serializer final : public Pengin::Singleton<Serializer>
+
+	class Serializer
 	{
 	public:
-		[[nodiscard]] bool SerializeScene(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept;
-		[[nodiscard]] bool DeserializeScene(SceneData& sceneData, std::unordered_map<GameUUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept;
+		Serializer() = default;
+		virtual ~Serializer() = default;
 
-		[[nodiscard]] bool SerializeInput(const std::filesystem::path& filePath) const noexcept;
-		[[nodiscard]] std::pair<bool, InputDataVec> DeserializeInput(const std::filesystem::path& filePath) noexcept;
+		[[nodiscard]] virtual bool SerializeScene(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept = 0;
+		[[nodiscard]] virtual bool DeserializeScene(SceneData& sceneData, std::unordered_map<GameUUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept = 0;
 
-		[[nodiscard]] bool SerializeSceneEntity(const ECS& ecs, const EntityId entityId, const std::filesystem::path& filePath, bool keepUUID = false) const noexcept;
- 		[[nodiscard]] std::pair<bool, EntityId> DerserializeSceneEntity(ECS& ecs, std::unordered_map<GameUUID, EntityId>& entityMap, const std::filesystem::path& filePath, bool newUUID = true) noexcept;
+		[[nodiscard]] virtual bool SerializeInput(const std::filesystem::path& filePath) const noexcept = 0;
+		[[nodiscard]] virtual std::pair<bool, InputDataVec> DeserializeInput(const std::filesystem::path& filePath) noexcept = 0;
 
-		Serializer(const Serializer&) = delete;
-		Serializer(Serializer&&) = delete;
-		Serializer& operator=(const Serializer&) = delete;
-		Serializer& operator=(const Serializer&&) = delete;
+		[[nodiscard]] virtual bool SerializeSceneEntity(const ECS& ecs, const EntityId entityId, const std::filesystem::path& filePath, bool keepUUID = false) const noexcept = 0;
+		[[nodiscard]] virtual std::pair<bool, EntityId> DerserializeSceneEntity(ECS& ecs, std::unordered_map<GameUUID, EntityId>& entityMap, const std::filesystem::path& filePath, bool newUUID = true) noexcept = 0;
+	};
 
-	private:
-		friend class Pengin::Singleton<Serializer>;
-		Serializer();
-		~Serializer();
+	class NullSerializer final : public Serializer
+	{
+	public:
+		NullSerializer() = default;
+		virtual ~NullSerializer() override = default;
 
-		class SerializerImpl;
-		std::unique_ptr<SerializerImpl> pImpl;
+		[[nodiscard]] bool SerializeScene(const ECS&, const SceneData&, const std::filesystem::path&) const noexcept { return false; }
+		[[nodiscard]] bool DeserializeScene(SceneData&, std::unordered_map<GameUUID, EntityId>&, ECS&, const std::filesystem::path&) noexcept { return false; }
+
+		[[nodiscard]] bool SerializeInput(const std::filesystem::path&) const noexcept { return false; }
+		[[nodiscard]] std::pair<bool, InputDataVec> DeserializeInput(const std::filesystem::path&) noexcept { return { false, {} }; }
+
+		[[nodiscard]] bool SerializeSceneEntity(const ECS&, const EntityId, const std::filesystem::path&, bool) const noexcept { return false; }
+		[[nodiscard]] std::pair<bool, EntityId> DerserializeSceneEntity(ECS&, std::unordered_map<GameUUID, EntityId>&, const std::filesystem::path&, bool) noexcept { return { false, NULL_ENTITY_ID }; }
 	};
 }
 

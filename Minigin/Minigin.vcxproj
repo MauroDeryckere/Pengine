@@ -490,6 +490,7 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll"
     <ClInclude Include="DebugDrawComponent.h" />
     <ClInclude Include="DebugDrawSystem.h" />
     <ClInclude Include="DebugOutput.h" />
+    <ClInclude Include="FieldSerialization.h" />
     <ClInclude Include="FPSSystem.h" />
     <ClInclude Include="HealthChangeEvent.h" />
     <ClInclude Include="ImGUIWindow.h" />
@@ -504,13 +505,16 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll"
     <ClInclude Include="SceneInfoPanel.h" />
     <ClInclude Include="ScoreChangeEvent.h" />
     <ClInclude Include="ScoreComponent.h" />
-    <ClInclude Include="Serializer.h" />
+    <ClInclude Include="SerializationRegistry.h" />
+    <ClInclude Include="JsonSerializer.h" />
     <ClInclude Include="FModSoundSystem.h" />
+    <ClInclude Include="Serializer.h" />
     <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="SoundData.h" />
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="SystemManager.h" />
     <ClInclude Include="SystemRegistry.h" />
+    <ClInclude Include="TestSerComponent.h" />
     <ClInclude Include="UIDisplaySystem.h" />
     <ClInclude Include="GameUUID.h" />
     <ClInclude Include="UUIDComponent.h" />
@@ -595,7 +599,7 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll"
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneInfoPanel.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="Serializer.cpp" />
+    <ClCompile Include="JsonSerializer.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />
     <ClCompile Include="SystemManager.cpp" />
     <ClCompile Include="TextSystem.cpp" />

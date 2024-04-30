@@ -60,7 +60,7 @@ namespace Pengin
         InputManager() = default;
         ~InputManager() = default;
 
-        friend class Serializer; //Serialize / Deserialize input - TODO
+        friend class JsonSerializer; //Serialize / Deserialize input - TODO
 
         std::unordered_map<UserIndex, size_t> m_UserIdx_VecIdxMap;
 

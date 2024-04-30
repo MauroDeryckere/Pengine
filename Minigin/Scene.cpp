@@ -91,7 +91,7 @@ namespace Pengin
 		}
 		else
 		{
-			const auto inp = Serializer::GetInstance().DeserializeInput(m_SceneData.sceneFileData.inputFilePath);
+			const auto inp = ServiceLocator::GetSerializer().DeserializeInput(m_SceneData.sceneFileData.inputFilePath);
 
 			if (!inp.first)
 			{
@@ -123,7 +123,7 @@ namespace Pengin
 
 	bool Scene::DeserializeScene() noexcept
 	{
-		return Serializer::GetInstance().DeserializeScene(m_SceneData, m_UUID_EntityIdMap, m_Ecs, m_SceneData.sceneFileData.sceneLoadPath);
+		return ServiceLocator::GetSerializer().DeserializeScene(m_SceneData, m_UUID_EntityIdMap, m_Ecs, m_SceneData.sceneFileData.sceneLoadPath);
 	}
 
 	Entity Scene::CreateEntity(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale, const UserIndex& userIdx)
@@ -240,7 +240,7 @@ namespace Pengin
 
 	Entity Scene::AddEntityFromFile(const std::filesystem::path& entityLoadPath, bool newUUID)
 	{
-		const auto& deserVal = Serializer::GetInstance().DerserializeSceneEntity(m_Ecs, m_UUID_EntityIdMap, entityLoadPath, newUUID);
+		const auto& deserVal = ServiceLocator::GetSerializer().DerserializeSceneEntity(m_Ecs, m_UUID_EntityIdMap, entityLoadPath, newUUID);
 		if (!deserVal.first)
 		{
 			throw std::runtime_error("Failed to deserialize entity from file");
@@ -251,7 +251,7 @@ namespace Pengin
 
 	bool Scene::SerializeEntity(const Entity entity, const std::filesystem::path& entitySavePath, bool keepUUID) const noexcept
 	{
-		return Serializer::GetInstance().SerializeSceneEntity(m_Ecs, entity.GetEntityId(), entitySavePath, keepUUID);
+		return ServiceLocator::GetSerializer().SerializeSceneEntity(m_Ecs, entity.GetEntityId(), entitySavePath, keepUUID);
 	}
 
 	void Scene::FixedUpdate()
@@ -300,6 +300,6 @@ namespace Pengin
 		assert(!m_SceneData.sceneFileData.sceneSavePath.empty());
 
 		assert(m_SceneData.isUUIDInit && "Must init a player to serialize the scene (SetPlayer or scene data in load file)");
-		return Serializer::GetInstance().SerializeScene(m_Ecs, m_SceneData, m_SceneData.sceneFileData.sceneSavePath);
+		return ServiceLocator::GetSerializer().SerializeScene(m_Ecs, m_SceneData, m_SceneData.sceneFileData.sceneSavePath);
 	}
 }

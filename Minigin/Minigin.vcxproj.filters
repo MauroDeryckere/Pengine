@@ -480,7 +480,7 @@
     <ClInclude Include="InputInfoPanel.h">
       <Filter>Header Files\Rendering\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Serializer.h">
+    <ClInclude Include="JsonSerializer.h">
       <Filter>Header Files\FileSystem</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\json\json.hpp">
@@ -1128,6 +1128,18 @@
     <ClInclude Include="LoggingSoundSystem.h">
       <Filter>Header Files\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="TestSerComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SerializationRegistry.h">
+      <Filter>Header Files\FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldSerialization.h">
+      <Filter>Header Files\FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Serializer.h">
+      <Filter>Header Files\FileSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_widgets.cpp">
@@ -1244,7 +1256,7 @@
     <ClCompile Include="SceneInfoPanel.cpp">
       <Filter>Source Files\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Serializer.cpp">
+    <ClCompile Include="JsonSerializer.cpp">
       <Filter>Source Files\FileSys</Filter>
     </ClCompile>
     <ClCompile Include="GameUUID.cpp">

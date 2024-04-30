@@ -1,4 +1,4 @@
-#include "Serializer.h"
+#include "JsonSerializer.h"
 
 #include "ECS.h"
 #include "Components.h"
@@ -13,15 +13,16 @@
 #include "InputManager.h"
 #include "InputCommands.h"
 
+#include "TestSerComponent.h"
 #include "json.hpp"
 
 namespace Pengin
 {
-	class Serializer::SerializerImpl 
+	class JsonSerializer::JsonSerializerImpl
 	{
 	public:
-		SerializerImpl() = default;
-		~SerializerImpl() = default;
+		JsonSerializerImpl() = default;
+		~JsonSerializerImpl() = default;
 
 		using json = nlohmann::ordered_json;
 
@@ -36,12 +37,12 @@ namespace Pengin
 	};
 
 
-	Serializer::Serializer() :
-		pImpl{std::make_unique<SerializerImpl>() }
+	JsonSerializer::JsonSerializer() :
+		pImpl{std::make_unique<JsonSerializerImpl>() }
 	{ }
-	Serializer::~Serializer() = default;
+	JsonSerializer::~JsonSerializer() = default;
 
-	bool Serializer::SerializeScene(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept
+	bool JsonSerializer::SerializeScene(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept
 	{
 		const auto extension{ scenePath.extension() };
 		if (extension == ".json")
@@ -55,7 +56,7 @@ namespace Pengin
 		}
 	}
 
-	bool Serializer::DeserializeScene(SceneData& sceneData, std::unordered_map<GameUUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
+	bool JsonSerializer::DeserializeScene(SceneData& sceneData, std::unordered_map<GameUUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
 	{
 		const auto extension{ scenePath.extension() };
 		if (extension == ".json")
@@ -69,7 +70,7 @@ namespace Pengin
 		}
 	}
 
-	bool Serializer::SerializeInput(const std::filesystem::path& filePath) const noexcept
+	bool JsonSerializer::SerializeInput(const std::filesystem::path& filePath) const noexcept
 	{
 		const auto extension{ filePath.extension() };
 		if (extension == ".json")
@@ -83,7 +84,7 @@ namespace Pengin
 		}
 	}
 
-	std::pair<bool, InputDataVec> Serializer::DeserializeInput(const std::filesystem::path& filePath) noexcept
+	std::pair<bool, InputDataVec> JsonSerializer::DeserializeInput(const std::filesystem::path& filePath) noexcept
 	{
 		const auto extension{ filePath.extension() };
 		if (extension == ".json")
@@ -97,7 +98,7 @@ namespace Pengin
 		}
 	}
 
-	bool Serializer::SerializeSceneEntity(const ECS& ecs, const EntityId entityId, const std::filesystem::path& filePath, bool keepUUID) const noexcept
+	bool JsonSerializer::SerializeSceneEntity(const ECS& ecs, const EntityId entityId, const std::filesystem::path& filePath, bool keepUUID) const noexcept
 	{
 		const auto extension{ filePath.extension() };
 		if (extension == ".json")
@@ -121,7 +122,7 @@ namespace Pengin
 		}
 	}
 
-	std::pair<bool, EntityId> Serializer::DerserializeSceneEntity(ECS& ecs, std::unordered_map<GameUUID, EntityId>& entityMap, const std::filesystem::path& filePath, bool newUUID) noexcept
+	std::pair<bool, EntityId> JsonSerializer::DerserializeSceneEntity(ECS& ecs, std::unordered_map<GameUUID, EntityId>& entityMap, const std::filesystem::path& filePath, bool newUUID) noexcept
 	{
 		const auto extension{ filePath.extension() };
 		if (extension == ".json")
@@ -154,7 +155,7 @@ namespace Pengin
 		}
 	}
 
-	bool Serializer::SerializerImpl::SerializeScene_Json(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept
+	bool JsonSerializer::JsonSerializerImpl::SerializeScene_Json(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept
 	{
 		json scene;
 
@@ -180,7 +181,7 @@ namespace Pengin
 		return false;
 	}
 
-	bool Serializer::SerializerImpl::DeserializeScene_Json(SceneData& sceneData, std::unordered_map<GameUUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
+	bool JsonSerializer::JsonSerializerImpl::DeserializeScene_Json(SceneData& sceneData, std::unordered_map<GameUUID, EntityId>& entityMap, ECS& ecs, const std::filesystem::path& scenePath) noexcept
 	{
 		using json = nlohmann::ordered_json;
 		json scene;
@@ -249,7 +250,7 @@ namespace Pengin
 		return true;
 	}
 
-	bool Serializer::SerializerImpl::SerializeSceneEntity_Json(const ECS& ecs, const EntityId id, json& j, bool keepUUID) const noexcept
+	bool JsonSerializer::JsonSerializerImpl::SerializeSceneEntity_Json(const ECS& ecs, const EntityId id, json& j, bool keepUUID) const noexcept
 	{
 		using json = nlohmann::ordered_json;
 
@@ -268,6 +269,20 @@ namespace Pengin
 			j["UUID"] = uuidComp.uuid.GetUUID_PrettyStr();
 		}
 
+		//TESTING - should work for anything you register
+		auto& map = SerializationRegistry::GetInstance().m_SerMap;
+		for (auto& it : map)
+		{
+			if (ecs.HasComponent(id, it.first))
+			{
+				it.second(ecs, id);
+
+				//Send in a stingstream?
+			}
+		}
+		//-------------------------------------
+
+		//We want to replace this with a serialize function in the component
 		if (ecs.HasComponent<PlayerComponent>(id))
 		{
 			const auto& player = ecs.GetComponent<PlayerComponent>(id);
@@ -331,11 +346,12 @@ namespace Pengin
 			const auto& dis = ecs.GetComponent<TxtDisplayComponent>(id);
 			j["TextDisplay Component"] = dis;
 		}
+		//--------------------------------------------------------------
 
 		return true;
 	}
 
-	std::pair<bool, EntityId> Serializer::SerializerImpl::DeserializeSceneEntity_Json(ECS& ecs, std::unordered_map<GameUUID, EntityId>& entityMap, const EntityId entity, const json& entityData) noexcept
+	std::pair<bool, EntityId> JsonSerializer::JsonSerializerImpl::DeserializeSceneEntity_Json(ECS& ecs, std::unordered_map<GameUUID, EntityId>& entityMap, const EntityId entity, const json& entityData) noexcept
 	{
 		using json = nlohmann::ordered_json;
 
@@ -346,6 +362,21 @@ namespace Pengin
 		}
 
 		assert(entity != NULL_ENTITY_ID);
+
+		//TEMP TESTING
+		auto& map{ SerializationRegistry::GetInstance().m_DeSerMap };
+
+		for (auto& it : map)
+		{
+			if (true) //Is present in the file
+			{
+				it;
+				//it.second(ecs, entity);
+				//Addcomponent in func
+
+			}
+		}
+		//----------
 
 		if (entityData.contains("Player Component"))
 		{
@@ -430,7 +461,7 @@ namespace Pengin
 		return { true,  entity };
 	}
 
-	bool Serializer::SerializerImpl::SerializeInput_Json(const std::filesystem::path& filePath) const noexcept //TODO
+	bool JsonSerializer::JsonSerializerImpl::SerializeInput_Json(const std::filesystem::path& filePath) const noexcept //TODO
 	{
 		using json = nlohmann::ordered_json;
 		const auto& input = InputManager::GetInstance();
@@ -461,7 +492,7 @@ namespace Pengin
 		return false;
 	}
 
-	std::pair<bool, InputDataVec> Serializer::SerializerImpl::DeserializeInput_Json(const std::filesystem::path& filePath) noexcept //TOOD
+	std::pair<bool, InputDataVec> JsonSerializer::JsonSerializerImpl::DeserializeInput_Json(const std::filesystem::path& filePath) noexcept //TOOD
 	{
 		using json = nlohmann::ordered_json;
 		json inputData;

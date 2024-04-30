@@ -1,7 +1,7 @@
 #include "Minigin.h"
 #include "CoreIncludes.h"
 
-#ifdef DEBUG_MODE
+#ifdef USE_VLD
 	#if __has_include(<vld.h>)
 		#include <vld.h>
 	#endif
@@ -26,6 +26,8 @@
 #include "ServiceLocator.h"
 
 #include "DebugDrawSystem.h"
+
+#include "TestSerComponent.h"
 
 void LoadGamePlayScripting();
 
@@ -91,6 +93,16 @@ void LoadDemo()
 	testLoadedEntity.GetComponent<TextComponent>().SetText("TEXT TEST");
 
 	pScene->SerializeEntity(testLoadedEntity, "../Data/TestEntityToFile.json");
+
+	auto ent = pScene->CreateEntity();
+	ent.AddComponent<TestSerComponent>();
+
+	auto ent2 = pScene->CreateEntity();
+	ent2.AddComponent<TestSerComponent>();
+
+	pScene->SerializeEntity(ent2, "../Data/TestAutoSerialization.json");
+	pScene->AddEntityFromFile("../Data/TestAutoSerialization.json"); //Deserialize
+
 
 	//Manual scene initialization (no load file)
 	

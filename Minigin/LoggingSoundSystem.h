@@ -13,14 +13,14 @@ namespace Pengin
 			m_pRealSoundSystem{ std::move(pSoundSystem) }
 		{}
 
-		virtual ~LoggingSoundSystem() = default;
+		~LoggingSoundSystem() = default;
 
-		virtual void Update() noexcept override
+		void Update() noexcept
 		{
 			m_pRealSoundSystem->Update();
 		};
 
-		virtual void LoadSound(const SoundData& soundData) noexcept override
+		void LoadSound(const SoundData& soundData) noexcept
 		{
 			std::cout<< "Loading sound: \n";
 			soundData.PrintSoundInfo();
@@ -28,13 +28,13 @@ namespace Pengin
 			m_pRealSoundSystem->LoadSound(soundData);
 		}
 
-		virtual void UnLoadSound(const std::filesystem::path& soundPath) noexcept override
+		void UnLoadSound(const std::filesystem::path& soundPath) noexcept
 		{
 			std::cout << "UnLoading sound: " << soundPath.string() << "\n";
 			m_pRealSoundSystem->UnLoadSound(soundPath);
 		}
 
-		virtual const ChannelIndex PlaySound(const SoundData& soundData) noexcept override
+		const ChannelIndex PlaySound(const SoundData& soundData) noexcept
 		{
 			std::cout << "Playing sound: \n";
 			soundData.PrintSoundInfo();
@@ -42,44 +42,39 @@ namespace Pengin
 			return m_pRealSoundSystem->PlaySound(soundData);
 		}
 
-		virtual void SetAllChannels3DPosition(const GameUUID& id, const glm::vec3& position) noexcept override
+		void SetAllChannels3DPosition(const GameUUID& id, const glm::vec3& position) noexcept
 		{
 			m_pRealSoundSystem->SetAllChannels3DPosition(id, position);
 		}
-		virtual void SetAllChannelsVolume(const GameUUID& id, float volume) noexcept override
+		void SetAllChannelsVolume(const GameUUID& id, float volume) noexcept
 		{
 			m_pRealSoundSystem->SetAllChannelsVolume(id, volume);
 		}
 
-		virtual void SetChannel3DPosition(const GameUUID& id, ChannelIndex idx, const glm::vec3& position) noexcept override
+		void SetChannel3DPosition(const GameUUID& id, ChannelIndex idx, const glm::vec3& position) noexcept
 		{
 			m_pRealSoundSystem->SetChannel3DPosition(id, idx, position);
 		}
-		virtual void SetChannelVolume(const GameUUID& id, ChannelIndex idx, float volume) noexcept override
+		void SetChannelVolume(const GameUUID& id, ChannelIndex idx, float volume) noexcept
 		{
 			m_pRealSoundSystem->SetChannelVolume(id, idx, volume);
 		}
 
-		virtual void MuteAll() noexcept override
+		void MuteAll() noexcept
 		{
 			m_pRealSoundSystem->MuteAll();
 		}
-		virtual void UnmuteAll() noexcept override
+		void UnmuteAll() noexcept
 		{
 			m_pRealSoundSystem->UnmuteAll();
 		}
-		virtual [[nodiscard]] bool IsMuted() const noexcept override
+		[[nodiscard]] bool IsMuted() const noexcept
 		{
 			return m_pRealSoundSystem->IsMuted();
 		}
 
-		virtual void SetVFXVolume(const float vol) noexcept override { m_pRealSoundSystem->SetVFXVolume(vol); }
-		virtual void SetMusicVolume(const float vol) noexcept override { m_pRealSoundSystem->SetMusicVolume(vol); }
-
-		LoggingSoundSystem(const LoggingSoundSystem&) = delete;
-		LoggingSoundSystem(LoggingSoundSystem&&) = delete;
-		LoggingSoundSystem& operator=(const LoggingSoundSystem&) = delete;
-		LoggingSoundSystem& operator=(const LoggingSoundSystem&&) = delete;
+		void SetVFXVolume(const float vol) noexcept { m_pRealSoundSystem->SetVFXVolume(vol); }
+		void SetMusicVolume(const float vol) noexcept { m_pRealSoundSystem->SetMusicVolume(vol); }
 
 	private:
 		std::unique_ptr<SoundSystem> m_pRealSoundSystem;

@@ -39,26 +39,26 @@ namespace Pengin
 		FModSoundSytem();
 		virtual ~FModSoundSytem() override;
 
-		virtual void Update() noexcept override;
+		void Update() noexcept;
 
-		virtual void LoadSound(const SoundData& soundData) noexcept override;
-		virtual void UnLoadSound(const std::filesystem::path& soundPath) noexcept override;
+		void LoadSound(const SoundData& soundData) noexcept;
+		void UnLoadSound(const std::filesystem::path& soundPath) noexcept;
 
 		//It is important to load the sound first if you want a valid channel idx
-		virtual const ChannelIndex PlaySound(const SoundData& soundData) noexcept override;
+		const ChannelIndex PlaySound(const SoundData& soundData) noexcept;
 
-		virtual void SetVFXVolume(const float vol) noexcept override;
-		virtual void SetMusicVolume(const float vol) noexcept override;
+		void SetVFXVolume(const float vol) noexcept;
+		void SetMusicVolume(const float vol) noexcept;
 
-		virtual void MuteAll() noexcept override;
-		virtual void UnmuteAll() noexcept override;
-		virtual [[nodiscard]] bool IsMuted() const noexcept override;
+		void MuteAll() noexcept;
+		void UnmuteAll() noexcept;
+		[[nodiscard]] bool IsMuted() const noexcept;
 
-		virtual void SetAllChannels3DPosition(const GameUUID& id, const glm::vec3& position) noexcept override;
-		virtual void SetAllChannelsVolume(const GameUUID& id, float volume) noexcept override;
+		void SetAllChannels3DPosition(const GameUUID& id, const glm::vec3& position) noexcept;
+		void SetAllChannelsVolume(const GameUUID& id, float volume) noexcept;
 
-		virtual void SetChannel3DPosition(const GameUUID& id, ChannelIndex idx, const glm::vec3& position) noexcept override;
-		virtual void SetChannelVolume(const GameUUID& id, ChannelIndex idx, float volume) noexcept override;
+		void SetChannel3DPosition(const GameUUID& id, ChannelIndex idx, const glm::vec3& position) noexcept;
+		void SetChannelVolume(const GameUUID& id, ChannelIndex idx, float volume) noexcept;
 
 		FModSoundSytem(const FModSoundSytem&) = delete;
 		FModSoundSytem(FModSoundSytem&&) = delete;

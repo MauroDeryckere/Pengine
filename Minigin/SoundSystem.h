@@ -48,42 +48,32 @@ namespace Pengin
 		{
 			return 20.0f * log10f(volume);
 		}
-
-		SoundSystem(const SoundSystem&) = delete;
-		SoundSystem(SoundSystem&&) = delete;
-		SoundSystem& operator=(const SoundSystem&) = delete;
-		SoundSystem& operator=(const SoundSystem&&) = delete;
 	};
 
 	class NullSoundSystem final : public SoundSystem
 	{
 	public:
 		NullSoundSystem() = default;
-		virtual ~NullSoundSystem() override = default;
+		~NullSoundSystem() = default;
 
-		virtual void Update() noexcept {}
-		virtual void LoadSound(const SoundData&) noexcept {}
-		virtual void UnLoadSound(const std::filesystem::path&) noexcept {}
+		void Update() noexcept {}
+		void LoadSound(const SoundData&) noexcept {}
+		void UnLoadSound(const std::filesystem::path&) noexcept {}
 
-		virtual const ChannelIndex PlaySound(const SoundData&) noexcept { return INVALID_CHANNEL_IDX; }
+		const ChannelIndex PlaySound(const SoundData&) noexcept { return INVALID_CHANNEL_IDX; }
 
-		virtual void SetAllChannels3DPosition(const GameUUID&, const glm::vec3&) noexcept {}
-		virtual void SetAllChannelsVolume(const GameUUID&, float) noexcept {}
+		void SetAllChannels3DPosition(const GameUUID&, const glm::vec3&) noexcept {}
+		void SetAllChannelsVolume(const GameUUID&, float) noexcept {}
 
-		virtual void SetChannel3DPosition(const GameUUID&, ChannelIndex, const glm::vec3&) noexcept {}
-		virtual void SetChannelVolume(const GameUUID&, ChannelIndex, float) noexcept {}
+		void SetChannel3DPosition(const GameUUID&, ChannelIndex, const glm::vec3&) noexcept {}
+		void SetChannelVolume(const GameUUID&, ChannelIndex, float) noexcept {}
 
-		virtual void SetVFXVolume(const float) noexcept {}
-		virtual void SetMusicVolume(const float) noexcept {}
+		void SetVFXVolume(const float) noexcept {}
+		void SetMusicVolume(const float) noexcept {}
 
-		virtual void MuteAll() noexcept {}
-		virtual void UnmuteAll() noexcept {}
-		virtual bool IsMuted() const noexcept { return false; }
-
-		NullSoundSystem(const NullSoundSystem&) = delete;
-		NullSoundSystem(NullSoundSystem&&) = delete;
-		NullSoundSystem& operator=(const NullSoundSystem&) = delete;
-		NullSoundSystem& operator=(const NullSoundSystem&&) = delete;
+		void MuteAll() noexcept {}
+		void UnmuteAll() noexcept {}
+		bool IsMuted() const noexcept { return false; }
 	};
 }
 

@@ -18,6 +18,7 @@
 #include "ServiceLocator.h"
 #include "FModSoundSystem.h"
 #include "LoggingSoundSystem.h"
+#include "JsonSerializer.h"
 
 #include "ResourceManager.h"
 
@@ -98,6 +99,8 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	//SDL_GL_SetSwapInterval(1); // Enable vsync
 
 	ResourceManager::GetInstance().Init(dataPath);
+
+	Pengin::ServiceLocator::RegisterSerializer(std::make_unique<Pengin::JsonSerializer>());
 
 	#ifdef DEBUG_MODE
 		Pengin::ServiceLocator::RegisterSoundSystem(std::make_unique<Pengin::LoggingSoundSystem>(std::make_unique<Pengin::FModSoundSytem>()));
