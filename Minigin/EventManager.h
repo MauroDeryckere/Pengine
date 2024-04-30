@@ -15,8 +15,6 @@
 
 namespace Pengin
 {
-	using EntityId = unsigned;
-
 	class EventManager final : public Singleton<EventManager>
 	{
 	public:

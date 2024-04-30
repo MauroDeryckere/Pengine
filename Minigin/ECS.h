@@ -82,6 +82,11 @@ namespace Pengin
             return m_ComponentManager.HasComponent(typeid(ComponentType), id); 
         }
 
+        [[nodiscard]] bool HasComponent(const EntityId id, const std::type_index typeIdx) const
+        {
+            return m_ComponentManager.HasComponent(typeIdx, id);
+        }
+
         template<typename ComponentType>
         [[nodiscard]] ComponentType& GetComponent(const EntityId id)
         {
