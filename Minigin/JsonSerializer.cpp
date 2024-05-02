@@ -9,12 +9,12 @@
 #include <string>
 
 #include "JsonConversion.h"
-
 #include "InputManager.h"
-#include "InputCommands.h"
 
-#include "TestSerComponent.h"
 #include "json.hpp"
+
+#include "FieldSerializer.h"
+#include "SerializationRegistry.h"
 
 namespace Pengin
 {
@@ -34,6 +34,11 @@ namespace Pengin
 
 		bool SerializeSceneEntity_Json(const ECS& ecs, const EntityId id, json& j, bool keepUUID) const noexcept;
 		std::pair<bool, EntityId> DeserializeSceneEntity_Json(ECS& ecs, std::unordered_map<GameUUID, EntityId>& entityMap, const EntityId entity, const json& entityData) noexcept;
+
+		FieldSerializer* GetFieldSerializer() noexcept;
+
+	private:
+		FieldSerializer m_FieldSer{ FieldSerializer::SerializationType::Json };
 	};
 
 
@@ -155,6 +160,11 @@ namespace Pengin
 		}
 	}
 
+	FieldSerializer* JsonSerializer::GetFieldSerializer() noexcept
+	{
+		return pImpl->GetFieldSerializer();
+	}
+
 	bool JsonSerializer::JsonSerializerImpl::SerializeScene_Json(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept
 	{
 		json scene;
@@ -256,7 +266,9 @@ namespace Pengin
 
 		assert(id != NULL_ENTITY_ID);
 		assert(ecs.Exists(id));
-		assert(ecs.HasComponent<UUIDComponent>(id));
+
+		assert(ecs.HasComponent<UUIDComponent>(id)); //everything has a transform and UUID in a scene
+		assert(ecs.HasComponent<TransformComponent>(id));
 
 		if (keepUUID)
 		{
@@ -267,28 +279,6 @@ namespace Pengin
 		{
 			const auto uuidComp = UUIDComponent{ GameUUID{true} };
 			j["UUID"] = uuidComp.uuid.GetUUID_PrettyStr();
-		}
-
-		//TESTING - should work for anything you register
-		auto& map = SerializationRegistry::GetInstance().m_SerMap;
-		for (auto& it : map)
-		{
-			if (ecs.HasComponent(id, it.first))
-			{
-				it.second(ecs, id);
-
-				//Send in a stingstream?
-			}
-		}
-		//-------------------------------------
-
-		//We want to replace this with a serialize function in the component
-		if (ecs.HasComponent<PlayerComponent>(id))
-		{
-			const auto& player = ecs.GetComponent<PlayerComponent>(id);
-			j["Player Component"];
-			j["Player Component"]["UserIdx"] = player.userIdx.GetUUID_PrettyStr();
-			j["Player Component"]["MovementSpeed"] = player.movementSpeed;
 		}
 
 		if (ecs.HasComponent<TransformComponent>(id))
@@ -302,6 +292,35 @@ namespace Pengin
 			return false;
 		}
 
+		using namespace nlohmann::literals;
+		auto& map = SerializationRegistry::GetInstance().m_SerMap;
+
+		for (auto& it : map)
+		{
+			if (ecs.HasComponent(id, it.first))
+			{
+				j[it.first.name()];
+
+				std::vector<uint8_t> fieldVector;
+				fieldVector.emplace_back(static_cast<uint8_t>('{'));
+
+				it.second(m_FieldSer, ecs, id, fieldVector);
+
+				fieldVector.emplace_back(static_cast<uint8_t>('}'));
+				
+				auto fieldJson = json::parse(fieldVector.begin(), fieldVector.end());
+				j[it.first.name()].merge_patch(fieldJson);
+			}
+		}		
+
+		//----------------------------------------------------
+		if (ecs.HasComponent<PlayerComponent>(id))
+		{
+			const auto& player = ecs.GetComponent<PlayerComponent>(id);
+			j["Player Component"];
+			j["Player Component"]["UserIdx"] = player.userIdx.GetUUID_PrettyStr();
+			j["Player Component"]["MovementSpeed"] = player.movementSpeed;
+		}
 		if (ecs.HasComponent<SpriteComponent>(id))
 		{
 			const auto& sprite = ecs.GetComponent<SpriteComponent>(id);
@@ -365,15 +384,26 @@ namespace Pengin
 
 		//TEMP TESTING
 		auto& map{ SerializationRegistry::GetInstance().m_DeSerMap };
-
 		for (auto& it : map)
 		{
-			if (true) //Is present in the file
+			if (entityData.contains(it.first.name()))
 			{
-				it;
-				//it.second(ecs, entity);
-				//Addcomponent in func
+				std::unordered_map<std::string, std::vector<uint8_t>> serializedFields;
 
+				json serializedJson = entityData[it.first.name()];
+
+				for (json::iterator jsonIt = serializedJson.begin(); jsonIt != serializedJson.end(); ++jsonIt)
+				{
+					const std::string& fieldName = jsonIt.key();
+					const json& fieldValue = jsonIt.value();
+
+					std::string serializedField = fieldValue.dump();
+					std::vector<uint8_t> serializedVector(serializedField.begin(), serializedField.end());
+
+					serializedFields[fieldName] = serializedVector;
+				}
+
+				it.second(ecs, entity, serializedFields);
 			}
 		}
 		//----------
@@ -459,6 +489,11 @@ namespace Pengin
 			ecs.AddComponent<TxtDisplayComponent>(entity, std::move(dis));
 		}
 		return { true,  entity };
+	}
+
+	FieldSerializer* JsonSerializer::JsonSerializerImpl::GetFieldSerializer() noexcept
+	{
+		return &m_FieldSer;
 	}
 
 	bool JsonSerializer::JsonSerializerImpl::SerializeInput_Json(const std::filesystem::path& filePath) const noexcept //TODO

@@ -23,6 +23,8 @@ namespace Pengin
 		[[nodiscard]] bool SerializeSceneEntity(const ECS& ecs, const EntityId entityId, const std::filesystem::path& filePath, bool keepUUID = false) const noexcept;
  		[[nodiscard]] std::pair<bool, EntityId> DerserializeSceneEntity(ECS& ecs, std::unordered_map<GameUUID, EntityId>& entityMap, const std::filesystem::path& filePath, bool newUUID = true) noexcept;
 
+		[[nodiscard]] FieldSerializer* GetFieldSerializer() noexcept;
+
 		JsonSerializer(const JsonSerializer&) = delete;
 		JsonSerializer(JsonSerializer&&) = delete;
 		JsonSerializer& operator=(const JsonSerializer&) = delete;

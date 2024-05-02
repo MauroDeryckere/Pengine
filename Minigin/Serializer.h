@@ -1,15 +1,13 @@
 #ifndef PENGIN_SERIALIZER
 #define PENGIN_SERIALIZER
 
+#include "FieldSerializer.h"
 #include "GameUUID.h"
 #include "EntityId.h"
 
 #include <vector>
 #include <tuple>
 #include <filesystem>
-
-#include "SerializationRegistry.h"
-#include "FieldSerialization.h"
 
 namespace Pengin
 {
@@ -35,6 +33,8 @@ namespace Pengin
 
 		[[nodiscard]] virtual bool SerializeSceneEntity(const ECS& ecs, const EntityId entityId, const std::filesystem::path& filePath, bool keepUUID = false) const noexcept = 0;
 		[[nodiscard]] virtual std::pair<bool, EntityId> DerserializeSceneEntity(ECS& ecs, std::unordered_map<GameUUID, EntityId>& entityMap, const std::filesystem::path& filePath, bool newUUID = true) noexcept = 0;
+
+		[[nodiscard]] virtual FieldSerializer* GetFieldSerializer() noexcept = 0;
 	};
 
 	class NullSerializer final : public Serializer
@@ -51,6 +51,12 @@ namespace Pengin
 
 		[[nodiscard]] bool SerializeSceneEntity(const ECS&, const EntityId, const std::filesystem::path&, bool) const noexcept { return false; }
 		[[nodiscard]] std::pair<bool, EntityId> DerserializeSceneEntity(ECS&, std::unordered_map<GameUUID, EntityId>&, const std::filesystem::path&, bool) noexcept { return { false, NULL_ENTITY_ID }; }
+
+		[[nodiscard]] FieldSerializer* GetFieldSerializer() noexcept 
+		{ 
+			DEBUG_OUT("WARNING: Getting an empty fieldserializer, will not work");
+			return nullptr;
+		}
 	};
 }
 

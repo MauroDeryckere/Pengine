@@ -490,7 +490,7 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll"
     <ClInclude Include="DebugDrawComponent.h" />
     <ClInclude Include="DebugDrawSystem.h" />
     <ClInclude Include="DebugOutput.h" />
-    <ClInclude Include="FieldSerialization.h" />
+    <ClInclude Include="FieldSerializer.h" />
     <ClInclude Include="FPSSystem.h" />
     <ClInclude Include="HealthChangeEvent.h" />
     <ClInclude Include="ImGUIWindow.h" />

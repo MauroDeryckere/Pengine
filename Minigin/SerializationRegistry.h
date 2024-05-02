@@ -3,10 +3,12 @@
 
 #include "Singleton.h"
 #include "DebugOutput.h"
+#include "FieldSerializer.h"
 
 #include <functional>
 #include <unordered_map>
 #include <typeindex>
+#include <cassert>
 #include <iostream>
 
 #include "EntityId.h"
@@ -15,8 +17,8 @@ namespace Pengin
 {
 	class ECS;
 
-	using SerializeFunc = std::function<void(const ECS&, const EntityId)>;
-	using DeSerializeFunc = std::function<void(ECS&, const EntityId)>;
+	using SerializeFunc = std::function<void(const FieldSerializer&, const ECS&, const EntityId, std::vector<uint8_t>& )>;
+	using DeSerializeFunc = std::function<void(ECS&, const EntityId, const std::unordered_map<std::string, std::vector<uint8_t>>&)>;
 
 	class SerializationRegistry final : public Singleton<SerializationRegistry>
 	{
@@ -48,6 +50,19 @@ namespace Pengin
 				m_DeSerMap[typeIdx] = deserializeFunc;
 			}
 		}
+
+		template<typename ComponentType>
+		[[nodiscard]] const SerializeFunc& GetSerFunction() const noexcept
+		{
+			std::type_index typeIdx{ typeid(ComponentType) };
+
+			auto it = m_SerMap.find(typeIdx);
+			
+			assert(it != end(m_SerMap) && "No Serialization function");
+
+			return it->second();
+		}
+		//GetFunction()
 
 		SerializationRegistry(const SerializationRegistry&) = delete;
 		SerializationRegistry& operator=(const SerializationRegistry&) = delete;
