@@ -18,7 +18,7 @@ namespace Pengin
 	class ECS;
 
 	using SerializeFunc = std::function<void(const FieldSerializer&, const ECS&, const EntityId, std::vector<uint8_t>& )>;
-	using DeSerializeFunc = std::function<void(ECS&, const EntityId, const std::unordered_map<std::string, std::vector<uint8_t>>&)>;
+	using DeSerializeFunc = std::function<void(const FieldSerializer&, ECS&, const EntityId, const std::unordered_map<std::string, std::vector<uint8_t>>&)>;
 
 	class SerializationRegistry final : public Singleton<SerializationRegistry>
 	{

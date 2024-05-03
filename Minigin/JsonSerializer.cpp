@@ -37,6 +37,8 @@ namespace Pengin
 
 		FieldSerializer* GetFieldSerializer() noexcept;
 
+		const std::unordered_map<std::string, std::vector<uint8_t>> ParseJsonStr(const std::string& json) const noexcept;
+
 	private:
 		FieldSerializer m_FieldSer{ FieldSerializer::SerializationType::Json };
 	};
@@ -163,6 +165,11 @@ namespace Pengin
 	FieldSerializer* JsonSerializer::GetFieldSerializer() noexcept
 	{
 		return pImpl->GetFieldSerializer();
+	}
+
+	const std::unordered_map<std::string, std::vector<uint8_t>> JsonSerializer::ParseJsonStr(const std::string& json) const noexcept
+	{
+		return pImpl->ParseJsonStr(json);
 	}
 
 	bool JsonSerializer::JsonSerializerImpl::SerializeScene_Json(const ECS& ecs, const SceneData& sceneData, const std::filesystem::path& scenePath) const noexcept
@@ -382,31 +389,24 @@ namespace Pengin
 
 		assert(entity != NULL_ENTITY_ID);
 
-		//TEMP TESTING
 		auto& map{ SerializationRegistry::GetInstance().m_DeSerMap };
 		for (auto& it : map)
 		{
 			if (entityData.contains(it.first.name()))
 			{
 				std::unordered_map<std::string, std::vector<uint8_t>> serializedFields;
-
 				json serializedJson = entityData[it.first.name()];
 
-				for (json::iterator jsonIt = serializedJson.begin(); jsonIt != serializedJson.end(); ++jsonIt)
+				for (auto& [fieldName, fieldValue] : serializedJson.items())
 				{
-					const std::string& fieldName = jsonIt.key();
-					const json& fieldValue = jsonIt.value();
+					const std::string field{ (fieldValue.is_string() ? fieldValue.get<std::string>() : fieldValue.dump()) };
 
-					std::string serializedField = fieldValue.dump();
-					std::vector<uint8_t> serializedVector(serializedField.begin(), serializedField.end());
-
-					serializedFields[fieldName] = serializedVector;
+					serializedFields[fieldName] = { field.begin(),  field.end() };
 				}
 
-				it.second(ecs, entity, serializedFields);
+				it.second(m_FieldSer, ecs, entity, serializedFields);
 			}
 		}
-		//----------
 
 		if (entityData.contains("Player Component"))
 		{
@@ -494,6 +494,30 @@ namespace Pengin
 	FieldSerializer* JsonSerializer::JsonSerializerImpl::GetFieldSerializer() noexcept
 	{
 		return &m_FieldSer;
+	}
+
+	const std::unordered_map<std::string, std::vector<uint8_t>> JsonSerializer::JsonSerializerImpl::ParseJsonStr(const std::string& jsonStr) const noexcept
+	{
+		using json = nlohmann::ordered_json;
+		json jsonField = json::parse(jsonStr);
+
+		//DEBUG_OUT(jsonStr);
+		//DEBUG_OUT(jsonField.dump());
+
+		std::unordered_map<std::string, std::vector<uint8_t>> map;
+
+		for (const auto& [key, value] : jsonField.items())
+		{
+			const std::string field{ (value.is_string() ? value.get<std::string>() : value.dump()) };
+			
+			map[key] = { field.begin(), field.end() };
+
+			//DEBUG_OUT("key " << key);
+			//DEBUG_OUT("Value " << value);
+			//DEBUG_OUT("Field " << field);
+		}
+
+		return map;
 	}
 
 	bool JsonSerializer::JsonSerializerImpl::SerializeInput_Json(const std::filesystem::path& filePath) const noexcept //TODO

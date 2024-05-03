@@ -28,12 +28,16 @@ namespace Pengin
 		struct TestSructSer
 		{
 			int data = 1000;
-
-			//Simple data like a struct / class you want to serialize should have a function like this, taking in the struct
+			std::string dataStr = "TESTTEST";
 			static void Serialize(const FieldSerializer& fieldSer, const TestSructSer& serStruct, std::vector<uint8_t>& fieldVector)
 			{
-				//Serialize fields of the struct
 				fieldSer.SerializeField("TESTDATA", serStruct.data, fieldVector);
+				fieldSer.SerializeField("TESSTRING", serStruct.dataStr, fieldVector);
+			}
+			static void Deserialize(const FieldSerializer& fieldSer, TestSructSer& deserStruct, const std::unordered_map<std::string, std::vector<uint8_t>>& fields)
+			{
+				fieldSer.DeserializeField("TESTDATA", deserStruct.data, fields);
+				fieldSer.DeserializeField("TESSTRING", deserStruct.dataStr, fields);
 			}
 		};
 
@@ -72,6 +76,8 @@ namespace Pengin
 
 		std::vector<std::unordered_map<std::string, std::vector<std::vector<std::list<std::map<int, int>>>>>> crazyTestCase = {{ {"Test", {{{{{1,1}}}}}}} };
 
+		std::vector<std::string> testVecOfStr {"test", "test2"};
+
 		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
 		{
 			const auto& comp = ecs.GetComponent<TestSerComponent>(id);
@@ -108,28 +114,51 @@ namespace Pengin
 			fieldSer.SerializeField("TestDeque", comp.testDeque, fieldVector);
 
 			fieldSer.SerializeField("Crazy test case", comp.crazyTestCase, fieldVector);
+
+			fieldSer.SerializeField("vecOfStr", comp.testVecOfStr, fieldVector);
 		}
 
-		static void DeSerialize(ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields)
+		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields)
 		{
-			ecs;
-			id;
-			serializedFields;
+			auto& comp = ecs.AddComponent<TestSerComponent>(id);
 
-			//auto& comp = ecs.AddComponent<TestSerComponent>(id);
-			//auto& fieldSer = ServiceLocator::GetFieldSerializer();
+			fieldSer.DeserializeField("test1", comp.test1, serializedFields);
+			fieldSer.DeserializeField("test2", comp.test2, serializedFields);
+			fieldSer.DeserializeField("test3", comp.test3, serializedFields);
+			fieldSer.DeserializeField("test4", comp.test4, serializedFields);
+			fieldSer.DeserializeField("test5", comp.test5, serializedFields);
+			fieldSer.DeserializeField("test6", comp.test6, serializedFields);
 
-			//fieldSer.DeserializeField("test", &comp.test, FieldSerializer::FieldType::Int, serializedFields);
-			//fieldSer.DeserializeField("test2", &comp.test2, FieldSerializer::FieldType::Float, serializedFields);
+			fieldSer.DeserializeField("test7", comp.test7, serializedFields);
+			fieldSer.DeserializeField("test8", comp.test8, serializedFields);
+			fieldSer.DeserializeField("test9", comp.test9, serializedFields);
 
-			//DEBUG_OUT(comp.test);
-			//DEBUG_OUT(comp.test2);
-			//DEBUG_OUT(comp.test3);
-			//DEBUG_OUT(comp.test4);
+			fieldSer.DeserializeField("test10", comp.test10, serializedFields);
+			fieldSer.DeserializeField("test11", comp.test11, serializedFields);
+
+			fieldSer.DeserializeField("test12", comp.test12, serializedFields);
+
+			fieldSer.DeserializeField("enumTest", comp.enumTest, serializedFields);
+
+			fieldSer.DeserializeField("structTest", comp.testStructSer, serializedFields);
+
+			fieldSer.DeserializeField("TestVec", comp.testVec, serializedFields);
+			fieldSer.DeserializeField("TestVecOfVecs", comp.testVecOfVecs, serializedFields);
+			
+			fieldSer.DeserializeField("Testlist", comp.testList, serializedFields);
+
+			fieldSer.DeserializeField("TestMap1", comp.testMap1, serializedFields);
+			fieldSer.DeserializeField("TestMap2", comp.testMap2, serializedFields);
+
+			fieldSer.DeserializeField("TestVecOfStructs", comp.testVecOfStructs, serializedFields);
+			fieldSer.DeserializeField("TestDeque", comp.testDeque, serializedFields);
+
+			fieldSer.DeserializeField("Crazy test case", comp.crazyTestCase, serializedFields);
+
+			fieldSer.DeserializeField("vecOfStr", comp.testVecOfStr, serializedFields);
 		}
-		//--------------------
 	};
 
 	REGISTER_SERIALIZATION_FUNCTION(TestSerComponent, TestSerComponent::Serialize); 
-	REGISTER_DESERIALIZATION_FUNCTION(TestSerComponent, TestSerComponent::DeSerialize);
+	REGISTER_DESERIALIZATION_FUNCTION(TestSerComponent, TestSerComponent::Deserialize);
 }

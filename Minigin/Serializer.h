@@ -1,7 +1,8 @@
 #ifndef PENGIN_SERIALIZER
 #define PENGIN_SERIALIZER
 
-#include "FieldSerializer.h"
+#include "DebugOutput.h"
+
 #include "GameUUID.h"
 #include "EntityId.h"
 
@@ -19,6 +20,8 @@ namespace Pengin
 	using InputData = std::tuple <UserIndex, unsigned>;
 	using InputDataVec = std::vector<InputData>;
 
+	class FieldSerializer;
+
 	class Serializer
 	{
 	public:
@@ -35,6 +38,8 @@ namespace Pengin
 		[[nodiscard]] virtual std::pair<bool, EntityId> DerserializeSceneEntity(ECS& ecs, std::unordered_map<GameUUID, EntityId>& entityMap, const std::filesystem::path& filePath, bool newUUID = true) noexcept = 0;
 
 		[[nodiscard]] virtual FieldSerializer* GetFieldSerializer() noexcept = 0;
+
+		[[nodiscard]] virtual const std::unordered_map<std::string, std::vector<uint8_t>> ParseJsonStr(const std::string& json) const noexcept = 0;
 	};
 
 	class NullSerializer final : public Serializer
@@ -57,6 +62,8 @@ namespace Pengin
 			DEBUG_OUT("WARNING: Getting an empty fieldserializer, will not work");
 			return nullptr;
 		}
+
+		[[nodiscard]] const std::unordered_map<std::string, std::vector<uint8_t>> ParseJsonStr(const std::string&) const noexcept { return {}; }
 	};
 }
 

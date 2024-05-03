@@ -25,6 +25,8 @@ namespace Pengin
 
 		[[nodiscard]] FieldSerializer* GetFieldSerializer() noexcept;
 
+		[[nodiscard]] const std::unordered_map<std::string, std::vector<uint8_t>> ParseJsonStr(const std::string&) const noexcept;
+
 		JsonSerializer(const JsonSerializer&) = delete;
 		JsonSerializer(JsonSerializer&&) = delete;
 		JsonSerializer& operator=(const JsonSerializer&) = delete;

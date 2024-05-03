@@ -1,5 +1,35 @@
 {
     "UUID": "00000000-0000-0000-0000-000000000000",
+    "Transform Component": {
+        "worldPos": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "localPos": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "scale": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "relation": {
+            "children": 0,
+            "firstChild": "NULL_UUID",
+            "prevSibling": "NULL_UUID",
+            "nextSibling": "NULL_UUID",
+            "parent": "NULL_UUID"
+        },
+        "isPosDirty": false
+    },
     "struct Pengin::TestSerComponent": {
         "test1": 2,
         "test2": 2,
@@ -14,8 +44,9 @@
         "test11": 10.2,
         "test12": 200,
         "enumTest": 2,
-        "struct Pengin::TestSerComponent::TestSructSer": {
-            "TESTDATA": 1000
+        "structTest": {
+            "TESTDATA": 1000,
+            "TESSTRING": "TESTTEST"
         },
         "TestVec": [
             2,
@@ -61,10 +92,12 @@
         ],
         "TestVecOfStructs": [
             {
-                "TESTDATA": 10
+                "TESTDATA": 10,
+                "TESSTRING": "TESTTEST"
             },
             {
-                "TESTDATA": 20
+                "TESTDATA": 20,
+                "TESSTRING": "TESTTEST"
             }
         ],
         "TestDeque": [
@@ -90,36 +123,10 @@
                     ]
                 ]
             ]
+        ],
+        "vecOfStr": [
+            "test",
+            "test2"
         ]
-    },
-    "Transform Component": {
-        "worldPos": [
-            0.0,
-            0.0,
-            0.0
-        ],
-        "localPos": [
-            0.0,
-            0.0,
-            0.0
-        ],
-        "rotation": [
-            0.0,
-            0.0,
-            0.0
-        ],
-        "scale": [
-            1.0,
-            1.0,
-            1.0
-        ],
-        "relation": {
-            "children": 0,
-            "firstChild": "NULL_UUID",
-            "prevSibling": "NULL_UUID",
-            "nextSibling": "NULL_UUID",
-            "parent": "NULL_UUID"
-        },
-        "isPosDirty": false
     }
 }

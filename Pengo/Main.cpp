@@ -101,7 +101,10 @@ void LoadDemo()
 	ent2.AddComponent<TestSerComponent>();
 
 	pScene->SerializeEntity(ent2, "../Data/TestAutoSerialization.json");
-	//pScene->AddEntityFromFile("../Data/TestAutoSerialization.json"); //Deserialize
+	
+
+	
+	pScene->AddEntityFromFile("../Data/TestAutoSerialization.json"); //Deserialize
 
 
 	//Manual scene initialization (no load file)
