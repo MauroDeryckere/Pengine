@@ -24,7 +24,6 @@ Testing with custom containers (need to implment iterators so that they bahave i
 Providing a binary save / load system
 */
 
-
 namespace Pengin
 {
 	template<typename T>
@@ -92,7 +91,8 @@ namespace Pengin
 	{
 		BasicTypeConcept<T>
 		|| (DeserClassConcept<T, T2>)
-		|| ( (EmplBackConcept<T> && ContainerWithIterators<T>) || (AssociativeInsConcept<T> && AssociativeContainer<T>) );
+		|| ( (EmplBackConcept<T> && ContainerWithIterators<T>) 
+		  || (AssociativeInsConcept<T> && AssociativeContainer<T>) );
 	};
 
 	class FieldSerializer final

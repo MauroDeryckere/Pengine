@@ -163,14 +163,23 @@
     <Filter Include="Source Files\FileSys">
       <UniqueIdentifier>{b957fc6b-a3ff-4da6-83c5-436ab4c00ffd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\FileSystem\Ser">
-      <UniqueIdentifier>{04414280-252d-4da1-82fa-f7af92480b09}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\FileSystem\Ser\Field">
-      <UniqueIdentifier>{3d92e38d-9110-44de-8430-d2dd4ca1f390}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Core\Events\Der">
       <UniqueIdentifier>{d468c070-071b-424a-8c2f-886a9c16e0fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\FileSystem\Serialization">
+      <UniqueIdentifier>{04414280-252d-4da1-82fa-f7af92480b09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\FileSystem\Serialization\Field">
+      <UniqueIdentifier>{3d92e38d-9110-44de-8430-d2dd4ca1f390}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\FileSystem\Serialization\Json">
+      <UniqueIdentifier>{0fd214fa-f068-4c59-b2e2-61288db4ee7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\FileSystem\Serialization\Data">
+      <UniqueIdentifier>{f22cfad8-89b0-4faf-9fc4-5bed5e78a3a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\FileSystem\Serialization\Core">
+      <UniqueIdentifier>{9f3ba761-2b93-4a40-ba5f-8cf8f89c234e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -488,9 +497,6 @@
     </ClInclude>
     <ClInclude Include="..\3rdParty\json\json.hpp">
       <Filter>Header Files\3rd Party\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="JsonConversion.h">
-      <Filter>Header Files\FileSystem</Filter>
     </ClInclude>
     <ClInclude Include="GameUUID.h">
       <Filter>Header Files\Core\UUID</Filter>
@@ -1135,16 +1141,19 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="FieldSerializer.h">
-      <Filter>Header Files\FileSystem\Ser\Field</Filter>
+      <Filter>Header Files\FileSystem\Serialization\Field</Filter>
     </ClInclude>
     <ClInclude Include="JsonSerializer.h">
-      <Filter>Header Files\FileSystem\Ser</Filter>
-    </ClInclude>
-    <ClInclude Include="Serializer.h">
-      <Filter>Header Files\FileSystem\Ser</Filter>
+      <Filter>Header Files\FileSystem\Serialization\Json</Filter>
     </ClInclude>
     <ClInclude Include="SerializationRegistry.h">
-      <Filter>Header Files\FileSystem\Ser</Filter>
+      <Filter>Header Files\FileSystem\Serialization\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Serializer.h">
+      <Filter>Header Files\FileSystem\Serialization\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonConversion.h">
+      <Filter>Header Files\FileSystem\Serialization\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

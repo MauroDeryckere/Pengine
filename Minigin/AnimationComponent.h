@@ -6,6 +6,8 @@
 #include <cassert>
 #include <algorithm>
 
+#include "SerializationRegistry.h"
+
 namespace Pengin
 { 
 	struct AnimationData final
@@ -15,6 +17,15 @@ namespace Pengin
 		float frameDuration;
 
 		uint8_t frameCt;
+
+		static void Serialize(const FieldSerializer& fieldSer, const AnimationData& serStruct, std::vector<uint8_t>& fieldVector)
+		{
+			const std::vector<uint16_t> serSrcRect{ serStruct.frame0sourceRect.x, serStruct.frame0sourceRect.y, serStruct.frame0sourceRect.width, serStruct.frame0sourceRect.height };
+
+			fieldSer.SerializeField("Frame0SrcRect", serSrcRect, fieldVector);
+			fieldSer.SerializeField("FrameDuration", serStruct.frameDuration, fieldVector);
+			fieldSer.SerializeField("FrameCount", serStruct.frameCt, fieldVector);
+		}
 	};
 
 	struct AnimationComponent final
@@ -40,7 +51,21 @@ namespace Pengin
 		uint8_t currFrame { 0 };
 
 		bool isPlaying { true };
+
+		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
+		{
+			const auto& comp = ecs.GetComponent<AnimationComponent>(id);
+
+			fieldSer.SerializeField("AnimationData", comp.animations, fieldVector);
+
+			fieldSer.SerializeField("FrameTimer", comp.m_FrameTimer, fieldVector);
+			fieldSer.SerializeField("CurrAnimationIdx", comp.currAnimationIdx, fieldVector);
+			fieldSer.SerializeField("CurrFrame", comp.currFrame, fieldVector);
+			fieldSer.SerializeField("IsPlaying", comp.isPlaying, fieldVector);
+		}
 	};
+
+	REGISTER_SERIALIZATION_FUNCTION(AnimationComponent, AnimationComponent::Serialize);
 }
 
 

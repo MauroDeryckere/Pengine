@@ -40,7 +40,23 @@ namespace Pengin
 		glm::u8vec4 color{ 255, 255, 255, 255 };
 
 		bool needsTextureChange{ true };
+
+
+		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
+		{
+			const auto& comp = ecs.GetComponent<TextComponent>(id);
+
+			fieldSer.SerializeField("Text", comp.text, fieldVector);
+
+			fieldSer.SerializeField("FontPath", comp.pFont ? comp.pFont->GetPath() : "NO PATH", fieldVector);
+			fieldSer.SerializeField<unsigned>("FontSize", comp.pFont ? comp.pFont->GetFontSize() : 0, fieldVector);
+
+			const auto& color = comp.color;
+			fieldSer.SerializeField("Color", std::vector<uint8_t>{color.r, color.g, color.b, color.a}, fieldVector);
+		}
 	};
+
+	REGISTER_SERIALIZATION_FUNCTION(TextComponent, TextComponent::Serialize);
 }
 
 #endif

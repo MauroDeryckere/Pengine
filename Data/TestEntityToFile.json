@@ -30,15 +30,15 @@
         },
         "isPosDirty": false
     },
-    "Sprite Component": {
-        "Source rect": [
+    "struct Pengin::SpriteComponent": {
+        "Texturepath": "NO PATH",
+        "SourceRect": [
             0,
             0,
             0,
             0
         ],
-        "is visible": true,
-        "path": "NO PATH"
+        "IsVisible": true
     },
     "Text Component": {
         "Text": "TEXT TEST",

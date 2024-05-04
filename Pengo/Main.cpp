@@ -67,7 +67,7 @@ void Load()
 	//LoadGamePlayScripting();
 }
 
-void LoadDemo()
+void LoadDemo()  
 {
 	//Most of thesceneData is actually read from a file if you chose a loadPath, just typing it here too for readability
 	using namespace Pengin;
@@ -94,17 +94,16 @@ void LoadDemo()
 
 	pScene->SerializeEntity(testLoadedEntity, "../Data/TestEntityToFile.json");
 
-	auto ent = pScene->CreateEntity();
-	ent.AddComponent<TestSerComponent>();
-
-	auto ent2 = pScene->CreateEntity();
-	ent2.AddComponent<TestSerComponent>();
-
-	pScene->SerializeEntity(ent2, "../Data/TestAutoSerialization.json");
+	//Tets auto ser code
 	
+	//auto ent = pScene->CreateEntity();
+	//ent.AddComponent<TestSerComponent>();
+	//auto ent2 = pScene->CreateEntity();
+	//ent2.AddComponent<TestSerComponent>();
+	//pScene->SerializeEntity(ent2, "../Data/TestAutoSerialization.json");
+	//pScene->AddEntityFromFile("../Data/TestAutoSerialization.json"); //Deserialize
 
-	
-	pScene->AddEntityFromFile("../Data/TestAutoSerialization.json"); //Deserialize
+	//---------------------------------
 
 
 	//Manual scene initialization (no load file)

@@ -271,11 +271,11 @@ namespace Pengin
 	{
 		using json = nlohmann::ordered_json;
 
-		assert(id != NULL_ENTITY_ID);
-		assert(ecs.Exists(id));
+		assert(id != NULL_ENTITY_ID && "Invalid entityId");
+		assert(ecs.Exists(id) && "Id doesnt eexist in the ecs");
 
-		assert(ecs.HasComponent<UUIDComponent>(id)); //everything has a transform and UUID in a scene
-		assert(ecs.HasComponent<TransformComponent>(id));
+		assert(ecs.HasComponent<UUIDComponent>(id) && "Must have UUID component to exist in scene");
+		assert(ecs.HasComponent<TransformComponent>(id) && "Must have Transform component to exist in scene");
 
 		if (keepUUID)
 		{
@@ -319,60 +319,6 @@ namespace Pengin
 				j[it.first.name()].merge_patch(fieldJson);
 			}
 		}		
-
-		//----------------------------------------------------
-		if (ecs.HasComponent<PlayerComponent>(id))
-		{
-			const auto& player = ecs.GetComponent<PlayerComponent>(id);
-			j["Player Component"];
-			j["Player Component"]["UserIdx"] = player.userIdx.GetUUID_PrettyStr();
-			j["Player Component"]["MovementSpeed"] = player.movementSpeed;
-		}
-		if (ecs.HasComponent<SpriteComponent>(id))
-		{
-			const auto& sprite = ecs.GetComponent<SpriteComponent>(id);
-			j["Sprite Component"] = sprite;
-		}
-		if (ecs.HasComponent<VelocityComponent>(id))
-		{
-			const auto& vel = ecs.GetComponent<VelocityComponent>(id);
-			j["Velocity Component"] = vel;
-		}
-		if (ecs.HasComponent<TextComponent>(id))
-		{
-			const auto& text = ecs.GetComponent<TextComponent>(id);
-			j["Text Component"] = text;
-		}
-		if (ecs.HasComponent<ScoreComponent>(id))
-		{
-			const auto& score = ecs.GetComponent<ScoreComponent>(id);
-			to_json(j["Score Component"], score, ecs);
-		}
-		if (ecs.HasComponent<RectColliderComponent>(id))
-		{
-			const auto& rectColl = ecs.GetComponent<RectColliderComponent>(id);
-			j["RectCollider Component"] = rectColl;
-		}
-		if (ecs.HasComponent<HealthComponent>(id))
-		{
-			const auto& health = ecs.GetComponent<HealthComponent>(id);
-			to_json(j["Health Component"], health, ecs);
-		}
-		if (ecs.HasComponent<FPSCounterComponent>(id))
-		{
-			j["FPS Component"];
-		}
-		if (ecs.HasComponent<AnimationComponent>(id))
-		{
-			const auto& ani = ecs.GetComponent<AnimationComponent>(id);
-			j["Animation Component"] = ani;
-		}
-		if (ecs.HasComponent<TxtDisplayComponent>(id))
-		{
-			const auto& dis = ecs.GetComponent<TxtDisplayComponent>(id);
-			j["TextDisplay Component"] = dis;
-		}
-		//--------------------------------------------------------------
 
 		return true;
 	}

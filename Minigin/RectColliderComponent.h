@@ -3,6 +3,8 @@
 
 #include "UtilStructs.h"
 
+#include "SerializationRegistry.h"
+
 namespace Pengin
 {
 	struct RectColliderComponent final
@@ -15,7 +17,16 @@ namespace Pengin
 		~RectColliderComponent() = default;
 
 		UtilStructs::Rectu16 collRect;
+
+		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
+		{
+			const auto& comp = ecs.GetComponent<RectColliderComponent>(id);
+
+			fieldSer.SerializeField("CollRect", std::vector<uint16_t>{comp.collRect.x, comp.collRect.y, comp.collRect.width, comp.collRect.height }, fieldVector);
+		}
 	};
+
+	REGISTER_SERIALIZATION_FUNCTION(RectColliderComponent, RectColliderComponent::Serialize);
 }
 
 #endif
