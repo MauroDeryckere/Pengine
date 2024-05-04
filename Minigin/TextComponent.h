@@ -2,6 +2,7 @@
 #define TEXTCOMPONENT
 
 #include "ResourceManager.h"
+#include "SerializationRegistry.h"
 
 #include "Font.h"
 #include "glm/vec4.hpp"
