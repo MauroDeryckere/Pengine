@@ -283,6 +283,11 @@ namespace Pengin
 		{
 			if constexpr (ContainerWithIterators<FieldType>)
 			{
+				if constexpr (EmplBackConcept<FieldType>)
+				{
+					DEBUG_OUT("Emplace back concept");
+
+				}
 				if constexpr (AssociativeContainer<FieldType>)
 				{
 					const auto tempFieldsMap = ServiceLocator::GetSerializer().ParseJsonStr(fieldStr);
@@ -309,7 +314,7 @@ namespace Pengin
 					}
 					fieldValueOut = container;
 				}
-				else if constexpr(EmplBackConcept<FieldType>) //Need container::emplace_back
+				else //if constexpr(EmplBackConcept<FieldType>) //Need container::emplace_back  //TODO empl back concept
 				{
 					const auto tempFieldsMap = ServiceLocator::GetSerializer().ParseJsonStr(fieldStr);
 
@@ -344,8 +349,23 @@ namespace Pengin
 				}
 				else
 				{
-					std::stringstream ss(fieldStr); //ss handles the basic types conversions
-					ss >> fieldValueOut;
+					if constexpr (std::is_same_v<FieldType, std::string>)
+					{
+						fieldValueOut = fieldStr;
+					}
+					else if constexpr (std::is_same_v<FieldType, bool>)
+					{
+						fieldValueOut = fieldStr == "true" ? true : false;
+					}
+					else if constexpr ( std::numeric_limits<FieldType>::is_integer && sizeof(FieldType) == 1)
+					{
+						fieldValueOut = static_cast<FieldType>(std::stoi(fieldStr));
+					}
+					else 
+					{
+						std::stringstream ss(fieldStr); //ss handles the basic types conversions
+						ss >> fieldValueOut;
+					}
 				}
 			}
 		}
