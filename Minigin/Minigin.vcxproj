@@ -152,7 +152,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\win64\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPath) /Y
 xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\lib\x64\fmodstudioL.dll" $(OutputPath) /Y
-xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmodL.dll" $(OutputPath) /Y
+
 
 </Command>
     </PostBuildEvent>

@@ -7,9 +7,11 @@
 #include "EntityId.h"
 #include "ECS.h"
 
+//TODO use these structs in the fieldserializer
+
 namespace Pengin
 {
-	struct SerializationData final
+	struct SerializationData final 
 	{
 		SerializationData(const FieldSerializer& fieldSer, EntityId id, const ECS& ecs, const Impl::SerImplData& data) :
 			fieldSer{ fieldSer },
