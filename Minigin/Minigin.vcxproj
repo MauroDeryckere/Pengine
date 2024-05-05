@@ -505,6 +505,7 @@ xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll"
     <ClInclude Include="SceneInfoPanel.h" />
     <ClInclude Include="ScoreChangeEvent.h" />
     <ClInclude Include="ScoreComponent.h" />
+    <ClInclude Include="SerializationData.h" />
     <ClInclude Include="SerializationRegistry.h" />
     <ClInclude Include="JsonSerializer.h" />
     <ClInclude Include="FModSoundSystem.h" />

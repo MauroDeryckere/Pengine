@@ -2,32 +2,32 @@
     "Scene Data": {
         "SceneName": "Demo Scene",
         "PlayerUUIDs": [
-            "df5d6864-0292-484b-b637-46f6538ae910",
-            "471778f0-4732-4024-8bfc-b935133bb93d"
+            "453103fa-fc85-4ce9-af04-b9d5b4fe2ead",
+            "888457a8-52b0-4525-b080-d7f8bf895e3f"
         ],
         "UserIds": [
             [
-                "e70aa396-1599-4fa8-b72a-b3853796dd1e",
+                "4013a137-0aab-426c-8fba-53f4c148f7ea",
                 0
             ],
             [
-                "18c5bed5-31ba-479a-89d1-45b5ec7f52ec",
+                "c19674bb-595e-4c3a-87a1-db4620131f2b",
                 1
             ]
         ],
         "IsUUIDInit": true,
         "SceneFileData": {
             "InputFilePath": "../Data/InputTest.json",
-            "SceneLoadPath": "../Data/DemoScene.json",
-            "SceneSavePath": "../Data/DemoScene2.json",
-            "SaveSceneOnDestroy": true,
+            "SceneLoadPath": "../Data/PengoSaveBackup.json",
+            "SceneSavePath": "../Data/PengoSaveBackup.json",
+            "SaveSceneOnDestroy": false,
             "AutoSaveTime": 0.0,
             "KeepPrevInput": false
         }
     },
     "Entities": [
         {
-            "UUID": "805bcced-aada-4958-ae70-38c307474276",
+            "UUID": "cf0f18cb-7425-460b-9221-838f8160d448",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -58,27 +58,27 @@
                 },
                 "isPosDirty": false
             },
-            "Sprite Component": {
-                "Source rect": [
-                    0,
-                    0,
-                    0,
-                    0
-                ],
-                "is visible": true,
-                "path": "background.tga"
-            },
-            "RectCollider Component": {
+            "struct Pengin::RectColliderComponent": {
                 "CollRect": [
                     0,
                     0,
                     100,
                     100
                 ]
+            },
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "background.tga",
+                "SourceRect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "IsVisible": true
             }
         },
         {
-            "UUID": "8e8c14c5-5097-4d2f-87f3-fe0ffb20b2d2",
+            "UUID": "2b64f87a-74fa-4b7b-b025-ccbc26c847a6",
             "Transform Component": {
                 "worldPos": [
                     216.0,
@@ -109,19 +109,19 @@
                 },
                 "isPosDirty": false
             },
-            "Sprite Component": {
-                "Source rect": [
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "logo.tga",
+                "SourceRect": [
                     0,
                     0,
                     0,
                     0
                 ],
-                "is visible": true,
-                "path": "logo.tga"
+                "IsVisible": true
             }
         },
         {
-            "UUID": "cc795e2e-7aa0-497d-b580-cb7d8b62dcdb",
+            "UUID": "d51e9214-5760-4180-9284-612f2ad4b6c4",
             "Transform Component": {
                 "worldPos": [
                     80.0,
@@ -152,19 +152,19 @@
                 },
                 "isPosDirty": false
             },
-            "Sprite Component": {
-                "Source rect": [
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "NO PATH",
+                "SourceRect": [
                     0,
                     0,
                     0,
                     0
                 ],
-                "is visible": true,
-                "path": "NO PATH"
+                "IsVisible": true
             },
-            "Text Component": {
+            "struct Pengin::TextComponent": {
                 "Text": "Programming 4 Assignment",
-                "Path": "Lingua.otf",
+                "FontPath": "Lingua.otf",
                 "FontSize": 36,
                 "Color": [
                     255,
@@ -175,7 +175,7 @@
             }
         },
         {
-            "UUID": "5ec5e959-d083-48ac-8dfb-244e7be2eea8",
+            "UUID": "e636d1b5-7983-4609-9acf-ae2b965fdbf9",
             "Transform Component": {
                 "worldPos": [
                     100.0,
@@ -206,19 +206,19 @@
                 },
                 "isPosDirty": false
             },
-            "Sprite Component": {
-                "Source rect": [
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "NO PATH",
+                "SourceRect": [
                     0,
                     0,
                     0,
                     0
                 ],
-                "is visible": true,
-                "path": "NO PATH"
+                "IsVisible": true
             },
-            "Text Component": {
+            "struct Pengin::TextComponent": {
                 "Text": "WASD to move, C attack, V score, B sound",
-                "Path": "Lingua.otf",
+                "FontPath": "Lingua.otf",
                 "FontSize": 20,
                 "Color": [
                     255,
@@ -229,7 +229,7 @@
             }
         },
         {
-            "UUID": "1661d8dd-fdb6-41b0-a953-e999a7273246",
+            "UUID": "5a532bbb-c003-47c1-8797-fb7962878e12",
             "Transform Component": {
                 "worldPos": [
                     100.0,
@@ -260,19 +260,19 @@
                 },
                 "isPosDirty": false
             },
-            "Sprite Component": {
-                "Source rect": [
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "NO PATH",
+                "SourceRect": [
                     0,
                     0,
                     0,
                     0
                 ],
-                "is visible": true,
-                "path": "NO PATH"
+                "IsVisible": true
             },
-            "Text Component": {
+            "struct Pengin::TextComponent": {
                 "Text": "D-Pad to move, A attack, B score, X sound",
-                "Path": "Lingua.otf",
+                "FontPath": "Lingua.otf",
                 "FontSize": 20,
                 "Color": [
                     255,
@@ -283,7 +283,7 @@
             }
         },
         {
-            "UUID": "7bf8b157-f404-4445-b202-ff05a6a4fafe",
+            "UUID": "1aa64e4a-0339-4050-bbb0-ac5110d5dfee",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -314,19 +314,19 @@
                 },
                 "isPosDirty": false
             },
-            "Sprite Component": {
-                "Source rect": [
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "NO PATH",
+                "SourceRect": [
                     0,
                     0,
                     0,
                     0
                 ],
-                "is visible": true,
-                "path": "NO PATH"
+                "IsVisible": true
             },
-            "Text Component": {
-                "Text": "59.0",
-                "Path": "Lingua.otf",
+            "struct Pengin::TextComponent": {
+                "Text": "40.7",
+                "FontPath": "Lingua.otf",
                 "FontSize": 36,
                 "Color": [
                     255,
@@ -335,23 +335,19 @@
                     255
                 ]
             },
-            "FPS Component": null
+            "struct Pengin::FPSCounterComponent": {}
         },
         {
-            "UUID": "df5d6864-0292-484b-b637-46f6538ae910",
-            "Player Component": {
-                "UserIdx": "e70aa396-1599-4fa8-b72a-b3853796dd1e",
-                "MovementSpeed": 100.0
-            },
+            "UUID": "453103fa-fc85-4ce9-af04-b9d5b4fe2ead",
             "Transform Component": {
                 "worldPos": [
-                    63.37361145019531,
-                    249.83787536621094,
+                    200.0,
+                    200.0,
                     0.0
                 ],
                 "localPos": [
-                    63.37361145019531,
-                    249.83787536621094,
+                    200.0,
+                    200.0,
                     0.0
                 ],
                 "rotation": [
@@ -373,30 +369,24 @@
                 },
                 "isPosDirty": false
             },
-            "Sprite Component": {
-                "Source rect": [
-                    0,
+            "struct Pengin::VelocityComponent": {
+                "Velocity": [
                     0,
                     0,
                     0
-                ],
-                "is visible": true,
-                "path": "pengoLowQualityFortesting.png"
-            },
-            "Velocity Component": {
-                "Velocity": [
-                    0.0,
-                    0.0,
-                    0.0
                 ]
             },
-            "Score Component": {
-                "Score": 0,
-                "ScoreDisplayUUIDS": [
-                    "db3b6b03-46ef-41d3-a513-53256c8033eb"
+            "struct Pengin::HealthComponent": {
+                "Health": 3,
+                "HealthDisplayIds": [
+                    "676c5dbc-5bde-4e93-8d44-a04925b83082"
                 ]
             },
-            "RectCollider Component": {
+            "struct Pengin::PlayerComponent": {
+                "UserIdx": "4013a137-0aab-426c-8fba-53f4c148f7ea",
+                "MovementSpeed": 100
+            },
+            "struct Pengin::RectColliderComponent": {
                 "CollRect": [
                     10,
                     10,
@@ -404,15 +394,25 @@
                     100
                 ]
             },
-            "Health Component": {
-                "Health": 3,
-                "HealthDisplayUUIDS": [
-                    "6a8b421c-d614-4bea-a499-202a39f008bd"
+            "struct Pengin::ScoreComponent": {
+                "Score": 0,
+                "ScoreDisplayIds": [
+                    "3b57420a-ec7d-4cfc-b782-f6748f9d1144"
                 ]
+            },
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "pengoLowQualityFortesting.png",
+                "SourceRect": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "IsVisible": true
             }
         },
         {
-            "UUID": "6a8b421c-d614-4bea-a499-202a39f008bd",
+            "UUID": "676c5dbc-5bde-4e93-8d44-a04925b83082",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -443,19 +443,19 @@
                 },
                 "isPosDirty": false
             },
-            "Sprite Component": {
-                "Source rect": [
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "NO PATH",
+                "SourceRect": [
                     0,
                     0,
                     0,
                     0
                 ],
-                "is visible": true,
-                "path": "NO PATH"
+                "IsVisible": true
             },
-            "Text Component": {
+            "struct Pengin::TextComponent": {
                 "Text": "Player 1 Health: 3",
-                "Path": "Lingua.otf",
+                "FontPath": "Lingua.otf",
                 "FontSize": 18,
                 "Color": [
                     255,
@@ -464,13 +464,13 @@
                     255
                 ]
             },
-            "TextDisplay Component": {
+            "struct Pengin::TxtDisplayComponent": {
                 "Prefix": "Player 1 Health: ",
                 "Postfix": ""
             }
         },
         {
-            "UUID": "db3b6b03-46ef-41d3-a513-53256c8033eb",
+            "UUID": "3b57420a-ec7d-4cfc-b782-f6748f9d1144",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -501,19 +501,19 @@
                 },
                 "isPosDirty": false
             },
-            "Sprite Component": {
-                "Source rect": [
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "NO PATH",
+                "SourceRect": [
                     0,
                     0,
                     0,
                     0
                 ],
-                "is visible": true,
-                "path": "NO PATH"
+                "IsVisible": true
             },
-            "Text Component": {
+            "struct Pengin::TextComponent": {
                 "Text": "Player 1 Score: 0",
-                "Path": "Lingua.otf",
+                "FontPath": "Lingua.otf",
                 "FontSize": 18,
                 "Color": [
                     255,
@@ -522,17 +522,13 @@
                     255
                 ]
             },
-            "TextDisplay Component": {
+            "struct Pengin::TxtDisplayComponent": {
                 "Prefix": "Player 1 Score: ",
                 "Postfix": ""
             }
         },
         {
-            "UUID": "471778f0-4732-4024-8bfc-b935133bb93d",
-            "Player Component": {
-                "UserIdx": "18c5bed5-31ba-479a-89d1-45b5ec7f52ec",
-                "MovementSpeed": 50.0
-            },
+            "UUID": "888457a8-52b0-4525-b080-d7f8bf895e3f",
             "Transform Component": {
                 "worldPos": [
                     100.0,
@@ -563,38 +559,42 @@
                 },
                 "isPosDirty": false
             },
-            "Sprite Component": {
-                "Source rect": [
+            "struct Pengin::VelocityComponent": {
+                "Velocity": [
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "struct Pengin::HealthComponent": {
+                "Health": 3,
+                "HealthDisplayIds": [
+                    "8582bda1-e6c0-4969-a892-70a6fa8f330d"
+                ]
+            },
+            "struct Pengin::PlayerComponent": {
+                "UserIdx": "c19674bb-595e-4c3a-87a1-db4620131f2b",
+                "MovementSpeed": 50
+            },
+            "struct Pengin::ScoreComponent": {
+                "Score": 0,
+                "ScoreDisplayIds": [
+                    "a441b70d-89fd-4e31-9777-7c404b1fa586"
+                ]
+            },
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "pengoLowQualityFortesting.png",
+                "SourceRect": [
                     0,
                     0,
                     0,
                     0
                 ],
-                "is visible": true,
-                "path": "pengoLowQualityFortesting.png"
-            },
-            "Velocity Component": {
-                "Velocity": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            },
-            "Score Component": {
-                "Score": 0,
-                "ScoreDisplayUUIDS": [
-                    "11e7ceed-95c4-4e21-a472-ea195fc03cb1"
-                ]
-            },
-            "Health Component": {
-                "Health": 3,
-                "HealthDisplayUUIDS": [
-                    "57a33316-f7b9-40e3-8b58-0939cd2440ed"
-                ]
+                "IsVisible": true
             }
         },
         {
-            "UUID": "57a33316-f7b9-40e3-8b58-0939cd2440ed",
+            "UUID": "8582bda1-e6c0-4969-a892-70a6fa8f330d",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -625,19 +625,19 @@
                 },
                 "isPosDirty": false
             },
-            "Sprite Component": {
-                "Source rect": [
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "NO PATH",
+                "SourceRect": [
                     0,
                     0,
                     0,
                     0
                 ],
-                "is visible": true,
-                "path": "NO PATH"
+                "IsVisible": true
             },
-            "Text Component": {
+            "struct Pengin::TextComponent": {
                 "Text": "Player 2 Health: 3",
-                "Path": "Lingua.otf",
+                "FontPath": "Lingua.otf",
                 "FontSize": 18,
                 "Color": [
                     255,
@@ -646,13 +646,13 @@
                     255
                 ]
             },
-            "TextDisplay Component": {
+            "struct Pengin::TxtDisplayComponent": {
                 "Prefix": "Player 2 Health: ",
                 "Postfix": ""
             }
         },
         {
-            "UUID": "11e7ceed-95c4-4e21-a472-ea195fc03cb1",
+            "UUID": "a441b70d-89fd-4e31-9777-7c404b1fa586",
             "Transform Component": {
                 "worldPos": [
                     0.0,
@@ -683,19 +683,19 @@
                 },
                 "isPosDirty": false
             },
-            "Sprite Component": {
-                "Source rect": [
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "NO PATH",
+                "SourceRect": [
                     0,
                     0,
                     0,
                     0
                 ],
-                "is visible": true,
-                "path": "NO PATH"
+                "IsVisible": true
             },
-            "Text Component": {
+            "struct Pengin::TextComponent": {
                 "Text": "Player 2 Score: 0",
-                "Path": "Lingua.otf",
+                "FontPath": "Lingua.otf",
                 "FontSize": 18,
                 "Color": [
                     255,
@@ -704,13 +704,13 @@
                     255
                 ]
             },
-            "TextDisplay Component": {
+            "struct Pengin::TxtDisplayComponent": {
                 "Prefix": "Player 2 Score: ",
                 "Postfix": ""
             }
         },
         {
-            "UUID": "dc53ac6b-acf5-491d-9a9c-13ff6dd0ebf1",
+            "UUID": "7fdf2ae6-f668-41af-bbc5-47b254aaa51a",
             "Transform Component": {
                 "worldPos": [
                     200.0,
@@ -741,43 +741,43 @@
                 },
                 "isPosDirty": false
             },
-            "Sprite Component": {
-                "Source rect": [
-                    32,
-                    0,
-                    16,
-                    16
-                ],
-                "is visible": true,
-                "path": "Pengo_Snobee_Spritesheet.png"
-            },
-            "Animation Component": {
-                "Animations": [
+            "struct Pengin::AnimationComponent": {
+                "AnimationData": [
                     {
-                        "Frame0SourceRect": [
+                        "Frame0SrcRect": [
                             32,
                             0,
                             16,
                             16
                         ],
-                        "FrameCount": 2,
-                        "FrameDuration": 1.0
+                        "FrameDuration": 1,
+                        "FrameCount": 2
                     },
                     {
-                        "Frame0SourceRect": [
+                        "Frame0SrcRect": [
                             0,
                             0,
                             16,
                             16
                         ],
-                        "FrameCount": 2,
-                        "FrameDuration": 1.0
+                        "FrameDuration": 1,
+                        "FrameCount": 2
                     }
                 ],
-                "CurrentAnimationIndex": 0,
-                "CurrentAnimationFrame": 0,
-                "CurrentFrameTime": 0.7914499640464783,
+                "FrameTimer": 0.0745658,
+                "CurrAnimationIdx": 0,
+                "CurrFrame": 0,
                 "IsPlaying": true
+            },
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "Pengo_Snobee_Spritesheet.png",
+                "SourceRect": [
+                    32,
+                    0,
+                    16,
+                    16
+                ],
+                "IsVisible": true
             }
         }
     ]

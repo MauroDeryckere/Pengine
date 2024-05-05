@@ -74,16 +74,17 @@ namespace Pengin
 		|| (ContainerWithIterators<T>);
 	};
 
+
 	template<typename T>
 	concept EmplBackConcept = requires(T t)
 	{
-		{ t.emplace_back( std::declval<const typename T::value_type&>() ) } -> std::same_as<void>;
+		{ t.emplace_back(std::declval<const typename T::value_type&>()) };
 	};
 
 	template<typename T>
 	concept AssociativeInsConcept = requires(T t, const typename T::key_type & key)
 	{
-		{ t[key] } -> std::convertible_to<typename T::mapped_type&>;
+		{ t[key] } /*-> std::convertible_to<typename T::mapped_type&>*/;
 	};
 
 	template<typename T, typename T2>
@@ -187,7 +188,7 @@ namespace Pengin
 
 				for  (auto it = begin(fieldValue); it != end(fieldValue); ++it)
 				{
-					if constexpr (AssociativeInsConcept<FieldType> && AssociativeContainer<FieldType>)
+					if constexpr (AssociativeContainer<FieldType>)
 					{
 						oss << "[";
 						SerializeFieldValJson((*it).first, oss);
@@ -283,12 +284,7 @@ namespace Pengin
 		{
 			if constexpr (ContainerWithIterators<FieldType>)
 			{
-				if constexpr (EmplBackConcept<FieldType>)
-				{
-					DEBUG_OUT("Emplace back concept");
-
-				}
-				if constexpr (AssociativeContainer<FieldType>)
+				if constexpr (AssociativeInsConcept<FieldType> && AssociativeContainer<FieldType>) //need [key]
 				{
 					const auto tempFieldsMap = ServiceLocator::GetSerializer().ParseJsonStr(fieldStr);
 
@@ -314,7 +310,7 @@ namespace Pengin
 					}
 					fieldValueOut = container;
 				}
-				else //if constexpr(EmplBackConcept<FieldType>) //Need container::emplace_back  //TODO empl back concept
+				else if constexpr(EmplBackConcept<FieldType>) //Need container::emplace_back
 				{
 					const auto tempFieldsMap = ServiceLocator::GetSerializer().ParseJsonStr(fieldStr);
 

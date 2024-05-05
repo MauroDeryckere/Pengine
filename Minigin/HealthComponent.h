@@ -37,14 +37,32 @@ namespace Pengin
 
 			for (auto entity : comp.healthDisplayIds)
 			{
-				healthDispUuids.emplace_back(entity ? ecs.GetComponent<UUIDComponent>(entity).uuid.GetUUID_PrettyStr() : "NULL_UUID");
+				healthDispUuids.emplace_back(entity != NULL_ENTITY_ID ? ecs.GetComponent<UUIDComponent>(id).uuid.GetUUID_PrettyStr() : "NULL_UUID");
 			}
 
 			fieldSer.SerializeField("HealthDisplayIds", healthDispUuids, fieldVector);
 		}
+		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
+		{
+			auto& comp = ecs.AddComponent<HealthComponent>(id);
+
+			fieldSer.DeserializeField("Health", comp.health, serializedFields);
+
+			std::vector<std::string> idVec{};
+			fieldSer.DeserializeField("HealthDisplayIds", idVec, serializedFields);
+
+			comp.healthDisplayIds.reserve(idVec.size());
+			for (const auto& uuid : idVec)
+			{
+				DEBUG_OUT("DA UUID: " << uuid);
+
+				comp.healthDisplayIds.emplace_back(entityMap.at({ uuid }));
+			}
+		}
 	};
 
 	REGISTER_SERIALIZATION_FUNCTION(HealthComponent, HealthComponent::Serialize);
+	REGISTER_DESERIALIZATION_FUNCTION(HealthComponent, HealthComponent::Deserialize);
 }
 
 #endif

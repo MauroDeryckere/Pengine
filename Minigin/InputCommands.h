@@ -43,7 +43,6 @@ namespace Pengin
 				DEBUG_OUT("movement for a deleted playerIdx");
 				return;
 			}
-
 			const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
 			 
 			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
@@ -106,7 +105,7 @@ namespace Pengin
 
 			if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
 			{
-				DEBUG_OUT("movement for a deleted playerIdx");
+				DEBUG_OUT("attack player for a deleted playerIdx");
 				return;
 			}
 

@@ -3,6 +3,8 @@
 
 #include "CoreIncludes.h"
 
+#include "EntityId.h"
+
 #include "UUIDComponent.h"
 #include "SerializationRegistry.h"
 
@@ -37,14 +39,30 @@ namespace Pengin
 
 			for (auto entity : comp.scoreDisplays)
 			{
-				scoreDispUuids.emplace_back(entity ? ecs.GetComponent<UUIDComponent>(entity).uuid.GetUUID_PrettyStr() : "NULL_UUID");
+				scoreDispUuids.emplace_back(entity != NULL_ENTITY_ID ? ecs.GetComponent<UUIDComponent>(id).uuid.GetUUID_PrettyStr() : "NULL_UUID");
 			}
 
 			fieldSer.SerializeField("ScoreDisplayIds", scoreDispUuids, fieldVector);
 		}
+		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
+		{
+			auto& comp = ecs.AddComponent<ScoreComponent>(id);
+
+			fieldSer.DeserializeField("Score", comp.score, serializedFields);
+
+			std::vector<std::string> idVec{};
+			fieldSer.DeserializeField("ScoreDisplayIds", idVec, serializedFields);
+
+			comp.scoreDisplays.reserve(idVec.size());
+			for (const auto& uuid : idVec)
+			{
+				comp.scoreDisplays.emplace_back(entityMap.at({ uuid }));
+			}
+		}
 	};
 
 	REGISTER_SERIALIZATION_FUNCTION(ScoreComponent, ScoreComponent::Serialize);
+	REGISTER_DESERIALIZATION_FUNCTION(ScoreComponent, ScoreComponent::Deserialize);
 }
 
 #endif

@@ -69,49 +69,41 @@ void Load()
 
 void LoadDemo()  
 {
-	//Most of thesceneData is actually read from a file if you chose a loadPath, just typing it here too for readability
 	using namespace Pengin;
+
+	//Most of thesceneData is actually read from a file if you chose a loadPath, just typing it here too for readability
 	SceneData sceneData{};
 	sceneData.name = "Demo Scene";
 
 	SceneFileData data{};
-	data.sceneSavePath = "../Data/DemoScene.json";
 
-	data.saveSceneOnDestroy = false; //Easier to test if we dont do a runtime save 
-	data.sceneLoadPath = "../Data/DemoScene.json";
+	data.sceneSavePath = "";
+	data.saveSceneOnDestroy = false;
+	data.sceneLoadPath = "../Data/PengoSaveBackup.json";
 
 	data.inputFilePath = "../Data/InputTest.json";
 	data.f_RegControllerInput = RegisterControllerInput_DemoScene;
 	data.f_RegKeyboardInput = RegisterKeyboardInput_DemoScene;
-	data.keepPrevInput = false;
+	data.keepPrevInput = false; //boolean to override any funcs
 
 	sceneData.sceneFileData = data;
 
 	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
 
-	Entity testLoadedEntity = pScene->AddEntityFromFile("../Data/TestEntityFFile.json");
-	testLoadedEntity.GetComponent<TextComponent>().SetText("TEXT TEST");
+	//Entity testLoadedEntity = pScene->AddEntityFromFile("../Data/TestEntityFFile.json");
+	//testLoadedEntity.GetComponent<TextComponent>().SetText("TEXT TEST");
 
-	pScene->SerializeEntity(testLoadedEntity, "../Data/TestEntityToFile.json");
-
-	//Tets auto ser code
-	
-	//auto ent = pScene->CreateEntity();
-	//ent.AddComponent<TestSerComponent>();
-	//auto ent2 = pScene->CreateEntity();
-	//ent2.AddComponent<TestSerComponent>();
-	//pScene->SerializeEntity(ent2, "../Data/TestAutoSerialization.json");
-	//pScene->AddEntityFromFile("../Data/TestAutoSerialization.json"); //Deserialize
-
-	//---------------------------------
+	//pScene->SerializeEntity(testLoadedEntity, "../Data/TestEntityToFile.json");
 
 
 	//Manual scene initialization (no load file)
-	
-	//Background && logo
+	//auto& input = InputManager::GetInstance();
+	//auto user1 = input.RegisterUser(UserType::Keyboard);
+	//auto user2 = input.RegisterUser(UserType::Controller);
+	//
+	////Background && logo
 	//auto background = pScene->CreateEntity();
 	//background.AddComponent<SpriteComponent>("background.tga");
-
 	////Temp testing
 	//background.AddComponent<RectColliderComponent>(UtilStructs::Rectu16{0, 0, 100, 100});
 
@@ -157,14 +149,14 @@ void LoadDemo()
 	//healthChar1.AddComponent<TextComponent>("Lingua.otf", 18, "Player 1 Health: 3");
 	//healthChar1.AddComponent<TxtDisplayComponent>("Player 1 Health: ");
 
-	//player1Health.m_HealthDisplayIds.emplace_back(healthChar1.GetEntityId());
+	//player1Health.healthDisplayIds.emplace_back(healthChar1.GetEntityId());
 
 	//auto scoreChar1 = pScene->CreateEntity({ 0, 175, 0 });
 	//scoreChar1.AddComponent<SpriteComponent>();
 	//scoreChar1.AddComponent<TextComponent>("Lingua.otf", 18, "Player 1 Score: 0"); //Todo no text display init
 	//scoreChar1.AddComponent<TxtDisplayComponent>("Player 1 Score: ");
 
-	//player1Score.m_ScoreDisplays.emplace_back(scoreChar1.GetEntityId());
+	//player1Score.scoreDisplays.emplace_back(scoreChar1.GetEntityId());
 
 	//pScene->SetPlayer(user1, player1); 
 	////-------------------
@@ -183,20 +175,19 @@ void LoadDemo()
 	//healthChar2.AddComponent<TextComponent>("Lingua.otf", 18, "Player 2 Health: 3");
 	//healthChar2.AddComponent<TxtDisplayComponent>("Player 2 Health: ");
 
-	//player2Health.m_HealthDisplayIds.emplace_back(healthChar2.GetEntityId());
+	//player2Health.healthDisplayIds.emplace_back(healthChar2.GetEntityId());
 
 	//auto scoreChar2 = pScene->CreateEntity({ 0, 225, 0 });
 	//scoreChar2.AddComponent<SpriteComponent>();
 	//scoreChar2.AddComponent<TextComponent>("Lingua.otf", 18, "Player 2 Score: 0"); //Todo no text display init
 	//scoreChar2.AddComponent<TxtDisplayComponent>("Player 2 Score: ");
 
-	//player2Score.m_ScoreDisplays.emplace_back(scoreChar2.GetEntityId());
+	//player2Score.scoreDisplays.emplace_back(scoreChar2.GetEntityId());
 	//
 	//pScene->SetPlayer(user2, player2);
 	////----------------------------------------
 
-	//---------------
-	////
+	////---------------
 	////animation test code
 	//auto aniPengo = pScene->CreateEntity({ 200, 200, 0 }, { }, { 4,4,0 });
 	//aniPengo.AddComponent<SpriteComponent>("Pengo_Snobee_Spritesheet.png", UtilStructs::Rectu16{ 32, 0, 16, 16 });
@@ -216,7 +207,7 @@ void LoadDemo()
 	//anis.emplace_back(ani1);
 
 	//aniPengo.AddComponent<AnimationComponent>(anis);
-	////---------------------------
+	//---------------------------
 }
 
 void LoadGamePlayScripting()

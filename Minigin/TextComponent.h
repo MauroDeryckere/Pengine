@@ -55,9 +55,30 @@ namespace Pengin
 			const auto& color = comp.color;
 			fieldSer.SerializeField("Color", std::vector<uint8_t>{color.r, color.g, color.b, color.a}, fieldVector);
 		}
+		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
+		{
+			std::string fontPath{};
+			fieldSer.DeserializeField("FontPath",fontPath, serializedFields);
+			assert(fontPath != "NO PATH");
+
+			unsigned fontSize{};
+			fieldSer.DeserializeField("FontSize", fontSize, serializedFields);
+			assert(fontSize != 0);
+
+			auto& textComp = ecs.AddComponent<TextComponent>(id, fontPath, fontSize);
+
+			std::vector<uint8_t> color{ };
+			fieldSer.DeserializeField("Color", color, serializedFields);
+			textComp.color = glm::u8vec4{ color[0], color[1], color[2], color[3] };
+
+			fieldSer.DeserializeField("Text", textComp.text, serializedFields);
+
+			textComp.needsTextureChange = true; //Always need to generate a texture upon deserializing
+		}
 	};
 
 	REGISTER_SERIALIZATION_FUNCTION(TextComponent, TextComponent::Serialize);
+	REGISTER_DESERIALIZATION_FUNCTION(TextComponent, TextComponent::Deserialize);
 }
 
 #endif

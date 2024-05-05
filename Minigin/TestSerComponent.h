@@ -116,7 +116,7 @@ namespace Pengin
 			fieldSer.SerializeField("vecOfStr", comp.testVecOfStr, fieldVector);
 		}
 
-		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields)
+		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]])
 		{
 			auto& comp = ecs.AddComponent<TestSerComponent>(id);
 

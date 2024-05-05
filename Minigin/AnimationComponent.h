@@ -26,6 +26,17 @@ namespace Pengin
 			fieldSer.SerializeField("FrameDuration", serStruct.frameDuration, fieldVector);
 			fieldSer.SerializeField("FrameCount", serStruct.frameCt, fieldVector);
 		}
+		static void Deserialize(const FieldSerializer& fieldSer, AnimationData& deserStruct, const std::unordered_map<std::string, std::vector<uint8_t>>& fields)
+		{
+			std::vector<uint16_t> deserSrcRect{};
+
+			fieldSer.DeserializeField("Frame0SrcRect", deserSrcRect, fields);
+
+			deserStruct.frame0sourceRect = UtilStructs::Rectu16{ deserSrcRect[0], deserSrcRect[1], deserSrcRect[2], deserSrcRect[3] };
+
+			fieldSer.DeserializeField("FrameDuration", deserStruct.frameDuration, fields);
+			fieldSer.DeserializeField("FrameCount", deserStruct.frameCt, fields);
+		}
 	};
 
 	struct AnimationComponent final
@@ -63,9 +74,22 @@ namespace Pengin
 			fieldSer.SerializeField("CurrFrame", comp.currFrame, fieldVector);
 			fieldSer.SerializeField("IsPlaying", comp.isPlaying, fieldVector);
 		}
+		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
+		{
+			auto& comp = ecs.AddComponent<AnimationComponent>(id);
+
+			fieldSer.DeserializeField("AnimationData", comp.animations, serializedFields);
+
+			fieldSer.DeserializeField("FrameTimer", comp.m_FrameTimer, serializedFields);
+
+			fieldSer.DeserializeField("CurrAnimationIdx", comp.currAnimationIdx, serializedFields);
+			fieldSer.DeserializeField("CurrFrame", comp.currFrame, serializedFields);
+			fieldSer.DeserializeField("IsPlaying", comp.isPlaying, serializedFields);
+		}
 	};
 
 	REGISTER_SERIALIZATION_FUNCTION(AnimationComponent, AnimationComponent::Serialize);
+	REGISTER_DESERIALIZATION_FUNCTION(AnimationComponent, AnimationComponent::Deserialize);
 }
 
 

@@ -3,6 +3,9 @@
 
 #include "Singleton.h"
 #include "DebugOutput.h"
+
+#include "ECS.h"
+#include "GameUUID.h"
 #include "FieldSerializer.h"
 
 #include <functional>
@@ -15,10 +18,8 @@
 
 namespace Pengin
 {
-	class ECS;
-
-	using SerializeFunc = std::function<void(const FieldSerializer&, const ECS&, const EntityId, std::vector<uint8_t>& )>;
-	using DeSerializeFunc = std::function<void(const FieldSerializer&, ECS&, const EntityId, const std::unordered_map<std::string, std::vector<uint8_t>>&)>;
+	using SerializeFunc = std::function<void(const FieldSerializer&, const ECS&, const EntityId, std::vector<uint8_t>&)>;
+	using DeSerializeFunc = std::function<void(const FieldSerializer&, ECS&, const EntityId, const std::unordered_map<std::string, std::vector<uint8_t>>&, const std::unordered_map<GameUUID, EntityId>&)>;
 
 	class SerializationRegistry final : public Singleton<SerializationRegistry>
 	{

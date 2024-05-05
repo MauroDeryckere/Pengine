@@ -243,6 +243,14 @@ namespace Pengin
 			for (auto& entityData : scene["Entities"]) //First we need to get all the UUIDs and create the entities to ensure any dependencies can be converted
 			{
 				const auto entityId = ecs.CreateEntity();
+
+				assert(entityData.contains("UUID"));
+				if (!entityData.contains("UUID"))
+				{
+					DEBUG_OUT("No UUID in json file");
+					return false;
+				}
+
 				const auto& uuid = entityData["UUID"].get<std::string>();
 
 				auto& uuidComp = ecs.AddComponent<UUIDComponent>(entityId, uuid);
@@ -327,13 +335,20 @@ namespace Pengin
 	{
 		using json = nlohmann::ordered_json;
 
-		if (!entityData.contains("UUID"))
-		{
-			DEBUG_OUT("Need UUID in json file");
-			return {false, NULL_ENTITY_ID};
-		}
-
 		assert(entity != NULL_ENTITY_ID);
+		assert(entityData.contains("Transform Component"));
+
+		if (entityData.contains("Transform Component"))
+		{
+			TransformComponent transform;
+			from_json(entityData["Transform Component"], transform, entityMap);
+			ecs.AddComponent<TransformComponent>(entity, std::move(transform));
+		}
+		else
+		{
+			DEBUG_OUT("No transform");
+			return { false, entity };
+		}
 
 		auto& map{ SerializationRegistry::GetInstance().m_DeSerMap };
 		for (auto& it : map)
@@ -350,90 +365,10 @@ namespace Pengin
 					serializedFields[fieldName] = { field.begin(),  field.end() };
 				}
 
-				it.second(m_FieldSer, ecs, entity, serializedFields);
+				it.second(m_FieldSer, ecs, entity, serializedFields, entityMap);
 			}
 		}
 
-		if (entityData.contains("Player Component"))
-		{
-			const auto userIdx = GameUUID{ entityData["Player Component"]["UserIdx"].get<std::string>() };
-			const auto movementSpeed = entityData["Player Component"]["MovementSpeed"].get<float>();
-			ecs.AddComponent<PlayerComponent>(entity, userIdx, movementSpeed);
-		}
-
-		if (entityData.contains("Transform Component"))
-		{
-			TransformComponent transform;
-			from_json(entityData["Transform Component"], transform, entityMap);
-			ecs.AddComponent<TransformComponent>(entity, std::move(transform));
-		}
-		if (entityData.contains("Sprite Component"))
-		{
-			const auto& spriteData = entityData["Sprite Component"];
-
-			const std::string texturePath = spriteData["path"];
-			auto& sprite = (texturePath == "NO PATH" ?  ecs.AddComponent<SpriteComponent>(entity) : ecs.AddComponent<SpriteComponent>(entity, texturePath));
-
-			sprite.sourceRect = UtilStructs::Rectu16{ spriteData["Source rect"][0].get<uint16_t>(),
-														spriteData["Source rect"][1].get<uint16_t>(),
-														spriteData["Source rect"][2].get<uint16_t>(),
-														spriteData["Source rect"][3].get<uint16_t>() };
-
-			sprite.isVisible = spriteData["is visible"];
-		}
-		if (entityData.contains("Velocity Component"))
-		{
-			VelocityComponent vel = entityData["Velocity Component"];
-			ecs.AddComponent<VelocityComponent>(entity, std::move(vel));
-		}
-		if (entityData.contains("Text Component"))
-		{
-			const auto& textData = entityData["Text Component"];
-
-			const std::string fontPath = textData["Path"];
-			unsigned fontSize = static_cast<unsigned>(textData["FontSize"].get<uint64_t>());
-
-			auto& textComp = ecs.AddComponent<TextComponent>(entity, fontPath, fontSize);
-			textComp.color = glm::u8vec4{ textData["Color"][0].get<uint8_t>(),
-											textData["Color"][1].get<uint8_t>(),
-											textData["Color"][2].get<uint8_t>(),
-											textData["Color"][3].get<uint8_t>() };
-
-			textComp.text = textData["Text"].get<std::string>();
-
-			textComp.needsTextureChange = true; //Always need to generate a texture upon deserializing
-		}
-		if (entityData.contains("Score Component"))
-		{
-			ScoreComponent score;
-			from_json(entityData["Score Component"], score, entityMap);
-			ecs.AddComponent<ScoreComponent>(entity, std::move(score));
-		}
-		if (entityData.contains("RectCollider Component"))
-		{
-			RectColliderComponent rectColl = entityData["RectCollider Component"];
-			ecs.AddComponent<RectColliderComponent>(entity, std::move(rectColl));
-		}
-		if (entityData.contains("Health Component"))
-		{
-			HealthComponent health;
-			from_json(entityData["Health Component"], health, entityMap);
-			ecs.AddComponent<HealthComponent>(entity, std::move(health));
-		}
-		if (entityData.contains("Animation Component"))
-		{
-			AnimationComponent ani = entityData["Animation Component"];
-			ecs.AddComponent<AnimationComponent>(entity, std::move(ani));
-;		}
-		if (entityData.contains("FPS Component"))
-		{
-			ecs.AddComponent<FPSCounterComponent>(entity);
-		}
-		if (entityData.contains("TextDisplay Component"))
-		{
-			TxtDisplayComponent dis = entityData["TextDisplay Component"];
-			ecs.AddComponent<TxtDisplayComponent>(entity, std::move(dis));
-		}
 		return { true,  entity };
 	}
 
