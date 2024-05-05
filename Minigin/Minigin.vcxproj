@@ -99,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -116,12 +116,13 @@ xcopy $(SolutionDir)\3rdParty\SDL2_image\lib\x86\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPath) /Y
-xcopy $(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x86\fmodstudioL.dll $(OutputPath) /Y
+xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\lib\x86\fmodstudioL.dll" $(OutputPath) /Y
+xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x86\fmodL.dll" $(OutputPath) /Y
 </Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib;opengl32.lib;fmodstudioL_vc.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x86;$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\core\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\lib\x86;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -131,7 +132,7 @@ xcopy $(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x86\fmodstud
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\fsbank\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\fsbank\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -150,14 +151,14 @@ xcopy $(SolutionDir)\3rdParty\SDL2_image\lib\x64\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\win64\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPath) /Y
-xcopy $(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x64\fmodstudioL.dll $(OutputPath) /Y
+xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\lib\x64\fmodstudioL.dll" $(OutputPath) /Y
 
 
 </Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib;opengl32.lib;fmodstudioL_vc.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x64;$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\lib\x64;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -169,7 +170,7 @@ xcopy $(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x64\fmodstud
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\fsbank\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\fsbank\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -188,11 +189,12 @@ xcopy $(SolutionDir)\3rdParty\SDL2_image\lib\x86\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPath) /Y
-xcopy $(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x86\fmodstudio.dll $(OutputPath) /Y</Command>
+xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\lib\x86\fmodstudio.dll" $(OutputPath) /Y
+xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x86\fmod.dll" $(OutputPath) /Y</Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib;opengl32.lib;fmodstudio_vc.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x86;$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\core\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\lib\x86;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -204,7 +206,7 @@ xcopy $(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x86\fmodstud
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.90.4\imgui-1.90.4;$(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\public\steam;$(SolutionDir)3rdParty\json;$(SolutionDir)3rdParty\boost_1_84_0;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\inc;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -225,12 +227,13 @@ xcopy $(SolutionDir)\3rdParty\SDL2_image\lib\x64\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\redistributable_bin\win64\*.dll $(OutputPath) /Y
 xcopy $(SolutionDir)3rdParty\steamworks_sdk_158a\sdk\steam_appid.txt $(OutputPath) /Y
-xcopy $(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x64\fmodstudio.dll $(OutputPath) /Y /D
+xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\lib\x64\fmodstudio.dll" $(OutputPath) /Y /D
+xcopy "$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64\fmod.dll" $(OutputPath) /Y /D
 </Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib;opengl32.lib;fmodstudio_vc.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x64;$(SolutionDir)3rdParty\FMOD_Studio API_Windows\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\FMOD Studio API Windows\api\studio\lib\x64;$(SolutionDir)3rdParty\FMOD Studio API Windows\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
