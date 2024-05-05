@@ -230,7 +230,7 @@ xcopy $(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x64\fmodstud
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib;opengl32.lib;fmodstudio_vc.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x64;$(SolutionDir)3rdParty\FMOD_Studio API_Windows\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x64;$(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
