@@ -1,6 +1,8 @@
 #include "WorldPositionSystem.h"
 
 #include "ECS.h"
+#include "BodyComponent.h"
+
 #include "TransformComponent.h"
 #include "EntityId.h"
 
@@ -8,8 +10,9 @@
 
 namespace Pengin
 {
-	void WorldPositionSystem::Update() 
+	void WorldPositionSystem::FixedUpdate()
 	{
+
 		auto transforms{ m_ECS.GetComponents<TransformComponent>() };
 
 		for (auto& entity : transforms)
@@ -18,10 +21,10 @@ namespace Pengin
 			{
 				const auto& relation{ entity.relation };
 
-				if (relation.parent == NULL_ENTITY_ID) 
+				if (relation.parent == NULL_ENTITY_ID)
 				{
 					entity.worldPos = entity.localPos;
-					entity.isPosDirty = false; 
+					entity.isPosDirty = false;
 					continue;
 				}
 

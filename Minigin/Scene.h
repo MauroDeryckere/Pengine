@@ -19,7 +19,7 @@
 namespace Pengin
 {
 	class Entity;
-	class Scene final : public std::enable_shared_from_this<Scene>
+	class Scene final 
 	{
 	public:
 		~Scene();

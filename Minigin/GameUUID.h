@@ -23,8 +23,8 @@ namespace Pengin
 
 		~GameUUID() = default;
 
-		const std::string GetUUID_PrettyStr() const noexcept;
-		const std::vector<uint8_t> GetUUID_Bytes() const noexcept;
+		[[nodiscard]] const std::string GetUUID_PrettyStr() const noexcept;
+		[[nodiscard]] const std::vector<uint8_t> GetUUID_Bytes() const noexcept;
 
 		operator bool() const noexcept;
 		bool operator==(const GameUUID& other) const noexcept;

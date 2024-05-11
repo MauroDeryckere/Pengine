@@ -12,11 +12,11 @@ namespace Pengin
 { 
 	struct AnimationData final
 	{
-		UtilStructs::Rectu16 frame0sourceRect;
+		UtilStructs::Rectu16 frame0sourceRect{};
 
-		float frameDuration;
+		float frameDuration{};
 
-		uint8_t frameCt;
+		uint8_t frameCt{};
 
 		static void Serialize(const FieldSerializer& fieldSer, const AnimationData& serStruct, std::vector<uint8_t>& fieldVector)
 		{
@@ -41,6 +41,15 @@ namespace Pengin
 
 	struct AnimationComponent final
 	{
+		std::vector<AnimationData> animations { };
+		
+		float m_FrameTimer { 0.f };
+
+		uint8_t currAnimationIdx { 0 };
+		uint8_t currFrame { 0 };
+
+		bool isPlaying { true };
+
 		AnimationComponent(const std::vector<AnimationData>& animations = {}, uint8_t initAnimationIdx = 0, bool playOnInit = true) :
 			animations{ animations },
 			isPlaying{ playOnInit },
@@ -51,17 +60,8 @@ namespace Pengin
 			assert(std::all_of(animations.begin(), animations.end(), [](const AnimationData& animation) { return animation.frameDuration > 0.f; }) && "Can not have an animation with negative or 0 frame duration");
 			assert(std::all_of(animations.begin(), animations.end(), [](const AnimationData& animation) { return animation.frame0sourceRect; }) && "Must provide valid frame sourceRect");
 		}
-		
+
 		~AnimationComponent() = default;
-
-		std::vector<AnimationData> animations { };
-		
-		float m_FrameTimer { 0.f };
-
-		uint8_t currAnimationIdx { 0 };
-		uint8_t currFrame { 0 };
-
-		bool isPlaying { true };
 
 		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
 		{

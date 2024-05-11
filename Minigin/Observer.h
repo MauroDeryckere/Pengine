@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <functional>
+#include <map>
 
 namespace Pengin
 {

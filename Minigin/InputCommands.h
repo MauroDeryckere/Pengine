@@ -46,10 +46,10 @@ namespace Pengin
 			const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
 			 
 			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
-			Entity playerEntity{ entityId, pActiveScene };
+			Entity playerEntity{ entityId, pActiveScene.get() };
 
 			const auto movementSpeed = playerEntity.GetComponent<PlayerComponent>().movementSpeed;
-			playerEntity.GetComponent<VelocityComponent>().velocity += (m_Direction * movementSpeed);
+			playerEntity.GetComponent<BodyComponent>().inputVelocity += (m_Direction * movementSpeed);
 		}
 
 		virtual ~Movement() override = default;
@@ -112,7 +112,7 @@ namespace Pengin
 			const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
 
 			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
-			Entity playerEntity{ entityId, pActiveScene };
+			Entity playerEntity{ entityId, pActiveScene.get() };
 
 			playerEntity.GetComponent<HealthComponent>().health--;
 
@@ -152,7 +152,7 @@ namespace Pengin
 			const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
 
 			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
-			Entity playerEntity{ entityId, pActiveScene };
+			Entity playerEntity{ entityId, pActiveScene.get() };
 
 			playerEntity.GetComponent<ScoreComponent>().score += m_ScoreVal;
 

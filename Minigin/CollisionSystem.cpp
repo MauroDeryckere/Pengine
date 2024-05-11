@@ -4,52 +4,208 @@
 
 #include "TransformComponent.h"
 #include "RectColliderComponent.h"
+#include "BodyComponent.h"
 
-#include <iostream>
+#include "CollisionEvent.h"
+
+#include <functional>
 
 namespace Pengin
 {
-	void CollisionSystem::Update() //Only supporting rect collider right now
+	CollisionSystem::CollisionSystem(ECS& ecs, bool CollisionResolution):
+		m_ECS{ ecs },
+		m_CollisionResolution{ CollisionResolution }
+	{ }
+
+	void CollisionSystem::Step()
 	{
 		auto rectCollComps = m_ECS.GetComponents<RectColliderComponent>();
 
-		for (auto outerIt{ rectCollComps.begin()}; const auto& outerEntity : rectCollComps)
+		for (auto collRectAIt = rectCollComps.begin(); collRectAIt != rectCollComps.end(); ++collRectAIt)
 		{
-			for (auto innerIt{ rectCollComps.begin() }; const auto& innerEntity : rectCollComps)
+			const EntityId entityA = rectCollComps.GetIdFromIterator(collRectAIt);
+			const auto& transA{ m_ECS.GetComponent<TransformComponent>(entityA) };
+			const auto& rectCollA = (*collRectAIt);
+
+			BodyComponent* bodyAPtr{ m_ECS.HasComponent<BodyComponent>(entityA) ? 
+																		&m_ECS.GetComponent<BodyComponent>(entityA) 
+																		: nullptr };
+
+			const UtilStructs::Rectf rectA = bodyAPtr ? 
+											CalcCollRect(bodyAPtr, transA, rectCollA)
+											: CalcCollRect(transA, rectCollA);
+
+			for (auto collRectBIt = std::next(collRectAIt); collRectBIt != rectCollComps.end(); ++collRectBIt)
 			{
-				if (innerIt == outerIt) //Can not collide with self
+				const EntityId entityB = rectCollComps.GetIdFromIterator(collRectBIt);
+				const auto& transB{ m_ECS.GetComponent<TransformComponent>(entityB) };
+				const auto& rectCollB = (*collRectBIt);
+
+				BodyComponent* bodyBPtr{ m_ECS.HasComponent<BodyComponent>(entityB) ?
+																			&m_ECS.GetComponent<BodyComponent>(entityB)
+																			: nullptr };
+
+				const UtilStructs::Rectf rectB = bodyAPtr ?
+												CalcCollRect(bodyBPtr, transB, rectCollB)
+												: CalcCollRect(transB, rectCollB);
+
+				if (!UtilFuncs::IsCollidingAABB(rectA, rectB))
 				{
-					++innerIt;
+					//No collision
 					continue;
 				}
 
-				const auto& outerTrans{ m_ECS.GetComponent<TransformComponent>(rectCollComps.GetIdFromIterator(outerIt)) };
-				const auto& innerTrans{ m_ECS.GetComponent<TransformComponent>(rectCollComps.GetIdFromIterator(innerIt)) };
-
-				UtilStructs::Rect16 outerRect{ outerEntity.collRect };
-				outerRect.x = static_cast<int16_t>(outerTrans.worldPos.x) + outerRect.x * static_cast<int16_t>(outerTrans.scale.x);
-				outerRect.y = static_cast<int16_t>(outerTrans.worldPos.y) + outerRect.y * static_cast<int16_t>(outerTrans.scale.y);
-
-				outerRect.width *= static_cast<int16_t>(outerTrans.scale.x);
-				outerRect.height *= static_cast<int16_t>(outerTrans.scale.y);
-
-				UtilStructs::Rect16 innerRect{ innerEntity.collRect };
-				innerRect.x = static_cast<int16_t>(innerTrans.worldPos.x) + innerRect.x * static_cast<int16_t>(innerTrans.scale.x);
-				innerRect.y = static_cast<int16_t>(innerTrans.worldPos.y) + innerRect.y * static_cast<int16_t>(innerTrans.scale.y);
-
-				innerRect.width += static_cast<int16_t>(innerTrans.worldPos.x);
-				innerRect.height += static_cast<int16_t>(innerTrans.worldPos.y);
-
-				if (UtilFuncs::IsCollidingABBA(outerRect, innerRect))
+				if (bodyAPtr && bodyBPtr)
 				{
-					//Can broadcast event, ...
-					std::cout << "COLLISION: entity id "  << rectCollComps.GetIdFromIterator(outerIt) << " on entity id " << rectCollComps.GetIdFromIterator(innerIt) << "\n";
+					if (bodyAPtr->isStatic && bodyBPtr->isStatic)
+					{
+						DEBUG_OUT("collision between 2 static bodies, no resolution: " << entityA << " and " << entityB);
+						//No collision to deal with, 2 static bodies
+						continue;
+					}
 				}
 
-				++innerIt;
+				//Add to the set of unqiue collisions to later dispatch an event
+				{
+					const CollPair pair { entityA, entityB };
+					m_FrameCollisions.insert(pair);
+				}
+
+				if (bodyAPtr && bodyBPtr)
+				{
+					const glm::vec3 normal{ CalcCollNormal(rectA, rectB) };
+					const float penetrationDepth{ CalcPenetrationDeth(normal, rectA, rectB) };
+
+					SeparateBodies(bodyAPtr, bodyBPtr, normal, penetrationDepth);
+
+					if (m_CollisionResolution)
+					{
+						const glm::vec3 relativeVelocity = bodyBPtr->velocity - bodyAPtr->velocity;
+						const float relativeVelocityAlongNormal = glm::dot(relativeVelocity, normal);
+
+						constexpr float restitutionFactor = -1.f; //For now, we do not support elasticity (it does work but not added as a parameter in body and still need to dd physics for friction,..)
+						const float impulseMagnitude = -(1.0f + restitutionFactor) * relativeVelocityAlongNormal;
+
+						if (bodyAPtr->isStatic) 
+						{
+							bodyBPtr->velocity += normal * impulseMagnitude;
+						}
+						else if (bodyBPtr->isStatic) 
+						{
+							bodyAPtr->velocity -= normal * impulseMagnitude;
+						}
+						else
+						{
+							bodyAPtr->velocity -= normal * impulseMagnitude;
+							bodyBPtr->velocity += normal * impulseMagnitude;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	#pragma warning(push)
+	#pragma warning(disable:4172)
+	constexpr UtilStructs::Rectf&& CollisionSystem::CalcCollRect(const TransformComponent& transform, const RectColliderComponent& rColl) const noexcept
+	{
+		static_assert(std::is_move_constructible_v<UtilStructs::Rectf>);
+		static_assert(std::is_move_assignable_v<UtilStructs::Rectf>);
+
+		return std::move(UtilStructs::Rectf
+		{ 
+			(transform.worldPos.x + rColl.collRect.x * transform.scale.x),
+			(transform.worldPos.y + rColl.collRect.y * transform.scale.y),
+			(transform.scale.x * rColl.collRect.width),
+			(transform.scale.y * rColl.collRect.height) 
+		});
+	}
+
+	constexpr UtilStructs::Rectf&& CollisionSystem::CalcCollRect(const BodyComponent* body, const TransformComponent& transform, const RectColliderComponent& rColl) const noexcept
+	{
+		static_assert(std::is_move_constructible_v<UtilStructs::Rectf>);
+		static_assert(std::is_move_assignable_v<UtilStructs::Rectf>);
+
+		return std::move(UtilStructs::Rectf
+		{
+			(body->currentPosition.x + rColl.collRect.x * transform.scale.x),
+			(body->currentPosition.y + rColl.collRect.y * transform.scale.y),
+			(rColl.collRect.width * transform.scale.x),
+			(rColl.collRect.height * transform.scale.y)
+		});
+	}
+	#pragma warning(pop)
+
+	const glm::vec3 CollisionSystem::CalcCollNormal(const UtilStructs::Rectf& rectA, const UtilStructs::Rectf& rectB) const noexcept
+	{
+		const float dx = (rectB.x + rectB.width / 2.0f) - (rectA.x + rectA.width / 2.0f);
+		const float dy = (rectB.y + rectB.height / 2.0f) - (rectA.y + rectA.height / 2.0f);
+
+		const float combinedHalfWidths = (rectA.width + rectB.width) / 2.0f;
+		const float combinedHalfHeights = (rectA.height + rectB.height) / 2.0f;
+
+		const float overlapX = combinedHalfWidths - fabs(dx);
+		const float overlapY = combinedHalfHeights - fabs(dy);
+
+		if (overlapX < overlapY)
+		{
+			return glm::vec3{ (dx < 0.f) ? -1.f : 1.f, 0.f, 0.f };
+		}
+		else
+		{
+			return glm::vec3{ 0.f, (dy < 0.f) ? -1.f : 1.f, 0.f };
+		}
+	}
+
+	const float CollisionSystem::CalcPenetrationDeth(const glm::vec3& normal, const UtilStructs::Rectf& rectA, const UtilStructs::Rectf& rectB) const noexcept
+	{
+		if (normal.x != 0.f)
+		{
+			if (normal.x > 0.f)
+			{
+				return (rectA.x + rectA.width) - rectB.x;
 			}
 
-			++outerIt;
+			return (rectB.x + rectB.width) - rectA.x;
 		}
+
+		else if (normal.y != 0.f)
+		{
+			if (normal.y > 0.f)
+			{
+				return (rectA.y + rectA.height) - rectB.y;
+			}
+
+			return (rectB.y + rectB.height) - rectA.y;
+		}
+
+		return 0.f;
+	}
+
+	void CollisionSystem::SeparateBodies(BodyComponent* bodyA, BodyComponent* bodyB, const glm::vec3& normal, const float penDepth) noexcept
+	{
+		if (bodyA->isStatic)
+		{
+			bodyB->currentPosition += penDepth * normal;
+		}
+		else if (bodyB->isStatic)
+		{
+			bodyA->currentPosition -= penDepth * normal;
+		}
+		else
+		{
+			bodyA->currentPosition -= penDepth/2.f * normal;
+			bodyB->currentPosition += penDepth/2.f * normal;
+		}
+	}
+
+	void CollisionSystem::BroadCastCollisionsEvents() noexcept
+	{
+		for (const auto& pair : m_FrameCollisions)
+		{;
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<CollisionEvent>(pair.entityA, pair.entityB));
+		}
+
+		m_FrameCollisions.clear();
 	}
 }

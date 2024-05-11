@@ -6,19 +6,19 @@
 namespace Pengin
 {
 	class ECS;
-	struct TransformComponent;
 
-	class MovementSystem final : public BaseSystem
+	class MovementSystem final
 	{
 	public:
 		MovementSystem(ECS& ecs) :
-			BaseSystem{ },
 			m_ECS{ ecs }
 		{}
 
-		virtual ~MovementSystem() override = default;
+		~MovementSystem() = default;
 
-		virtual void Update() override;
+		void FirstStep(const float stepTime);
+
+		void Step(const float stepTime);
 
 		MovementSystem(const MovementSystem&) = delete;
 		MovementSystem(MovementSystem&&) = delete;
@@ -27,8 +27,6 @@ namespace Pengin
 
 	private:
 		ECS& m_ECS;
-
-		void SetPosDirty(TransformComponent& transform);
 	};
 }
 

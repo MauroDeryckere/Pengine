@@ -24,7 +24,7 @@ namespace Pengin
         Controller
     };
 
-    struct InputCombo
+    struct InputCombo final
     {
         std::vector<std::shared_ptr<InputCommand>> pComboActions;
         std::shared_ptr<InputCommand> pResultingAction;
@@ -33,20 +33,21 @@ namespace Pengin
     }; 
 
     using UserIndex = GameUUID;
-    class InputManager final : public Pengin::Singleton<InputManager>
+    class InputManager final : public Singleton<InputManager>
     {
     public:
         [[nodiscard]] bool ProcessInput() noexcept;
         [[nodiscard]] const UserIndex RegisterUser(UserType usertype) noexcept;
         void RegisterUser(const UserIndex& index, UserType usertype) noexcept;
 
+        //TODO
+        //bool IsKeyPressed, Up and down(UserIdx, Button/Key)
+
         std::shared_ptr<InputCommand> MapControllerAction(const UserIndex& userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
         std::shared_ptr<InputCommand> MapKeyboardAction(const UserIndex& userIdx, KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
 
-        void Clear() noexcept; //this clears evrything, including users
-        void Reset() noexcept; //this clears eveything, but keeps the users and devices
-
-        //unmapping specific actions TODO (remapping)
+        void Clear() noexcept; //this clears everything, including users
+        void Reset() noexcept; //this clears everything, but keeps the users and devices
 
         void MapCombo(const UserIndex& userIdx, const InputCombo& combo) noexcept;
 
@@ -56,12 +57,11 @@ namespace Pengin
         InputManager& operator=(const InputManager&&) = delete;
 
     private:
-        friend class Pengin::Singleton<InputManager>;
+        friend class Singleton<InputManager>;
         InputManager() = default;
         ~InputManager() = default;
 
-        friend class JsonSerializer; //Serialize / Deserialize input - TODO
-
+        friend class JsonSerializer;
         std::unordered_map<UserIndex, size_t> m_UserIdx_VecIdxMap;
 
         std::vector<std::pair<UserType, std::vector<std::unique_ptr<InputDevice>>>> m_RegisteredUsers;

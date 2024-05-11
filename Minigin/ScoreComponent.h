@@ -14,7 +14,9 @@ namespace Pengin
 {
 	struct ScoreComponent final
 	{
-	public:
+		unsigned score{};
+		std::vector<EntityId> scoreDisplays{};
+
 		ScoreComponent(const std::vector<EntityId>& scoreDisplayIds = { }) :
 			score{ 0 },
 			scoreDisplays{ scoreDisplayIds }
@@ -23,10 +25,6 @@ namespace Pengin
 		}
 
 		~ScoreComponent() = default;
-
-		unsigned score{};
-		std::vector<EntityId> scoreDisplays{};
-
 
 		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
 		{

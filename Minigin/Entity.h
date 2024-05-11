@@ -15,62 +15,43 @@ namespace Pengin
 	class Entity final
 	{
 	public:
-		Entity(const EntityId id, std::weak_ptr<Scene> pScene) noexcept :
+		Entity(const EntityId id, Scene* pScene) noexcept :
 			m_EntityId{ id },
 			m_pScene{ pScene }
-		{}
+		{
+			assert(pScene && "pScene is nullptr, can not have an entity in a nullptr scene");
+		}
 
 		~Entity() = default;
 
 		template <typename ComponentType, typename... Args>
 		ComponentType& AddComponent(Args&&... args)
 		{
-			if (auto pScene{ m_pScene.lock() }; pScene)
-			{
-				return pScene->m_Ecs.AddComponent<ComponentType>(m_EntityId, std::forward<Args>(args)...);
-			}
-			throw std::runtime_error("Attempted to add component to an entity with invalid scene pointer");
+			return m_pScene->m_Ecs.AddComponent<ComponentType>(m_EntityId, std::forward<Args>(args)...);
 		}
 
 		template <typename ComponentType>
 		void RemoveComponent() noexcept
 		{
-			if (auto pScene{ m_pScene.lock() }; pScene)
-			{
-				pScene->m_Ecs.RemoveComponent<ComponentType>(m_EntityId);
-				return;
-			}
-			DEBUG_OUT("Attempting to remove component for invalid scene Entity: " << m_EntityId << " Comp: " << typeid(ComponentType).name());
+			m_pScene->m_Ecs.RemoveComponent<ComponentType>(m_EntityId);
 		}
 
 		template <typename ComponentType>
 		[[nodiscard]] ComponentType& GetComponent()
 		{
-			if (auto pScene{ m_pScene.lock() }; pScene)
-			{
-				return pScene->m_Ecs.GetComponent<ComponentType>(m_EntityId);
-			}
-			throw std::runtime_error("Attempted to get component of an entity with invalid scene pointer");
+			return m_pScene->m_Ecs.GetComponent<ComponentType>(m_EntityId);
 		}
 
 		template <typename ComponentType>
 		[[nodiscard]] const ComponentType& GetComponent() const
 		{
-			if (auto pScene{ m_pScene.lock() }; pScene)
-			{
-				return pScene->m_Ecs.GetComponent<ComponentType>(m_EntityId);
-			}
-			throw std::runtime_error("Attempted to get component of an entity with invalid scene pointer");
+			return m_pScene->m_Ecs.GetComponent<ComponentType>(m_EntityId);
 		}
 
 		template <typename ComponentType>
 		[[nodiscard]] bool HasComponent() const noexcept
 		{
-			if (auto pScene{ m_pScene.lock() }; pScene)
-			{
-				return pScene->m_Ecs.HasComponent<ComponentType>(m_EntityId);
-			}
-			return false;
+			return m_pScene->m_Ecs.HasComponent<ComponentType>(m_EntityId);
 		}
 
 		void SetParent(Entity parentEntity, bool keepWorldPos = false);
@@ -83,7 +64,7 @@ namespace Pengin
 			return GetComponent<UUIDComponent>().uuid; 
 		}
 
-		operator bool() const noexcept { return (m_EntityId != NULL_ENTITY_ID && !m_pScene.expired()); }
+		operator bool() const noexcept { return (m_EntityId != NULL_ENTITY_ID); }
 
 		Entity(const Entity& other) = default;
 		Entity(Entity&& other) = default;
@@ -92,18 +73,7 @@ namespace Pengin
 
 	private:
 		EntityId m_EntityId{ NULL_ENTITY_ID };
-		std::weak_ptr<Scene> m_pScene;
-
-		[[nodiscard]] bool IsParentChildOfThis(const TransformComponent& thisTransform, const EntityId parentId) const;
-
-		void SetPosDirty(TransformComponent& transform);
-		void DestroyChildren(TransformComponent& transform);
-
-		const glm::vec3& GetWorldPosition(TransformComponent& transform); //&& update
-		void UpdateWorldPosition(TransformComponent& transform);
-
-		void RemoveSelfAsChild(TransformComponent& self);
-		void AddSelfAsChild(TransformComponent& self, TransformComponent& parent);
+		Scene* m_pScene;
 	};
 }
 

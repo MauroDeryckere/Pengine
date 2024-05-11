@@ -37,7 +37,6 @@ namespace Pengin
 	//SceneData
 	void to_json(json& j, const SceneData& sceneData)
 	{
-		assert(sceneData.isUUIDInit);
 		j =
 		{
 			{"SceneName", sceneData.name},
@@ -45,7 +44,6 @@ namespace Pengin
 			{"PlayerUUIDs", sceneData.playerUUIDs },
 			{"UserIds", sceneData.user_UUIDVecIdxMap },
 
-			{"IsUUIDInit", sceneData.isUUIDInit },
 
 			{"SceneFileData", sceneData.sceneFileData}
 		};
@@ -96,7 +94,7 @@ namespace Pengin
 			j["scale"][2].get<float>()
 		};
 
-		transform.relation.children = j["relation"]["children"].get<size_t>();
+		transform.relation.children = j["relation"]["children"].get<uint32_t>();
 
 		const auto fistChildStr = j["relation"]["firstChild"].get<std::string>();
 		transform.relation.firstChild = (fistChildStr == "NULL_UUID" || "" ? NULL_ENTITY_ID : entityMap.at({fistChildStr}));

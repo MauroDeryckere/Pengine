@@ -24,6 +24,7 @@ namespace Pengin
 			if (pTexture && entity.isVisible)
 			{
 				auto& transform = m_ECS.GetComponent<TransformComponent>(entityId);
+
 				renderer.RenderTexture((*pTexture), static_cast<int>(transform.worldPos.x), static_cast<int>(transform.worldPos.y), transform.scale, entity.sourceRect);
 			}
 

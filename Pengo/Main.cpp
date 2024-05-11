@@ -90,6 +90,16 @@ void LoadDemo()
 
 	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
 
+	auto entt = pScene->CreateEntity({250,250,0});
+	auto& rc = entt.AddComponent<RectColliderComponent>();
+	rc.collRect.width = 100;
+	rc.collRect.height = 100;
+
+	auto& b = entt.AddComponent<BodyComponent>();
+	b.currentPosition = { 250,250,0 };
+	b.isStatic = true;
+	b.lastPosition = { 250, 250, 0 };
+
 	//Entity testLoadedEntity = pScene->AddEntityFromFile("../Data/TestEntityFFile.json");
 	//testLoadedEntity.GetComponent<TextComponent>().SetText("TEXT TEST");
 

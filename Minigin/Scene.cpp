@@ -13,13 +13,12 @@
 
 #include "RenderSystem.h"
 #include "TextSystem.h"
-#include "WorldPositionSystem.h"
-#include "MovementSystem.h"
 #include "FPSSystem.h"
 #include "DebugDrawSystem.h"
 #include "AnimationSystem.h"
-#include "CollisionSystem.h"
 #include "UIDisplaySystem.h"
+
+#include "PhysicsSystem.h"
 
 #include "GameTime.h"
 #include "ServiceLocator.h"
@@ -46,10 +45,8 @@ namespace Pengin
 		m_SysManager.RegisterSystem<UIDisplaySystem>(std::make_shared<UIDisplaySystem>(m_Ecs, this));
 		m_SysManager.RegisterSystem<TextSystem>(std::make_shared<TextSystem>(m_Ecs));
 		m_SysManager.RegisterSystem<AnimationSystem>(std::make_shared<AnimationSystem>(m_Ecs));
-
-		auto pColl = m_SysManager.RegisterSystem<CollisionSystem>(std::make_shared<CollisionSystem>(m_Ecs));
-		auto pMovement = m_SysManager.RegisterSystem<MovementSystem>(std::make_shared<MovementSystem>(m_Ecs), { pColl });
-		m_SysManager.RegisterSystem<WorldPositionSystem>(std::make_shared<WorldPositionSystem>(m_Ecs), { pColl, pMovement });
+		
+		m_SysManager.RegisterSystem<PhysicsSystem>(std::make_shared<PhysicsSystem>(m_Ecs));
 
 		m_SysManager.RegisterSystem<RenderSystem>(std::make_shared<RenderSystem>(m_Ecs));
 	}
@@ -130,7 +127,7 @@ namespace Pengin
 	{
 		const auto id{ m_Ecs.CreateEntity() };
 
-		Entity entity{ id, weak_from_this() };
+		Entity entity{ id, this };
 		entity.AddComponent<TransformComponent>(position, rotation, scale);
 		const auto& uuidComp = entity.AddComponent<UUIDComponent>();
 
@@ -138,20 +135,24 @@ namespace Pengin
 
 		if (userIdx)
 		{
-			entity.AddComponent<PlayerComponent>(userIdx);
+			entity.AddComponent<PlayerComponent>(userIdx); //remove
 			SetPlayer(userIdx, uuidComp.uuid);
 		}
+
+		//2 Options: 
+		//Only use a playerComp and inp command usesthe entityID (not best, what if we switch to diff entity)
+		//Only use the sceneData for players, playercomponent is redundant
 
 		return entity;
 	}
 
 	bool Scene::DestroyEntity(Entity entity, bool keepChildren)
 	{
-		entity.SetParent({ NULL_ENTITY_ID, shared_from_this() }, keepChildren);
+		entity.SetParent({ NULL_ENTITY_ID, this }, keepChildren);
 
 		const auto id = entity.GetEntityId();
 		const auto& uuid = entity.GetComponent<UUIDComponent>().uuid;
-
+		
 		if (entity.HasComponent<PlayerComponent>())
 		{
 			const auto& playerComp = entity.GetComponent<PlayerComponent>();
@@ -192,7 +193,7 @@ namespace Pengin
 
 	bool Scene::DestroyEntity(const EntityId entityId, bool keepChildren)
 	{
-		return DestroyEntity({entityId, shared_from_this() }, keepChildren);
+		return DestroyEntity({entityId, this }, keepChildren);
 	}
 
 	const GameUUID& Scene::GetUUID(const Entity entity) const
@@ -201,7 +202,7 @@ namespace Pengin
 	}
 	const GameUUID& Scene::GetUUID(const EntityId id)
 	{
-		return Entity{ id, shared_from_this() }.GetUUID();
+		return Entity{ id, this }.GetUUID();
 	}
 
 	const EntityId Scene::GetEntityId(const GameUUID& uuid) const
@@ -217,7 +218,7 @@ namespace Pengin
 
 	const Entity Scene::GetEntity(const GameUUID& uuid)
 	{
-		return Entity{ GetEntityId(uuid), shared_from_this() };
+		return Entity{ GetEntityId(uuid), this };
 	}
 
 	void Scene::SetPlayer(const UserIndex& userIdx, const GameUUID& uuid) noexcept
@@ -246,7 +247,7 @@ namespace Pengin
 			throw std::runtime_error("Failed to deserialize entity from file");
 		}
 
-		return Entity{ deserVal.second, shared_from_this() };
+		return Entity{ deserVal.second, this };
 	}
 
 	bool Scene::SerializeEntity(const Entity entity, const std::filesystem::path& entitySavePath, bool keepUUID) const noexcept
@@ -299,7 +300,6 @@ namespace Pengin
 	{
 		assert(!m_SceneData.sceneFileData.sceneSavePath.empty());
 
-		assert(m_SceneData.isUUIDInit && "Must init a player to serialize the scene (SetPlayer or scene data in load file)");
 		return ServiceLocator::GetSerializer().SerializeScene(m_Ecs, m_SceneData, m_SceneData.sceneFileData.sceneSavePath);
 	}
 }

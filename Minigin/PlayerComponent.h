@@ -11,17 +11,16 @@ namespace Pengin
 
 	struct PlayerComponent final
 	{
+		UserIndex userIdx{ true };
+		float movementSpeed{ 0.f }; //Should possibly be moved in future
+
 		PlayerComponent(const UserIndex& userIdx, float movementSpeed = 0.f) :
 			userIdx{ userIdx },
-			movementSpeed{movementSpeed}
+			movementSpeed{ movementSpeed }
 		{}
 
 		PlayerComponent() = default;
 		~PlayerComponent() = default;
-
-		UserIndex userIdx{ true };
-		float movementSpeed{ 0.f }; //Should possibly be moved in future
-
 
 		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
 		{

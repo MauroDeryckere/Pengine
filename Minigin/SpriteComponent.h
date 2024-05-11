@@ -13,12 +13,17 @@ namespace Pengin
 {	
 	struct SpriteComponent final
 	{
+		std::shared_ptr<dae::Texture2D> pTexture { nullptr };
+		UtilStructs::Rectu16 sourceRect{};
+
+		bool isVisible{ true };
+
 		SpriteComponent() = default;
 
 		SpriteComponent(const std::string& texturePath, UtilStructs::Rectu16 sourceRect = {}) :
 			pTexture{ dae::ResourceManager::GetInstance().LoadTexture(texturePath) },
 			sourceRect{ sourceRect },
-			isVisible{true}
+			isVisible{ true }
 		{}
 
 		SpriteComponent(std::shared_ptr<dae::Texture2D> pTexture, UtilStructs::Rectu16 sourceRect = {}) :
@@ -28,12 +33,6 @@ namespace Pengin
 		{}
 
 		~SpriteComponent() = default;
-
-		std::shared_ptr<dae::Texture2D> pTexture { nullptr };
-		UtilStructs::Rectu16 sourceRect{};
-
-		bool isVisible{ true };
-
 
 		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
 		{

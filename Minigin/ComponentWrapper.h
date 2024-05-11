@@ -21,7 +21,7 @@ namespace Pengin
                 return (*m_ComponentSet)[id];
             }
 
-            return m_ComponentSet->Emplace(id, ComponentType{});
+            return (*m_ComponentSet->Emplace(id, ComponentType{}).first);
         }
 
         [[nodiscard]] const ComponentType& GetComponent(const EntityId id) const

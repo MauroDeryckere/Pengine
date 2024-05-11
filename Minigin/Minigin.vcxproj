@@ -482,6 +482,7 @@ xcopy $(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x64\fmodstud
     <ClInclude Include="BaseComponentStorage.h" />
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="Bitset.h" />
+    <ClInclude Include="CollisionEvent.h" />
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="CoreIncludes.h" />
     <ClInclude Include="DebugDrawComponent.h" />
@@ -495,6 +496,7 @@ xcopy $(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x64\fmodstud
     <ClInclude Include="JsonConversion.h" />
     <ClInclude Include="LoggingSoundSystem.h" />
     <ClInclude Include="MovementSystem.h" />
+    <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="RectColliderComponent.h" />
     <ClInclude Include="SceneData.h" />
@@ -516,7 +518,7 @@ xcopy $(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x64\fmodstud
     <ClInclude Include="UIDisplaySystem.h" />
     <ClInclude Include="GameUUID.h" />
     <ClInclude Include="UUIDComponent.h" />
-    <ClInclude Include="VelocityComponent.h" />
+    <ClInclude Include="BodyComponent.h" />
     <ClInclude Include="ComponentStorage.h" />
     <ClInclude Include="ComponentWrapper.h" />
     <ClInclude Include="Components.h" />
@@ -591,6 +593,7 @@ xcopy $(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x64\fmodstud
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MovementSystem.cpp" />
     <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="ResourceManager.cpp" />

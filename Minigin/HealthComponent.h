@@ -54,8 +54,6 @@ namespace Pengin
 			comp.healthDisplayIds.reserve(idVec.size());
 			for (const auto& uuid : idVec)
 			{
-				DEBUG_OUT("DA UUID: " << uuid);
-
 				comp.healthDisplayIds.emplace_back(entityMap.at({ uuid }));
 			}
 		}

@@ -18,7 +18,7 @@ namespace Pengin
 
 		virtual ~WorldPositionSystem() override = default;
 
-		virtual void Update() override;
+		virtual void FixedUpdate() override;
 
 		WorldPositionSystem(const WorldPositionSystem&) = delete;
 		WorldPositionSystem(WorldPositionSystem&&) = delete;

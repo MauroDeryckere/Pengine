@@ -6,7 +6,7 @@
 
 #include "PlayerComponent.h"
 
-#include "VelocityComponent.h"
+#include "BodyComponent.h"
 
 #include "RectColliderComponent.h"
 

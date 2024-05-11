@@ -14,7 +14,13 @@ namespace Pengin
 {
 	struct TextComponent final
 	{
-		TextComponent(const std::string& fontPath, unsigned fontSize, const std::string& text = "<EMPTY STRING>", const glm::u8vec4& color = {255, 255, 255, 255}) :
+		std::string text;
+		std::shared_ptr<dae::Font> pFont;
+		glm::u8vec4 color{ 255, 255, 255, 255 };
+
+		bool needsTextureChange{ true };
+
+		TextComponent(const std::string& fontPath, unsigned fontSize, const std::string& text = "<EMPTY STRING>", const glm::u8vec4& color = { 255, 255, 255, 255 }) :
 			text{ text },
 			pFont{ dae::ResourceManager::GetInstance().LoadFont(fontPath, fontSize) },
 			color{ color },
@@ -35,13 +41,6 @@ namespace Pengin
 				color = newColor;
 			}
 		}
-
-		std::string text;
-		std::shared_ptr<dae::Font> pFont;
-		glm::u8vec4 color{ 255, 255, 255, 255 };
-
-		bool needsTextureChange{ true };
-
 
 		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
 		{

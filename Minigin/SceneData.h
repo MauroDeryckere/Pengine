@@ -17,13 +17,9 @@ namespace Pengin
 
 		SceneFileData sceneFileData{};
 
-		bool isUUIDInit{ false };
 
-		//Functions
 		void SetPlayer(const UserIndex& userIdx, GameUUID playerUUID) noexcept
 		{
-			isUUIDInit = true;
-
 			auto it = user_UUIDVecIdxMap.find(userIdx);
 
 			if (it == end(user_UUIDVecIdxMap))

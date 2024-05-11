@@ -6,7 +6,7 @@
 
 namespace Pengin
 {
-	class GameTime final : public Pengin::Singleton<GameTime>
+	class GameTime final : public Singleton<GameTime>
 	{
 	public:
 		[[nodiscard]] inline float GetElapsedSec() const noexcept { return m_ElapsedSec; }

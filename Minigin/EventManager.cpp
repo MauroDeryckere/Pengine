@@ -45,7 +45,7 @@ namespace Pengin
 		{
 			auto& observers{ it->second };
 
-			std::erase_if(observers, [](const auto& observerPair)
+			std::erase_if(observers, [](const auto& observerPair) //erase after? / store its?
 				{
 					return observerPair.first.expired();
 				});

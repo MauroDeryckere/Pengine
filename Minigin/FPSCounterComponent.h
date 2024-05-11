@@ -7,11 +7,11 @@ namespace Pengin
 {
 	struct FPSCounterComponent final
 	{
-		FPSCounterComponent() = default;
-		~FPSCounterComponent() = default;
-
 		unsigned frameCount{ 0 };
 		float accumulatedTime{ 0.f };
+
+		FPSCounterComponent() = default;
+		~FPSCounterComponent() = default;
 
 		static void Serialize(const FieldSerializer&, const ECS&, const EntityId, std::vector<uint8_t>&)
 		{ }

@@ -1,48 +1,33 @@
 #include "MovementSystem.h"
 
 #include "ECS.h"
-#include "Entity.h"
-
-#include "GameTime.h"
-
-#include "TransformComponent.h"
-#include "VelocityComponent.h"
+#include "BodyComponent.h"
 
 namespace Pengin
 {
-	void MovementSystem::Update()
+	void MovementSystem::FirstStep(const float stepTime)
 	{
-		auto velocityComps{ m_ECS.GetComponents<VelocityComponent>() };
+		auto bodyComps{ m_ECS.GetComponents<BodyComponent>() };
 
-		for (auto it{ velocityComps.begin() }; auto& entity : velocityComps)
+		for (auto it{ bodyComps.begin() }; auto & body : bodyComps)
 		{
-			auto id = velocityComps.GetIdFromIterator(it);
-			auto& transform = m_ECS.GetComponent<TransformComponent>(id);
-			
-			transform.localPos += entity.velocity * GameTime::GetInstance().GetElapsedSec();
+			body.velocity += body.inputVelocity;
 
-			SetPosDirty(transform);
-
-			entity.velocity = {};
+			body.currentPosition += body.velocity * stepTime;
 
 			++it;
 		}
 	}
-	void MovementSystem::SetPosDirty(TransformComponent& transform)
+
+	void MovementSystem::Step(const float stepTime)
 	{
-		transform.isPosDirty = true;
+		auto bodyComps{ m_ECS.GetComponents<BodyComponent>() };
 
-		if (transform.relation.children != 0)
+		for (auto it{ bodyComps.begin() }; auto& body : bodyComps)
 		{
-			auto currChildId = transform.relation.firstChild;
+			body.currentPosition += body.velocity * stepTime;
 
-			for (size_t childIdx{ 0 }; childIdx < transform.relation.children; ++childIdx)
-			{
-				auto& currChildTransform = m_ECS.GetComponent<TransformComponent>(currChildId);
-
-				SetPosDirty(currChildTransform);
-				currChildId = currChildTransform.relation.nextSibling;
-			}
+			++it;
 		}
 	}
 }

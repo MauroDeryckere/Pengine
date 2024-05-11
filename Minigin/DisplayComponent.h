@@ -7,6 +7,9 @@ namespace Pengin
 {
 	struct TxtDisplayComponent final
 	{
+		std::string prefix{};
+		std::string postfix{};
+
 		TxtDisplayComponent() = default;
 
 		TxtDisplayComponent(const std::string& prefix, const std::string& postfix = {}) :
@@ -15,10 +18,6 @@ namespace Pengin
 		{}
 
 		~TxtDisplayComponent() = default;
-
-		std::string prefix{};
-		std::string postfix{};
-
 
 		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
 		{ 

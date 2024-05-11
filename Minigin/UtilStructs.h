@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <cassert>
 
+#include <type_traits> // For std::is_floating_point_v
+
 namespace Pengin
 {
 	namespace UtilStructs
@@ -59,28 +61,50 @@ namespace Pengin
 
 		using Rect8 = Rect<int8_t>;
 		using Rect16 = Rect<int16_t>; 
-		using Recti = Rect<int>;
+		using Recti = Rect<int32_t>;
 		
 		using Rectu8 = Rect<uint8_t>;
 		using Rectu16 = Rect<uint16_t>; 
-		using Rectu = Rect<unsigned>;
+		using Rectu = Rect<uint32_t>;
 	}
 
 	namespace UtilFuncs
 	{
-		[[nodiscard]] inline constexpr bool IsCollidingABBA(UtilStructs::Rect16 rect1, UtilStructs::Rect16 rect2) noexcept
+		constexpr float EPSILON{ 0.001f };
+
+		template<typename T>
+		[[nodiscard]] inline constexpr bool IsCollidingAABB(const UtilStructs::Rect<T>& rect1, const UtilStructs::Rect<T>& rect2) noexcept
 		{
-			if ((rect1.x + rect1.width) < rect2.x || (rect2.x + rect2.width) < rect1.x)
+			if constexpr (std::is_floating_point_v<T>)
 			{
-				return false;
-			}
+				constexpr T CASTED_EPS{ static_cast<T>(EPSILON) };
 
-			if (rect1.y > (rect2.y + rect2.height) || rect2.y > (rect1.y + rect1.height))
+				if (rect1.x + rect1.width + CASTED_EPS < rect2.x || rect2.x + rect2.width + CASTED_EPS < rect1.x)
+				{
+					return false;
+				}
+
+				if (rect1.y + rect1.height + CASTED_EPS < rect2.y || rect2.y + rect2.height + CASTED_EPS < rect1.y)
+				{
+					return false;
+				}
+				
+				return true;
+			}
+			else
 			{
-				return false;
-			}
+				if ((rect1.x + rect1.width) < rect2.x || (rect2.x + rect2.width) < rect1.x)
+				{
+					return false;
+				}
 
-			return true;
+				if (rect1.y > (rect2.y + rect2.height) || rect2.y > (rect1.y + rect1.height))
+				{
+					return false;
+				}
+
+				return true;
+			}
 		}
 	}
 }
