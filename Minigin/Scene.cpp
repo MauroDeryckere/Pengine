@@ -4,7 +4,9 @@
 #include "Entity.h"
 #include "PlayerComponent.h"
 #include "TransformComponent.h"
+#include "RectColliderComponent.h"
 #include "UUIDComponent.h"
+#include "BodyComponent.h"
 
 #include "SystemManager.h"
 #include "EventManager.h"
@@ -144,6 +146,19 @@ namespace Pengin
 		//Only use the sceneData for players, playercomponent is redundant
 
 		return entity;
+	}
+
+	Entity Scene::CreatePhysicsEntity(const UtilStructs::Rectu16& collRect, const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale, const UserIndex& userIdx)
+	{
+		Entity ent = CreateEntity(position, rotation, scale, userIdx);
+		auto& body = ent.AddComponent<BodyComponent>();
+
+		body.currentPosition = position;
+		body.lastPosition = position;
+
+		ent.AddComponent<RectColliderComponent>(collRect);
+
+		return ent;
 	}
 
 	bool Scene::DestroyEntity(Entity entity, bool keepChildren)

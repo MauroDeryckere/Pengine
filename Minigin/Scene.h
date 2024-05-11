@@ -10,6 +10,8 @@
 #include "SceneInfoPanel.h"
 #include "InputInfoPanel.h"
 
+#include "UtilStructs.h"
+
 #include "SystemManager.h"
 #include "AchievementSystem.h"
 
@@ -26,7 +28,9 @@ namespace Pengin
 		void Start();
 
 		//Entities
-		[[nodiscard]] Entity CreateEntity(const glm::vec3& position = { }, const glm::vec3& rotation = { }, const glm::vec3& scale = { 1, 1, 1 }, const UserIndex& = GameUUID{ true } );
+		[[nodiscard]] Entity CreateEntity(const glm::vec3& position = { }, const glm::vec3& rotation = { }, const glm::vec3& scale = { 1, 1, 1 }, const UserIndex& userIdx  = GameUUID{ true } );
+		[[nodiscard]] Entity CreatePhysicsEntity(const UtilStructs::Rectu16& collRect = UtilStructs::Rectu16{ 0, 0 ,1, 1 }, const glm::vec3& position = {}, const glm::vec3& rotation = {}, const glm::vec3& scale = { 1, 1, 1 }, const UserIndex& userIdx = GameUUID{ true });
+
 		bool DestroyEntity(Entity entity, bool keepChildren = true);
 		bool DestroyEntity(const EntityId entityId, bool keepChildren = true);
 

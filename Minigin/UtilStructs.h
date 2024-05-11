@@ -32,9 +32,7 @@ namespace Pengin
 				y(_y),
 				width(_width),
 				height(_height)
-			{
-				assert(width >= 0 && height >= 0);
-			}
+			{ }
 
 			Rect(const Rect& other) noexcept = default; 
 			Rect(Rect&& other) noexcept = default;
