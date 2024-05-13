@@ -58,7 +58,7 @@ namespace Pengo
 		return nullptr;
 	}
 
-	std::unique_ptr<PlayerState> PengoWalkState::HandleInput(const UserIndex& userIndex, const std::string& actionName)
+	std::unique_ptr<Pengin::PlayerState> PengoWalkState::HandleInput(const Pengin::UserIndex& userIndex, const std::string& actionName)
 	{
 		if (actionName == "PengoBreakBlock")
 		{

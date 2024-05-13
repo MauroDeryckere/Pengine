@@ -13,9 +13,9 @@ namespace Pengo
 {
 	struct PengoComponent final
 	{
-		std::unique_ptr<PlayerState> pPlayerState{ std::make_unique<PengoIdleState>( GameUUID{true} )};
+		std::unique_ptr<Pengin::PlayerState> pPlayerState{ std::make_unique<PengoIdleState>( Pengin::GameUUID{true} )};
 
-		void SetPlayerState(std::unique_ptr<PlayerState> pState)
+		void SetPlayerState(std::unique_ptr<Pengin::PlayerState> pState)
 		{
 			assert(pState);
 
@@ -25,7 +25,7 @@ namespace Pengo
 			pPlayerState->OnEnter();
 		}
 
-		void Update(const UserIndex& userIndex)
+		void Update(const Pengin::UserIndex& userIndex)
 		{
 			assert(pPlayerState);
 
@@ -40,7 +40,7 @@ namespace Pengo
 			}
 		}
 
-		void HandleInput(const UserIndex& userIndex, const std::string& actionName)
+		void HandleInput(const Pengin::UserIndex& userIndex, const std::string& actionName)
 		{
 			assert(pPlayerState);
 
@@ -57,7 +57,7 @@ namespace Pengo
 		}
 
 
-		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
+		static void Serialize(const Pengin::FieldSerializer& fieldSer, const Pengin::ECS& ecs, const Pengin::EntityId id, std::vector<uint8_t>& fieldVector)
 		{
 			fieldSer;
 			ecs;
@@ -66,7 +66,7 @@ namespace Pengo
 
 			//fieldSer.SerializeField("", , fieldVector);
 		}
-		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
+		static void Deserialize(const Pengin::FieldSerializer& fieldSer, Pengin::ECS& ecs, const Pengin::EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<Pengin::GameUUID, Pengin::EntityId>& entityMap [[maybe_unused]] )
 		{
 			ecs.AddComponent<PengoComponent>(id);
 
