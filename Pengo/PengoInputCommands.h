@@ -18,21 +18,21 @@
 
 namespace Pengo
 {
-	using namespace Pengin;
-
-	class Movement final : public InputCommand
+	class Movement final : public Pengin::InputCommand
 	{
 	public:
 		Movement(const UserIndex& user, const glm::vec3& direction) :
-			InputCommand{ user, "PengoMovement" },
+			Pengin::InputCommand{ user, "PengoMovement" },
 			m_Direction{ direction }
 		{ }
 
 		virtual void Execute() override
 		{
+			using namespace Pengin;
+
 			auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
 
-			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find(InputCommand::GetUserIdx());
+			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find( GetUserIdx());
 
 			if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
 			{
@@ -46,7 +46,7 @@ namespace Pengo
 
 			if (playerEntity.HasComponent<PengoComponent>())
 			{
-				playerEntity.GetComponent<PengoComponent>().HandleInput( InputCommand::GetUserIdx(), InputCommand::GetActionName() );
+				playerEntity.GetComponent<PengoComponent>().HandleInput( GetUserIdx(), GetActionName() );
 
 				const auto movementSpeed = playerEntity.GetComponent<PlayerComponent>().movementSpeed;
 				playerEntity.GetComponent<BodyComponent>().inputVelocity += (m_Direction * movementSpeed);
@@ -64,18 +64,20 @@ namespace Pengo
 		const glm::vec3 m_Direction;
 	};
 
-	class BreakBlock final : public InputCommand
+	class BreakBlock final : public Pengin::InputCommand
 	{
 	public:
 		BreakBlock(const UserIndex& user) :
-			InputCommand{ user, "PengoBreakBlock" }
+			Pengin::InputCommand{ user, "PengoBreakBlock" }
 		{ }
 
 		virtual void Execute() override
 		{
+			using namespace Pengin;
+
 			auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
 
-			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find(InputCommand::GetUserIdx());
+			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find( GetUserIdx());
 
 			if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
 			{
@@ -89,7 +91,7 @@ namespace Pengo
 
 			if (playerEntity.HasComponent<PengoComponent>())
 			{
-				playerEntity.GetComponent<PengoComponent>().HandleInput(InputCommand::GetUserIdx(), InputCommand::GetActionName());
+				playerEntity.GetComponent<PengoComponent>().HandleInput( GetUserIdx(), GetActionName());
 			}
 		}
 

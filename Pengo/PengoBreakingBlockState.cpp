@@ -6,8 +6,10 @@
 
 namespace Pengo
 {
-	std::unique_ptr<PlayerState> PengoBreakingBlockState::Update(const UserIndex&)
+	std::unique_ptr<Pengin::PlayerState> PengoBreakingBlockState::Update(const Pengin::UserIndex&)
 	{
+        using namespace Pengin;
+
         static float timer = 0.0f;
 
         float deltaTime = GameTime::GetInstance().GetElapsedSec();

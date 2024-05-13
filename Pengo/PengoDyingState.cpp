@@ -7,8 +7,27 @@
 
 namespace Pengo
 {
-	std::unique_ptr<PlayerState> PengoDyingState::Update(const UserIndex& userIndex)
+	void PengoDyingState::OnEnter()
 	{
+		using namespace Pengin;
+
+		auto& sceneData = SceneManager::GetInstance().GetActiveScene()->GetSceneData();
+
+		auto it = sceneData.user_UUIDVecIdxMap.find(GetUserIndex());
+
+		if (it != sceneData.user_UUIDVecIdxMap.end())
+		{
+			auto entity = SceneManager::GetInstance().GetActiveScene()->GetEntity(sceneData.playerUUIDs[it->second]);
+			EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(entity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::Dying)));
+		}
+
+		DEBUG_OUT("Enter Dying");
+	}
+
+	std::unique_ptr<Pengin::PlayerState> PengoDyingState::Update(const Pengin::UserIndex& userIndex)
+	{
+		using namespace Pengin;
+
 		static float timer = 0.0f;
 
 		float deltaTime = GameTime::GetInstance().GetElapsedSec();

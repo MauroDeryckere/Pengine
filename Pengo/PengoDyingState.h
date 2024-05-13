@@ -15,33 +15,18 @@
 
 namespace Pengo
 {
-	using namespace Pengin;
-
-	class PengoDyingState final : public PlayerState
+	class PengoDyingState final : public Pengin::PlayerState
 	{
 	public:
-		PengoDyingState(const UserIndex& userIdx) :
-			PlayerState{ userIdx }
+		PengoDyingState(const Pengin::UserIndex& userIdx) :
+			Pengin::PlayerState{ userIdx }
 		{}
 
-		void OnEnter()
-		{
-			auto& sceneData = SceneManager::GetInstance().GetActiveScene()->GetSceneData();
+		void OnEnter();
 
-			auto it = sceneData.user_UUIDVecIdxMap.find(PlayerState::GetUserIndex());
+		std::unique_ptr<Pengin::PlayerState> Update(const Pengin::UserIndex& userIndex);
 
-			if (it != sceneData.user_UUIDVecIdxMap.end())
-			{
-				auto entity = SceneManager::GetInstance().GetActiveScene()->GetEntity(sceneData.playerUUIDs[it->second]);
-				EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(entity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::Dying)));
-			}
-
-			DEBUG_OUT("Enter Dying");
-		}
-
-		std::unique_ptr<PlayerState> Update(const UserIndex& userIndex);
-
-		std::unique_ptr<PlayerState> HandleInput(const UserIndex&, const std::string&)
+		std::unique_ptr<Pengin::PlayerState> HandleInput(const Pengin::UserIndex&, const std::string&)
 		{
 			return nullptr;
 		}

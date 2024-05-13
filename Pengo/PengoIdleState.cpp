@@ -5,7 +5,7 @@
 
 namespace Pengo
 {
-	std::unique_ptr<PlayerState> Pengo::PengoIdleState::HandleInput(const UserIndex& userIndex, const std::string& actionName)
+	std::unique_ptr<Pengin::PlayerState> Pengo::PengoIdleState::HandleInput(const Pengin::UserIndex& userIndex, const std::string& actionName)
 	{
 		if (actionName == "PengoMovement")
 		{

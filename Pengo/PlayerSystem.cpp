@@ -40,8 +40,10 @@ namespace Pengo
 		}
 	}
 
-	void PlayerSystem::OnBlockBreakEvent(const BaseEvent& event)
+	void PlayerSystem::OnBlockBreakEvent(const Pengin::BaseEvent& event)
 	{
+		using namespace Pengin;
+
 		const auto& breakEv{ static_cast<const PengoBlockBreakEvent&>(event) };
 
 		const auto& userIdx = breakEv.GetUserInex();
@@ -59,8 +61,10 @@ namespace Pengo
 		}
 	}
 
-	void PlayerSystem::OnDeathEvent(const BaseEvent& event)
+	void PlayerSystem::OnDeathEvent(const Pengin:: BaseEvent& event)
 	{
+		using namespace Pengin;
+
 		const auto& deahtEv{ static_cast<const HealthChangeEvent&>(event) };
 
 		assert(m_ECS.HasComponent<PlayerComponent>(deahtEv.GetEntityId()));
@@ -69,8 +73,10 @@ namespace Pengo
 		m_ECS.GetComponent<PengoComponent>(deahtEv.GetEntityId()).SetPlayerState(std::make_unique<PengoDyingState>(m_ECS.GetComponent<PlayerComponent>(deahtEv.GetEntityId()).userIdx));
 	}
 
-	void PlayerSystem::OnRespawnEvent(const BaseEvent& event)
+	void PlayerSystem::OnRespawnEvent(const Pengin::BaseEvent& event)
 	{
+		using namespace Pengin;
+
 		const auto& respawnEv{ static_cast<const PengoRespawnEvent&>(event) };
 
 		const auto& userIdx = respawnEv.GetUserInex();

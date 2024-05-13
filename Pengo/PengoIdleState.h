@@ -19,29 +19,29 @@ namespace Pengo
 {
 	using namespace Pengin;
 
-	class PengoIdleState final : public PlayerState
+	class PengoIdleState final : public Pengin::PlayerState
 	{
 	public:
-		PengoIdleState(const UserIndex& userIdx) :
-			PlayerState{ userIdx }
+		PengoIdleState(const Pengin::UserIndex& userIdx) :
+			Pengin::PlayerState{ userIdx }
 		{}
 
 		void OnEnter()
 		{
-			auto& sceneData = SceneManager::GetInstance().GetActiveScene()->GetSceneData();
+			auto& sceneData = Pengin::SceneManager::GetInstance().GetActiveScene()->GetSceneData();
 
-			auto it = sceneData.user_UUIDVecIdxMap.find(PlayerState::GetUserIndex());
+			auto it = sceneData.user_UUIDVecIdxMap.find(GetUserIndex());
 
 			if (it != sceneData.user_UUIDVecIdxMap.end())
 			{
-				auto entity = SceneManager::GetInstance().GetActiveScene()->GetEntity(sceneData.playerUUIDs[it->second]);
-				EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(entity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::Idle)));
+				auto entity = Pengin::SceneManager::GetInstance().GetActiveScene()->GetEntity(sceneData.playerUUIDs[it->second]);
+				Pengin::EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<Pengin::SwitchAnimationEvent>(entity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::Idle)));
 			}
 
 			DEBUG_OUT("Enter Idle");
 		}
 
-		std::unique_ptr<PlayerState> HandleInput(const UserIndex& userIndex, const std::string& actionName);
+		std::unique_ptr<Pengin::PlayerState> HandleInput(const Pengin::UserIndex& userIndex, const std::string& actionName);
 
 		void OnExit()
 		{

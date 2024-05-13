@@ -8,13 +8,11 @@
 
 namespace Pengo
 {
-	using namespace Pengin;
-
-	class PengoWalkState final : public PlayerState
+	class PengoWalkState final : public Pengin::PlayerState
 	{
 	public:
-		PengoWalkState(const UserIndex& userIdx) :
-			PlayerState{ userIdx }
+		PengoWalkState(const Pengin::UserIndex& userIdx) :
+			Pengin::PlayerState{ userIdx }
 		{}
 
 		void OnEnter()
@@ -22,9 +20,9 @@ namespace Pengo
 			DEBUG_OUT("Enter walk");
 		}
 
-		std::unique_ptr<PlayerState> Update(const UserIndex& userIndex);
+		std::unique_ptr<Pengin::PlayerState> Update(const Pengin::UserIndex& userIndex);
 
-		std::unique_ptr<PlayerState> HandleInput(const UserIndex& userIndex, const std::string& actionName);
+		std::unique_ptr<Pengin::PlayerState> HandleInput(const Pengin::UserIndex& userIndex, const std::string& actionName);
 
 		void OnExit()
 		{

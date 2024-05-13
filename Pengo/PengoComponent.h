@@ -11,8 +11,6 @@
 
 namespace Pengo
 {
-	using namespace Pengin;
-
 	struct PengoComponent final
 	{
 		std::unique_ptr<PlayerState> pPlayerState{ std::make_unique<PengoIdleState>( GameUUID{true} )};

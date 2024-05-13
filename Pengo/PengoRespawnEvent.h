@@ -7,19 +7,20 @@
 
 #include <cassert>
 
+namespace Pengin
+{
+	using UserIndex = GameUUID;
+}
+
 namespace Pengo
 {
-	using namespace Pengin;
-
-	using UserIndex = GameUUID;
-
-	class PengoRespawnEvent final : public BaseEvent
+	class PengoRespawnEvent final : public Pengin::BaseEvent
 	{
 	public:
 		constexpr static const char* PENGO_BLOCKBR_EVENT_NAME{ "OnPengoRespawn" };
 
-		PengoRespawnEvent(const UserIndex& userIndex) :
-			BaseEvent{ PENGO_BLOCKBR_EVENT_NAME },
+		PengoRespawnEvent(const Pengin::UserIndex& userIndex) :
+			Pengin::BaseEvent{ PENGO_BLOCKBR_EVENT_NAME },
 
 			m_UserIdx{ userIndex }
 		{
@@ -28,7 +29,7 @@ namespace Pengo
 
 		~PengoRespawnEvent() = default;
 
-		[[nodiscard]] const UserIndex& GetUserInex() const noexcept
+		[[nodiscard]] const Pengin::UserIndex& GetUserInex() const noexcept
 		{
 			return m_UserIdx;
 		}
@@ -39,7 +40,7 @@ namespace Pengo
 		PengoRespawnEvent& operator=(const PengoRespawnEvent&&) = delete;
 
 	private:
-		const UserIndex m_UserIdx{ true };
+		const Pengin::UserIndex m_UserIdx{ true };
 	};
 }
 

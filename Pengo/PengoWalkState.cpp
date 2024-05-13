@@ -16,8 +16,10 @@
 
 namespace Pengo
 {
-	std::unique_ptr<PlayerState> PengoWalkState::Update(const UserIndex& userIndex)
+	std::unique_ptr<Pengin::PlayerState> PengoWalkState::Update(const Pengin::UserIndex& userIndex)
 	{
+		using namespace Pengin;
+
 		auto& sceneData = SceneManager::GetInstance().GetActiveScene()->GetSceneData();
 
 		auto it = sceneData.user_UUIDVecIdxMap.find(userIndex);

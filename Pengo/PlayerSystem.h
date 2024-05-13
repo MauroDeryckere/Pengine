@@ -11,18 +11,18 @@ namespace Pengin
 }
 namespace Pengo
 {
-	using namespace Pengin;
-	class PlayerSystem final : public BaseSystem
+	class PlayerSystem final : public Pengin::BaseSystem
 	{
 	public:
-		PlayerSystem(ECS& ecs) :
+		PlayerSystem(Pengin::ECS& ecs) :
+			Pengin::BaseSystem{ },
 			m_ECS{ ecs },
-			m_pObserver{ EventManager::GetInstance().CreateObserver() }
+			m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() }
 
 		{
-			m_pObserver->RegisterForEvent(m_pObserver, PengoBlockBreakEvent::PENGO_BLOCKBR_EVENT_NAME, [this](const BaseEvent& event) { OnBlockBreakEvent(event); });
-			m_pObserver->RegisterForEvent(m_pObserver, "OnHealthChangeEvent", [this](const BaseEvent& event) { OnDeathEvent(event); });
-			m_pObserver->RegisterForEvent(m_pObserver, "OnPengoRespawn", [this](const BaseEvent& event) { OnRespawnEvent(event); });
+			m_pObserver->RegisterForEvent(m_pObserver, PengoBlockBreakEvent::PENGO_BLOCKBR_EVENT_NAME, [this](const Pengin::BaseEvent& event) { OnBlockBreakEvent(event); });
+			m_pObserver->RegisterForEvent(m_pObserver, "OnHealthChangeEvent", [this](const Pengin::BaseEvent& event) { OnDeathEvent(event); });
+			m_pObserver->RegisterForEvent(m_pObserver, "OnPengoRespawn", [this](const Pengin::BaseEvent& event) { OnRespawnEvent(event); });
 		}
 
 		~PlayerSystem() = default;
@@ -53,13 +53,13 @@ namespace Pengo
 		};
 
 	private:
-		ECS& m_ECS;
+		Pengin::ECS& m_ECS;
 
-		void OnBlockBreakEvent(const BaseEvent& event);
-		void OnDeathEvent(const BaseEvent& event);
-		void OnRespawnEvent(const BaseEvent& event);
+		void OnBlockBreakEvent(const Pengin::BaseEvent& event);
+		void OnDeathEvent(const Pengin::BaseEvent& event);
+		void OnRespawnEvent(const Pengin::BaseEvent& event);
 
-		std::shared_ptr<Observer> m_pObserver;
+		std::shared_ptr<Pengin::Observer> m_pObserver;
 	};
 }
 
