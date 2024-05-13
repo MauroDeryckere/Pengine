@@ -37,7 +37,7 @@ namespace Pengin
 
 			for (auto entity : comp.scoreDisplays)
 			{
-				scoreDispUuids.emplace_back(entity != NULL_ENTITY_ID ? ecs.GetComponent<UUIDComponent>(id).uuid.GetUUID_PrettyStr() : "NULL_UUID");
+				scoreDispUuids.emplace_back(entity != NULL_ENTITY_ID ? ecs.GetComponent<UUIDComponent>(entity).uuid.GetUUID_PrettyStr() : "NULL_UUID");
 			}
 
 			fieldSer.SerializeField("ScoreDisplayIds", scoreDispUuids, fieldVector);

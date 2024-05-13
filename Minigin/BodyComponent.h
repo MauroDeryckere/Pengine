@@ -13,6 +13,8 @@ namespace Pengin
 		glm::vec3 currentPosition{ 0, 0, 0 }; //center of mass pos for physics simulation
 
 		glm::vec3 inputVelocity{ 0, 0 ,0 };
+		glm::vec3 lastFrInputVelocity{ 0, 0, 0 };
+
 		glm::vec3 velocity{ 0, 0, 0 };
 
 		bool isStatic{ false };

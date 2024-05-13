@@ -45,7 +45,7 @@ namespace Pengin
 		{
 			auto& observers{ it->second };
 
-			std::erase_if(observers, [](const auto& observerPair) //erase after? / store its?
+			std::erase_if(observers, [](const auto& observerPair)
 				{
 					return observerPair.first.expired();
 				});
@@ -58,7 +58,7 @@ namespace Pengin
 			return;
 		}
 
-		DEBUG_OUT(eventName << " event without callback(s)");
+		//DEBUG_OUT(eventName << " event without callback(s)");
 	}
 
 	void EventManager::RegisterObserver(std::weak_ptr<Observer> pObserver, fEventCallback fCallback, const std::string& event) noexcept

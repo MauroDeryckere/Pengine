@@ -2,9 +2,6 @@
 
 #include "GameTime.h"
 
-#include "MovementSystem.h"
-#include "CollisionSystem.h"
-
 #include "TransformComponent.h"
 #include "BodyComponent.h"
 
@@ -50,7 +47,8 @@ namespace Pengin
 
 					SceneGraph::SetPosDirty(transform, m_ECS);
 
-					body.velocity -= body.inputVelocity;
+					body.lastFrInputVelocity = body.inputVelocity;
+
 					body.inputVelocity = {};
 
 					body.lastPosition = body.currentPosition;

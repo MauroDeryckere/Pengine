@@ -11,9 +11,11 @@ namespace Pengin
 
 		for (auto it{ bodyComps.begin() }; auto & body : bodyComps)
 		{
+			body.velocity -= body.lastFrInputVelocity;
 			body.velocity += body.inputVelocity;
 
 			body.currentPosition += body.velocity * stepTime;
+
 
 			++it;
 		}

@@ -2,6 +2,9 @@
 #define ANIMATIONSYSTEM
 
 #include "BaseSystem.h"
+#include "EventManager.h"
+
+#include "SwitchAnimationEvent.h"
 
 namespace Pengin
 {
@@ -12,8 +15,11 @@ namespace Pengin
 	public:
 		AnimationSystem(ECS& ecs) :
 			BaseSystem{ },
-			m_ECS{ ecs }
-		{}
+			m_ECS{ ecs },
+			m_pObserer{ EventManager::GetInstance().CreateObserver() }
+		{
+			m_pObserer->RegisterForEvent(m_pObserer, SwitchAnimationEvent::SWITCH_ANIMATION_NAME, [this](const BaseEvent& event) { OnSwitchAnimationEvent(event); });
+		}
 
 		virtual ~AnimationSystem() override = default;
 
@@ -26,6 +32,10 @@ namespace Pengin
 
 	private:
 		ECS& m_ECS;
+
+		std::shared_ptr<Observer> m_pObserer;
+
+		void OnSwitchAnimationEvent(const BaseEvent& event) noexcept;
 	};
 }
 

@@ -23,52 +23,12 @@
 
 namespace Pengin
 {
-	class Movement final : public InputCommand
-	{
-	public:
-		
-		Movement(const UserIndex& user, const glm::vec3& direction) :
-			InputCommand{ user },
-			m_Direction{direction}
-		{ }
-
-		virtual void Execute() override 
-		{ 
-			auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
-
-			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find(InputCommand::GetUserIdx());
-
-			if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
-			{
-				DEBUG_OUT("movement for a deleted playerIdx");
-				return;
-			}
-			const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
-			 
-			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
-			Entity playerEntity{ entityId, pActiveScene.get() };
-
-			const auto movementSpeed = playerEntity.GetComponent<PlayerComponent>().movementSpeed;
-			playerEntity.GetComponent<BodyComponent>().inputVelocity += (m_Direction * movementSpeed);
-		}
-
-		virtual ~Movement() override = default;
-
-		Movement(const Movement&) = delete;
-		Movement& operator=(const Movement&) = delete;
-		Movement(Movement&&) noexcept = delete;
-		Movement& operator=(Movement&&) noexcept = delete;
-
-	private:
-		const glm::vec3 m_Direction;
-	};
-
 	class InpDebugCommand final : public InputCommand
 	{
 	public:
 
 		InpDebugCommand(const UserIndex& user, const std::string& msg) :
-			InputCommand{ user },
+			InputCommand{ user, "InpDebug"},
 			m_Message{ msg }
 		{ }
 
@@ -94,7 +54,7 @@ namespace Pengin
 	{
 	public:
 		AttackPlayer(const UserIndex& user) :
-			InputCommand{ user }
+			InputCommand{ user, "Attack"}
 		{ }
 
 		virtual void Execute() override
@@ -133,7 +93,7 @@ namespace Pengin
 	{
 	public:
 		CollectScore(const UserIndex& user, unsigned score = 10) :
-			InputCommand{ user },
+			InputCommand{ user, "ScoreCollect"},
 			m_ScoreVal{ score }
 		{ }
 
@@ -174,7 +134,7 @@ namespace Pengin
 	{
 	public:
 		MakeSound(const UserIndex& user, const SoundData& soundData) :
-			InputCommand{ user },
+			InputCommand{ user, "MakeSound"},
 			m_SoundData{ soundData }
 		{ 
 			assert(!soundData.soundPath.empty());

@@ -165,6 +165,20 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PengoBreakingBlockState.cpp" />
+    <ClCompile Include="PengoIdleState.cpp" />
+    <ClCompile Include="PengoWalkState.cpp" />
+    <ClCompile Include="PlayerSystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PengoBlockBreakEvent.h" />
+    <ClInclude Include="PengoBreakingBlockState.h" />
+    <ClInclude Include="PengoDyingState.h" />
+    <ClInclude Include="PengoIdleState.h" />
+    <ClInclude Include="PengoInputCommands.h" />
+    <ClInclude Include="PengoComponent.h" />
+    <ClInclude Include="PengoWalkState.h" />
+    <ClInclude Include="PlayerSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

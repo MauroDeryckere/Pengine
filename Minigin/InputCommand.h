@@ -25,14 +25,19 @@ namespace Pengin
 		InputCommand& operator=(InputCommand&&) noexcept = delete;
 
 	protected:
-		InputCommand(const UserIndex& user) :
-			m_UserIdx{ user }
-		{ }
+		InputCommand(const UserIndex& user, const std::string& actionName) :
+			m_UserIdx{ user },
+			m_ActionName{ actionName }
+		{ 
+			assert(!actionName.empty());
+		}
 
 		const UserIndex& GetUserIdx() const noexcept { return m_UserIdx; }
+		const std::string& GetActionName() const noexcept { return m_ActionName; }
 
 	private:
-		UserIndex m_UserIdx;
+		const UserIndex m_UserIdx;
+		const std::string m_ActionName;
 	};
 }
 

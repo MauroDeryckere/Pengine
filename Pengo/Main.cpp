@@ -23,9 +23,12 @@
 #include "Components.h"
 
 #include "InputCommands.h"
+#include "PengoInputCommands.h"
+
 #include "ServiceLocator.h"
 
 #include "DebugDrawSystem.h"
+#include "PlayerSystem.h"
 
 #include "TestSerComponent.h"
 
@@ -90,6 +93,8 @@ void LoadDemo()
 
 	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
 
+	pScene->RegisterSystems([](SystemManager& sysManager, ECS& ecs) { sysManager.RegisterSystem<Pengo::PlayerSystem>(std::make_shared<Pengo::PlayerSystem>(ecs) ); });
+
 	auto entt = pScene->CreateEntity({250,250,0});
 	auto& rc = entt.AddComponent<RectColliderComponent>();
 	rc.collRect.width = 100;
@@ -147,7 +152,7 @@ void LoadDemo()
 	//auto player1 = pScene->CreateEntity({ 200, 200, 0 }, {}, {2,2,0});
 	//player1.AddComponent<PlayerComponent>(user1);
 	//player1.AddComponent<SpriteComponent>("pengoLowQualityFortesting.png");
-	//player1.AddComponent<VelocityComponent>();
+	//player1.AddComponent<VelocityComponent>(); need to change to body
 	//auto& player1Health = player1.AddComponent<HealthComponent>(3);
 	//auto& player1Score = player1.AddComponent<ScoreComponent>();
 
@@ -175,7 +180,7 @@ void LoadDemo()
 	//auto player2 = pScene->CreateEntity({ 100, 200, 0 });
 	//player2.AddComponent<PlayerComponent>(user2);
 	//player2.AddComponent<SpriteComponent>("pengoLowQualityFortesting.png");
-	//player2.AddComponent<VelocityComponent>();
+	//player2.AddComponent<VelocityComponent>(); need to change to body
 	//auto& player2Health = player2.AddComponent<HealthComponent>(3);
 	//auto& player2Score = player2.AddComponent<ScoreComponent>();
 
@@ -245,6 +250,8 @@ void LoadGamePlayScripting()
 void RegisterControllerInput_DemoScene(const Pengin::InputData& inpData)
 {
 	using namespace Pengin;
+	using namespace Pengo;
+
 	auto& input = InputManager::GetInstance();
 
 	const auto& userIndex = std::get<0>(inpData);
@@ -263,6 +270,8 @@ void RegisterControllerInput_DemoScene(const Pengin::InputData& inpData)
 void RegisterKeyboardInput_DemoScene(const Pengin::InputData& inpData)
 {
 	using namespace Pengin;
+	using namespace Pengo;
+
 	auto& input = InputManager::GetInstance();
 
 	const auto& userIndex = std::get<0>(inpData);
@@ -277,6 +286,8 @@ void RegisterKeyboardInput_DemoScene(const Pengin::InputData& inpData)
 	input.MapKeyboardAction(userIndex, KeyBoardKey::D, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 1, 0, 0 }));
 	input.MapKeyboardAction(userIndex, KeyBoardKey::W, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, -1, 0 }));
 	input.MapKeyboardAction(userIndex, KeyBoardKey::S, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, 1, 0 }));
+
+	input.MapKeyboardAction(userIndex, KeyBoardKey::E, InputState::Pressed, std::make_shared<Pengo::BreakBlock>(userIndex));
 
 	input.MapKeyboardAction(userIndex, KeyBoardKey::C, InputState::UpThisFrame, std::make_shared<AttackPlayer>(userIndex));
 	input.MapKeyboardAction(userIndex, KeyBoardKey::V, InputState::Pressed, std::make_shared<CollectScore>(userIndex));

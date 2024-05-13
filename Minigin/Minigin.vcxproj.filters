@@ -187,6 +187,9 @@
     <Filter Include="Header Files\Gameplay Systems\Physics">
       <UniqueIdentifier>{2e5bc426-d4e1-4b67-bdaa-ae39f38285fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Physics">
+      <UniqueIdentifier>{06fb7ec9-a5ac-4bd9-a651-4780f766cfb9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
@@ -1170,6 +1173,12 @@
     <ClInclude Include="PhysicsSystem.h">
       <Filter>Header Files\Gameplay Systems\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchAnimationEvent.h">
+      <Filter>Header Files\Core\Events\Der</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_widgets.cpp">
@@ -1199,13 +1208,7 @@
     <ClCompile Include="RenderSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="WorldPositionSystem.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="TextSystem.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="MovementSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="FPSSystem.cpp">
@@ -1215,9 +1218,6 @@
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="AnimationSystem.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdlrenderer2.cpp">
@@ -1305,7 +1305,16 @@
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsSystem.cpp">
-      <Filter>Source Files\Systems</Filter>
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionSystem.cpp">
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementSystem.cpp">
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldPositionSystem.cpp">
+      <Filter>Source Files\Systems\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

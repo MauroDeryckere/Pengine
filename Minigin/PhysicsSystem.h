@@ -2,21 +2,16 @@
 #define PHYSICSSYSTEM
 
 #include "BaseSystem.h"
-#include "MovementSystem.h"
-#include "WorldPositionSystem.h"
-#include "CollisionSystem.h"
 
 #include <memory>
+
+#include "WorldPositionSystem.h"
+#include "MovementSystem.h"
+#include "CollisionSystem.h"
 
 namespace Pengin
 {
 	class ECS;
-
-	//class CollisionSystem;
-	//class MovementSystem;
-	//class WorldPositionSystem;
-
-	struct TransformComponent;
 
 	class PhysicsSystem final : public BaseSystem
 	{
