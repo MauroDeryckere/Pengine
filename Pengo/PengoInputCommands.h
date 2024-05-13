@@ -21,37 +21,12 @@ namespace Pengo
 	class Movement final : public Pengin::InputCommand
 	{
 	public:
-		Movement(const UserIndex& user, const glm::vec3& direction) :
+		Movement(const Pengin::UserIndex& user, const glm::vec3& direction) :
 			Pengin::InputCommand{ user, "PengoMovement" },
 			m_Direction{ direction }
 		{ }
 
-		virtual void Execute() override
-		{
-			using namespace Pengin;
-
-			auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
-
-			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find( GetUserIdx());
-
-			if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
-			{
-				DEBUG_OUT("movement for a deleted playerIdx");
-				return;
-			}
-			const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
-
-			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
-			Entity playerEntity{ entityId, pActiveScene.get() };
-
-			if (playerEntity.HasComponent<PengoComponent>())
-			{
-				playerEntity.GetComponent<PengoComponent>().HandleInput( GetUserIdx(), GetActionName() );
-
-				const auto movementSpeed = playerEntity.GetComponent<PlayerComponent>().movementSpeed;
-				playerEntity.GetComponent<BodyComponent>().inputVelocity += (m_Direction * movementSpeed);
-			}
-		}
+		virtual void Execute() override;
 
 		virtual ~Movement() override = default;
 
@@ -67,33 +42,11 @@ namespace Pengo
 	class BreakBlock final : public Pengin::InputCommand
 	{
 	public:
-		BreakBlock(const UserIndex& user) :
+		BreakBlock(const Pengin::UserIndex& user) :
 			Pengin::InputCommand{ user, "PengoBreakBlock" }
 		{ }
 
-		virtual void Execute() override
-		{
-			using namespace Pengin;
-
-			auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
-
-			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find( GetUserIdx());
-
-			if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
-			{
-				DEBUG_OUT("movement for a deleted playerIdx");
-				return;
-			}
-			const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
-
-			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
-			Entity playerEntity{ entityId, pActiveScene.get() };
-
-			if (playerEntity.HasComponent<PengoComponent>())
-			{
-				playerEntity.GetComponent<PengoComponent>().HandleInput( GetUserIdx(), GetActionName());
-			}
-		}
+		virtual void Execute() override;
 
 		virtual ~BreakBlock() override = default;
 

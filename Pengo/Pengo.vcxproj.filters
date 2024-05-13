@@ -48,6 +48,9 @@
     <ClCompile Include="PengoDyingState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PengoInputCommands.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PengoComponent.h">

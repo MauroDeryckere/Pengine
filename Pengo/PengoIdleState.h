@@ -17,8 +17,6 @@
 
 namespace Pengo
 {
-	using namespace Pengin;
-
 	class PengoIdleState final : public Pengin::PlayerState
 	{
 	public:
