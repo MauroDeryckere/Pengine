@@ -21,6 +21,8 @@ namespace Pengo
 
 		{
 			m_pObserver->RegisterForEvent(m_pObserver, PengoBlockBreakEvent::PENGO_BLOCKBR_EVENT_NAME, [this](const BaseEvent& event) { OnBlockBreakEvent(event); });
+			m_pObserver->RegisterForEvent(m_pObserver, "OnHealthChangeEvent", [this](const BaseEvent& event) { OnDeathEvent(event); });
+			m_pObserver->RegisterForEvent(m_pObserver, "OnPengoRespawn", [this](const BaseEvent& event) { OnRespawnEvent(event); });
 		}
 
 		~PlayerSystem() = default;
@@ -45,15 +47,17 @@ namespace Pengo
 			PushDown = 5,
 			PushLeft = 6,
 			PushUp = 7,
-			PushRight = 8
+			PushRight = 8,
 
-			//Die
+			Dying = 9
 		};
 
 	private:
 		ECS& m_ECS;
 
 		void OnBlockBreakEvent(const BaseEvent& event);
+		void OnDeathEvent(const BaseEvent& event);
+		void OnRespawnEvent(const BaseEvent& event);
 
 		std::shared_ptr<Observer> m_pObserver;
 	};

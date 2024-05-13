@@ -529,6 +529,16 @@
                   ],
                   "FrameDuration": 0.5,
                   "FrameCount": 2
+                },
+                {
+                  "Frame0SrcRect": [
+                    0,
+                    32,
+                    16,
+                    16
+                  ],
+                  "FrameDuration": 0.5,
+                  "FrameCount": 2
                 }
               ],
                 "FrameTimer": 0,

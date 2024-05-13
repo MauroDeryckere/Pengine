@@ -166,6 +166,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y</Command>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PengoBreakingBlockState.cpp" />
+    <ClCompile Include="PengoDyingState.cpp" />
     <ClCompile Include="PengoIdleState.cpp" />
     <ClCompile Include="PengoWalkState.cpp" />
     <ClCompile Include="PlayerSystem.cpp" />
@@ -177,6 +178,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y</Command>
     <ClInclude Include="PengoIdleState.h" />
     <ClInclude Include="PengoInputCommands.h" />
     <ClInclude Include="PengoComponent.h" />
+    <ClInclude Include="PengoRespawnEvent.h" />
     <ClInclude Include="PengoWalkState.h" />
     <ClInclude Include="PlayerSystem.h" />
   </ItemGroup>
