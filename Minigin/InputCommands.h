@@ -18,6 +18,7 @@
 
 #include "glm/vec3.hpp"
 
+#include <memory>
 #include <iostream>
 #include <string>
 
@@ -60,23 +61,17 @@ namespace Pengin
 		virtual void Execute() override
 		{
 			auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
+			Entity playerEntity{ pActiveScene->GetPlayer(InputCommand::GetUserIdx()) };
 
-			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find(InputCommand::GetUserIdx());
-
-			if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
+			if (!playerEntity)
 			{
-				DEBUG_OUT("attack player for a deleted playerIdx");
+				DEBUG_OUT("attack for invalid player");
 				return;
 			}
 
-			const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
-
-			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
-			Entity playerEntity{ entityId, pActiveScene.get() };
-
 			playerEntity.GetComponent<HealthComponent>().health--;
 
-			EventManager::GetInstance().BroadcoastEvent(std::make_unique<HealthChangeEvent>("OnHealthChangeEvent", entityId));
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<HealthChangeEvent>("OnHealthChangeEvent", playerEntity.GetEntityId()));
 		}
 
 		virtual ~AttackPlayer() override = default;
@@ -101,22 +96,17 @@ namespace Pengin
 		{
 			auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
 
-			auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find(InputCommand::GetUserIdx());
+			Entity playerEntity{ pActiveScene->GetPlayer(InputCommand::GetUserIdx()) };
 
-			if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
+			if (!playerEntity)
 			{
-				DEBUG_OUT("movement for a deleted playerIdx");
+				DEBUG_OUT("score for invalid player");
 				return;
 			}
 
-			const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
-
-			const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
-			Entity playerEntity{ entityId, pActiveScene.get() };
-
 			playerEntity.GetComponent<ScoreComponent>().score += m_ScoreVal;
 
-			EventManager::GetInstance().BroadcoastEvent(std::make_unique<ScoreChangeEvent>("OnScoreCollectEvent", entityId));
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<ScoreChangeEvent>("OnScoreCollectEvent", playerEntity.GetEntityId()));
 		}
 
 		virtual ~CollectScore() override = default;

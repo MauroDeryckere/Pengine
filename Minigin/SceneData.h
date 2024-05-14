@@ -18,7 +18,20 @@ namespace Pengin
 		SceneFileData sceneFileData{};
 
 
-		void SetPlayer(const UserIndex& userIdx, GameUUID playerUUID) noexcept
+		const GameUUID& GetPlayerUUID(const UserIndex& userIdx) const noexcept
+		{
+			auto it{ user_UUIDVecIdxMap.find(userIdx) };
+			assert( it != end(user_UUIDVecIdxMap) && "userIdx not found");
+
+			if ( it != end(user_UUIDVecIdxMap) )
+			{
+				return playerUUIDs[it->second];
+			}
+
+			return GameUUID::INVALID_UUID;
+		}
+
+		void SetPlayerUUID(const UserIndex& userIdx, GameUUID playerUUID) noexcept
 		{
 			auto it = user_UUIDVecIdxMap.find(userIdx);
 

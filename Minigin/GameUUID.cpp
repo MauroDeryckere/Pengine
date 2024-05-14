@@ -14,11 +14,13 @@ thread_local static boost::uuids::nil_generator s_NilGen;
 
 namespace Pengin 
 {
-	GameUUID::GameUUID(bool isNull) noexcept:
+	const GameUUID GameUUID::INVALID_UUID{ true };
+
+	GameUUID::GameUUID(bool isNull):
 		m_UUID{ isNull ? s_NilGen() : s_NumGen() }
 	{ }
 
-	GameUUID::GameUUID(const std::string& id, bool isPrettyStr) noexcept
+	GameUUID::GameUUID(const std::string& id, bool isPrettyStr)
 	{ 
 		if (isPrettyStr)
 		{

@@ -37,16 +37,17 @@ namespace Pengin
 		Entity AddEntityFromFile(const std::filesystem::path& entityLoadPath, bool newUUID = true); //Load a specific entity from file into the scene
 		bool SerializeEntity(const Entity entity, const std::filesystem::path& entitySavePath, bool keepUUID = false) const noexcept; //Save a specific entity to a file
 		
-		[[nodiscard]] const GameUUID& GetUUID(const Entity entity) const;
-		[[nodiscard]] const GameUUID& GetUUID(const EntityId id);
-		[[nodiscard]] const EntityId GetEntityId(const GameUUID& uuid) const;
-		[[nodiscard]] const Entity GetEntity(const GameUUID& uuid);
+		[[nodiscard]] const GameUUID& GetUUID(const EntityId id) const noexcept;
+		[[nodiscard]] const EntityId GetEntityId(const GameUUID& uuid) const noexcept;
+		[[nodiscard]] Entity GetEntity(const GameUUID& uuid) noexcept;
 		//--------
 
 		//Player
 		void SetPlayer(const UserIndex& userIdx, const GameUUID& uuid) noexcept;
 		void SetPlayer(const UserIndex& userIdx, const EntityId id) noexcept;
 		void SetPlayer(const UserIndex& userIdx, const Entity entity) noexcept;
+
+		[[nodiscard]] Entity GetPlayer(const UserIndex& userIdx) noexcept;
 		//------
 
 		//Loop
@@ -92,6 +93,8 @@ namespace Pengin
 		std::unique_ptr<SceneInfoPanel> m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>(this) };
 		std::unique_ptr<InputInfoPanel> m_InputInfoPanel{ std::make_unique<InputInfoPanel>() };
 		//-----------------------------------
+
+		//TOOD maintain a list of entities to destroy, destroy end of frame
 
 		bool DeserializeScene() noexcept;
 	};

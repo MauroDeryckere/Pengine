@@ -15,7 +15,7 @@ namespace Pengin
 	class Entity final
 	{
 	public:
-		Entity(const EntityId id, Scene* pScene) noexcept :
+		Entity(EntityId id, Scene* pScene) noexcept :
 			m_EntityId{ id },
 			m_pScene{ pScene }
 		{

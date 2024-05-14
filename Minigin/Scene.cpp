@@ -211,16 +211,14 @@ namespace Pengin
 		return DestroyEntity({entityId, this }, keepChildren);
 	}
 
-	const GameUUID& Scene::GetUUID(const Entity entity) const
+	const GameUUID& Scene::GetUUID(const EntityId id) const noexcept
 	{
-		return entity.GetUUID();
-	}
-	const GameUUID& Scene::GetUUID(const EntityId id)
-	{
-		return Entity{ id, this }.GetUUID();
+		assert(m_Ecs.HasComponent<UUIDComponent>(id));
+
+		return m_Ecs.GetComponent<UUIDComponent>(id).uuid;
 	}
 
-	const EntityId Scene::GetEntityId(const GameUUID& uuid) const
+	const EntityId Scene::GetEntityId(const GameUUID& uuid) const noexcept
 	{
 		auto it = m_UUID_EntityIdMap.find(uuid);
 
@@ -231,14 +229,14 @@ namespace Pengin
 		return (*it).second;
 	}
 
-	const Entity Scene::GetEntity(const GameUUID& uuid)
+	Entity Scene::GetEntity(const GameUUID& uuid) noexcept
 	{
 		return Entity{ GetEntityId(uuid), this };
 	}
 
 	void Scene::SetPlayer(const UserIndex& userIdx, const GameUUID& uuid) noexcept
 	{
-		m_SceneData.SetPlayer(userIdx, uuid);
+		m_SceneData.SetPlayerUUID(userIdx, uuid);
 	}
 
 	void Scene::SetPlayer(const UserIndex& userIdx, const EntityId id) noexcept
@@ -252,6 +250,15 @@ namespace Pengin
 	{
 		assert(entity.GetEntityId() != NULL_ENTITY_ID);
 		SetPlayer(userIdx, entity.GetEntityId());
+	}
+
+	Entity Scene::GetPlayer(const UserIndex& userIdx) noexcept
+	{
+		const GameUUID& playerUUID{ m_SceneData.GetPlayerUUID(userIdx) };
+
+		const EntityId id = GetEntityId(playerUUID);
+
+		return Entity { id, this };
 	}
 
 	Entity Scene::AddEntityFromFile(const std::filesystem::path& entityLoadPath, bool newUUID)

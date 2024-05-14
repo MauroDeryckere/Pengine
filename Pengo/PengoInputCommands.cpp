@@ -6,17 +6,7 @@ void Pengo::Movement::Execute()
 
 	auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
 
-	auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find(GetUserIdx());
-
-	if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
-	{
-		DEBUG_OUT("movement for a deleted playerIdx");
-		return;
-	}
-	const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
-
-	const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
-	Entity playerEntity{ entityId, pActiveScene.get() };
+	Entity playerEntity{ pActiveScene->GetPlayer(InputCommand::GetUserIdx()) };
 
 	if (playerEntity.HasComponent<PengoComponent>())
 	{
@@ -33,17 +23,7 @@ void Pengo::BreakBlock::Execute()
 
 	auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
 
-	auto it = pActiveScene->GetSceneData().user_UUIDVecIdxMap.find(GetUserIdx());
-
-	if (it == end(pActiveScene->GetSceneData().user_UUIDVecIdxMap))
-	{
-		DEBUG_OUT("movement for a deleted playerIdx");
-		return;
-	}
-	const auto& playerUUID = pActiveScene->GetSceneData().playerUUIDs[it->second];
-
-	const EntityId entityId = pActiveScene->GetEntityId(playerUUID);
-	Entity playerEntity{ entityId, pActiveScene.get() };
+	Entity playerEntity{ pActiveScene->GetPlayer(InputCommand::GetUserIdx()) };
 
 	if (playerEntity.HasComponent<PengoComponent>())
 	{

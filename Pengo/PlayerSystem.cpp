@@ -40,7 +40,7 @@ namespace Pengo
 		}
 	}
 
-	void PlayerSystem::OnBlockBreakEvent(const Pengin::BaseEvent& event)
+	void PlayerSystem::OnBlockBreakEvent(const Pengin::BaseEvent& event) //Should be inside states?
 	{
 		using namespace Pengin;
 
@@ -48,16 +48,12 @@ namespace Pengo
 
 		const auto& userIdx = breakEv.GetUserInex();
 
-		auto& sceneData = SceneManager::GetInstance().GetActiveScene()->GetSceneData();
+		auto player = SceneManager::GetInstance().GetActiveScene()->GetPlayer(userIdx);
 
-		auto it = sceneData.user_UUIDVecIdxMap.find(userIdx);
-
-		if (it != sceneData.user_UUIDVecIdxMap.end())
+		if (player)
 		{
-			auto entity = SceneManager::GetInstance().GetActiveScene()->GetEntity(sceneData.playerUUIDs[it->second]);
-
-			assert(entity.HasComponent<PengoComponent>());
-			entity.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx));
+			assert(player.HasComponent<PengoComponent>());
+			player.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx));
 		}
 	}
 
@@ -81,16 +77,12 @@ namespace Pengo
 
 		const auto& userIdx = respawnEv.GetUserInex();
 
-		auto& sceneData = SceneManager::GetInstance().GetActiveScene()->GetSceneData();
+		auto player = SceneManager::GetInstance().GetActiveScene()->GetPlayer(userIdx);
 
-		auto it = sceneData.user_UUIDVecIdxMap.find(userIdx);
-
-		if (it != sceneData.user_UUIDVecIdxMap.end())
+		if (player)
 		{
-			auto entity = SceneManager::GetInstance().GetActiveScene()->GetEntity(sceneData.playerUUIDs[it->second]);
-
-			assert(entity.HasComponent<PengoComponent>());
-			entity.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx));
+			assert(player.HasComponent<PengoComponent>());
+			player.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx));
 		}
 	}
 }

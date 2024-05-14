@@ -16,10 +16,12 @@ namespace Pengin
 	class GameUUID final
 	{
 	public:
-		GameUUID(bool isNull = false) noexcept;
+		static const GameUUID INVALID_UUID;
+
+		GameUUID(bool isNull = false);
 		GameUUID(const char*) = delete;
 
-		GameUUID(const std::string& id, bool isPrettyStr = true) noexcept;
+		GameUUID(const std::string& id, bool isPrettyStr = true);
 
 		~GameUUID() = default;
 

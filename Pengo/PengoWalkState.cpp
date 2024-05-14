@@ -20,15 +20,11 @@ namespace Pengo
 	{
 		using namespace Pengin;
 
-		auto& sceneData = SceneManager::GetInstance().GetActiveScene()->GetSceneData();
+		auto playerEntity{ Pengin::SceneManager::GetInstance().GetActiveScene()->GetPlayer(Pengin::PlayerState::GetUserIndex()) };
 
-		auto it = sceneData.user_UUIDVecIdxMap.find(userIndex);
-	
-		if (it != sceneData.user_UUIDVecIdxMap.end()) 
+		if (playerEntity)
 		{
-			auto entity = SceneManager::GetInstance().GetActiveScene()->GetEntity(sceneData.playerUUIDs[it->second]);
-
-			const auto& body = entity.GetComponent<BodyComponent>();
+			const auto& body = playerEntity.GetComponent<BodyComponent>();
 
 			if (body.velocity.x == 0.f && body.velocity.y == 0.f)
 			{
@@ -38,19 +34,19 @@ namespace Pengo
 			{
 				if (body.velocity.x > 0.f)
 				{
-					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(entity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveRight)));
+					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveRight)));
 				}
 				else if (body.velocity.x < 0.f)
 				{
-					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(entity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveLeft)));
+					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveLeft)));
 				}
 				else if (body.velocity.y > 0.f)
 				{
-					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(entity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveDown)));
+					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveDown)));
 				}
 				else if (body.velocity.y < 0.f)
 				{
-					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(entity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveUp)));
+					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveUp)));
 				}
 			}
 		}

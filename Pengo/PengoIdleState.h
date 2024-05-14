@@ -26,14 +26,11 @@ namespace Pengo
 
 		void OnEnter()
 		{
-			auto& sceneData = Pengin::SceneManager::GetInstance().GetActiveScene()->GetSceneData();
+			auto playerEntity{ Pengin::SceneManager::GetInstance().GetActiveScene()->GetPlayer(Pengin::PlayerState::GetUserIndex()) };
 
-			auto it = sceneData.user_UUIDVecIdxMap.find(GetUserIndex());
-
-			if (it != sceneData.user_UUIDVecIdxMap.end())
+			if (playerEntity)
 			{
-				auto entity = Pengin::SceneManager::GetInstance().GetActiveScene()->GetEntity(sceneData.playerUUIDs[it->second]);
-				Pengin::EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<Pengin::SwitchAnimationEvent>(entity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::Idle)));
+				Pengin::EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<Pengin::SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::Idle)));
 			}
 
 			DEBUG_OUT("Enter Idle");

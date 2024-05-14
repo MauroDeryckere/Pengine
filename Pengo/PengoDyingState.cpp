@@ -11,14 +11,12 @@ namespace Pengo
 	{
 		using namespace Pengin;
 
-		auto& sceneData = SceneManager::GetInstance().GetActiveScene()->GetSceneData();
 
-		auto it = sceneData.user_UUIDVecIdxMap.find(GetUserIndex());
+		auto playerEntity{ Pengin::SceneManager::GetInstance().GetActiveScene()->GetPlayer(Pengin::PlayerState::GetUserIndex()) };
 
-		if (it != sceneData.user_UUIDVecIdxMap.end())
+		if (playerEntity)
 		{
-			auto entity = SceneManager::GetInstance().GetActiveScene()->GetEntity(sceneData.playerUUIDs[it->second]);
-			EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(entity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::Dying)));
+			EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::Dying)));
 		}
 
 		DEBUG_OUT("Enter Dying");
