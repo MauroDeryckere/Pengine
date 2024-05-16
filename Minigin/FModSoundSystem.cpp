@@ -27,22 +27,15 @@ namespace Pengin
 	void FModSoundSytem::Update() noexcept
 	{
 		//Erase any stopped channels
-		for (auto it{ m_Channels.begin() }; it != m_Channels.end(); )
+		std::erase_if(m_Channels, [](auto& pair)
 		{
-			auto& channelVec{ it->second };
-
-			std::erase_if(channelVec, [](auto& ptr) 
-				{
-					bool isPlaying{ false };
-					ptr->isPlaying(&isPlaying);
-					return !isPlaying;
-				});
-
-			channelVec.empty() ? it = m_Channels.erase(it) : ++it;
-		}
+			bool isPlaying{ false };
+			pair.second->isPlaying(&isPlaying);
+			return !isPlaying;
+		});
 		//-------------------------
 
-		//Requests for souns that are loading
+		//Requests for sounds that are loading
 		{
 			std::vector<size_t> executedReqs{};
 			for (size_t idx{ 0 }; idx < m_LoadingRequests.size(); ++idx)
@@ -177,7 +170,7 @@ namespace Pengin
 		DEBUG_OUT("Warning: trying to unload a sound that was never loaded: " << soundPath.string());
 	}
 
-	const ChannelIndex FModSoundSytem::PlaySound(const SoundData& soundData) noexcept
+	const ChannelId FModSoundSytem::PlaySound(const SoundData& soundData) noexcept
 	{
 		assert(std::filesystem::exists(soundData.soundPath) && "Sound path invalid, doesn't exist");
 
@@ -188,19 +181,19 @@ namespace Pengin
 		else if (auto loadingIt{ m_LoadingSounds.find(soundData.soundPath.string()) }; loadingIt != end(m_LoadingSounds))
 		{
 			m_LoadingRequests.emplace_back(soundData);
-			return INVALID_CHANNEL_IDX;
+			return GameUUID::INVALID_UUID;
 		}
 		else
 		{
 			LoadSoundImpl(soundData);
 			m_LoadingRequests.emplace_back(soundData);
-			return INVALID_CHANNEL_IDX;
+			return GameUUID::INVALID_UUID;
 		}
 	}
 
-	void FModSoundSytem::SetAllChannels3DPosition(const GameUUID& id, const glm::vec3& position) noexcept
+	void FModSoundSytem::SetChannel3DPosition(const ChannelId& id, const glm::vec3& position) noexcept
 	{
-		auto it{ m_Channels.find(id) };
+		auto it = m_Channels.find(id);
 		if (it == end(m_Channels))
 		{
 			DEBUG_OUT("Channel for id: " << id.GetUUID_PrettyStr() << "does not exist");
@@ -208,15 +201,10 @@ namespace Pengin
 		}
 
 		const FMOD_VECTOR fmodPosition{ VectorToFmod(position) };
-
-		auto& channelVec = it->second;
-		for (auto channel : channelVec)
-		{
-			ErrorCheck(channel->set3DAttributes(&fmodPosition, NULL));
-		}
+		ErrorCheck(it->second->set3DAttributes(&fmodPosition, NULL));
 	}
 
-	void FModSoundSytem::SetAllChannelsVolume(const GameUUID& id, float volume) noexcept
+	void FModSoundSytem::SetChannelVolume(const ChannelId& id, float volume) noexcept
 	{
 		auto it = m_Channels.find(id);
 		if (it == end(m_Channels))
@@ -225,62 +213,7 @@ namespace Pengin
 			return;
 		}
 
-		auto& channelVec = it->second;
-		for (auto channel : channelVec)
-		{
-			ErrorCheck(channel->setVolume(volume));
-		}
-	}
-
-	void FModSoundSytem::SetChannel3DPosition(const GameUUID& id, ChannelIndex idx, const glm::vec3& position) noexcept
-	{
-		if (idx < 0)
-		{
-			DEBUG_OUT("Invalid channel index for id: " << id.GetUUID_PrettyStr());
-			return;
-		}
-
-		auto it = m_Channels.find(id);
-		if (it == end(m_Channels))
-		{
-			DEBUG_OUT("Channel for id: " << id.GetUUID_PrettyStr() << "does not exist");
-			return;
-		}
-		
-		auto& vec{ it->second };
-		if (static_cast<uint16_t>(idx) >= vec.size())
-		{
-			DEBUG_OUT("Channel for id: " << id.GetUUID_PrettyStr() << "does out of bounds (invalid, sound likely already removed)");
-			return;
-		}
-
-		const FMOD_VECTOR fmodPosition{ VectorToFmod(position) };
-		ErrorCheck(vec[idx]->set3DAttributes(&fmodPosition, NULL));
-	}
-
-	void FModSoundSytem::SetChannelVolume(const GameUUID& id, ChannelIndex idx, float volume) noexcept
-	{
-		if (idx < 0)
-		{
-			DEBUG_OUT("Invalid channel index for id: " << id.GetUUID_PrettyStr());
-			return;
-		}
-
-		auto it = m_Channels.find(id);
-		if (it == end(m_Channels))
-		{
-			DEBUG_OUT("Channel for id: " << id.GetUUID_PrettyStr() << "does not exist");
-			return;
-		}
-
-		auto& vec{ it->second };
-		if (static_cast<uint16_t>(idx) >= vec.size())
-		{
-			DEBUG_OUT("Channel for id: " << id.GetUUID_PrettyStr() << "does out of bounds (invalid, sound likely already removed)");
-			return;
-		}
-
-		ErrorCheck(vec[idx]->setVolume(volume));
+		ErrorCheck(it->second->setVolume(volume));
 	}
 
 	void FModSoundSytem::SetVFXVolume(const float vol) noexcept
@@ -318,7 +251,7 @@ namespace Pengin
 		}
 	}
 
-	const ChannelIndex FModSoundSytem::PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept
+	const ChannelId FModSoundSytem::PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept
 	{
 		FMOD::Channel* pChannel{ nullptr };
 
@@ -349,12 +282,13 @@ namespace Pengin
 			ErrorCheck(pChannel->setPaused(false)); //Unpause the sound
 
 
-			auto& vec = m_Channels[soundData.soundUUID];
-			vec.emplace_back(pChannel);
-			return static_cast<ChannelIndex>(vec.size() - 1);
+			ChannelId id{};
+			m_Channels[id] = pChannel;
+
+			return id;
 		}
 
-		return INVALID_CHANNEL_IDX;
+		return GameUUID::INVALID_UUID;
 	}
 
 	void FModSoundSytem::LoadSoundImpl(const SoundData& soundData) noexcept

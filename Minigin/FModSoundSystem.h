@@ -45,7 +45,7 @@ namespace Pengin
 		void UnLoadSound(const std::filesystem::path& soundPath) noexcept;
 
 		//It is important to load the sound first if you want a valid channel idx
-		const ChannelIndex PlaySound(const SoundData& soundData) noexcept;
+		const ChannelId PlaySound(const SoundData& soundData) noexcept;
 
 		void SetVFXVolume(const float vol) noexcept;
 		void SetMusicVolume(const float vol) noexcept;
@@ -54,11 +54,8 @@ namespace Pengin
 		void UnmuteAll() noexcept;
 		[[nodiscard]] bool IsMuted() const noexcept;
 
-		void SetAllChannels3DPosition(const GameUUID& id, const glm::vec3& position) noexcept;
-		void SetAllChannelsVolume(const GameUUID& id, float volume) noexcept;
-
-		void SetChannel3DPosition(const GameUUID& id, ChannelIndex idx, const glm::vec3& position) noexcept;
-		void SetChannelVolume(const GameUUID& id, ChannelIndex idx, float volume) noexcept;
+		void SetChannel3DPosition(const ChannelId& id, const glm::vec3& position) noexcept;
+		void SetChannelVolume(const ChannelId& id, float volume) noexcept;
 
 		FModSoundSytem(const FModSoundSytem&) = delete;
 		FModSoundSytem(FModSoundSytem&&) = delete;
@@ -68,8 +65,8 @@ namespace Pengin
 	private:
 		//Loaded sounds
 		using SoundMap = std::unordered_map<std::string, FMOD::Sound*>;
-		//In use channels - We store multiple channels in case the same soundData is played twice (== same UUID), to still allow manipulation of a specific channel
-		using ChannelMap = std::unordered_map<GameUUID, std::vector<FMOD::Channel*>>;
+		//In use channels
+		using ChannelMap = std::unordered_map<GameUUID, FMOD::Channel*>;
 		//The sounds that are being loaded
 		using LoadingMap = std::unordered_map<std::string, FMOD::Sound*>;
 		//Requests for sounds that are currently being loaded
@@ -101,7 +98,7 @@ namespace Pengin
 		}
 
 		//Allows playing the sound without additional map lookups
-		const ChannelIndex PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept;
+		const ChannelId PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept;
 		//Allows loading without additional checks
 		void LoadSoundImpl(const SoundData& soundData) noexcept;
 
