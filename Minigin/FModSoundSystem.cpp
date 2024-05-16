@@ -35,26 +35,21 @@ namespace Pengin
 		});
 		//-------------------------
 
-		std::cout << "stream req size" << m_StreamPlayReqs.size() << "\n";
-		std::cout << "loading streams map size" << m_LoadingStreams.size() << "\n";
-		std::cout << "streams map size" << m_Streams.size() << "\n";
-
+		//Streams
 		{
 			std::vector<size_t> executedReqs{};
-			for (size_t reqIdx{ 0 }; reqIdx < m_StreamPlayReqs.size(); ++reqIdx)
+			for (size_t reqIdx{ 0 }; reqIdx < m_StreamPlayRequests.size(); ++reqIdx)
 			{
-				const auto& path = m_StreamPlayReqs[reqIdx].soundPath.string();
+				const auto& path = m_StreamPlayRequests[reqIdx].soundPath.string();
 
 				auto it = m_LoadingStreams.find(path);
-				if (it == end(m_LoadingStreams))
+				if (it == end(m_LoadingStreams)) //means request has been cancelled
 				{
+					executedReqs.emplace_back(reqIdx);
 					continue;
 				}
-				//assert(it != end(m_Streams));
-				
-				auto& vec = it->second;
 
-				std::cout << "vec size: " << vec.size() << "\n\n";
+				auto& vec = it->second;
 
 				for (size_t idx{ 0 }; idx < vec.size(); ++idx)
 				{
@@ -63,7 +58,7 @@ namespace Pengin
 
 					if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
 					{
-						PlaySoundImpl(vec[idx], m_StreamPlayReqs[reqIdx]);
+						PlaySoundImpl(vec[idx], m_StreamPlayRequests[reqIdx]);
 						executedReqs.emplace_back(reqIdx);
 
 						vec.erase(std::begin(vec) + idx);
@@ -78,22 +73,26 @@ namespace Pengin
 				}
 			}
 
-			std::cout << "\n\n\n";
-
-
 			for (auto it = executedReqs.rbegin(); it != executedReqs.rend(); ++it)
 			{
-				m_StreamPlayReqs.erase(m_StreamPlayReqs.begin() + *it);
+				m_StreamPlayRequests.erase(m_StreamPlayRequests.begin() + *it);
 			}
 		}
+		//-------------------------
 
 		//Requests for sounds that are loading
 		{
 			std::vector<size_t> executedReqs{};
-			for (size_t idx{ 0 }; idx < m_LoadingRequests.size(); ++idx)
+			for (size_t idx{ 0 }; idx < m_SoundPlayRequests.size(); ++idx)
 			{
-				auto it = m_LoadingSounds.find(m_LoadingRequests[idx].soundPath.string());
-				assert(it != end(m_LoadingSounds));
+				auto it = m_LoadingSounds.find(m_SoundPlayRequests[idx].soundPath.string());
+				
+				if (it == end(m_LoadingSounds))
+				{
+					//means the sound was unloaded, requests are cancelled.
+					executedReqs.emplace_back(idx);
+					continue;
+				}
 
 				FMOD::Sound* pSound{ it->second };
 				assert(pSound);
@@ -105,13 +104,13 @@ namespace Pengin
 					openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_PLAYING)  //Either has to be ready or currently playing to be allowed to be played
 				{
 					executedReqs.emplace_back(idx);
-					PlaySoundImpl(pSound, m_LoadingRequests[idx]);
+					PlaySoundImpl(pSound, m_SoundPlayRequests[idx]);
 				}
 			}
 
 			for (auto it = executedReqs.rbegin(); it != executedReqs.rend(); ++it)
 			{
-				m_LoadingRequests.erase(m_LoadingRequests.begin() + *it);
+				m_SoundPlayRequests.erase(m_SoundPlayRequests.begin() + *it);
 			}
 		}
 		//-------------------------
@@ -136,21 +135,21 @@ namespace Pengin
 		}
 		//-------------------------
 
-		//Currently Loading sounds that have been cancelled
+		//Sounds that have to be released
 		{
-			std::vector<size_t> loaded{};
+			std::vector<size_t> idxesToRemove{};
 			for (size_t idx{ 0 }; idx < m_SoundsToRelease.size(); ++idx)
 			{
 				FMOD_OPENSTATE openstate;
-				m_SoundsToRelease[idx]->getOpenState(&openstate, 0, 0, 0);
+				ErrorCheck(m_SoundsToRelease[idx]->getOpenState(&openstate, 0, 0, 0));
 
-				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY) //Only free when ready to avoid stalls
 				{
-					m_SoundsToRelease[idx]->release();
-					loaded.emplace_back(idx);
+					ErrorCheck(m_SoundsToRelease[idx]->release());
+					idxesToRemove.emplace_back(idx);
 				}
 			}
-			for (auto it = loaded.rbegin(); it != loaded.rend(); ++it)
+			for (auto it = idxesToRemove.rbegin(); it != idxesToRemove.rend(); ++it)
 			{
 				m_SoundsToRelease.erase(m_SoundsToRelease.begin() + *it);
 			}
@@ -198,33 +197,19 @@ namespace Pengin
 		if (auto it = m_LoadingSounds.find(soundPath.string()); it != m_LoadingSounds.end())
 		{
 			FMOD_OPENSTATE openstate;
-			it->second->getOpenState(&openstate, 0, 0, 0);
+			ErrorCheck(it->second->getOpenState(&openstate, 0, 0, 0));
 
 			if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
 			{
 				it->second->release();
-
-				m_LoadingSounds.erase(it);
-
-				//If the sound has open requests and has to be unloaded
-				std::erase_if(m_LoadingRequests, [&](const SoundData& soundData) 
-				{
-					return soundData.soundPath.string() == soundPath.string();
-				});
 			}
 			else //Not done loading yet, release when loaded
 			{
 				m_SoundsToRelease.emplace_back(it->second);
-
-				m_LoadingSounds.erase(it);
-
-				//But remove the requests already
-				std::erase_if(m_LoadingRequests, [&](const SoundData& soundData)
-					{
-						return soundData.soundPath.string() == soundPath.string();
-					});
 			}
 
+			m_LoadingSounds.erase(it);
+			
 			return;
 		}
 
@@ -248,9 +233,29 @@ namespace Pengin
 			}
 
 			m_Streams.erase(it);
-
-			return;
 		}
+		if (auto it = m_LoadingStreams.find(soundPath.string()); it != m_LoadingStreams.end())
+		{
+			auto& vec{ it->second };
+
+			for (auto& snd : vec)
+			{
+				FMOD_OPENSTATE openstate;
+				snd->getOpenState(&openstate, 0, 0, 0);
+
+				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+				{
+					snd->release();
+				}
+				else
+				{
+					m_SoundsToRelease.emplace_back(snd);
+				}
+			}
+
+			m_LoadingStreams.erase(it);
+		}
+
 
 		DEBUG_OUT("Warning: trying to unload a sound that was never loaded: " << soundPath.string());
 	}
@@ -275,7 +280,7 @@ namespace Pengin
 			}
 
 			LoadSoundImpl(soundData);
-			m_StreamPlayReqs.emplace_back(soundData);
+			m_StreamPlayRequests.emplace_back(soundData);
 
 			return GameUUID::INVALID_UUID;
 		}
@@ -288,12 +293,12 @@ namespace Pengin
 		 
 		if (auto loadingIt{ m_LoadingSounds.find(soundData.soundPath.string()) }; loadingIt != end(m_LoadingSounds))
 		{
-			m_LoadingRequests.emplace_back(soundData);
+			m_SoundPlayRequests.emplace_back(soundData);
 			return GameUUID::INVALID_UUID;
 		}
 
 		LoadSoundImpl(soundData);
-		m_LoadingRequests.emplace_back(soundData);
+		m_SoundPlayRequests.emplace_back(soundData);
 		return GameUUID::INVALID_UUID;
 	}
 

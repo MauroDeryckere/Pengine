@@ -77,6 +77,22 @@ namespace Pengin
 		{
 			GetActiveScene()->Update();
 		}
+
+		static bool test = false;
+
+		if (!test)
+		{
+			SoundData data{ "../Data/TestSound.wav" };
+			data.isStream = true;
+
+
+			ServiceLocator::GetSoundSystem().PlaySound(data);
+			ServiceLocator::GetSoundSystem().PlaySound(data);
+
+			ServiceLocator::GetSoundSystem().UnLoadSound("../Data/TestSound.wav");
+
+			test = true;
+		}
 	}
 
 	void SceneManager::FixedUpdate()
