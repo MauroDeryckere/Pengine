@@ -50,7 +50,6 @@ namespace Pengin
 		const std::string m_Message;
 	};
 
-
 	class AttackPlayer final : public InputCommand //bound to input for now
 	{
 	public:
@@ -143,9 +142,8 @@ namespace Pengin
 		MakeSound& operator=(MakeSound&&) noexcept = delete;
 
 	private:
-		const SoundData m_SoundData;
+		SoundData m_SoundData;
 	};
-
 }
 
 #endif

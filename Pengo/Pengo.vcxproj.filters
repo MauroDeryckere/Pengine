@@ -28,6 +28,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\State">
+      <UniqueIdentifier>{a231c5c2-9ae4-4a2b-903c-e34bf2e943d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -36,20 +39,20 @@
     <ClCompile Include="PlayerSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PengoIdleState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PengoWalkState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PengoBreakingBlockState.cpp">
+    <ClCompile Include="PengoInputCommands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PengoDyingState.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\State</Filter>
     </ClCompile>
-    <ClCompile Include="PengoInputCommands.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="PengoWalkState.cpp">
+      <Filter>Source Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PengoBreakingBlockState.cpp">
+      <Filter>Source Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PengoIdleState.cpp">
+      <Filter>Source Files\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
