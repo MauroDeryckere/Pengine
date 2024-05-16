@@ -291,8 +291,7 @@ void RegisterKeyboardInput_DemoScene(const Pengin::InputData& inpData)
 
 	input.MapKeyboardAction(userIndex, KeyBoardKey::C, InputState::UpThisFrame, std::make_shared<AttackPlayer>(userIndex));
 	input.MapKeyboardAction(userIndex, KeyBoardKey::V, InputState::Pressed, std::make_shared<CollectScore>(userIndex));
-	SoundData data{ "../Data/TestSound.wav" }; data.isStream = true;
-	input.MapKeyboardAction(userIndex, KeyBoardKey::B, InputState::DownThisFrame, std::make_shared<MakeSound>(userIndex, data));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::B, InputState::DownThisFrame, std::make_shared<MakeSound>(userIndex, SoundData{ "../Data/TestSound.wav" }));
 
 	auto a1 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::T, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "T down"));
 	auto a2 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::Y, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "Y down"));

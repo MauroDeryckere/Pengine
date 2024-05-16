@@ -20,7 +20,7 @@ namespace Pengin
 			m_pRealSoundSystem->Update();
 		};
 
-		void LoadSound(SoundData& soundData) noexcept
+		void LoadSound(const SoundData& soundData) noexcept
 		{
 			std::cout<< "Loading sound: \n";
 			soundData.PrintSoundInfo();
@@ -34,7 +34,7 @@ namespace Pengin
 			m_pRealSoundSystem->UnLoadSound(soundPath);
 		}
 
-		const ChannelId PlaySound(SoundData& soundData) noexcept
+		const ChannelIndex PlaySound(const SoundData& soundData) noexcept
 		{
 			std::cout << "Playing sound: \n";
 			soundData.PrintSoundInfo();
@@ -42,13 +42,22 @@ namespace Pengin
 			return m_pRealSoundSystem->PlaySound(soundData);
 		}
 
-		void SetChannel3DPosition(const ChannelId& id, const glm::vec3& position) noexcept
+		void SetAllChannels3DPosition(const GameUUID& id, const glm::vec3& position) noexcept
 		{
-			m_pRealSoundSystem->SetChannel3DPosition(id, position);
+			m_pRealSoundSystem->SetAllChannels3DPosition(id, position);
 		}
-		void SetChannelVolume(const ChannelId& id, float volume) noexcept
+		void SetAllChannelsVolume(const GameUUID& id, float volume) noexcept
 		{
-			m_pRealSoundSystem->SetChannelVolume(id, volume);
+			m_pRealSoundSystem->SetAllChannelsVolume(id, volume);
+		}
+
+		void SetChannel3DPosition(const GameUUID& id, ChannelIndex idx, const glm::vec3& position) noexcept
+		{
+			m_pRealSoundSystem->SetChannel3DPosition(id, idx, position);
+		}
+		void SetChannelVolume(const GameUUID& id, ChannelIndex idx, float volume) noexcept
+		{
+			m_pRealSoundSystem->SetChannelVolume(id, idx, volume);
 		}
 
 		void MuteAll() noexcept

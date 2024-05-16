@@ -4,8 +4,6 @@
 #include "SoundSystem.h"
 #include "SoundData.h"
 
-#include "DebugOutput.h"
-
 #include <fmod_studio.hpp>
 #include <fmod.hpp>
 
@@ -13,8 +11,6 @@
 #include <map>
 #include <unordered_map>
 #include <vector>
-#include <mutex>
-#include <unordered_set>
 
 #include <glm/vec3.hpp>
 
@@ -45,11 +41,11 @@ namespace Pengin
 
 		void Update() noexcept;
 
-		void LoadSound(SoundData& soundData) noexcept;
+		void LoadSound(const SoundData& soundData) noexcept;
 		void UnLoadSound(const std::filesystem::path& soundPath) noexcept;
 
 		//It is important to load the sound first if you want a valid channel idx
-		const ChannelId PlaySound(SoundData& soundData) noexcept;
+		const ChannelIndex PlaySound(const SoundData& soundData) noexcept;
 
 		void SetVFXVolume(const float vol) noexcept;
 		void SetMusicVolume(const float vol) noexcept;
@@ -58,8 +54,11 @@ namespace Pengin
 		void UnmuteAll() noexcept;
 		[[nodiscard]] bool IsMuted() const noexcept;
 
-		void SetChannel3DPosition(const GameUUID& id, const glm::vec3& position) noexcept;
-		void SetChannelVolume(const GameUUID& id, float volume) noexcept;
+		void SetAllChannels3DPosition(const GameUUID& id, const glm::vec3& position) noexcept;
+		void SetAllChannelsVolume(const GameUUID& id, float volume) noexcept;
+
+		void SetChannel3DPosition(const GameUUID& id, ChannelIndex idx, const glm::vec3& position) noexcept;
+		void SetChannelVolume(const GameUUID& id, ChannelIndex idx, float volume) noexcept;
 
 		FModSoundSytem(const FModSoundSytem&) = delete;
 		FModSoundSytem(FModSoundSytem&&) = delete;
@@ -67,42 +66,12 @@ namespace Pengin
 		FModSoundSytem& operator=(const FModSoundSytem&&) = delete;
 
 	private:
-		mutable std::mutex m_ChannelEndCallbackMutex; 
-		mutable std::mutex m_LoadCallbackMutex; 
-
-		//How we deal with streams: 
-		/*
-		- A stream can only be played once
-		- Loading a stream doesn't mean we play, still have to call play
-		- 
-		*/
-
-		//map<path, sound*> sounds
-
-		//uoset<Sound*> loadedStreams
-		
-		
-		// stream Reqs
-
-		// if stream, should not be in sounds map but separate map
-		// 
-		// 
-		// 
-		// streams - released upon end of play
-
-		//PlaySound(stream)
-		//-> Load the stream
-		//-> add to playstream reqs
-		//-> if in playstream reqs upon load, play
-
 		//Loaded sounds
 		using SoundMap = std::unordered_map<std::string, FMOD::Sound*>;
+		//In use channels - We store multiple channels in case the same soundData is played twice (== same UUID), to still allow manipulation of a specific channel
+		using ChannelMap = std::unordered_map<GameUUID, std::vector<FMOD::Channel*>>;
 		//The sounds that are being loaded
 		using LoadingMap = std::unordered_map<std::string, FMOD::Sound*>;
-
-		//In use channels
-		using ChannelMap = std::unordered_map<ChannelId, FMOD::Channel*>;
-
 		//Requests for sounds that are currently being loaded
 		using RequestVec = std::vector<SoundData>;
 		//Sounds have to be fully loaded before releasing, if a user decides to cancel it, we have to maintain a vector of anything to be released
@@ -132,101 +101,9 @@ namespace Pengin
 		}
 
 		//Allows playing the sound without additional map lookups
-		const ChannelId PlaySoundImpl(FMOD::Sound* pSound, SoundData& soundData) noexcept;
-
+		const ChannelIndex PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept;
 		//Allows loading without additional checks
-		void LoadSoundImpl(SoundData& soundData) noexcept;
-
-		static FMOD_RESULT F_CALL NonBlockLoadCallback(FMOD_SOUND* sound, FMOD_RESULT)
-		{
-			FMOD::Sound* snd = (FMOD::Sound*)sound;
-			
-			FMOD_OPENSTATE state{};
-			snd->getOpenState(&state, NULL, NULL, NULL);
-
-			if (state == FMOD_OPENSTATE_SETPOSITION)
-			{
-				std::cout << "setpos callback\n";
-				return FMOD_OK;
-			}
-
-			void* userData;
-			snd->getUserData(&userData);
-			assert(userData);
-
-			auto* pair = static_cast<std::pair<FModSoundSytem*, SoundData>*>(userData);
-			assert(pair);
-
-			FModSoundSytem* pSoundSystem{ pair->first };
-			const auto& path = pair->second.soundPath.string();
-
-			if (pair->second.isStream)
-			{
-				DEBUG_OUT("stream callback\n\n");
-
-				pSoundSystem->m_LoadingSounds.erase(path);
-
-				delete pair;
-
-				snd->setUserData(nullptr);
-
-				return FMOD_OK;
-			}
-
-			{
-				std::lock_guard<std::mutex> lock(pSoundSystem->m_LoadCallbackMutex);
-				
-				pSoundSystem->m_Sounds[path] = snd;
-				pSoundSystem->m_LoadingSounds.erase(path);
-			}
-
-			delete pair;
-			snd->setUserData(nullptr);
-
-			return FMOD_OK;
-		}
-
-		static FMOD_RESULT F_CALL ChannelControlCallback(FMOD_CHANNELCONTROL* channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void*, void*)
-		{
-			if (callbacktype == FMOD_CHANNELCONTROL_CALLBACK_TYPE::FMOD_CHANNELCONTROL_CALLBACK_END)
-			{
-				assert(controltype == FMOD_CHANNELCONTROL_TYPE::FMOD_CHANNELCONTROL_CHANNEL);
-				FMOD::Channel* channel = (FMOD::Channel*)channelcontrol; 
-				
-				FMOD_MODE mode;
-				channel->getMode(&mode);
-
-				if (mode & FMOD_CREATESTREAM)
-				{
-					FMOD::Sound* pSound;
-					channel->getCurrentSound(&pSound);
-					assert(pSound);
-
-					pSound->release();
-
-					return FMOD_OK;
-				}
-				
-				void* userData;
-				channel->getUserData(&userData);
-				assert(userData);
-
-				auto* pair = static_cast<std::pair<FModSoundSytem*, ChannelId>*>(userData);
-				assert(pair);
-
-				FModSoundSytem* pSoundSystem{ pair->first };
-				{
-					std::lock_guard<std::mutex> lock(pSoundSystem->m_ChannelEndCallbackMutex);
-
-					pSoundSystem->m_Channels.erase(pair->second);
-				}
-
-				delete pair;
-			}
-
-			return FMOD_OK;
-		}
-
+		void LoadSoundImpl(const SoundData& soundData) noexcept;
 
 
 		//TODO add support for these systems
