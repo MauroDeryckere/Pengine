@@ -44,7 +44,7 @@ namespace Pengin
 		void LoadSound(const SoundData& soundData) noexcept;
 		void UnLoadSound(const std::filesystem::path& soundPath) noexcept;
 
-		//It is important to load the sound first if you want a valid channel idx
+		//It is important to load the sound first if you want a valid channel id
 		const ChannelId PlaySound(const SoundData& soundData) noexcept;
 
 		void SetVFXVolume(const float vol) noexcept;
@@ -65,6 +65,38 @@ namespace Pengin
 	private:
 		//Loaded sounds
 		using SoundMap = std::unordered_map<std::string, FMOD::Sound*>;
+
+		//list of loaded not in use
+		//list of unloaded in use
+		
+		//loadStream()
+		//--> its loaded but not in use
+		// 
+		//PlayStream() - but not loaded 
+		//unloaded but in use && add to req vec
+		//
+		// 1.Load
+		// 2.Add to the unloaded in use
+		// 3.When loaded, play and remove
+		// 
+		// 
+		//Playstream() - but loaded
+		//
+		//1. Play
+		//2. Remove from loaded not in use
+		//
+
+		//Streams
+		std::unordered_map<std::string, std::vector<FMOD::Sound*>> m_Streams{}; //loaded but unused
+		std::unordered_map<std::string, std::vector<FMOD::Sound*>> m_LoadingStreams{}; //loading and used
+
+
+		std::vector<SoundData> m_StreamPlayReqs{};
+
+		//Stream:
+		//one Sound* per stream play
+		//when stream is done playing, release
+
 		//In use channels
 		using ChannelMap = std::unordered_map<GameUUID, FMOD::Channel*>;
 		//The sounds that are being loaded
@@ -88,7 +120,7 @@ namespace Pengin
 
 		LoadingMap m_LoadingSounds{};
 		RequestVec m_LoadingRequests{};
-		ToReleaseVec m_ToRelVec{};
+		ToReleaseVec m_SoundsToRelease{};
 
 		void ErrorCheck(FMOD_RESULT result) const noexcept;
 

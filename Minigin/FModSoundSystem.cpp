@@ -14,8 +14,8 @@ namespace Pengin
 		ErrorCheck(m_pStudio->getCoreSystem(&m_pSystem));
 		ErrorCheck(m_pSystem->getMasterChannelGroup(&m_MasterGroup));
 
-		m_pSystem->createChannelGroup("VFX", &m_pVFXGroup);
-		m_pSystem->createChannelGroup("Music", &m_pMusicGroup);
+		ErrorCheck(m_pSystem->createChannelGroup("VFX", &m_pVFXGroup));
+		ErrorCheck(m_pSystem->createChannelGroup("Music", &m_pMusicGroup));
 	}
 
 	FModSoundSytem::~FModSoundSytem()
@@ -34,6 +34,58 @@ namespace Pengin
 			return !isPlaying;
 		});
 		//-------------------------
+
+		std::cout << "stream req size" << m_StreamPlayReqs.size() << "\n";
+		std::cout << "loading streams map size" << m_LoadingStreams.size() << "\n";
+		std::cout << "streams map size" << m_Streams.size() << "\n";
+
+		{
+			std::vector<size_t> executedReqs{};
+			for (size_t reqIdx{ 0 }; reqIdx < m_StreamPlayReqs.size(); ++reqIdx)
+			{
+				const auto& path = m_StreamPlayReqs[reqIdx].soundPath.string();
+
+				auto it = m_LoadingStreams.find(path);
+				if (it == end(m_LoadingStreams))
+				{
+					continue;
+				}
+				//assert(it != end(m_Streams));
+				
+				auto& vec = it->second;
+
+				std::cout << "vec size: " << vec.size() << "\n\n";
+
+				for (size_t idx{ 0 }; idx < vec.size(); ++idx)
+				{
+					FMOD_OPENSTATE openstate;
+					ErrorCheck(vec[idx]->getOpenState(&openstate, 0, 0, 0));
+
+					if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+					{
+						PlaySoundImpl(vec[idx], m_StreamPlayReqs[reqIdx]);
+						executedReqs.emplace_back(reqIdx);
+
+						vec.erase(std::begin(vec) + idx);
+
+						if (vec.empty())
+						{
+							m_LoadingStreams.erase(it);
+						}
+
+						break;
+					}
+				}
+			}
+
+			std::cout << "\n\n\n";
+
+
+			for (auto it = executedReqs.rbegin(); it != executedReqs.rend(); ++it)
+			{
+				m_StreamPlayReqs.erase(m_StreamPlayReqs.begin() + *it);
+			}
+		}
 
 		//Requests for sounds that are loading
 		{
@@ -87,20 +139,20 @@ namespace Pengin
 		//Currently Loading sounds that have been cancelled
 		{
 			std::vector<size_t> loaded{};
-			for (size_t idx{ 0 }; idx < m_ToRelVec.size(); ++idx)
+			for (size_t idx{ 0 }; idx < m_SoundsToRelease.size(); ++idx)
 			{
 				FMOD_OPENSTATE openstate;
-				m_ToRelVec[idx]->getOpenState(&openstate, 0, 0, 0);
+				m_SoundsToRelease[idx]->getOpenState(&openstate, 0, 0, 0);
 
 				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
 				{
-					m_ToRelVec[idx]->release();
+					m_SoundsToRelease[idx]->release();
 					loaded.emplace_back(idx);
 				}
 			}
 			for (auto it = loaded.rbegin(); it != loaded.rend(); ++it)
 			{
-				m_ToRelVec.erase(m_ToRelVec.begin() + *it);
+				m_SoundsToRelease.erase(m_SoundsToRelease.begin() + *it);
 			}
 		}
 		//---------------------------------------------------
@@ -113,12 +165,19 @@ namespace Pengin
 	{
 		assert(std::filesystem::exists(soundData.soundPath) && "Sound path invalid, doesn't exist");
 
+		if (soundData.isStream)
+		{
+			LoadSoundImpl(soundData);
+			return;
+		}
+
 		if (m_Sounds.find(soundData.soundPath.string()) != end(m_Sounds))
 		{
 			DEBUG_OUT(soundData.soundPath.string() << " Already loaded");
 			return;
 		}
-		else if (m_LoadingSounds.find(soundData.soundPath.string()) != end(m_LoadingSounds))
+
+		if (m_LoadingSounds.find(soundData.soundPath.string()) != end(m_LoadingSounds))
 		{
 			DEBUG_OUT(soundData.soundPath.string() << " Is already loading");
 			return;
@@ -143,17 +202,19 @@ namespace Pengin
 
 			if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
 			{
+				it->second->release();
+
 				m_LoadingSounds.erase(it);
 
 				//If the sound has open requests and has to be unloaded
 				std::erase_if(m_LoadingRequests, [&](const SoundData& soundData) 
-					{
-						return soundData.soundPath.string() == soundPath.string();
-					});
+				{
+					return soundData.soundPath.string() == soundPath.string();
+				});
 			}
 			else //Not done loading yet, release when loaded
 			{
-				m_ToRelVec.emplace_back(it->second);
+				m_SoundsToRelease.emplace_back(it->second);
 
 				m_LoadingSounds.erase(it);
 
@@ -167,6 +228,30 @@ namespace Pengin
 			return;
 		}
 
+		if (auto it = m_Streams.find(soundPath.string()); it != m_Streams.end())
+		{
+			auto& vec{ it->second };
+
+			for (auto& snd : vec)
+			{
+				FMOD_OPENSTATE openstate;
+				snd->getOpenState(&openstate, 0, 0, 0);
+
+				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+				{
+					snd->release();
+				}
+				else
+				{
+					m_SoundsToRelease.emplace_back(snd);
+				}
+			}
+
+			m_Streams.erase(it);
+
+			return;
+		}
+
 		DEBUG_OUT("Warning: trying to unload a sound that was never loaded: " << soundPath.string());
 	}
 
@@ -174,21 +259,42 @@ namespace Pengin
 	{
 		assert(std::filesystem::exists(soundData.soundPath) && "Sound path invalid, doesn't exist");
 
+		if (soundData.isStream)
+		{
+			if (auto loadedIt{ m_Streams.find(soundData.soundPath.string()) }; loadedIt != end(m_Streams))
+			{
+				const auto id = PlaySoundImpl(loadedIt->second.back(), soundData);
+				loadedIt->second.pop_back();
+
+				if (loadedIt->second.empty())
+				{
+					m_Streams.erase(loadedIt);
+				}
+
+				return id;
+			}
+
+			LoadSoundImpl(soundData);
+			m_StreamPlayReqs.emplace_back(soundData);
+
+			return GameUUID::INVALID_UUID;
+		}
+
+
 		if (auto loadedIt{ m_Sounds.find(soundData.soundPath.string()) }; loadedIt != end(m_Sounds))
 		{
 			return PlaySoundImpl(loadedIt->second, soundData);
 		}
-		else if (auto loadingIt{ m_LoadingSounds.find(soundData.soundPath.string()) }; loadingIt != end(m_LoadingSounds))
+		 
+		if (auto loadingIt{ m_LoadingSounds.find(soundData.soundPath.string()) }; loadingIt != end(m_LoadingSounds))
 		{
 			m_LoadingRequests.emplace_back(soundData);
 			return GameUUID::INVALID_UUID;
 		}
-		else
-		{
-			LoadSoundImpl(soundData);
-			m_LoadingRequests.emplace_back(soundData);
-			return GameUUID::INVALID_UUID;
-		}
+
+		LoadSoundImpl(soundData);
+		m_LoadingRequests.emplace_back(soundData);
+		return GameUUID::INVALID_UUID;
 	}
 
 	void FModSoundSytem::SetChannel3DPosition(const ChannelId& id, const glm::vec3& position) noexcept
@@ -270,7 +376,7 @@ namespace Pengin
 		if (pChannel)
 		{
 			FMOD_MODE currMode;
-			pSound->getMode(&currMode);
+			ErrorCheck(pSound->getMode(&currMode));
 
 			if (currMode & FMOD_3D)
 			{
@@ -280,7 +386,6 @@ namespace Pengin
 
 			ErrorCheck(pChannel->setVolume(soundData.volume));
 			ErrorCheck(pChannel->setPaused(false)); //Unpause the sound
-
 
 			ChannelId id{};
 			m_Channels[id] = pChannel;
@@ -305,16 +410,23 @@ namespace Pengin
 
 		if (pSound)
 		{
-			FMOD_OPENSTATE openstate;
-			pSound->getOpenState(&openstate, 0, 0, 0);
-
-			if (openstate != FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+			if (soundData.isStream)
 			{
-				m_LoadingSounds[soundData.soundPath.string()] = pSound;
+				m_LoadingStreams[soundData.soundPath.string()].emplace_back(pSound);
 			}
 			else
 			{
-				m_Sounds[soundData.soundPath.string()] = pSound;
+				FMOD_OPENSTATE openstate;
+				pSound->getOpenState(&openstate, 0, 0, 0);
+
+				if (openstate != FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+				{
+					m_LoadingSounds[soundData.soundPath.string()] = pSound;
+				}
+				else
+				{
+					m_Sounds[soundData.soundPath.string()] = pSound;
+				}
 			}
 		}
 	}
