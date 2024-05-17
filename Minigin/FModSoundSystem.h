@@ -3,6 +3,7 @@
 
 #include "SoundSystem.h"
 #include "SoundData.h"
+#include "DebugOutput.h"
 
 #include <fmod_studio.hpp>
 #include <fmod.hpp>
@@ -11,6 +12,8 @@
 #include <map>
 #include <unordered_map>
 #include <vector>
+
+#include <mutex>
 
 #include <glm/vec3.hpp>
 
@@ -84,6 +87,8 @@ namespace Pengin
 		std::unordered_map<std::string, std::vector<FMOD::Sound*>> m_LoadingStreams{}; //loading and used
 		std::vector<SoundData> m_StreamPlayRequests{};
 
+		std::vector<FMOD::Sound*> m_AllocatedStreams;
+
 		//In use channels
 		std::unordered_map<GameUUID, FMOD::Channel*> m_Channels;
 		//The sounds that are being loaded
@@ -91,6 +96,8 @@ namespace Pengin
 		//Requests for sounds that are currently being loaded
 		std::vector<SoundData> m_SoundPlayRequests;
 		//Sounds have to be fully loaded before releasing, if a user decides to cancel it, we have to maintain a vector of anything to be released
+
+		std::mutex m_SoundsReleaseMutex;
 		std::vector<FMOD::Sound*> m_SoundsToRelease;
 
 
@@ -106,6 +113,46 @@ namespace Pengin
 		//Allows loading without additional checks
 		void LoadSoundImpl(const SoundData& soundData) noexcept;
 
+		static FMOD_RESULT F_CALL ChannelControlCallback(FMOD_CHANNELCONTROL* channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void*, void*)
+		{
+			if (callbacktype == FMOD_CHANNELCONTROL_CALLBACK_TYPE::FMOD_CHANNELCONTROL_CALLBACK_END)
+			{
+				assert(controltype == FMOD_CHANNELCONTROL_TYPE::FMOD_CHANNELCONTROL_CHANNEL);
+				FMOD::Channel* channel = (FMOD::Channel*)channelcontrol;
+
+				DEBUG_OUT("channel end");
+
+				bool playing;
+				channel->isPlaying(&playing);
+				assert(!playing);
+
+
+				FMOD_MODE mode;
+				channel->getMode(&mode);
+
+				void* userData;
+				channel->getUserData(&userData);
+				assert(userData);
+
+				FModSoundSytem* pSys{ static_cast<FModSoundSytem*>(userData) };
+
+				if (mode & FMOD_CREATESTREAM)
+				{
+					//FMOD::Sound* pSound;
+					//channel->getCurrentSound(&pSound);
+
+					//assert(pSound);
+					
+					std::cout << pSys << "\n";
+					{
+						//std::lock_guard lock(pSys->m_SoundsReleaseMutex);
+						//pSys->m_SoundsToRelease.emplace_back(pSound);
+					}
+				}
+			}
+
+			return FMOD_OK;
+		}
 
 
 		//TODO add support for these systems

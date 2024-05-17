@@ -27,13 +27,59 @@ namespace Pengin
 	void FModSoundSytem::Update() noexcept
 	{
 		//Erase any stopped channels
-		std::erase_if(m_Channels, [](auto& pair)
+		std::erase_if(m_Channels, [this](auto& pair)
 		{
 			bool isPlaying{ false };
 			pair.second->isPlaying(&isPlaying);
+
+			//FMOD::Sound* pSound{ nullptr };
+			//pair.second->getCurrentSound(&pSound);
+
+			//if (!pSound)
+			//{
+			//	return true;
+			//}
+
+			//if (!isPlaying)
+			//{
+			//	FMOD_MODE mode;
+			//	pSound->getMode(&mode);
+
+			//	if (mode & FMOD_CREATESTREAM)
+			//	{
+			//		m_SoundsToRelease.emplace_back(pSound);
+			//	}
+			//}
+
 			return !isPlaying;
 		});
 		//-------------------------
+
+		std::cout << "channels: " << m_Channels.size() << "\n";
+		std::cout << "streams: " << m_AllocatedStreams.size() << "\n";
+
+		{
+			std::vector<size_t> executedReqs{};
+			for (size_t idx = 0; auto & str : m_AllocatedStreams)
+			{
+				FMOD_OPENSTATE state;
+				str->getOpenState(&state, 0, 0, 0);
+
+				if (state == FMOD_OPENSTATE_READY)
+				{
+					DEBUG_OUT("release stream");
+					str->release(); //release == fmod err here
+					executedReqs.emplace_back(idx);
+				}
+
+				++idx;
+			}
+
+			for (auto it = executedReqs.rbegin(); it != executedReqs.rend(); ++it)
+			{
+				m_AllocatedStreams.erase(m_AllocatedStreams.begin() + *it);
+			}
+		}
 
 		//Streams
 		{
@@ -59,6 +105,8 @@ namespace Pengin
 					if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
 					{
 						PlaySoundImpl(vec[idx], m_StreamPlayRequests[reqIdx]);
+						m_AllocatedStreams.emplace_back(vec[idx]);
+
 						executedReqs.emplace_back(reqIdx);
 
 						vec.erase(std::begin(vec) + idx);
@@ -79,6 +127,7 @@ namespace Pengin
 			}
 		}
 		//-------------------------
+
 
 		//Requests for sounds that are loading
 		{
@@ -138,6 +187,8 @@ namespace Pengin
 		//Sounds that have to be released
 		{
 			std::vector<size_t> idxesToRemove{};
+
+			//std::lock_guard<std::mutex> lock{ m_SoundsReleaseMutex };
 			for (size_t idx{ 0 }; idx < m_SoundsToRelease.size(); ++idx)
 			{
 				FMOD_OPENSTATE openstate;
@@ -205,14 +256,15 @@ namespace Pengin
 			}
 			else //Not done loading yet, release when loaded
 			{
+				//std::lock_guard<std::mutex> lock{ m_SoundsReleaseMutex };
 				m_SoundsToRelease.emplace_back(it->second);
 			}
 
 			m_LoadingSounds.erase(it);
-			
 			return;
 		}
 
+		bool found{ false };
 		if (auto it = m_Streams.find(soundPath.string()); it != m_Streams.end())
 		{
 			auto& vec{ it->second };
@@ -228,11 +280,13 @@ namespace Pengin
 				}
 				else
 				{
+					//std::lock_guard<std::mutex> lock{ m_SoundsReleaseMutex };
 					m_SoundsToRelease.emplace_back(snd);
 				}
 			}
 
 			m_Streams.erase(it);
+			found = true;
 		}
 		if (auto it = m_LoadingStreams.find(soundPath.string()); it != m_LoadingStreams.end())
 		{
@@ -249,15 +303,19 @@ namespace Pengin
 				}
 				else
 				{
+					//std::lock_guard<std::mutex> lock{ m_SoundsReleaseMutex };
 					m_SoundsToRelease.emplace_back(snd);
 				}
 			}
 
 			m_LoadingStreams.erase(it);
+			found = true;
 		}
 
-
-		DEBUG_OUT("Warning: trying to unload a sound that was never loaded: " << soundPath.string());
+		if (!found)
+		{
+			DEBUG_OUT("Warning: trying to unload a sound that was never loaded: " << soundPath.string());
+		}
 	}
 
 	const ChannelId FModSoundSytem::PlaySound(const SoundData& soundData) noexcept
@@ -269,6 +327,9 @@ namespace Pengin
 			if (auto loadedIt{ m_Streams.find(soundData.soundPath.string()) }; loadedIt != end(m_Streams))
 			{
 				const auto id = PlaySoundImpl(loadedIt->second.back(), soundData);
+
+				m_AllocatedStreams.emplace_back(loadedIt->second.back());
+
 				loadedIt->second.pop_back();
 
 				if (loadedIt->second.empty())
@@ -388,6 +449,9 @@ namespace Pengin
 				const FMOD_VECTOR fmodPosition{ VectorToFmod(soundData.position) };
 				ErrorCheck(pChannel->set3DAttributes(&fmodPosition, nullptr));
 			}
+
+			ErrorCheck(pChannel->setCallback(&ChannelControlCallback));
+			ErrorCheck(pChannel->setUserData(this));
 
 			ErrorCheck(pChannel->setVolume(soundData.volume));
 			ErrorCheck(pChannel->setPaused(false)); //Unpause the sound
