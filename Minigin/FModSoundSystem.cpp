@@ -26,24 +26,21 @@ namespace Pengin
 
 	void FModSoundSystem::Update() noexcept
 	{
-		{
-			std::vector<size_t> idxesToRemove{};
-			for (size_t idx{ 0 }; idx < m_SoundsToRelease.size(); ++idx)
+		std::erase_if(m_SoundsToRelease, [this](auto& sound)
 			{
 				FMOD_OPENSTATE openstate;
-				ErrorCheck(m_SoundsToRelease[idx]->getOpenState(&openstate, 0, 0, 0));
+				ErrorCheck(sound->getOpenState(&openstate, NULL, NULL, NULL));
 
-				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY) //Only free when ready to avoid stalls
+				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY) 
 				{
-					ErrorCheck(m_SoundsToRelease[idx]->release());
-					idxesToRemove.emplace_back(idx);
+					//Only free when ready to avoid stalls
+					ErrorCheck(sound->release());
+					return true;
 				}
+
+				return false;
 			}
-			for (auto it = idxesToRemove.rbegin(); it != idxesToRemove.rend(); ++it)
-			{
-				m_SoundsToRelease.erase(m_SoundsToRelease.begin() + *it);
-			}
-		}
+		);
 
 		{
 			FMOD::Channel* pChannel{ nullptr };
