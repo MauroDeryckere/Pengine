@@ -82,14 +82,15 @@ namespace Pengin
 
 		if (!test)
 		{
-			SoundData data{ "../Data/TestSound.wav" };
-			data.isStream = true;
+			SoundData data{ "../Data/LargeTestSound.wav" };
+			data.isStream = false;
 
+			//ServiceLocator::GetSoundSystem().LoadSound(data);
 
-			ServiceLocator::GetSoundSystem().PlaySound(data);
-			ServiceLocator::GetSoundSystem().PlaySound(data);
+			//ServiceLocator::GetSoundSystem().PlaySound(data);
+			//ServiceLocator::GetSoundSystem().PlaySound(data);
 
-			ServiceLocator::GetSoundSystem().UnLoadSound("../Data/TestSound.wav");
+			//ServiceLocator::GetSoundSystem().UnLoadSound("../Data/LargeTestSound.wav");
 
 			test = true;
 		}

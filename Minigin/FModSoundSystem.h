@@ -79,8 +79,16 @@ namespace Pengin
 			~ControlCallbackData() = default;
 		};
 
-		ThreadSafeQueue<FMOD::Channel*> m_ChannelCallbackQueue{};
-		ThreadSafeQueue<FMOD::Sound*> m_StreamEndCallbackQueue{};
+		struct LoadCallbackData final
+		{
+			std::string key;
+
+			LoadCallbackData(const std::string& k) :
+				key{ k }
+			{ }
+
+			~LoadCallbackData() = default;
+		};
 
 		FMOD::Studio::System* m_pStudio{ nullptr };
 		FMOD::System* m_pSystem{ nullptr }; //Core API
@@ -91,34 +99,38 @@ namespace Pengin
 
 		bool m_IsMuted{ false };
 
-		//In use channels
+		//Channels
 		std::unordered_map<GameUUID, FMOD::Channel*> m_Channels{};
 		std::unordered_map<FMOD::Channel*, ControlCallbackData> m_ChannelControlCallbackData{};
 
-		//Loaded sounds
+		//Sounds
 		std::unordered_map<std::string, FMOD::Sound*> m_Sounds{};
-		//The sounds that are being loaded
 		std::unordered_map<std::string, FMOD::Sound*> m_LoadingSounds{};
-		//Requests for sounds that are currently being loaded
-		std::vector<SoundData> m_SoundPlayRequests{};
-		//Sounds have to be fully loaded before releasing, if a user decides to cancel it, we have to maintain a vector of anything to be released
-		std::vector<FMOD::Sound*> m_SoundsToRelease{};
+		std::unordered_map<FMOD::Sound*, std::vector<SoundData>> m_SoundPlayRequests{}; //Requests for sounds that are currently being loaded
 
 		//Streams
 		std::unordered_map<std::string, std::vector<FMOD::Sound*>> m_Streams{}; //loaded but unused
 		std::unordered_map<std::string, std::vector<FMOD::Sound*>> m_LoadingStreams{}; //loading and used
-		std::vector<SoundData> m_StreamPlayRequests{};
+		std::unordered_map<FMOD::Sound*, SoundData> m_StreamPlayRequests{};	
 
+		//Sounds have to be fully loaded before releasing, if not ready and unloaded we add it to this vector
+		std::vector<FMOD::Sound*> m_SoundsToRelease{};
+		std::unordered_map<FMOD::Sound*, LoadCallbackData> m_SoundloadedCallbackData{};
+
+		ThreadSafeQueue<FMOD::Channel*> m_ChannelCallbackQueue{};
+		ThreadSafeQueue<FMOD::Sound*> m_StreamEndCallbackQueue{};
+
+		ThreadSafeQueue<FMOD::Sound*> m_SoundLoadedCallbackQueue{};
+		ThreadSafeQueue<FMOD::Sound*> m_StreamLoadedCallbackQueue{};
 
 		void ErrorCheck(FMOD_RESULT result) const noexcept;
 		[[nodiscard]] constexpr FMOD_VECTOR VectorToFmod(const glm::vec3& vPosition) const noexcept;
 
 		const ChannelId PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept;
-		void LoadSoundImpl(const SoundData& soundData) noexcept;
+		FMOD::Sound* LoadSoundImpl(const SoundData& soundData) noexcept;
 
 		static FMOD_RESULT F_CALL ChannelControlCallback(FMOD_CHANNELCONTROL* channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void*, void*)
 		{
-
 			if (callbacktype == FMOD_CHANNELCONTROL_CALLBACK_TYPE::FMOD_CHANNELCONTROL_CALLBACK_END)
 			{
 				assert(controltype == FMOD_CHANNELCONTROL_TYPE::FMOD_CHANNELCONTROL_CHANNEL);
@@ -146,6 +158,44 @@ namespace Pengin
 				if (mode & FMOD_CREATESTREAM)
 				{	
 					pSys->m_StreamEndCallbackQueue.Push(pSound);
+				}
+			}
+
+			return FMOD_OK;
+		}
+
+		static FMOD_RESULT F_CALL NonBlockLoadCallback(FMOD_SOUND* sound, FMOD_RESULT)
+		{
+			FMOD::Sound* pSound{ (FMOD::Sound*)sound };
+			
+			FMOD_OPENSTATE state{};
+			pSound->getOpenState(&state, NULL, NULL, NULL);
+
+			if (state == FMOD_OPENSTATE_SETPOSITION)
+			{
+				//ignore if callback is triggered by setposition
+				return FMOD_OK;
+			}
+
+			void* userData{ nullptr };
+			pSound->getUserData(&userData);
+			assert(userData);
+
+			FModSoundSystem* pSys{ static_cast<FModSoundSystem*>(userData) };
+			
+			FMOD_MODE mode{};
+			pSound->getMode(&mode);
+
+			if (state == FMOD_OPENSTATE_READY)
+			{
+				if (mode & FMOD_CREATESTREAM)
+				{
+					pSys->m_StreamLoadedCallbackQueue.Push(pSound);
+
+				}
+				else
+				{
+					pSys->m_SoundLoadedCallbackQueue.Push(pSound);
 				}
 			}
 

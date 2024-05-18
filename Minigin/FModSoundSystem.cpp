@@ -77,114 +77,82 @@ namespace Pengin
 			}
 		}
 
-
-		//std::cout << "channels: " << m_Channels.size() << "\n";
-		//std::cout << "channels contrls: " << m_ChannelControlCallbackData.size() << "\n";
-		//std::cout << "streams: " << m_AllocatedStreams.size() << "\n";
-
-
 		{
-			std::vector<size_t> executedReqs{};
-			for (size_t reqIdx{ 0 }; reqIdx < m_StreamPlayRequests.size(); ++reqIdx)
+			FMOD::Sound* pSound{ nullptr };
+			while (m_StreamLoadedCallbackQueue.TryPop(pSound))
 			{
-				const auto& path = m_StreamPlayRequests[reqIdx].soundPath.string();
-
-				auto it = m_LoadingStreams.find(path);
-				if (it == end(m_LoadingStreams)) 
-				{
-					//means request has been cancelled
-					executedReqs.emplace_back(reqIdx);
-					continue;
-				}
-
-				auto& vec = it->second;
-
-				for (size_t idx{ 0 }; idx < vec.size(); ++idx)
-				{
-					FMOD_OPENSTATE openstate;
-					ErrorCheck(vec[idx]->getOpenState(&openstate, 0, 0, 0));
-
-					if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
-					{
-						PlaySoundImpl(vec[idx], m_StreamPlayRequests[reqIdx]);
-
-						executedReqs.emplace_back(reqIdx);
-
-						vec.erase(std::begin(vec) + idx);
-
-						if (vec.empty())
-						{
-							m_LoadingStreams.erase(it);
-						}
-
-						break;
-					}
-				}
-			}
-
-			for (auto it = executedReqs.rbegin(); it != executedReqs.rend(); ++it)
-			{
-				m_StreamPlayRequests.erase(m_StreamPlayRequests.begin() + *it);
-			}
-		}
-		//-------------------------
-
-
-		//Requests for sounds that are loading
-		{
-			std::vector<size_t> executedReqs{};
-			for (size_t idx{ 0 }; idx < m_SoundPlayRequests.size(); ++idx)
-			{
-				auto it = m_LoadingSounds.find(m_SoundPlayRequests[idx].soundPath.string());
-				
-				if (it == end(m_LoadingSounds))
-				{
-					//means the sound was unloaded, requests are cancelled.
-					executedReqs.emplace_back(idx);
-					continue;
-				}
-
-				FMOD::Sound* pSound{ it->second };
 				assert(pSound);
 
-				FMOD_OPENSTATE openstate;
-				ErrorCheck(pSound->getOpenState(&openstate, 0, 0, 0));
+				auto cbIt = m_SoundloadedCallbackData.find(pSound);
+				assert(cbIt != end(m_SoundloadedCallbackData));
 
-				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY || 
-					openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_PLAYING)  //Either has to be ready or currently playing to be allowed to be played
+				auto loadingIt = m_LoadingStreams.find(cbIt->second.key);
+				if (loadingIt == end(m_LoadingStreams))
 				{
-					executedReqs.emplace_back(idx);
-					PlaySoundImpl(pSound, m_SoundPlayRequests[idx]);
+					m_StreamPlayRequests.erase(pSound);
+					m_SoundloadedCallbackData.erase(cbIt);
+					continue;
 				}
-			}
 
-			for (auto it = executedReqs.rbegin(); it != executedReqs.rend(); ++it)
-			{
-				m_SoundPlayRequests.erase(m_SoundPlayRequests.begin() + *it);
+				auto reqIt = m_StreamPlayRequests.find(pSound);
+				if (reqIt != end(m_StreamPlayRequests))
+				{
+					PlaySoundImpl(pSound, reqIt->second);
+
+					m_StreamPlayRequests.erase(reqIt);
+					std::erase_if(loadingIt->second, [&pSound](FMOD::Sound* sound) {return sound == pSound; });
+
+					if (loadingIt->second.empty())
+					{
+						m_LoadingStreams.erase(loadingIt);
+					}
+				}
+				else
+				{
+					m_Streams[cbIt->second.key].emplace_back(pSound);
+				}
+
+				m_SoundloadedCallbackData.erase(cbIt);
 			}
 		}
-		//-------------------------
-		
-		//Check if the currently loading sounds have been loaded, and if so add them to the loaded map
-		for (auto it = m_LoadingSounds.begin(); it != m_LoadingSounds.end(); )
+
 		{
-			FMOD::Sound* pSound = it->second;
-
-			FMOD_OPENSTATE openstate;
-			ErrorCheck(pSound->getOpenState(&openstate, 0, 0, 0));
-
-			if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+			FMOD::Sound* pSound{ nullptr };
+			while (m_SoundLoadedCallbackQueue.TryPop(pSound))
 			{
-				m_Sounds[it->first] = pSound;
-				it = m_LoadingSounds.erase(it);
-			}
-			else
-			{
-				++it;
+				assert(pSound);
+
+				auto cbIt = m_SoundloadedCallbackData.find(pSound);
+				assert(cbIt != end(m_SoundloadedCallbackData));
+
+				auto loadingIt = m_LoadingSounds.find(cbIt->second.key);
+				if (loadingIt == end(m_LoadingSounds)) 
+				{
+					//cant find in loading means it was cancelled
+					m_SoundPlayRequests.erase(pSound);
+					m_SoundloadedCallbackData.erase(cbIt);
+					continue;
+				}
+
+				m_LoadingSounds.erase(loadingIt);
+				m_Sounds[cbIt->second.key] = pSound;
+
+				auto reqIt = m_SoundPlayRequests.find(pSound);
+				if (reqIt != end(m_SoundPlayRequests))
+				{
+					for (auto& soundData : reqIt->second)
+					{
+						soundData.PrintSoundInfo();
+
+						PlaySoundImpl(pSound, soundData);
+					}
+
+					m_SoundPlayRequests.erase(reqIt);
+				}
+
+				m_SoundloadedCallbackData.erase(cbIt);
 			}
 		}
-		//-------------------------
-
 
 		//Underlying system and core Update
 		ErrorCheck(m_pStudio->update());
@@ -219,7 +187,17 @@ namespace Pengin
 	{
 		if (auto it = m_Sounds.find(soundPath.string()); it != m_Sounds.end())
 		{
-			ErrorCheck(it->second->release());
+			FMOD_OPENSTATE openstate;
+			ErrorCheck(it->second->getOpenState(&openstate, 0, 0, 0));
+			if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+			{
+				ErrorCheck(it->second->release());
+			}
+			else
+			{
+				m_SoundsToRelease.emplace_back(it->second);
+			}
+
 			m_Sounds.erase(it);
 			return;
 		}
@@ -231,9 +209,9 @@ namespace Pengin
 
 			if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
 			{
-				it->second->release();
+				ErrorCheck(it->second->release());
 			}
-			else //Not done loading yet, release when loaded
+			else
 			{
 				m_SoundsToRelease.emplace_back(it->second);
 			}
@@ -290,7 +268,7 @@ namespace Pengin
 
 		if (!found)
 		{
-			DEBUG_OUT("Warning: trying to unload a sound that was never loaded: " << soundPath.string());
+			DEBUG_OUT("Warning: trying to unload a sound that is not loaded: " << soundPath.string());
 		}
 	}
 
@@ -314,8 +292,8 @@ namespace Pengin
 				return id;
 			}
 
-			LoadSoundImpl(soundData);
-			m_StreamPlayRequests.emplace_back(soundData);
+			auto pstr = LoadSoundImpl(soundData);
+			m_StreamPlayRequests[pstr] = soundData;
 
 			return GameUUID::INVALID_UUID;
 		}
@@ -328,12 +306,14 @@ namespace Pengin
 		 
 		if (auto loadingIt{ m_LoadingSounds.find(soundData.soundPath.string()) }; loadingIt != end(m_LoadingSounds))
 		{
-			m_SoundPlayRequests.emplace_back(soundData);
+			m_SoundPlayRequests[loadingIt->second].emplace_back(soundData);
 			return GameUUID::INVALID_UUID;
 		}
 
-		LoadSoundImpl(soundData);
-		m_SoundPlayRequests.emplace_back(soundData);
+		auto pSound = LoadSoundImpl(soundData);
+		assert(pSound);
+		m_SoundPlayRequests[pSound].emplace_back(soundData);
+
 		return GameUUID::INVALID_UUID;
 	}
 
@@ -447,7 +427,7 @@ namespace Pengin
 		return GameUUID::INVALID_UUID;
 	}
 
-	void FModSoundSystem::LoadSoundImpl(const SoundData& soundData) noexcept
+	FMOD::Sound* FModSoundSystem::LoadSoundImpl(const SoundData& soundData) noexcept
 	{
 		const FMOD_MODE flags =
 			FMOD_DEFAULT
@@ -457,8 +437,16 @@ namespace Pengin
 			| FMOD_NONBLOCKING; //Loading on a separate thread
 
 		FMOD::Sound* pSound{ nullptr };
-		ErrorCheck(m_pSystem->createSound(soundData.soundPath.string().c_str(), flags, nullptr, &pSound));
 
+		FMOD_CREATESOUNDEXINFO exinfo;
+
+		memset(&exinfo, 0, sizeof(FMOD_CREATESOUNDEXINFO));
+		exinfo.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
+		exinfo.nonblockcallback = &NonBlockLoadCallback;
+		exinfo.userdata = this;
+
+		ErrorCheck(m_pSystem->createSound(soundData.soundPath.string().c_str(), flags, &exinfo, &pSound));
+	
 		if (pSound)
 		{
 			if (soundData.isStream)
@@ -467,18 +455,12 @@ namespace Pengin
 			}
 			else
 			{
-				FMOD_OPENSTATE openstate;
-				pSound->getOpenState(&openstate, 0, 0, 0);
-
-				if (openstate != FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
-				{
-					m_LoadingSounds[soundData.soundPath.string()] = pSound;
-				}
-				else
-				{
-					m_Sounds[soundData.soundPath.string()] = pSound;
-				}
+				m_LoadingSounds[soundData.soundPath.string()] = pSound;
 			}
+
+			m_SoundloadedCallbackData.emplace(pSound, LoadCallbackData{ soundData.soundPath.string() });
 		}
+
+		return pSound;
 	}
 }
