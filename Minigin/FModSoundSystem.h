@@ -17,6 +17,8 @@
 
 #include <glm/vec3.hpp>
 
+#include "ThreadSafeQueue.h"
+
 //Ref: https://codyclaborn.me/tutorials/making-a-basic-fmod-audio-engine-in-c/
 //	   https://www.fmod.com/docs/2.03/api/welcome.html
 
@@ -36,11 +38,11 @@ Audio Engine TODO:
 
 namespace Pengin
 {
-	class FModSoundSytem final : public SoundSystem
+	class FModSoundSystem final : public SoundSystem
 	{
 	public:
-		FModSoundSytem();
-		virtual ~FModSoundSytem() override;
+		FModSoundSystem();
+		virtual ~FModSoundSystem() override;
 
 		void Update() noexcept;
 
@@ -60,12 +62,26 @@ namespace Pengin
 		void SetChannel3DPosition(const ChannelId& id, const glm::vec3& position) noexcept;
 		void SetChannelVolume(const ChannelId& id, float volume) noexcept;
 
-		FModSoundSytem(const FModSoundSytem&) = delete;
-		FModSoundSytem(FModSoundSytem&&) = delete;
-		FModSoundSytem& operator=(const FModSoundSytem&) = delete;
-		FModSoundSytem& operator=(const FModSoundSytem&&) = delete;
+		FModSoundSystem(const FModSoundSystem&) = delete;
+		FModSoundSystem(FModSoundSystem&&) = delete;
+		FModSoundSystem& operator=(const FModSoundSystem&) = delete;
+		FModSoundSystem& operator=(const FModSoundSystem&&) = delete;
 
 	private:
+		struct ControlCallbackData final
+		{
+			GameUUID uuid;
+
+			ControlCallbackData(const GameUUID& id) :
+				uuid{ id }
+			{ }
+
+			~ControlCallbackData() = default;
+		};
+
+		ThreadSafeQueue<FMOD::Channel*> m_ChannelCallbackQueue{};
+		ThreadSafeQueue<FMOD::Sound*> m_StreamEndCallbackQueue{};
+
 		FMOD::Studio::System* m_pStudio{ nullptr };
 		FMOD::System* m_pSystem{ nullptr }; //Core API
 
@@ -75,92 +91,66 @@ namespace Pengin
 
 		bool m_IsMuted{ false };
 
-		//Loaded sounds
-		std::unordered_map<std::string, FMOD::Sound*> m_Sounds;
+		//In use channels
+		std::unordered_map<GameUUID, FMOD::Channel*> m_Channels{};
+		std::unordered_map<FMOD::Channel*, ControlCallbackData> m_ChannelControlCallbackData{};
 
-		//Stream:
-		//one Sound* per stream play
-		//when stream is done playing, release
+		//Loaded sounds
+		std::unordered_map<std::string, FMOD::Sound*> m_Sounds{};
+		//The sounds that are being loaded
+		std::unordered_map<std::string, FMOD::Sound*> m_LoadingSounds{};
+		//Requests for sounds that are currently being loaded
+		std::vector<SoundData> m_SoundPlayRequests{};
+		//Sounds have to be fully loaded before releasing, if a user decides to cancel it, we have to maintain a vector of anything to be released
+		std::vector<FMOD::Sound*> m_SoundsToRelease{};
 
 		//Streams
 		std::unordered_map<std::string, std::vector<FMOD::Sound*>> m_Streams{}; //loaded but unused
 		std::unordered_map<std::string, std::vector<FMOD::Sound*>> m_LoadingStreams{}; //loading and used
 		std::vector<SoundData> m_StreamPlayRequests{};
 
-		std::vector<FMOD::Sound*> m_AllocatedStreams;
-
-		//In use channels
-		std::unordered_map<GameUUID, FMOD::Channel*> m_Channels;
-		//The sounds that are being loaded
-		std::unordered_map<std::string, FMOD::Sound*> m_LoadingSounds;
-		//Requests for sounds that are currently being loaded
-		std::vector<SoundData> m_SoundPlayRequests;
-		//Sounds have to be fully loaded before releasing, if a user decides to cancel it, we have to maintain a vector of anything to be released
-
-		std::mutex m_SoundsReleaseMutex;
-		std::vector<FMOD::Sound*> m_SoundsToRelease;
-
 
 		void ErrorCheck(FMOD_RESULT result) const noexcept;
+		[[nodiscard]] constexpr FMOD_VECTOR VectorToFmod(const glm::vec3& vPosition) const noexcept;
 
-		[[nodiscard]] constexpr FMOD_VECTOR VectorToFmod(const glm::vec3& vPosition) const noexcept
-		{
-			return FMOD_VECTOR{ vPosition.x, vPosition.y, vPosition.z };
-		}
-
-		//Allows playing the sound without additional map lookups
 		const ChannelId PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept;
-		//Allows loading without additional checks
 		void LoadSoundImpl(const SoundData& soundData) noexcept;
 
 		static FMOD_RESULT F_CALL ChannelControlCallback(FMOD_CHANNELCONTROL* channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void*, void*)
 		{
+
 			if (callbacktype == FMOD_CHANNELCONTROL_CALLBACK_TYPE::FMOD_CHANNELCONTROL_CALLBACK_END)
 			{
 				assert(controltype == FMOD_CHANNELCONTROL_TYPE::FMOD_CHANNELCONTROL_CHANNEL);
-				FMOD::Channel* channel = (FMOD::Channel*)channelcontrol;
+				FMOD::Channel* pChannel = (FMOD::Channel*)channelcontrol;
 
-				DEBUG_OUT("channel end");
-
-				bool playing;
-				channel->isPlaying(&playing);
+				bool playing{};
+				pChannel->isPlaying(&playing);
 				assert(!playing);
 
+				FMOD_MODE mode{};
+				pChannel->getMode(&mode);
 
-				FMOD_MODE mode;
-				channel->getMode(&mode);
-
-				void* userData;
-				channel->getUserData(&userData);
+				void* userData{nullptr};
+				pChannel->getUserData(&userData);
 				assert(userData);
 
-				FModSoundSytem* pSys{ static_cast<FModSoundSytem*>(userData) };
+				FModSoundSystem* pSys{ static_cast<FModSoundSystem*>(userData) };
+
+				pSys->m_ChannelCallbackQueue.Push(pChannel);
+
+				FMOD::Sound* pSound{ nullptr };
+				pChannel->getCurrentSound(&pSound);
+				assert(pSound);
 
 				if (mode & FMOD_CREATESTREAM)
-				{
-					//FMOD::Sound* pSound;
-					//channel->getCurrentSound(&pSound);
-
-					//assert(pSound);
-					
-					std::cout << pSys << "\n";
-					{
-						//std::lock_guard lock(pSys->m_SoundsReleaseMutex);
-						//pSys->m_SoundsToRelease.emplace_back(pSound);
-					}
+				{	
+					pSys->m_StreamEndCallbackQueue.Push(pSound);
 				}
 			}
 
 			return FMOD_OK;
 		}
-
-
-		//TODO add support for these systems
-		//using EventMap = std::map<std::string, FMOD::Studio::EventInstance*>;
-		//using BankMap = std::map<std::string, FMOD::Studio::Bank*>;
-
-		//BankMap mBanks;
-		//EventMap mEvents;
 	};
 }
 

@@ -4,7 +4,7 @@
 
 namespace Pengin
 {
-	FModSoundSytem::FModSoundSytem()
+	FModSoundSystem::FModSoundSystem()
 	{
 		ErrorCheck(FMOD::Studio::System::create(&m_pStudio));
 
@@ -18,70 +18,71 @@ namespace Pengin
 		ErrorCheck(m_pSystem->createChannelGroup("Music", &m_pMusicGroup));
 	}
 
-	FModSoundSytem::~FModSoundSytem()
+	FModSoundSystem::~FModSoundSystem()
 	{
 		ErrorCheck(m_pStudio->unloadAll());
 		ErrorCheck(m_pStudio->release());
 	}
 
-	void FModSoundSytem::Update() noexcept
+	void FModSoundSystem::Update() noexcept
 	{
-		//Erase any stopped channels
-		std::erase_if(m_Channels, [this](auto& pair)
 		{
-			bool isPlaying{ false };
-			pair.second->isPlaying(&isPlaying);
-
-			//FMOD::Sound* pSound{ nullptr };
-			//pair.second->getCurrentSound(&pSound);
-
-			//if (!pSound)
-			//{
-			//	return true;
-			//}
-
-			//if (!isPlaying)
-			//{
-			//	FMOD_MODE mode;
-			//	pSound->getMode(&mode);
-
-			//	if (mode & FMOD_CREATESTREAM)
-			//	{
-			//		m_SoundsToRelease.emplace_back(pSound);
-			//	}
-			//}
-
-			return !isPlaying;
-		});
-		//-------------------------
-
-		std::cout << "channels: " << m_Channels.size() << "\n";
-		std::cout << "streams: " << m_AllocatedStreams.size() << "\n";
-
-		{
-			std::vector<size_t> executedReqs{};
-			for (size_t idx = 0; auto & str : m_AllocatedStreams)
+			std::vector<size_t> idxesToRemove{};
+			for (size_t idx{ 0 }; idx < m_SoundsToRelease.size(); ++idx)
 			{
-				FMOD_OPENSTATE state;
-				str->getOpenState(&state, 0, 0, 0);
+				FMOD_OPENSTATE openstate;
+				ErrorCheck(m_SoundsToRelease[idx]->getOpenState(&openstate, 0, 0, 0));
 
-				if (state == FMOD_OPENSTATE_READY)
+				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY) //Only free when ready to avoid stalls
 				{
-					DEBUG_OUT("release stream");
-					str->release(); //release == fmod err here
-					executedReqs.emplace_back(idx);
+					ErrorCheck(m_SoundsToRelease[idx]->release());
+					idxesToRemove.emplace_back(idx);
 				}
-
-				++idx;
 			}
-
-			for (auto it = executedReqs.rbegin(); it != executedReqs.rend(); ++it)
+			for (auto it = idxesToRemove.rbegin(); it != idxesToRemove.rend(); ++it)
 			{
-				m_AllocatedStreams.erase(m_AllocatedStreams.begin() + *it);
+				m_SoundsToRelease.erase(m_SoundsToRelease.begin() + *it);
 			}
 		}
 
-		//Streams
+		{
+			FMOD::Channel* pChannel{ nullptr };
+			while (m_ChannelCallbackQueue.TryPop(pChannel))
+			{
+				assert(pChannel);
+
+				auto ctrlIt{ m_ChannelControlCallbackData.find(pChannel) };
+				assert(ctrlIt != end(m_ChannelControlCallbackData));
+
+				m_Channels.erase(ctrlIt->second.uuid);
+				m_ChannelControlCallbackData.erase(ctrlIt);
+			}
+
+			FMOD::Sound* pSound{ nullptr };
+			while (m_StreamEndCallbackQueue.TryPop(pSound))
+			{
+				assert(pSound);
+
+				FMOD_OPENSTATE state{};
+				pSound->getOpenState(&state, NULL, NULL, NULL);
+
+				if (state == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
+				{
+					pSound->release();
+				}
+				else
+				{
+					m_SoundsToRelease.emplace_back(pSound);
+				}
+			}
+		}
+
+
+		//std::cout << "channels: " << m_Channels.size() << "\n";
+		//std::cout << "channels contrls: " << m_ChannelControlCallbackData.size() << "\n";
+		//std::cout << "streams: " << m_AllocatedStreams.size() << "\n";
+
+
 		{
 			std::vector<size_t> executedReqs{};
 			for (size_t reqIdx{ 0 }; reqIdx < m_StreamPlayRequests.size(); ++reqIdx)
@@ -89,8 +90,9 @@ namespace Pengin
 				const auto& path = m_StreamPlayRequests[reqIdx].soundPath.string();
 
 				auto it = m_LoadingStreams.find(path);
-				if (it == end(m_LoadingStreams)) //means request has been cancelled
+				if (it == end(m_LoadingStreams)) 
 				{
+					//means request has been cancelled
 					executedReqs.emplace_back(reqIdx);
 					continue;
 				}
@@ -105,7 +107,6 @@ namespace Pengin
 					if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY)
 					{
 						PlaySoundImpl(vec[idx], m_StreamPlayRequests[reqIdx]);
-						m_AllocatedStreams.emplace_back(vec[idx]);
 
 						executedReqs.emplace_back(reqIdx);
 
@@ -184,34 +185,12 @@ namespace Pengin
 		}
 		//-------------------------
 
-		//Sounds that have to be released
-		{
-			std::vector<size_t> idxesToRemove{};
-
-			//std::lock_guard<std::mutex> lock{ m_SoundsReleaseMutex };
-			for (size_t idx{ 0 }; idx < m_SoundsToRelease.size(); ++idx)
-			{
-				FMOD_OPENSTATE openstate;
-				ErrorCheck(m_SoundsToRelease[idx]->getOpenState(&openstate, 0, 0, 0));
-
-				if (openstate == FMOD_OPENSTATE::FMOD_OPENSTATE_READY) //Only free when ready to avoid stalls
-				{
-					ErrorCheck(m_SoundsToRelease[idx]->release());
-					idxesToRemove.emplace_back(idx);
-				}
-			}
-			for (auto it = idxesToRemove.rbegin(); it != idxesToRemove.rend(); ++it)
-			{
-				m_SoundsToRelease.erase(m_SoundsToRelease.begin() + *it);
-			}
-		}
-		//---------------------------------------------------
 
 		//Underlying system and core Update
 		ErrorCheck(m_pStudio->update());
 	}
 
-	void FModSoundSytem::LoadSound(const SoundData& soundData) noexcept
+	void FModSoundSystem::LoadSound(const SoundData& soundData) noexcept
 	{
 		assert(std::filesystem::exists(soundData.soundPath) && "Sound path invalid, doesn't exist");
 
@@ -236,7 +215,7 @@ namespace Pengin
 		LoadSoundImpl(soundData);
 	}
 
-	void FModSoundSytem::UnLoadSound(const std::filesystem::path& soundPath) noexcept
+	void FModSoundSystem::UnLoadSound(const std::filesystem::path& soundPath) noexcept
 	{
 		if (auto it = m_Sounds.find(soundPath.string()); it != m_Sounds.end())
 		{
@@ -256,7 +235,6 @@ namespace Pengin
 			}
 			else //Not done loading yet, release when loaded
 			{
-				//std::lock_guard<std::mutex> lock{ m_SoundsReleaseMutex };
 				m_SoundsToRelease.emplace_back(it->second);
 			}
 
@@ -280,7 +258,6 @@ namespace Pengin
 				}
 				else
 				{
-					//std::lock_guard<std::mutex> lock{ m_SoundsReleaseMutex };
 					m_SoundsToRelease.emplace_back(snd);
 				}
 			}
@@ -303,7 +280,6 @@ namespace Pengin
 				}
 				else
 				{
-					//std::lock_guard<std::mutex> lock{ m_SoundsReleaseMutex };
 					m_SoundsToRelease.emplace_back(snd);
 				}
 			}
@@ -318,7 +294,7 @@ namespace Pengin
 		}
 	}
 
-	const ChannelId FModSoundSytem::PlaySound(const SoundData& soundData) noexcept
+	const ChannelId FModSoundSystem::PlaySound(const SoundData& soundData) noexcept
 	{
 		assert(std::filesystem::exists(soundData.soundPath) && "Sound path invalid, doesn't exist");
 
@@ -327,8 +303,6 @@ namespace Pengin
 			if (auto loadedIt{ m_Streams.find(soundData.soundPath.string()) }; loadedIt != end(m_Streams))
 			{
 				const auto id = PlaySoundImpl(loadedIt->second.back(), soundData);
-
-				m_AllocatedStreams.emplace_back(loadedIt->second.back());
 
 				loadedIt->second.pop_back();
 
@@ -363,7 +337,7 @@ namespace Pengin
 		return GameUUID::INVALID_UUID;
 	}
 
-	void FModSoundSytem::SetChannel3DPosition(const ChannelId& id, const glm::vec3& position) noexcept
+	void FModSoundSystem::SetChannel3DPosition(const ChannelId& id, const glm::vec3& position) noexcept
 	{
 		auto it = m_Channels.find(id);
 		if (it == end(m_Channels))
@@ -376,7 +350,7 @@ namespace Pengin
 		ErrorCheck(it->second->set3DAttributes(&fmodPosition, NULL));
 	}
 
-	void FModSoundSytem::SetChannelVolume(const ChannelId& id, float volume) noexcept
+	void FModSoundSystem::SetChannelVolume(const ChannelId& id, float volume) noexcept
 	{
 		auto it = m_Channels.find(id);
 		if (it == end(m_Channels))
@@ -388,34 +362,34 @@ namespace Pengin
 		ErrorCheck(it->second->setVolume(volume));
 	}
 
-	void FModSoundSytem::SetVFXVolume(const float vol) noexcept
+	void FModSoundSystem::SetVFXVolume(const float vol) noexcept
 	{
 		ErrorCheck(m_pVFXGroup->setVolume(vol));
 	}
 
-	void FModSoundSytem::SetMusicVolume(const float vol) noexcept
+	void FModSoundSystem::SetMusicVolume(const float vol) noexcept
 	{
 		ErrorCheck(m_pMusicGroup->setVolume(vol));
 	}
 
-	void FModSoundSytem::MuteAll() noexcept
+	void FModSoundSystem::MuteAll() noexcept
 	{
 		ErrorCheck(m_MasterGroup->setMute(true));
 		m_IsMuted = true;
 	}
 
-	void FModSoundSytem::UnmuteAll() noexcept
+	void FModSoundSystem::UnmuteAll() noexcept
 	{
 		ErrorCheck(m_MasterGroup->setMute(false));
 		m_IsMuted = false;
 	}
 
-	bool FModSoundSytem::IsMuted() const noexcept
+	bool FModSoundSystem::IsMuted() const noexcept
 	{
 		return m_IsMuted;
 	}
 
-	void FModSoundSytem::ErrorCheck(FMOD_RESULT result) const noexcept
+	void FModSoundSystem::ErrorCheck(FMOD_RESULT result) const noexcept
 	{
 		if (result != FMOD_OK) 
 		{
@@ -423,7 +397,12 @@ namespace Pengin
 		}
 	}
 
-	const ChannelId FModSoundSytem::PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept
+	constexpr FMOD_VECTOR FModSoundSystem::VectorToFmod(const glm::vec3& vPosition) const noexcept
+	{
+		return FMOD_VECTOR{ vPosition.x, vPosition.y, vPosition.z };
+	}
+
+	const ChannelId FModSoundSystem::PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept
 	{
 		FMOD::Channel* pChannel{ nullptr };
 
@@ -450,14 +429,17 @@ namespace Pengin
 				ErrorCheck(pChannel->set3DAttributes(&fmodPosition, nullptr));
 			}
 
+			ChannelId id{};
+
+			m_Channels[id] = pChannel;
+
 			ErrorCheck(pChannel->setCallback(&ChannelControlCallback));
 			ErrorCheck(pChannel->setUserData(this));
 
+			m_ChannelControlCallbackData.emplace(pChannel, ControlCallbackData{id} );
+			
 			ErrorCheck(pChannel->setVolume(soundData.volume));
 			ErrorCheck(pChannel->setPaused(false)); //Unpause the sound
-
-			ChannelId id{};
-			m_Channels[id] = pChannel;
 
 			return id;
 		}
@@ -465,7 +447,7 @@ namespace Pengin
 		return GameUUID::INVALID_UUID;
 	}
 
-	void FModSoundSytem::LoadSoundImpl(const SoundData& soundData) noexcept
+	void FModSoundSystem::LoadSoundImpl(const SoundData& soundData) noexcept
 	{
 		const FMOD_MODE flags =
 			FMOD_DEFAULT

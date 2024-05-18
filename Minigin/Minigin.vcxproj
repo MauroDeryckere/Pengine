@@ -517,6 +517,7 @@ xcopy $(SolutionDir)3rdParty\FMOD_Studio_API_Windows\api\studio\lib\x64\fmodstud
     <ClInclude Include="SystemManager.h" />
     <ClInclude Include="SystemRegistry.h" />
     <ClInclude Include="TestSerComponent.h" />
+    <ClInclude Include="ThreadSafeQueue.h" />
     <ClInclude Include="UIDisplaySystem.h" />
     <ClInclude Include="GameUUID.h" />
     <ClInclude Include="UUIDComponent.h" />

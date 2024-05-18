@@ -1179,6 +1179,9 @@
     <ClInclude Include="SwitchAnimationEvent.h">
       <Filter>Header Files\Core\Events\Der</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadSafeQueue.h">
+      <Filter>Header Files\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_widgets.cpp">
