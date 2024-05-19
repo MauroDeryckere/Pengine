@@ -129,19 +129,12 @@ namespace Pengin
 		const ChannelId PlaySoundImpl(FMOD::Sound* pSound, const SoundData& soundData) noexcept;
 		FMOD::Sound* LoadSoundImpl(const SoundData& soundData) noexcept;
 
-		static FMOD_RESULT F_CALL ChannelControlCallback(FMOD_CHANNELCONTROL* channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void*, void*)
+		static FMOD_RESULT F_CALL ChannelControlCallback(FMOD_CHANNELCONTROL* channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype [[maybe_unused]], FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void*, void*)
 		{
 			if (callbacktype == FMOD_CHANNELCONTROL_CALLBACK_TYPE::FMOD_CHANNELCONTROL_CALLBACK_END)
 			{
 				assert(controltype == FMOD_CHANNELCONTROL_TYPE::FMOD_CHANNELCONTROL_CHANNEL);
 				FMOD::Channel* pChannel = (FMOD::Channel*)channelcontrol;
-
-				bool playing{};
-				pChannel->isPlaying(&playing);
-				assert(!playing);
-
-				FMOD_MODE mode{};
-				pChannel->getMode(&mode);
 
 				void* userData{nullptr};
 				pChannel->getUserData(&userData);
@@ -151,12 +144,15 @@ namespace Pengin
 
 				pSys->m_ChannelCallbackQueue.Push(pChannel);
 
-				FMOD::Sound* pSound{ nullptr };
-				pChannel->getCurrentSound(&pSound);
-				assert(pSound);
+				FMOD_MODE mode{};
+				pChannel->getMode(&mode);
 
 				if (mode & FMOD_CREATESTREAM)
-				{	
+				{
+					FMOD::Sound* pSound{ nullptr };
+					pChannel->getCurrentSound(&pSound);
+					assert(pSound);
+
 					pSys->m_StreamEndCallbackQueue.Push(pSound);
 				}
 			}
@@ -182,12 +178,12 @@ namespace Pengin
 			assert(userData);
 
 			FModSoundSystem* pSys{ static_cast<FModSoundSystem*>(userData) };
-			
-			FMOD_MODE mode{};
-			pSound->getMode(&mode);
 
 			if (state == FMOD_OPENSTATE_READY)
 			{
+				FMOD_MODE mode{};
+				pSound->getMode(&mode);
+
 				if (mode & FMOD_CREATESTREAM)
 				{
 					pSys->m_StreamLoadedCallbackQueue.Push(pSound);
