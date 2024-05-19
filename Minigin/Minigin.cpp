@@ -105,7 +105,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	#ifdef DEBUG_MODE
 		Pengin::ServiceLocator::RegisterSoundSystem(std::make_unique<Pengin::LoggingSoundSystem>(std::make_unique<Pengin::FModSoundSystem>()));
 	#else
-		Pengin::ServiceLocator::RegisterSoundSystem(std::make_unique<Pengin::FModSoundSytem>());
+		Pengin::ServiceLocator::RegisterSoundSystem(std::make_unique<Pengin::FModSoundSystem>());
 	#endif
 }
 
