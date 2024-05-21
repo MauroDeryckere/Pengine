@@ -46,10 +46,8 @@ namespace Pengin
         std::shared_ptr<InputCommand> MapControllerAction(const UserIndex& userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
         std::shared_ptr<InputCommand> MapKeyboardAction(const UserIndex& userIdx, KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
 
-        //TODO
         void UnMapControllerAction(const UserIndex& userIdx, ControllerButton button, InputState inputState) noexcept;
         void UnMapKeyboardAction(const UserIndex& userIdx, KeyBoardKey button, InputState inputState) noexcept;
-        //----
 
         void MapCombo(const UserIndex& userIdx, const InputCombo& combo) noexcept;
 
