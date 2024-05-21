@@ -8,6 +8,8 @@
 #include "EventManager.h"
 #include "SwitchAnimationEvent.h"
 
+#include "InputManager.h"
+
 #include "SceneManager.h"
 #include "BodyComponent.h"
 #include "Entity.h"
@@ -54,9 +56,9 @@ namespace Pengo
 		return nullptr;
 	}
 
-	std::unique_ptr<Pengin::PlayerState> PengoWalkState::HandleInput(const Pengin::UserIndex& userIndex, const std::string& actionName)
+	std::unique_ptr<Pengin::PlayerState> PengoWalkState::HandleInput(const Pengin::UserIndex& userIndex)
 	{
-		if (actionName == "PengoBreakBlock")
+		if (Pengin::InputManager::GetInstance().IsActionExecuted(userIndex, "PengoBreakBlock"))
 		{
 			return std::move(std::make_unique<PengoBreakingBlockState>(userIndex));
 		}

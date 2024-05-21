@@ -181,9 +181,6 @@
     <Filter Include="Header Files\FileSystem\Serialization\Core">
       <UniqueIdentifier>{9f3ba761-2b93-4a40-ba5f-8cf8f89c234e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\State">
-      <UniqueIdentifier>{a48db82b-e07d-4a21-ac7a-fbcb9b3a0c7a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Gameplay Systems\Physics">
       <UniqueIdentifier>{2e5bc426-d4e1-4b67-bdaa-ae39f38285fc}</UniqueIdentifier>
     </Filter>
@@ -192,6 +189,9 @@
     </Filter>
     <Filter Include="Header Files\Core\Threading">
       <UniqueIdentifier>{086b40f4-81ab-4f1c-bac7-d9fa062c3b7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\State">
+      <UniqueIdentifier>{a48db82b-e07d-4a21-ac7a-fbcb9b3a0c7a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

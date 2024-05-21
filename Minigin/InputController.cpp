@@ -21,7 +21,7 @@ namespace Pengin
 		~WindowsInputControllerImpl() = default;
 
 		void ProcessInputState();
-		void ProcessMappedActions(InputBuffer* const inputBuffer);
+		void ProcessMappedActions(InputBuffer* const inputBuffer, std::unordered_set<std::string>& execActions);
 		void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
 
 		const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& GetMappedActions();
@@ -95,12 +95,15 @@ namespace Pengin
 		}
 	}
 
-	void WindowsInputControllerImpl::ProcessMappedActions(InputBuffer * const inputBuffer)
+	void WindowsInputControllerImpl::ProcessMappedActions(InputBuffer * const inputBuffer, std::unordered_set<std::string>& execActions)
 	{
 		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::DownThisFrame)]) {
 			if (IsDownThisFrame(GetCodeFromKey(pair.first)))
 			{
 				pair.second->Execute();
+
+				execActions.insert(pair.second->GetActionName());
+
 				inputBuffer->RecordInput(pair.second);
 			}
 		}
@@ -108,6 +111,9 @@ namespace Pengin
 			if (IsUpThisFrame(GetCodeFromKey(pair.first)))
 			{
 				pair.second->Execute();
+
+				execActions.insert(pair.second->GetActionName());
+
 				inputBuffer->RecordInput(pair.second);
 			}
 		}
@@ -115,6 +121,9 @@ namespace Pengin
 			if (IsPressed(GetCodeFromKey(pair.first)))
 			{
 				pair.second->Execute();
+
+				execActions.insert(pair.second->GetActionName());
+
 				inputBuffer->RecordInput(pair.second);
 			}
 		}
@@ -215,9 +224,9 @@ namespace Pengin
 		m_WinImpl->ProcessInputState();
 	}
 
-	void InputController::ProcessMappedActions(InputBuffer* const inputBuffer)
+	void InputController::ProcessActions(InputBuffer* const inputBuffer, std::unordered_set<std::string>& execActions)
 	{
-		m_WinImpl->ProcessMappedActions(inputBuffer);
+		m_WinImpl->ProcessMappedActions(inputBuffer, execActions);
 	}
 
 	void InputController::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)

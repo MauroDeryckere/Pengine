@@ -3,15 +3,17 @@
 #include "PengoWalkState.h"
 #include "PengoBreakingBlockState.h"
 
+#include "InputManager.h"
+
 namespace Pengo
 {
-	std::unique_ptr<Pengin::PlayerState> Pengo::PengoIdleState::HandleInput(const Pengin::UserIndex& userIndex, const std::string& actionName)
+	std::unique_ptr<Pengin::PlayerState> Pengo::PengoIdleState::HandleInput(const Pengin::UserIndex& userIndex)
 	{
-		if (actionName == "PengoMovement")
+		if (Pengin::InputManager::GetInstance().IsActionExecuted(userIndex, "PengoMovement"))
 		{
 			return std::move(std::make_unique<PengoWalkState>(userIndex));
 		}
-		else if (actionName == "PengoBreakBlock")
+		if (Pengin::InputManager::GetInstance().IsActionExecuted(userIndex, "PengoBreakBlock"))
 		{
 			return std::move(std::make_unique<PengoBreakingBlockState>(userIndex));
 		}

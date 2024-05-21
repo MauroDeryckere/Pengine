@@ -72,7 +72,7 @@ namespace Pengin
 		{
 			GameUUID uuid;
 
-			ControlCallbackData(const GameUUID& id) :
+			explicit ControlCallbackData(const GameUUID& id) :
 				uuid{ id }
 			{ }
 
@@ -83,7 +83,7 @@ namespace Pengin
 		{
 			std::string key;
 
-			LoadCallbackData(const std::string& k) :
+			explicit LoadCallbackData(const std::string& k) :
 				key{ k }
 			{ }
 

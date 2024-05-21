@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <memory>
 
 #include "InputCommand.h"
@@ -21,7 +22,7 @@ namespace Pengin
 		virtual ~InputDevice() = default;
 
 		virtual void ProcessInputState() = 0;
-		virtual void ProcessMappedActions(InputBuffer* const inputbuffer) = 0;
+		virtual void ProcessActions(InputBuffer* const inputbuffer, std::unordered_set<std::string>& execActions) = 0;
 
 		virtual void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) = 0;
 

@@ -36,7 +36,7 @@ namespace Pengo
 			DEBUG_OUT("Enter Idle");
 		}
 
-		std::unique_ptr<Pengin::PlayerState> HandleInput(const Pengin::UserIndex& userIndex, const std::string& actionName);
+		std::unique_ptr<Pengin::PlayerState> HandleInput(const Pengin::UserIndex& userIndex);
 
 		void OnExit()
 		{

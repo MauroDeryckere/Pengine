@@ -30,8 +30,22 @@ namespace Pengin
 			dae::Renderer::GetInstance().GetImGUIWindow().ProcessEvent(e);
 		}
 
-		const bool usedMouse = dae::Renderer::GetInstance().GetImGUIWindow().UsedMouse();
-		const bool usedKeyboard = dae::Renderer::GetInstance().GetImGUIWindow().UsedKeyboard();
+
+		for (size_t userIdx{ 0 }; userIdx < m_InputBuffers.size(); ++userIdx)
+		{
+			DEBUG_OUT("user: " << userIdx);
+
+			for (const auto& str: m_ExecutedActionsThisFrame[userIdx])
+			{
+				DEBUG_OUT(str);
+			}
+
+			m_ExecutedActionsThisFrame[userIdx].clear();
+		}
+
+		//check if mouse / keyboard was used on the ImGui layer, if so input is not valid
+		const bool usedMouse{ dae::Renderer::GetInstance().GetImGUIWindow().UsedMouse() };
+		const bool usedKeyboard{ dae::Renderer::GetInstance().GetImGUIWindow().UsedKeyboard() };
 
 		if (usedMouse && usedKeyboard)
 		{
@@ -40,24 +54,24 @@ namespace Pengin
 
 		for (size_t userIdx{ 0 }; userIdx < m_InputBuffers.size(); ++userIdx)
 		{
-			for (auto idx = -1; auto& device : m_RegisteredUsers[userIdx].second)
+			for (int32_t deviceIdx{ -1 }; auto& device : m_RegisteredUsers[userIdx].second)
 			{
-				++idx;
+				++deviceIdx;
 
 				if (m_RegisteredUsers[userIdx].first == UserType::Keyboard) 
 				{
-					if (static_cast<KeyboardDevices>(idx) == KeyboardDevices::Mouse && usedMouse)
+					if (static_cast<KeyboardDevices>(deviceIdx) == KeyboardDevices::Mouse && usedMouse)
 					{
 						continue;
 					}
-					else if (static_cast<KeyboardDevices>(idx) == KeyboardDevices::Keyboard && usedKeyboard)
+					else if (static_cast<KeyboardDevices>(deviceIdx) == KeyboardDevices::Keyboard && usedKeyboard)
 					{
 						continue;
 					}
 				}
-
-				device->ProcessInputState();
-				device->ProcessMappedActions(m_InputBuffers[userIdx].get());
+				
+				device->ProcessInputState(); //Poll OS for the changed keystates
+				device->ProcessActions(m_InputBuffers[userIdx].get(), m_ExecutedActionsThisFrame[userIdx]); //Process the states
 			}
 		}
 
@@ -68,11 +82,13 @@ namespace Pengin
 			for (const auto& combo : m_InputCombos[userIdx])
 			{
 				if (inputBuffer->CheckCombo(combo))
-					//This takes the first possible combo, in future it might be necessary to handle all found combos and let a state machine decides which one(s) are valid and should be recorded to the buffe
+				//This takes the first possible combo, in future it might be necessary to handle all found combos and let a state machine decides which one(s) are valid and should be recorded to the buffer
 				{
 					inputBuffer->ClearBuffer();
 
 					combo.pResultingAction->Execute();
+					m_ExecutedActionsThisFrame[userIdx].insert(combo.pResultingAction->GetActionName());
+
 					inputBuffer->RecordInput(combo.pResultingAction);
 				}
 			}
@@ -83,38 +99,16 @@ namespace Pengin
 
 	const UserIndex InputManager::RegisterUser(UserType usertype) noexcept
 	{
-		const size_t userVecIdx{ m_RegisteredUsers.size() };
-
-		m_RegisteredUsers.resize(userVecIdx + 1);
-		m_RegisteredUsers.back().first = usertype;
-
-		m_InputCombos.resize(userVecIdx + 1);
-		m_InputBuffers.emplace_back( new InputBuffer{} );
-
-		UserIndex uIdx{};
-		m_UserIdx_VecIdxMap[uIdx] = userVecIdx;
-
-		switch (usertype)
-		{
-		case Pengin::UserType::Keyboard:
-			m_RegisteredUsers.back().second.emplace_back(new InputKeyboard{});
-			//Mouse too in future
-			break;
-		case Pengin::UserType::Controller:
-			m_RegisteredUsers.back().second.emplace_back(new InputController{ userVecIdx });
-			break;
-
-		default:
-			break;
-		}
-
-		DEBUG_OUT("registered user UservecIdx: " << userVecIdx << " user uuid: " << uIdx.GetUUID_PrettyStr());
+		const UserIndex uIdx{};
+		RegisterUser(uIdx, usertype);
 
 		return uIdx;
 	}
 
 	void InputManager::RegisterUser(const UserIndex& index, UserType usertype) noexcept
 	{	
+		assert(index);
+
 		const auto it = m_UserIdx_VecIdxMap.find(index);
 
 		if (it != end(m_UserIdx_VecIdxMap))
@@ -130,6 +124,8 @@ namespace Pengin
 
 		m_InputCombos.resize(userVecIdx + 1);
 		m_InputBuffers.emplace_back(new InputBuffer{});
+
+		m_ExecutedActionsThisFrame.emplace_back();
 
 		m_UserIdx_VecIdxMap[index] = userVecIdx;
 
@@ -155,6 +151,11 @@ namespace Pengin
 		auto it = m_UserIdx_VecIdxMap.find(userIdx);
 		assert(it != end(m_UserIdx_VecIdxMap) && "user not added");
 
+		if (it == end(m_UserIdx_VecIdxMap))
+		{
+			return nullptr;
+		}
+
 		assert(m_RegisteredUsers.size() >= it->second && "Engine error: idx out of bounds!");
 		assert(m_RegisteredUsers[it->second].first == UserType::Controller && "User error: registered user does not have Usertype: controller");
 
@@ -173,6 +174,11 @@ namespace Pengin
 
 		assert(it != end(m_UserIdx_VecIdxMap) && "user not added");
 
+		if (it == end(m_UserIdx_VecIdxMap))
+		{
+			return nullptr;
+		}
+
 		assert(m_RegisteredUsers.size() >= it->second && "Engine error: idx out of bounds!");
 		assert(m_RegisteredUsers[it->second].first == UserType::Keyboard && "User error: registered user does not have Usertype: keyboard");
 
@@ -187,6 +193,7 @@ namespace Pengin
 		m_InputCombos.clear();
 		m_InputBuffers.clear();
 		m_UserIdx_VecIdxMap.clear();
+		m_ExecutedActionsThisFrame.clear();
 	}
 
 	void InputManager::Reset() noexcept
@@ -208,6 +215,11 @@ namespace Pengin
 		{
 			inputbuffer->ClearBuffer();
 		}
+
+		for (auto& actions : m_ExecutedActionsThisFrame)
+		{
+			actions.clear();
+		}
 	}
 
 	void InputManager::MapCombo(const UserIndex& userIdx, const InputCombo& combo) noexcept
@@ -216,10 +228,31 @@ namespace Pengin
 
 		assert(it != end(m_UserIdx_VecIdxMap) && "user not added");
 
+		if (it == end(m_UserIdx_VecIdxMap))
+		{
+			return;
+		}
+
 		assert(combo.pComboActions.size() > 1 && "User error: Need more than one combo action");
 		assert(combo.pComboActions.size() >= combo.allowedDelay.size() && "User errror: Can not have more delays than actions");
 
 		m_InputCombos[it->second].emplace_back(combo);
+	}
+	bool InputManager::IsActionExecuted(const UserIndex& user, const std::string& actionName) const noexcept
+	{
+		auto it = m_UserIdx_VecIdxMap.find(user);
+
+		assert(it != end(m_UserIdx_VecIdxMap) && "user not valid");
+
+		if (it == end(m_UserIdx_VecIdxMap))
+		{
+			return false;
+		}
+		
+		assert(it->second < m_ExecutedActionsThisFrame.size());
+		assert(!actionName.empty());
+
+		return m_ExecutedActionsThisFrame[it->second].contains(actionName);
 	}
 }
 

@@ -35,6 +35,7 @@ namespace Pengo
 				auto& pengoComp = playerEntity.GetComponent<PengoComponent>();
 				assert(playerEntity.HasComponent<PlayerComponent>());
 
+				pengoComp.HandleInput(playerEntity.GetComponent<PlayerComponent>().userIdx);
 				pengoComp.Update(playerEntity.GetComponent<PlayerComponent>().userIdx);
 			}
 		}

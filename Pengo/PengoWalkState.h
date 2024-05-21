@@ -22,7 +22,7 @@ namespace Pengo
 
 		std::unique_ptr<Pengin::PlayerState> Update(const Pengin::UserIndex& userIndex);
 
-		std::unique_ptr<Pengin::PlayerState> HandleInput(const Pengin::UserIndex& userIndex, const std::string& actionName);
+		std::unique_ptr<Pengin::PlayerState> HandleInput(const Pengin::UserIndex& userIndex);
 
 		void OnExit()
 		{

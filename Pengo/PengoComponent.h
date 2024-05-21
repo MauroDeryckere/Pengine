@@ -40,11 +40,11 @@ namespace Pengo
 			}
 		}
 
-		void HandleInput(const Pengin::UserIndex& userIndex, const std::string& actionName)
+		void HandleInput(const Pengin::UserIndex& userIndex)
 		{
 			assert(pPlayerState);
 
-			auto pNewState = pPlayerState->HandleInput(userIndex, actionName);
+			auto pNewState = pPlayerState->HandleInput(userIndex);
 
 			if (pNewState)
 			{

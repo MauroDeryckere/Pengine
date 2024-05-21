@@ -10,8 +10,6 @@ void Pengo::Movement::Execute()
 
 	if (playerEntity.HasComponent<PengoComponent>())
 	{
-		playerEntity.GetComponent<PengoComponent>().HandleInput(GetUserIdx(), GetActionName());
-
 		const auto movementSpeed = playerEntity.GetComponent<PlayerComponent>().movementSpeed;
 		playerEntity.GetComponent<BodyComponent>().inputVelocity += (m_Direction * movementSpeed);
 	}
@@ -25,8 +23,7 @@ void Pengo::BreakBlock::Execute()
 
 	Entity playerEntity{ pActiveScene->GetPlayer(InputCommand::GetUserIdx()) };
 
-	if (playerEntity.HasComponent<PengoComponent>())
-	{
-		playerEntity.GetComponent<PengoComponent>().HandleInput(GetUserIdx(), GetActionName());
-	}
+	//if (playerEntity.HasComponent<PengoComponent>())
+	//{
+	//}
 }

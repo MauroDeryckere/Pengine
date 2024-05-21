@@ -8,6 +8,7 @@
 namespace Pengin
 {
 	using UserIndex = GameUUID;
+
 	class InputCommand
 	{
 	public:
