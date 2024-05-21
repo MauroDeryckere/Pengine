@@ -190,6 +190,9 @@
     <Filter Include="Source Files\Systems\Physics">
       <UniqueIdentifier>{06fb7ec9-a5ac-4bd9-a651-4780f766cfb9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Core\Threading">
+      <UniqueIdentifier>{086b40f4-81ab-4f1c-bac7-d9fa062c3b7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
@@ -1180,7 +1183,7 @@
       <Filter>Header Files\Core\Events\Der</Filter>
     </ClInclude>
     <ClInclude Include="ThreadSafeQueue.h">
-      <Filter>Header Files\Audio</Filter>
+      <Filter>Header Files\Core\Threading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

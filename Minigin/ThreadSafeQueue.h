@@ -8,21 +8,32 @@
 namespace Pengin
 {
     template<typename T>
+    requires std::is_move_assignable_v<T>
     class ThreadSafeQueue final
     {
     public:
         ThreadSafeQueue() = default;
         ~ThreadSafeQueue() = default;
 
-        void Push(T value) 
+        template<typename U>
+        requires std::is_convertible_v<U, T>
+        void Push(U&& value) noexcept
         {
             std::lock_guard<std::mutex> lock(m_Mutex);
-
-            m_Queue.push(std::move(value));
+            m_Queue.push(std::forward<U>(value));
             m_ConditionVariable.notify_one();
         }
 
-        bool TryPop(T& value) 
+        template<typename... Args>
+        requires std::is_constructible_v<T, Args...>
+        void Emplace(Args&&... args) noexcept
+        {
+            std::lock_guard<std::mutex> lock(m_Mutex);
+            m_Queue.emplace(std::forward<Args>(args)...);
+            m_ConditionVariable.notify_one();
+        }
+
+        [[nodiscard]] bool TryPop(T& value) noexcept
         {
             std::lock_guard<std::mutex> lock(m_Mutex);
 
@@ -37,13 +48,32 @@ namespace Pengin
             return true;
         }
 
-        void WaitAndPop(T& value) 
+        void WaitAndPop(T& value) noexcept
         {
             std::unique_lock<std::mutex> lock(m_Mutex);
 
             m_ConditionVariable.wait(lock, [this] { return !m_Queue.empty(); });
             value = std::move(m_Queue.front());
             m_Queue.pop();
+        }
+
+        [[nodiscard]] bool Empty() const noexcept
+        {
+            std::lock_guard<std::mutex> lock(m_Mutex);
+            return m_Queue.empty();
+        }
+
+        [[nodiscard]] size_t Size() const noexcept
+        {
+            std::lock_guard<std::mutex> lock(m_Mutex);
+            return m_Queue.size();
+        }
+
+        void Clear() noexcept
+        {
+            std::lock_guard<std::mutex> lock(m_Mutex);
+            m_Queue = std::queue<T>{ };
+            m_ConditionVariable.notify_all();
         }
 
         ThreadSafeQueue(const ThreadSafeQueue&) = delete;

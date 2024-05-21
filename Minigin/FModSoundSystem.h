@@ -142,7 +142,7 @@ namespace Pengin
 
 				FModSoundSystem* pSys{ static_cast<FModSoundSystem*>(userData) };
 
-				pSys->m_ChannelCallbackQueue.Push(pChannel);
+				pSys->m_ChannelCallbackQueue.Emplace(pChannel);
 
 				FMOD_MODE mode{};
 				pChannel->getMode(&mode);
@@ -153,7 +153,7 @@ namespace Pengin
 					pChannel->getCurrentSound(&pSound);
 					assert(pSound);
 
-					pSys->m_StreamEndCallbackQueue.Push(pSound);
+					pSys->m_StreamEndCallbackQueue.Emplace(pSound);
 				}
 			}
 
@@ -186,12 +186,12 @@ namespace Pengin
 
 				if (mode & FMOD_CREATESTREAM)
 				{
-					pSys->m_StreamLoadedCallbackQueue.Push(pSound);
+					pSys->m_StreamLoadedCallbackQueue.Emplace(pSound);
 
 				}
 				else
 				{
-					pSys->m_SoundLoadedCallbackQueue.Push(pSound);
+					pSys->m_SoundLoadedCallbackQueue.Emplace(pSound);
 				}
 			}
 
