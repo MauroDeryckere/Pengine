@@ -46,9 +46,16 @@ namespace Pengin
         std::shared_ptr<InputCommand> MapControllerAction(const UserIndex& userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
         std::shared_ptr<InputCommand> MapKeyboardAction(const UserIndex& userIdx, KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
 
+        //TODO
+        void UnMapControllerAction(const UserIndex& userIdx, ControllerButton button, InputState inputState) noexcept;
+        void UnMapKeyboardAction(const UserIndex& userIdx, KeyBoardKey button, InputState inputState) noexcept;
+        //----
+
         void MapCombo(const UserIndex& userIdx, const InputCombo& combo) noexcept;
 
         [[nodiscard]] bool IsActionExecuted(const UserIndex& user, const std::string& actionName) const noexcept;
+        
+        [[nodiscard]] uint32_t RegisteredControllers() const noexcept { return static_cast<uint32_t>(m_RegControllers); }
 
         void Clear() noexcept; //this clears everything, including users
         void Reset() noexcept; //this clears everything, but keeps the users and devices
@@ -75,7 +82,8 @@ namespace Pengin
         
         std::vector<std::unordered_set<std::string>> m_ExecutedActionsThisFrame;
 
-        static constexpr unsigned MAX_ALLOWED_CONTROLLERS{ 4 };
+        static constexpr uint8_t MAX_ALLOWED_CONTROLLERS{ 4 };
+        uint8_t m_RegControllers{ 0 };
 
         enum class KeyboardDevices
         {

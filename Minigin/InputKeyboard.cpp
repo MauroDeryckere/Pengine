@@ -17,6 +17,7 @@ namespace Pengin
 		void ProcessInputState();
 		void ProcessMappedActions(InputBuffer* const inputBuffer, std::unordered_set<std::string>& execActions);
 		void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
+		void UnMapInputAction(unsigned key, InputState inputState);
 
 		const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& GetMappedActions();
 
@@ -93,6 +94,19 @@ namespace Pengin
 	void WindowsKeyboardImpl::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
 		m_KeyboardActionMapping[static_cast<size_t>(inputState)][key] = std::move(pInputAction);
+	}
+
+	void WindowsKeyboardImpl::UnMapInputAction(unsigned key, InputState inputState)
+	{
+		auto it = m_KeyboardActionMapping[static_cast<size_t>(inputState)].find(key);
+
+		if (it == end(m_KeyboardActionMapping[static_cast<size_t>(inputState)]))
+		{
+			DEBUG_OUT("trying to unmap action for a key/state that has no action bound to it: " << key);
+			return;
+		}
+
+		m_KeyboardActionMapping[static_cast<size_t>(inputState)].erase(it);
 	}
 
 	const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& WindowsKeyboardImpl::GetMappedActions()
@@ -241,6 +255,11 @@ namespace Pengin
 	void InputKeyboard::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
 		m_WinImpl->MapActionToInput(key, inputState, pInputAction);
+	}
+
+	void InputKeyboard::UnMapInputAction(unsigned key, InputState inputState)
+	{
+		m_WinImpl->UnMapInputAction(key, inputState);
 	}
 
 	const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& InputKeyboard::GetMappedActions()

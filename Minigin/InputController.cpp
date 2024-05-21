@@ -23,6 +23,7 @@ namespace Pengin
 		void ProcessInputState();
 		void ProcessMappedActions(InputBuffer* const inputBuffer, std::unordered_set<std::string>& execActions);
 		void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
+		void UnMapInputAction(unsigned key, InputState inputState);
 
 		const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& GetMappedActions();
 
@@ -63,6 +64,8 @@ namespace Pengin
 		m_ControllerActionMapping(static_cast<size_t>(InputState::STATE_COUNT)) 
 	
 	{
+		assert(!m_FreeControllerIdxes.empty());
+
 		UpdateControllerIdx();
 	}
 
@@ -132,6 +135,19 @@ namespace Pengin
 	void WindowsInputControllerImpl::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
 		m_ControllerActionMapping[static_cast<size_t>(inputState)][key] = std::move(pInputAction);
+	}
+
+	void WindowsInputControllerImpl::UnMapInputAction(unsigned key, InputState inputState)
+	{
+		auto it = m_ControllerActionMapping[static_cast<size_t>(inputState)].find(key);
+
+		if (it == end(m_ControllerActionMapping[static_cast<size_t>(inputState)]))
+		{
+			DEBUG_OUT("trying to unmap action for a key/state that has no action bound to it: " << key);
+			return;
+		}
+
+		m_ControllerActionMapping[static_cast<size_t>(inputState)].erase(it);
 	}
 
 	const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& WindowsInputControllerImpl::GetMappedActions()
@@ -232,6 +248,11 @@ namespace Pengin
 	void InputController::MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction)
 	{
 		m_WinImpl->MapActionToInput(key, inputState, pInputAction);
+	}
+
+	void InputController::UnMapInputAction(unsigned key, InputState inputState)
+	{
+		m_WinImpl->UnMapInputAction(key, inputState);
 	}
 
 	const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& InputController::GetMappedActions()

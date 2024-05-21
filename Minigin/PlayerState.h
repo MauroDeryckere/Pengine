@@ -15,14 +15,16 @@ namespace Pengin
 	public:
 		PlayerState(const UserIndex& userIdx) :
 			m_UserIdx{ userIdx }
-		{}
+		{
+			assert(userIdx);
+		}
 
 		virtual ~PlayerState() = default;
 
 		virtual void OnEnter() {}
 		
+		virtual std::unique_ptr<PlayerState> HandleInput(const UserIndex& userIndex) { return nullptr; }
 		virtual std::unique_ptr<PlayerState> Update(const UserIndex&) { return nullptr; }
-		virtual std::unique_ptr<PlayerState> HandleInput(const UserIndex& userIndex) = 0;
 
 		virtual void OnExit() {}
 

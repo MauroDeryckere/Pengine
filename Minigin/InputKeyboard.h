@@ -19,6 +19,7 @@ namespace Pengin
 		virtual void ProcessActions(InputBuffer* const inputBuffer, std::unordered_set<std::string>& execActions) override;
 
 		virtual void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) override;
+		virtual void UnMapInputAction(unsigned key, InputState inputState) override;
 		virtual const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& GetMappedActions() override;
 
 		virtual void Clear() noexcept override;

@@ -33,12 +33,12 @@ namespace Pengin
 
 		for (size_t userIdx{ 0 }; userIdx < m_InputBuffers.size(); ++userIdx)
 		{
-			DEBUG_OUT("user: " << userIdx);
+			//DEBUG_OUT("user: " << userIdx);
 
-			for (const auto& str: m_ExecutedActionsThisFrame[userIdx])
-			{
-				DEBUG_OUT(str);
-			}
+			//for (const auto& str: m_ExecutedActionsThisFrame[userIdx])
+			//{
+			//	DEBUG_OUT(str);
+			//}
 
 			m_ExecutedActionsThisFrame[userIdx].clear();
 		}
@@ -118,9 +118,17 @@ namespace Pengin
 		}
 
 		const size_t userVecIdx{ m_RegisteredUsers.size() };
+		
+		if (usertype == UserType::Controller)
+		{
+			assert(m_RegControllers != MAX_ALLOWED_CONTROLLERS && "max allowed controllers reached");
+
+			m_RegControllers++;			
+		}
 
 		m_RegisteredUsers.resize(userVecIdx + 1);
 		m_RegisteredUsers.back().first = usertype;
+
 
 		m_InputCombos.resize(userVecIdx + 1);
 		m_InputBuffers.emplace_back(new InputBuffer{});
@@ -158,10 +166,7 @@ namespace Pengin
 
 		assert(m_RegisteredUsers.size() >= it->second && "Engine error: idx out of bounds!");
 		assert(m_RegisteredUsers[it->second].first == UserType::Controller && "User error: registered user does not have Usertype: controller");
-
 		assert(m_RegisteredUsers[it->second].second.size() == 1 && "Engine error : only one input device / controller user allowed.");
-
-		assert(std::count_if(m_RegisteredUsers.begin(), m_RegisteredUsers.end(), [](const auto& user) { return user.first == UserType::Controller; }) <= MAX_ALLOWED_CONTROLLERS && "Exceeded max allowed controllers");
 
 		//only has a controller right now
 		m_RegisteredUsers[it->second].second[0]->MapActionToInput(static_cast<unsigned>(button), inputState, pInputAction);
@@ -185,6 +190,41 @@ namespace Pengin
 		//only keyboard for now 
 		m_RegisteredUsers[it->second].second[0]->MapActionToInput(static_cast<unsigned>(key), inputState, pInputAction);
 		return pInputAction;
+	}
+
+	void InputManager::UnMapControllerAction(const UserIndex& userIdx, ControllerButton button, InputState inputState) noexcept
+	{
+		auto it = m_UserIdx_VecIdxMap.find(userIdx);
+		assert(it != end(m_UserIdx_VecIdxMap) && "user not added");
+
+		if (it == end(m_UserIdx_VecIdxMap))
+		{
+			return;
+		}
+
+		assert(m_RegisteredUsers.size() >= it->second && "Engine error: idx out of bounds!");
+		assert(m_RegisteredUsers[it->second].first == UserType::Controller && "User error: registered user does not have Usertype: controller");
+
+		//only has a controller right now
+		m_RegisteredUsers[it->second].second[0]->UnMapInputAction(static_cast<unsigned>(button), inputState);
+	}
+
+	void InputManager::UnMapKeyboardAction(const UserIndex& userIdx, KeyBoardKey button, InputState inputState) noexcept
+	{
+		auto it = m_UserIdx_VecIdxMap.find(userIdx);
+
+		assert(it != end(m_UserIdx_VecIdxMap) && "user not added");
+
+		if (it == end(m_UserIdx_VecIdxMap))
+		{
+			return;
+		}
+
+		assert(m_RegisteredUsers.size() >= it->second && "Engine error: idx out of bounds!");
+		assert(m_RegisteredUsers[it->second].first == UserType::Keyboard && "User error: registered user does not have Usertype: keyboard");
+
+		//only keyboard for now 
+		m_RegisteredUsers[it->second].second[0]->UnMapInputAction(static_cast<unsigned>(button), inputState);
 	}
 
 	void InputManager::Clear() noexcept

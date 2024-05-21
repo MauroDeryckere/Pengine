@@ -4,6 +4,8 @@
 #include "Event.h"
 #include "EntityId.h"
 
+//TODO move to pengo
+
 namespace Pengin
 {
 	class ScoreChangeEvent final : public BaseEvent

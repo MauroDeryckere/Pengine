@@ -25,6 +25,7 @@ namespace Pengin
 		virtual void ProcessActions(InputBuffer* const inputbuffer, std::unordered_set<std::string>& execActions) = 0;
 
 		virtual void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) = 0;
+		virtual void UnMapInputAction(unsigned key, InputState inputState) = 0;
 
 		virtual const std::vector<std::unordered_map<unsigned, std::shared_ptr<InputCommand>>>& GetMappedActions() = 0;
 
