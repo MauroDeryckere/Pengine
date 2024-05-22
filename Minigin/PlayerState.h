@@ -23,7 +23,7 @@ namespace Pengin
 
 		virtual void OnEnter() {}
 		
-		virtual std::unique_ptr<PlayerState> HandleInput(const UserIndex& userIndex) { return nullptr; }
+		virtual std::unique_ptr<PlayerState> HandleInput(const UserIndex&) { return nullptr; }
 		virtual std::unique_ptr<PlayerState> Update(const UserIndex&) { return nullptr; }
 
 		virtual void OnExit() {}
