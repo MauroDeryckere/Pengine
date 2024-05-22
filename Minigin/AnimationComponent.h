@@ -78,7 +78,7 @@ namespace Pengin
 			if (newFrame.IsCustomFrame())
 			{
 				assert(std::get<uint8_t>(newFrame.frame) < animations[newAnimatonIndex].frameCt);
-				currAnimationIdx = std::get<uint8_t>(newFrame.frame);
+				currFrame = std::get<uint8_t>(newFrame.frame);
 			}
 			else
 			{

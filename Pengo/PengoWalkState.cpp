@@ -36,19 +36,19 @@ namespace Pengo
 			{
 				if (body.velocity.x > 0.f)
 				{
-					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveRight)));
+					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveRight), true, true, SwitchAnimationEvent::NewFrame{ SwitchAnimationEvent::SwitchAnimationEventFrame::KeepCurrent }));
 				}
 				else if (body.velocity.x < 0.f)
 				{
-					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveLeft)));
+					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveLeft), true, true, SwitchAnimationEvent::NewFrame{ SwitchAnimationEvent::SwitchAnimationEventFrame::KeepCurrent }));
 				}
 				else if (body.velocity.y > 0.f)
 				{
-					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveDown)));
+					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveDown), true, true, SwitchAnimationEvent::NewFrame{ SwitchAnimationEvent::SwitchAnimationEventFrame::KeepCurrent }));
 				}
 				else if (body.velocity.y < 0.f)
 				{
-					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveUp)));
+					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::MoveUp), true, true, SwitchAnimationEvent::NewFrame{ SwitchAnimationEvent::SwitchAnimationEventFrame::KeepCurrent }));
 				}
 			}
 		}
