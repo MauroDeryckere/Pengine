@@ -8,6 +8,8 @@
 
 #include "SerializationRegistry.h"
 
+#include "SwitchAnimationEvent.h"
+
 namespace Pengin
 { 
 	struct AnimationData final
@@ -43,7 +45,7 @@ namespace Pengin
 	{
 		std::vector<AnimationData> animations { };
 		
-		float m_FrameTimer { 0.f };
+		float frameTimer { 0.f };
 
 		uint8_t currAnimationIdx { 0 };
 		uint8_t currFrame { 0 };
@@ -63,13 +65,50 @@ namespace Pengin
 
 		~AnimationComponent() = default;
 
+		void ChangeAnimation(const uint8_t newAnimatonIndex, bool keepPrevTime, bool startPlaying, SwitchAnimationEvent::NewFrame newFrame) noexcept
+		{
+			assert(newAnimatonIndex < animations.size());
+			currAnimationIdx = newAnimatonIndex;
+
+			frameTimer = keepPrevTime ?  std::min<float>(frameTimer, animations[newAnimatonIndex].frameDuration)
+									  :  0.f;
+
+			isPlaying = startPlaying;
+
+			if (newFrame.IsCustomFrame())
+			{
+				assert(std::get<uint8_t>(newFrame.frame) < animations[newAnimatonIndex].frameCt);
+				currAnimationIdx = std::get<uint8_t>(newFrame.frame);
+			}
+			else
+			{
+				switch (std::get<SwitchAnimationEvent::SwitchAnimationEventFrame>(newFrame.frame))
+				{
+				case SwitchAnimationEvent::SwitchAnimationEventFrame::First:
+					currFrame = 0;
+					break;
+
+				case SwitchAnimationEvent::SwitchAnimationEventFrame::KeepCurrent:
+					currFrame = std::clamp<uint8_t>(currFrame, 0, animations[newAnimatonIndex].frameCt - 1);
+					break;
+
+				case SwitchAnimationEvent::SwitchAnimationEventFrame::Last:
+					currFrame = animations[newAnimatonIndex].frameCt - 1;
+					break;
+				default:
+					break;
+				}
+			}
+		}
+
+
 		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
 		{
 			const auto& comp = ecs.GetComponent<AnimationComponent>(id);
 
 			fieldSer.SerializeField("AnimationData", comp.animations, fieldVector);
 
-			fieldSer.SerializeField("FrameTimer", comp.m_FrameTimer, fieldVector);
+			fieldSer.SerializeField("FrameTimer", comp.frameTimer, fieldVector);
 			fieldSer.SerializeField("CurrAnimationIdx", comp.currAnimationIdx, fieldVector);
 			fieldSer.SerializeField("CurrFrame", comp.currFrame, fieldVector);
 			fieldSer.SerializeField("IsPlaying", comp.isPlaying, fieldVector);
@@ -80,7 +119,7 @@ namespace Pengin
 
 			fieldSer.DeserializeField("AnimationData", comp.animations, serializedFields);
 
-			fieldSer.DeserializeField("FrameTimer", comp.m_FrameTimer, serializedFields);
+			fieldSer.DeserializeField("FrameTimer", comp.frameTimer, serializedFields);
 
 			fieldSer.DeserializeField("CurrAnimationIdx", comp.currAnimationIdx, serializedFields);
 			fieldSer.DeserializeField("CurrFrame", comp.currFrame, serializedFields);

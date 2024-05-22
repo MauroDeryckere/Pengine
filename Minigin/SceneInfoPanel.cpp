@@ -336,7 +336,7 @@ namespace Pengin
 					ImGui::TableNextColumn();
 					ImGui::TextUnformatted("Current frame time");
 					ImGui::TableNextColumn();
-					ImGui::Text("%f", aniComp.m_FrameTimer);
+					ImGui::Text("%f", aniComp.frameTimer);
 
 					ImGui::EndTable();
 				}

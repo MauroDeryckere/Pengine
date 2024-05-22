@@ -15,9 +15,9 @@ namespace Pengin
 		
 		for (auto it{ animationComps.begin() }; auto& entity : animationComps)
 		{
-			entity.m_FrameTimer += elapsedSec;
+			entity.frameTimer += elapsedSec;
 
-			if (entity.m_FrameTimer >= entity.animations[entity.currAnimationIdx].frameDuration)
+			if (entity.frameTimer >= entity.animations[entity.currAnimationIdx].frameDuration)
 			{
 				++entity.currFrame %= entity.animations[entity.currAnimationIdx].frameCt;
 
@@ -29,7 +29,7 @@ namespace Pengin
 
 				spriteComp.sourceRect = newSrcRect;
 
-				entity.m_FrameTimer -= entity.animations[entity.currAnimationIdx].frameDuration;
+				entity.frameTimer -= entity.animations[entity.currAnimationIdx].frameDuration;
 			}
 
 			++it;
@@ -44,19 +44,14 @@ namespace Pengin
 
 		auto& aniComp = m_ECS.GetComponent<AnimationComponent>(aniEv.GetEntityId());
 
-		assert(aniEv.GetNewAniIdx() < aniComp.animations.size());
-
-		if (aniComp.currAnimationIdx != aniEv.GetNewAniIdx())
+		if (aniComp.currAnimationIdx != aniEv.NewAniIdx())
 		{
-			aniComp.currAnimationIdx = aniEv.GetNewAniIdx(); //reset everything for now, could also add more eventData to allow setting a specific frame,... later
-			aniComp.currFrame = 0;
-			aniComp.m_FrameTimer = 0.f;
-
-			auto& spriteComp = m_ECS.GetComponent<SpriteComponent>(aniEv.GetEntityId());
+			aniComp.ChangeAnimation(aniEv.NewAniIdx(), aniEv.KeepPrevTime(), aniEv.IsPlaying(), aniEv.GetNewFrame());
 
 			auto newSrcRect = aniComp.animations[aniComp.currAnimationIdx].frame0sourceRect;
 			newSrcRect.x += aniComp.currFrame * newSrcRect.width;
 
+			auto& spriteComp = m_ECS.GetComponent<SpriteComponent>(aniEv.GetEntityId());
 			spriteComp.sourceRect = newSrcRect;
 		}
 	}
