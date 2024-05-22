@@ -8,12 +8,13 @@
 #include "PengoIdleState.h"
 
 #include "SerializationRegistry.h"
+#include "SceneManager.h"
 
 namespace Pengo
 {
 	struct PengoComponent final
 	{
-		std::unique_ptr<Pengin::PlayerState> pPlayerState{ std::make_unique<PengoIdleState>( Pengin::GameUUID{true} )};
+		std::unique_ptr<Pengin::PlayerState> pPlayerState;
 
 		void SetPlayerState(std::unique_ptr<Pengin::PlayerState> pState)
 		{
@@ -68,8 +69,10 @@ namespace Pengo
 		}
 		static void Deserialize(const Pengin::FieldSerializer& fieldSer, Pengin::ECS& ecs, const Pengin::EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<Pengin::GameUUID, Pengin::EntityId>& entityMap [[maybe_unused]] )
 		{
-			ecs.AddComponent<PengoComponent>(id);
+			auto& comp = ecs.AddComponent<PengoComponent>(id);
 
+			comp.pPlayerState = std::make_unique<PengoIdleState>( Pengin::GameUUID{} );
+			
 			fieldSer;
 			serializedFields;
 
