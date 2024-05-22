@@ -29,6 +29,7 @@
 
 #include "DebugDrawSystem.h"
 #include "PlayerSystem.h"
+#include "UIDisplaySystem.h"
 
 #include "TestSerComponent.h"
 
@@ -93,7 +94,11 @@ void LoadDemo()
 
 	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
 
-	pScene->RegisterSystems([](SystemManager& sysManager, ECS& ecs) { sysManager.RegisterSystem<Pengo::PlayerSystem>(std::make_shared<Pengo::PlayerSystem>(ecs) ); });
+	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs) 
+		{ 
+			sysManager.RegisterSystem<Pengo::PlayerSystem>(std::make_shared<Pengo::PlayerSystem>(ecs) ); 
+			sysManager.RegisterSystem<Pengo::UIDisplaySystem>(std::make_shared<Pengo::UIDisplaySystem>(ecs, pScene.get()) );
+		});
 
 	auto entt = pScene->CreateEntity({250,250,0});
 	auto& rc = entt.AddComponent<RectColliderComponent>();

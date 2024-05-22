@@ -51,6 +51,9 @@
     <ClCompile Include="PengoInputCommands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UIDisplaySystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PengoComponent.h">
@@ -79,6 +82,24 @@
     </ClInclude>
     <ClInclude Include="PengoRespawnEvent.h">
       <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="UIDisplaySystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreChangeEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthChangeEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplayComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

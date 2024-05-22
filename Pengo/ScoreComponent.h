@@ -10,14 +10,14 @@
 
 #include <vector>
 
-namespace Pengin
+namespace Pengo
 {
 	struct ScoreComponent final
 	{
 		unsigned score{};
-		std::vector<EntityId> scoreDisplays{};
+		std::vector<Pengin::EntityId> scoreDisplays{};
 
-		ScoreComponent(const std::vector<EntityId>& scoreDisplayIds = { }) :
+		ScoreComponent(const std::vector<Pengin::EntityId>& scoreDisplayIds = { }) :
 			score{ 0 },
 			scoreDisplays{ scoreDisplayIds }
 		{
@@ -26,7 +26,7 @@ namespace Pengin
 
 		~ScoreComponent() = default;
 
-		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
+		static void Serialize(const Pengin::FieldSerializer& fieldSer, const Pengin::ECS& ecs, const Pengin::EntityId id, std::vector<uint8_t>& fieldVector)
 		{
 			const auto& comp = ecs.GetComponent<ScoreComponent>(id);
 
@@ -37,12 +37,12 @@ namespace Pengin
 
 			for (auto entity : comp.scoreDisplays)
 			{
-				scoreDispUuids.emplace_back(entity != NULL_ENTITY_ID ? ecs.GetComponent<UUIDComponent>(entity).uuid.GetUUID_PrettyStr() : "NULL_UUID");
+				scoreDispUuids.emplace_back(entity != Pengin::NULL_ENTITY_ID ? ecs.GetComponent<Pengin::UUIDComponent>(entity).uuid.GetUUID_PrettyStr() : "NULL_UUID");
 			}
 
 			fieldSer.SerializeField("ScoreDisplayIds", scoreDispUuids, fieldVector);
 		}
-		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
+		static void Deserialize(const Pengin::FieldSerializer& fieldSer, Pengin::ECS& ecs, const Pengin::EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<Pengin::GameUUID, Pengin::EntityId>& entityMap [[maybe_unused]] )
 		{
 			auto& comp = ecs.AddComponent<ScoreComponent>(id);
 

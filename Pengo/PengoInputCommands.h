@@ -39,6 +39,44 @@ namespace Pengo
 		const glm::vec3 m_Direction;
 	};
 
+	class AttackPlayer final : public Pengin::InputCommand //bound to input for now
+	{
+	public:
+		AttackPlayer(const Pengin::UserIndex& user) :
+			InputCommand{ user, "Attack" }
+		{ }
+
+		virtual void Execute() override;
+		virtual ~AttackPlayer() override = default;
+
+		AttackPlayer(const AttackPlayer&) = delete;
+		AttackPlayer& operator=(const AttackPlayer&) = delete;
+		AttackPlayer(AttackPlayer&&) noexcept = delete;
+		AttackPlayer& operator=(AttackPlayer&&) noexcept = delete;
+
+	private:
+	};
+
+	class CollectScore final : public Pengin::InputCommand //bound to input for now
+	{
+	public:
+		CollectScore(const Pengin::UserIndex& user, unsigned score = 10) :
+			InputCommand{ user, "ScoreCollect" },
+			m_ScoreVal{ score }
+		{ }
+
+		virtual void Execute() override;
+		virtual ~CollectScore() override = default;
+
+		CollectScore(const CollectScore&) = delete;
+		CollectScore& operator=(const CollectScore&) = delete;
+		CollectScore(CollectScore&&) noexcept = delete;
+		CollectScore& operator=(CollectScore&&) noexcept = delete;
+
+	private:
+		const unsigned m_ScoreVal;
+	};
+
 	class BreakBlock final : public Pengin::InputCommand
 	{
 	public:

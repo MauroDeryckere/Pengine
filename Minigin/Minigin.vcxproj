@@ -507,7 +507,6 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)..\Data" /E /Y
     <ClInclude Include="DebugOutput.h" />
     <ClInclude Include="FieldSerializer.h" />
     <ClInclude Include="FPSSystem.h" />
-    <ClInclude Include="HealthChangeEvent.h" />
     <ClInclude Include="ImGUIWindow.h" />
     <ClInclude Include="InputInfoPanel.h" />
     <ClInclude Include="JsonConversion.h" />
@@ -520,8 +519,6 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)..\Data" /E /Y
     <ClInclude Include="SceneData.h" />
     <ClInclude Include="SceneFileData.h" />
     <ClInclude Include="SceneInfoPanel.h" />
-    <ClInclude Include="ScoreChangeEvent.h" />
-    <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="SerializationData.h" />
     <ClInclude Include="SerializationRegistry.h" />
     <ClInclude Include="JsonSerializer.h" />
@@ -534,7 +531,6 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)..\Data" /E /Y
     <ClInclude Include="SystemRegistry.h" />
     <ClInclude Include="TestSerComponent.h" />
     <ClInclude Include="ThreadSafeQueue.h" />
-    <ClInclude Include="UIDisplaySystem.h" />
     <ClInclude Include="GameUUID.h" />
     <ClInclude Include="UUIDComponent.h" />
     <ClInclude Include="BodyComponent.h" />
@@ -551,12 +547,10 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)..\Data" /E /Y
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="TextSystem.h" />
     <ClInclude Include="UtilStructs.h" />
-    <ClInclude Include="DisplayComponent.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSCounterComponent.h" />
-    <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="InputBuffer.h" />
     <ClInclude Include="InputCommand.h" />
     <ClInclude Include="InputCommands.h" />
@@ -624,7 +618,6 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)..\Data" /E /Y
     <ClCompile Include="SystemManager.cpp" />
     <ClCompile Include="TextSystem.cpp" />
     <ClCompile Include="Texture2D.cpp" />
-    <ClCompile Include="UIDisplaySystem.cpp" />
     <ClCompile Include="GameUUID.cpp" />
     <ClCompile Include="WorldPositionSystem.cpp" />
   </ItemGroup>

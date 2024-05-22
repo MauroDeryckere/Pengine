@@ -171,8 +171,12 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y</Command>
     <ClCompile Include="PengoInputCommands.cpp" />
     <ClCompile Include="PengoWalkState.cpp" />
     <ClCompile Include="PlayerSystem.cpp" />
+    <ClCompile Include="UIDisplaySystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DisplayComponent.h" />
+    <ClInclude Include="HealthChangeEvent.h" />
+    <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="PengoBlockBreakEvent.h" />
     <ClInclude Include="PengoBreakingBlockState.h" />
     <ClInclude Include="PengoDyingState.h" />
@@ -182,6 +186,9 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y</Command>
     <ClInclude Include="PengoRespawnEvent.h" />
     <ClInclude Include="PengoWalkState.h" />
     <ClInclude Include="PlayerSystem.h" />
+    <ClInclude Include="ScoreChangeEvent.h" />
+    <ClInclude Include="ScoreComponent.h" />
+    <ClInclude Include="UIDisplaySystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

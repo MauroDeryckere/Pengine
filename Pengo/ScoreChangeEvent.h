@@ -4,23 +4,21 @@
 #include "Event.h"
 #include "EntityId.h"
 
-//TODO move to pengo
-
-namespace Pengin
+namespace Pengo
 {
-	class ScoreChangeEvent final : public BaseEvent
+	class ScoreChangeEvent final : public Pengin::BaseEvent
 	{
 	public:
-		ScoreChangeEvent(const std::string& eventName, const EntityId entityId):
+		ScoreChangeEvent(const std::string& eventName, const Pengin::EntityId entityId):
 			BaseEvent{ eventName },
 			m_EntityID{ entityId }
 		{ 
-			assert(entityId != NULL_ENTITY_ID);
+			assert(entityId != Pengin::NULL_ENTITY_ID);
 		}
 
 		virtual ~ScoreChangeEvent() override = default;
 
-		[[nodiscard]] const EntityId GetEntityId() const noexcept { return m_EntityID; }
+		[[nodiscard]] const Pengin::EntityId GetEntityId() const noexcept { return m_EntityID; }
 
 		ScoreChangeEvent(const ScoreChangeEvent&) = delete;
 		ScoreChangeEvent(ScoreChangeEvent&&) = delete;
@@ -28,7 +26,7 @@ namespace Pengin
 		ScoreChangeEvent& operator=(const ScoreChangeEvent&&) = delete;
 
 	private:
-		const EntityId m_EntityID{ NULL_ENTITY_ID };
+		const Pengin::EntityId m_EntityID{ Pengin::NULL_ENTITY_ID };
 	};
 }
 

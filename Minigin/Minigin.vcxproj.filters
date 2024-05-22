@@ -121,18 +121,6 @@
     <Filter Include="Header Files\Core\ServiceLocator">
       <UniqueIdentifier>{3a8475bc-fdee-4551-af0a-cfb11e78dc6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Core\Events">
-      <UniqueIdentifier>{8972368e-7b72-4b31-b2b4-c48b615851a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Gameplay Systems">
-      <UniqueIdentifier>{80d4353f-ef05-471a-8123-a480e7f4da18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Gameplay Systems\Handling">
-      <UniqueIdentifier>{d12d81d6-e08e-49f2-94e0-5cee84dd334f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Core\Events\Base">
-      <UniqueIdentifier>{117caf8d-590c-45f1-9330-1fa0ccd4ffac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Events">
       <UniqueIdentifier>{2fea1fc2-174b-42b2-99d1-5b10b0e3705e}</UniqueIdentifier>
     </Filter>
@@ -163,9 +151,6 @@
     <Filter Include="Source Files\FileSys">
       <UniqueIdentifier>{b957fc6b-a3ff-4da6-83c5-436ab4c00ffd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Core\Events\Der">
-      <UniqueIdentifier>{d468c070-071b-424a-8c2f-886a9c16e0fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\FileSystem\Serialization">
       <UniqueIdentifier>{04414280-252d-4da1-82fa-f7af92480b09}</UniqueIdentifier>
     </Filter>
@@ -181,9 +166,6 @@
     <Filter Include="Header Files\FileSystem\Serialization\Core">
       <UniqueIdentifier>{9f3ba761-2b93-4a40-ba5f-8cf8f89c234e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Gameplay Systems\Physics">
-      <UniqueIdentifier>{2e5bc426-d4e1-4b67-bdaa-ae39f38285fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Systems\Physics">
       <UniqueIdentifier>{06fb7ec9-a5ac-4bd9-a651-4780f766cfb9}</UniqueIdentifier>
     </Filter>
@@ -192,6 +174,24 @@
     </Filter>
     <Filter Include="Header Files\State">
       <UniqueIdentifier>{a48db82b-e07d-4a21-ac7a-fbcb9b3a0c7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{8972368e-7b72-4b31-b2b4-c48b615851a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events\Base">
+      <UniqueIdentifier>{117caf8d-590c-45f1-9330-1fa0ccd4ffac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events\Der">
+      <UniqueIdentifier>{d468c070-071b-424a-8c2f-886a9c16e0fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ECS Systems">
+      <UniqueIdentifier>{80d4353f-ef05-471a-8123-a480e7f4da18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ECS Systems\Core">
+      <UniqueIdentifier>{d12d81d6-e08e-49f2-94e0-5cee84dd334f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ECS Systems\Physics">
+      <UniqueIdentifier>{2e5bc426-d4e1-4b67-bdaa-ae39f38285fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -291,9 +291,6 @@
     <ClInclude Include="TransformComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="HealthComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
@@ -312,14 +309,11 @@
     <ClInclude Include="BodyComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="DisplayComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="InputDevice.h">
       <Filter>Header Files\Input\InputDevices</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
-      <Filter>Header Files\Core\Events</Filter>
+      <Filter>Header Files\Events</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\isteamapplist.h">
       <Filter>Header Files\3rd Party\Steam</Filter>
@@ -468,9 +462,6 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="ScoreComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="ImGUIWindow.h">
       <Filter>Header Files\Rendering\ImGui</Filter>
     </ClInclude>
@@ -610,13 +601,13 @@
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="BaseSystem.h">
-      <Filter>Header Files\Gameplay Systems\Handling</Filter>
+      <Filter>Header Files\ECS Systems\Core</Filter>
     </ClInclude>
     <ClInclude Include="SystemManager.h">
-      <Filter>Header Files\Gameplay Systems\Handling</Filter>
+      <Filter>Header Files\ECS Systems\Core</Filter>
     </ClInclude>
     <ClInclude Include="SystemRegistry.h">
-      <Filter>Header Files\Gameplay Systems\Handling</Filter>
+      <Filter>Header Files\ECS Systems\Core</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\align.hpp">
       <Filter>Header Files\3rd Party\Boost</Filter>
@@ -1111,31 +1102,22 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">
-      <Filter>Header Files\Core\Events\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="HealthChangeEvent.h">
-      <Filter>Header Files\Core\Events\Der</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreChangeEvent.h">
-      <Filter>Header Files\Core\Events\Der</Filter>
+      <Filter>Header Files\Events\Base</Filter>
     </ClInclude>
     <ClInclude Include="AnimationSystem.h">
-      <Filter>Header Files\Gameplay Systems</Filter>
+      <Filter>Header Files\ECS Systems</Filter>
     </ClInclude>
     <ClInclude Include="DebugDrawSystem.h">
-      <Filter>Header Files\Gameplay Systems</Filter>
+      <Filter>Header Files\ECS Systems</Filter>
     </ClInclude>
     <ClInclude Include="FPSSystem.h">
-      <Filter>Header Files\Gameplay Systems</Filter>
+      <Filter>Header Files\ECS Systems</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem.h">
-      <Filter>Header Files\Gameplay Systems</Filter>
+      <Filter>Header Files\ECS Systems</Filter>
     </ClInclude>
     <ClInclude Include="TextSystem.h">
-      <Filter>Header Files\Gameplay Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="UIDisplaySystem.h">
-      <Filter>Header Files\Gameplay Systems</Filter>
+      <Filter>Header Files\ECS Systems</Filter>
     </ClInclude>
     <ClInclude Include="LoggingSoundSystem.h">
       <Filter>Header Files\Audio</Filter>
@@ -1162,25 +1144,25 @@
       <Filter>Header Files\FileSystem\Serialization\Data</Filter>
     </ClInclude>
     <ClInclude Include="CollisionEvent.h">
-      <Filter>Header Files\Core\Events\Der</Filter>
+      <Filter>Header Files\Events\Der</Filter>
     </ClInclude>
     <ClInclude Include="CollisionSystem.h">
-      <Filter>Header Files\Gameplay Systems\Physics</Filter>
+      <Filter>Header Files\ECS Systems\Physics</Filter>
     </ClInclude>
     <ClInclude Include="MovementSystem.h">
-      <Filter>Header Files\Gameplay Systems\Physics</Filter>
+      <Filter>Header Files\ECS Systems\Physics</Filter>
     </ClInclude>
     <ClInclude Include="WorldPositionSystem.h">
-      <Filter>Header Files\Gameplay Systems\Physics</Filter>
+      <Filter>Header Files\ECS Systems\Physics</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsSystem.h">
-      <Filter>Header Files\Gameplay Systems\Physics</Filter>
+      <Filter>Header Files\ECS Systems\Physics</Filter>
     </ClInclude>
     <ClInclude Include="PlayerState.h">
       <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="SwitchAnimationEvent.h">
-      <Filter>Header Files\Core\Events\Der</Filter>
+      <Filter>Header Files\Events\Der</Filter>
     </ClInclude>
     <ClInclude Include="ThreadSafeQueue.h">
       <Filter>Header Files\Core\Threading</Filter>
@@ -1218,9 +1200,6 @@
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="FPSSystem.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="UIDisplaySystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="AnimationSystem.cpp">
@@ -1326,7 +1305,7 @@
   <ItemGroup>
     <None Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api.json" />
     <None Include="Observer.h">
-      <Filter>Header Files\Core\Events</Filter>
+      <Filter>Header Files\Events</Filter>
     </None>
   </ItemGroup>
 </Project>

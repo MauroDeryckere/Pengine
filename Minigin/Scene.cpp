@@ -18,7 +18,6 @@
 #include "FPSSystem.h"
 #include "DebugDrawSystem.h"
 #include "AnimationSystem.h"
-#include "UIDisplaySystem.h"
 
 #include "PhysicsSystem.h"
 
@@ -44,7 +43,6 @@ namespace Pengin
 	void Scene::RegisterEngineSystems()
 	{
 		m_SysManager.RegisterSystem<FPSSystem>(std::make_shared<FPSSystem>(m_Ecs));
-		m_SysManager.RegisterSystem<UIDisplaySystem>(std::make_shared<UIDisplaySystem>(m_Ecs, this));
 		m_SysManager.RegisterSystem<TextSystem>(std::make_shared<TextSystem>(m_Ecs));
 		m_SysManager.RegisterSystem<AnimationSystem>(std::make_shared<AnimationSystem>(m_Ecs));
 		

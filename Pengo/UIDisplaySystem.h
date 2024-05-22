@@ -11,11 +11,16 @@ namespace Pengin
 	class Scene;
 	class Observer;
 	class BaseEvent;
+}
 
-	class UIDisplaySystem final : public BaseSystem
+namespace Pengo
+{
+
+
+	class UIDisplaySystem final : public Pengin::BaseSystem
 	{
 	public:
-		UIDisplaySystem(ECS& ecs, Scene* pScene);
+		UIDisplaySystem(Pengin::ECS& ecs, Pengin::Scene* pScene);
 		virtual ~UIDisplaySystem() override = default;
 
 		UIDisplaySystem(const UIDisplaySystem&) = delete;
@@ -24,13 +29,13 @@ namespace Pengin
 		UIDisplaySystem& operator=(const UIDisplaySystem&&) = delete;
 
 	private:
-		ECS& m_ECS;
-		Scene* m_pScene;
+		Pengin::ECS& m_ECS;
+		Pengin::Scene* m_pScene;
 
-		std::shared_ptr<Observer> m_pObserver;
+		std::shared_ptr<Pengin::Observer> m_pObserver;
 
-		void OnHealthChangeEvent(const BaseEvent& event);
-		void OnScoreCollectEvent(const BaseEvent& event);
+		void OnHealthChangeEvent(const Pengin::BaseEvent& event);
+		void OnScoreCollectEvent(const Pengin::BaseEvent& event);
 	};
 }
 

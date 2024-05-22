@@ -17,20 +17,21 @@
 #include "HealthChangeEvent.h"
 #include "ScoreChangeEvent.h"
 
-namespace Pengin
+namespace Pengo
 {
-	UIDisplaySystem::UIDisplaySystem(ECS& ecs, Scene* pScene) :
+	UIDisplaySystem::UIDisplaySystem(Pengin::ECS& ecs, Pengin::Scene* pScene) :
 		BaseSystem{ },
 		m_ECS { ecs },
 		m_pScene { pScene },
-		m_pObserver{ EventManager::GetInstance().CreateObserver() }
+		m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() }
 	{
-		m_pObserver->RegisterForEvent(m_pObserver, "OnHealthChangeEvent", [this](const BaseEvent& event) { OnHealthChangeEvent(event); } );
-		m_pObserver->RegisterForEvent(m_pObserver, "OnScoreCollectEvent", [this](const BaseEvent& event) { OnScoreCollectEvent(event); } );
+		m_pObserver->RegisterForEvent(m_pObserver, "OnHealthChangeEvent", [this](const Pengin::BaseEvent& event) { OnHealthChangeEvent(event); } );
+		m_pObserver->RegisterForEvent(m_pObserver, "OnScoreCollectEvent", [this](const Pengin::BaseEvent& event) { OnScoreCollectEvent(event); } );
 	}
 
-	void UIDisplaySystem::OnHealthChangeEvent(const BaseEvent& event)
+	void UIDisplaySystem::OnHealthChangeEvent(const Pengin::BaseEvent& event)
 	{
+		using namespace Pengin;
 		const HealthChangeEvent& healthEv{ static_cast<const HealthChangeEvent&>(event) };
 				
 		const EntityId id{ healthEv.GetEntityId() };
@@ -67,8 +68,9 @@ namespace Pengin
 			});
 	}
 
-	void UIDisplaySystem::OnScoreCollectEvent(const BaseEvent& event)
+	void UIDisplaySystem::OnScoreCollectEvent(const Pengin::BaseEvent& event)
 	{
+		using namespace Pengin;
 		const ScoreChangeEvent& scoreEv{ static_cast<const ScoreChangeEvent&>(event) };
 
 		const EntityId id{ scoreEv.GetEntityId() };
