@@ -8,7 +8,6 @@
 #include "PengoIdleState.h"
 
 #include "SerializationRegistry.h"
-#include "SceneManager.h"
 
 namespace Pengo
 {

@@ -28,7 +28,6 @@ namespace Pengin
 
 		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
 		{
-			//Wrong todo
 			const auto& comp = ecs.GetComponent<HealthComponent>(id);
 
 			fieldSer.SerializeField("Health", comp.health, fieldVector);
