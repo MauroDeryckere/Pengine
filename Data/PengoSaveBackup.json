@@ -386,7 +386,7 @@
                 },
                 "isPosDirty": false
             },
-            "struct Pengin::HealthComponent": {
+            "struct Pengo::HealthComponent": {
                 "Health": 3,
                 "HealthDisplayIds": [
                     "676c5dbc-5bde-4e93-8d44-a04925b83082"
@@ -396,7 +396,7 @@
                 "UserIdx": "4013a137-0aab-426c-8fba-53f4c148f7ea",
                 "MovementSpeed": 100
             },
-            "struct Pengin::ScoreComponent": {
+            "struct Pengo::ScoreComponent": {
                 "Score": 0,
                 "ScoreDisplayIds": [
                     "3b57420a-ec7d-4cfc-b782-f6748f9d1144"
@@ -601,7 +601,7 @@
                     255
                 ]
             },
-            "struct Pengin::TxtDisplayComponent": {
+            "struct Pengo::TxtDisplayComponent": {
                 "Prefix": "Player 1 Health: ",
                 "Postfix": ""
             }
@@ -659,7 +659,7 @@
                     255
                 ]
             },
-            "struct Pengin::TxtDisplayComponent": {
+            "struct Pengo::TxtDisplayComponent": {
                 "Prefix": "Player 1 Score: ",
                 "Postfix": ""
             }
@@ -696,7 +696,7 @@
                 },
                 "isPosDirty": false
             },
-            "struct Pengin::HealthComponent": {
+            "struct Pengo::HealthComponent": {
                 "Health": 3,
                 "HealthDisplayIds": [
                     "8582bda1-e6c0-4969-a892-70a6fa8f330d"
@@ -706,7 +706,7 @@
                 "UserIdx": "c19674bb-595e-4c3a-87a1-db4620131f2b",
                 "MovementSpeed": 50
             },
-            "struct Pengin::ScoreComponent": {
+            "struct Pengo::ScoreComponent": {
                 "Score": 0,
                 "ScoreDisplayIds": [
                     "a441b70d-89fd-4e31-9777-7c404b1fa586"
@@ -794,7 +794,7 @@
                     255
                 ]
             },
-            "struct Pengin::TxtDisplayComponent": {
+            "struct Pengo::TxtDisplayComponent": {
                 "Prefix": "Player 2 Health: ",
                 "Postfix": ""
             }
@@ -852,7 +852,7 @@
                     255
                 ]
             },
-            "struct Pengin::TxtDisplayComponent": {
+            "struct Pengo::TxtDisplayComponent": {
                 "Prefix": "Player 2 Score: ",
                 "Postfix": ""
             }
