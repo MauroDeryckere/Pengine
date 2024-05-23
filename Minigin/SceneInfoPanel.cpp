@@ -7,6 +7,7 @@
 
 #include "Scene.h"
 
+#include "TagComponent.h"
 #include "TransformComponent.h"
 #include "RectColliderComponent.h"
 #include "SpriteComponent.h"
@@ -36,7 +37,12 @@ namespace Pengin
 			const auto& transform = *it;
 
 			const bool hasSpriteComp{ ecs.HasComponent<SpriteComponent>(id) };
-			const bool treeNodeOpened = ImGui::TreeNode(("Entity ID: " + EntityIdToString(id)).c_str());
+
+			const std::string label = ecs.HasComponent<TagComponent>(id) ?
+				(ecs.GetComponent<TagComponent>(id).tag + " (entity ID: " + EntityIdToString(id) + " )") :
+				("Entity ID: " + EntityIdToString(id));
+
+			const bool treeNodeOpened = ImGui::TreeNode(label.c_str());
 
 			if (treeNodeOpened)
 			{

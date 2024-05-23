@@ -23,6 +23,8 @@ namespace Pengin
 		virtual void LoadSound(const SoundData& soundData) noexcept = 0;
 		virtual void UnLoadSound(const std::filesystem::path& soundPath) noexcept = 0;
 
+		virtual void Clear() noexcept = 0;
+
 		//It is important to load the sound first if you want a valid channel idx
 		virtual const ChannelId PlaySound(const SoundData& soundData) noexcept  = 0;
 
@@ -96,6 +98,8 @@ namespace Pengin
 		void Update() noexcept {}
 		void LoadSound(const SoundData&) noexcept {}
 		void UnLoadSound(const std::filesystem::path&) noexcept {}
+
+		void Clear() noexcept {}
 
 		const ChannelId PlaySound(const SoundData&) noexcept { return GameUUID::INVALID_UUID; }
 

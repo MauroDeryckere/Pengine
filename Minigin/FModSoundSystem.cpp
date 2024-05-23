@@ -269,6 +269,11 @@ namespace Pengin
 		}
 	}
 
+	void FModSoundSystem::Clear() noexcept
+	{
+		//TODO
+	}
+
 	const ChannelId FModSoundSystem::PlaySound(const SoundData& soundData) noexcept
 	{
 		assert(std::filesystem::exists(soundData.soundPath) && "Sound path invalid, doesn't exist");

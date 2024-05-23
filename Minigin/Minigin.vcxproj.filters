@@ -1167,6 +1167,9 @@
     <ClInclude Include="ThreadSafeQueue.h">
       <Filter>Header Files\Core\Threading</Filter>
     </ClInclude>
+    <ClInclude Include="TagComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_widgets.cpp">

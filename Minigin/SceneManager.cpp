@@ -70,29 +70,13 @@ namespace Pengin
 	}
 	void SceneManager::Update()
 	{
-		ServiceLocator::GetSoundSystem().Update();
 		EventManager::GetInstance().ProcessEventQueue();
+
+		ServiceLocator::GetSoundSystem().Update();
 
 		if (m_SceneCounter > 0)
 		{
 			GetActiveScene()->Update();
-		}
-
-		static bool test = false;
-
-		if (!test)
-		{
-			SoundData data{ "../Data/LargeTestSound.wav" };
-			data.isStream = false;
-
-			//ServiceLocator::GetSoundSystem().LoadSound(data);
-
-			//ServiceLocator::GetSoundSystem().PlaySound(data);
-			//ServiceLocator::GetSoundSystem().PlaySound(data);
-
-			//ServiceLocator::GetSoundSystem().UnLoadSound("../Data/LargeTestSound.wav");
-
-			test = true;
 		}
 	}
 

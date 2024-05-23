@@ -16,4 +16,6 @@
 
 #include "FPSCounterComponent.h"
 
+#include "TagComponent.h"
+
 #endif

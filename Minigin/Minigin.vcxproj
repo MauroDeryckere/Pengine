@@ -529,6 +529,7 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)..\Data" /E /Y
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="SystemManager.h" />
     <ClInclude Include="SystemRegistry.h" />
+    <ClInclude Include="TagComponent.h" />
     <ClInclude Include="TestSerComponent.h" />
     <ClInclude Include="ThreadSafeQueue.h" />
     <ClInclude Include="GameUUID.h" />

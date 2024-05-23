@@ -34,6 +34,12 @@ namespace Pengin
 			m_pRealSoundSystem->UnLoadSound(soundPath);
 		}
 
+		void Clear() noexcept
+		{
+			std::cout << "Clearing sound sys\n";
+			m_pRealSoundSystem->Clear();
+		}
+
 		const ChannelId PlaySound(const SoundData& soundData) noexcept
 		{
 			std::cout << "Playing sound: \n";

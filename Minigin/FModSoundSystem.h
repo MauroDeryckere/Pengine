@@ -49,6 +49,8 @@ namespace Pengin
 		void LoadSound(const SoundData& soundData) noexcept;
 		void UnLoadSound(const std::filesystem::path& soundPath) noexcept;
 
+		void Clear() noexcept;
+
 		//It is important to load the sound first if you want a valid channel id
 		const ChannelId PlaySound(const SoundData& soundData) noexcept;
 

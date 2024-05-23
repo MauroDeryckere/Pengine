@@ -283,6 +283,13 @@ namespace Pengin
 		assert(ecs.HasComponent<UUIDComponent>(id) && "Must have UUID component to exist in scene");
 		assert(ecs.HasComponent<TransformComponent>(id) && "Must have Transform component to exist in scene");
 
+
+		if (ecs.HasComponent<TagComponent>(id))
+		{
+			const auto& tag = ecs.GetComponent<TagComponent>(id);
+			j["Tag Component"] = tag.tag;
+		}
+
 		if (keepUUID)
 		{
 			const auto& uuidComp = ecs.GetComponent<UUIDComponent>(id);
@@ -335,6 +342,11 @@ namespace Pengin
 
 		assert(entity != NULL_ENTITY_ID);
 		assert(entityData.contains("Transform Component"));
+
+		if (entityData.contains("Tag Component"))
+		{
+			ecs.AddComponent<TagComponent>(entity, entityData["Tag Component"].get<std::string>());
+		}
 
 		if (entityData.contains("Transform Component"))
 		{
