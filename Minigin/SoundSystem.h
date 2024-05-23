@@ -2,6 +2,7 @@
 #define PENGIN_SOUNDSYSTEM
 
 #include "SoundData.h"
+#include "DebugOutput.h"
 
 #include "glm/vec3.hpp"
 #include <string>
@@ -34,6 +35,46 @@ namespace Pengin
 		virtual void MuteAll() noexcept = 0;
 		virtual void UnmuteAll() noexcept = 0;
 		virtual [[nodiscard]] bool IsMuted() const noexcept = 0;
+
+		//Util funtion to allow loading all files from a folder easily (will load all with default soundData parameters)
+		std::vector<SoundData> LoadSoundsFromFolder(const std::string& folderPath) noexcept
+		{
+			std::vector<SoundData> loadedSounds{ };
+
+			if (!std::filesystem::is_directory(folderPath) || !std::filesystem::exists(folderPath))
+			{
+				std::cerr << "Error: Folder does not exist - " << folderPath << std::endl;
+				return (loadedSounds);
+			}
+
+			try 
+			{
+				for (const auto& entry : std::filesystem::directory_iterator(folderPath)) 
+				{
+					if (entry.is_regular_file()) 
+					{
+						const auto& filePath = entry.path();
+
+						DEBUG_OUT("loaded sound from folder: " << filePath.string());
+
+						SoundData data{ filePath.string() };
+						LoadSound(data); //LoadSound will assert for a valid file extension
+
+						loadedSounds.emplace_back(std::move(data));
+					}
+				}
+			}
+			catch (const std::filesystem::filesystem_error& e) 
+			{
+				std::cerr << "Filesystem error: " << e.what() << std::endl;
+			}
+			catch (const std::exception& e) 
+			{
+				std::cerr << "Error: " << e.what() << std::endl;
+			}
+
+			return (loadedSounds);
+		}
 
 		//Conversion functions
 		[[nodiscard]] inline static float DbToVolume(const float dB) noexcept

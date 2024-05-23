@@ -442,7 +442,10 @@ namespace Pengin
 		exinfo.nonblockcallback = &NonBlockLoadCallback;
 		exinfo.userdata = this;
 
-		ErrorCheck(m_pSystem->createSound(soundData.soundPath.string().c_str(), flags, &exinfo, &pSound));
+		const auto res = m_pSystem->createSound(soundData.soundPath.string().c_str(), flags, &exinfo, &pSound);
+		assert(res != FMOD_RESULT::FMOD_ERR_FORMAT && "Bad file format"); 
+
+		ErrorCheck(res);
 	
 		if (pSound)
 		{

@@ -91,6 +91,7 @@ void LoadDemo()
 
 	sceneData.sceneFileData = data;
 
+	ServiceLocator::GetSoundSystem().LoadSoundsFromFolder("../Data/Audio");
 	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
 
 	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs) 
@@ -268,7 +269,7 @@ void RegisterControllerInput_DemoScene(const Pengin::InputData& inpData)
 
 	input.MapControllerAction(userIndex, ControllerButton::A, InputState::UpThisFrame, std::make_shared<AttackPlayer>(userIndex));
 	input.MapControllerAction(userIndex, ControllerButton::B, InputState::Pressed, std::make_shared<CollectScore>(userIndex));
-	input.MapControllerAction(userIndex, ControllerButton::X, InputState::DownThisFrame, std::make_shared<MakeSound>(userIndex, SoundData{"../Data/TestSound.wav"}));
+	input.MapControllerAction(userIndex, ControllerButton::X, InputState::DownThisFrame, std::make_shared<MakeSound>(userIndex, SoundData{"../Data/Audio/Act Start.mp3"}));
 }
 
 void RegisterKeyboardInput_DemoScene(const Pengin::InputData& inpData)
@@ -296,8 +297,10 @@ void RegisterKeyboardInput_DemoScene(const Pengin::InputData& inpData)
 	input.MapKeyboardAction(userIndex, KeyBoardKey::C, InputState::UpThisFrame, std::make_shared<AttackPlayer>(userIndex));
 	input.MapKeyboardAction(userIndex, KeyBoardKey::V, InputState::Pressed, std::make_shared<CollectScore>(userIndex));
 
-	SoundData data{ "../Data/TestSound.wav" };
-	data.isStream = false;
+	SoundData data{ "../Data/Audio/Act Start.mp3" };
+
+	ServiceLocator::GetSoundSystem().LoadSound(data);
+
 	input.MapKeyboardAction(userIndex, KeyBoardKey::B, InputState::DownThisFrame, std::make_shared<MakeSound>(userIndex, data));
 
 	auto a1 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::T, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "T down"));
