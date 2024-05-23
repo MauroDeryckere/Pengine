@@ -2,25 +2,17 @@
 #define ANIMATIONSYSTEM
 
 #include "BaseSystem.h"
-#include "EventManager.h"
-
-#include "SwitchAnimationEvent.h"
+#include "Observer.h"
 
 namespace Pengin
 {
 	class ECS;
+	class BaseEvent;
 
 	class AnimationSystem final : public BaseSystem
 	{
 	public:
-		AnimationSystem(ECS& ecs) :
-			BaseSystem{ },
-			m_ECS{ ecs },
-			m_pObserer{ EventManager::GetInstance().CreateObserver() }
-		{
-			m_pObserer->RegisterForEvent(m_pObserer, SwitchAnimationEvent::SWITCH_ANIMATION_NAME, [this](const BaseEvent& event) { OnSwitchAnimationEvent(event); });
-		}
-
+		AnimationSystem(ECS& ecs);
 		virtual ~AnimationSystem() override = default;
 
 		virtual void Update() override;

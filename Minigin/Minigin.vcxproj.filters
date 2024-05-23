@@ -181,9 +181,6 @@
     <Filter Include="Header Files\Events\Base">
       <UniqueIdentifier>{117caf8d-590c-45f1-9330-1fa0ccd4ffac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Events\Der">
-      <UniqueIdentifier>{d468c070-071b-424a-8c2f-886a9c16e0fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\ECS Systems">
       <UniqueIdentifier>{80d4353f-ef05-471a-8123-a480e7f4da18}</UniqueIdentifier>
     </Filter>
@@ -192,6 +189,9 @@
     </Filter>
     <Filter Include="Header Files\ECS Systems\Physics">
       <UniqueIdentifier>{2e5bc426-d4e1-4b67-bdaa-ae39f38285fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events\Engine Defined Events">
+      <UniqueIdentifier>{d468c070-071b-424a-8c2f-886a9c16e0fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1144,7 +1144,7 @@
       <Filter>Header Files\FileSystem\Serialization\Data</Filter>
     </ClInclude>
     <ClInclude Include="CollisionEvent.h">
-      <Filter>Header Files\Events\Der</Filter>
+      <Filter>Header Files\Events\Engine Defined Events</Filter>
     </ClInclude>
     <ClInclude Include="CollisionSystem.h">
       <Filter>Header Files\ECS Systems\Physics</Filter>
@@ -1162,7 +1162,7 @@
       <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="SwitchAnimationEvent.h">
-      <Filter>Header Files\Events\Der</Filter>
+      <Filter>Header Files\Events\Engine Defined Events</Filter>
     </ClInclude>
     <ClInclude Include="ThreadSafeQueue.h">
       <Filter>Header Files\Core\Threading</Filter>

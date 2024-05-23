@@ -16,7 +16,7 @@ namespace Pengin
 	{
 		UtilStructs::Rectu16 frame0sourceRect{};
 
-		float frameDuration{};
+		float frameDuration{}; //0.f frame duration means we never switch a frame, some animations could have a single frame animation like an idle frame,...
 
 		uint8_t frameCt{};
 
@@ -59,7 +59,7 @@ namespace Pengin
 		{
 
 			assert(std::all_of(animations.begin(), animations.end(), [](const AnimationData& animation) { return animation.frameCt > 0; }) && "Can not have an animation with 0 frames");
-			assert(std::all_of(animations.begin(), animations.end(), [](const AnimationData& animation) { return animation.frameDuration > 0.f; }) && "Can not have an animation with negative or 0 frame duration");
+			assert(std::all_of(animations.begin(), animations.end(), [](const AnimationData& animation) { return animation.frameDuration >= 0.f; }) && "Can not have an animation with negative");
 			assert(std::all_of(animations.begin(), animations.end(), [](const AnimationData& animation) { return animation.frame0sourceRect; }) && "Must provide valid frame sourceRect");
 		}
 

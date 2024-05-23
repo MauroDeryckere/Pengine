@@ -1,5 +1,8 @@
 #include "AnimationSystem.h"
 
+#include "EventManager.h"
+#include "SwitchAnimationEvent.h"
+
 #include "ECS.h"
 #include "AnimationComponent.h"
 #include "SpriteComponent.h"
@@ -7,7 +10,15 @@
 #include "GameTime.h"
 
 namespace Pengin
-{ 
+{
+	AnimationSystem::AnimationSystem(ECS& ecs):
+		BaseSystem{ },
+		m_ECS{ ecs },
+		m_pObserer{ EventManager::GetInstance().CreateObserver() }
+	{
+		m_pObserer->RegisterForEvent(m_pObserer, SwitchAnimationEvent::SWITCH_ANIMATION_NAME, [this](const BaseEvent& event) { OnSwitchAnimationEvent(event); });
+	}
+
 	void AnimationSystem::Update()
 	{
 		const float elapsedSec = GameTime::GetInstance().GetElapsedSec();
@@ -15,6 +26,12 @@ namespace Pengin
 		
 		for (auto it{ animationComps.begin() }; auto& entity : animationComps)
 		{
+			if (entity.animations[entity.currAnimationIdx].frameDuration == 0.f)
+			{
+				++it;
+				continue;
+			}
+
 			entity.frameTimer += elapsedSec;
 
 			if (entity.frameTimer >= entity.animations[entity.currAnimationIdx].frameDuration)

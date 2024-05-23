@@ -75,12 +75,11 @@ void LoadDemo()
 {
 	using namespace Pengin;
 
-	//Most of thesceneData is actually read from a file if you chose a loadPath, just typing it here too for readability
+	//Most of thesceneData is actually read from a file if you choose a loadPath, just typing it here too for readability
 	SceneData sceneData{};
-	sceneData.name = "Demo Scene";
+	sceneData.name = "Pengo Scene";
 
 	SceneFileData data{};
-
 	data.sceneSavePath = "";
 	data.saveSceneOnDestroy = false;
 	data.sceneLoadPath = "../Data/PengoSaveBackup.json";

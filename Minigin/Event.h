@@ -2,9 +2,9 @@
 #define PENGIN_EVENT
 
 #include <string>
+
 namespace Pengin
 {
-	//the constructor is public here and not protected because it is possible to simply broadcast a BaseEvent (only eventName)
 	class BaseEvent
 	{
 	public:
@@ -23,6 +23,7 @@ namespace Pengin
 
 	private:
 		const std::string m_EventName;
+		//the constructor is public here and not protected because it is possible to simply broadcast a BaseEvent (only eventName)
 	};
 }
 
