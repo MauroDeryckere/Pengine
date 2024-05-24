@@ -494,6 +494,7 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)..\Data" /E /Y
     <ClInclude Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_gameserver.h" />
     <ClInclude Include="AchievementSystem.h" />
     <ClInclude Include="AnimationComponent.h" />
+    <ClInclude Include="GridComponent.h" />
     <ClInclude Include="SwitchAnimationEvent.h" />
     <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="BaseComponentStorage.h" />

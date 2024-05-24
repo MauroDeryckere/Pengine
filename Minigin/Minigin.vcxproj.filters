@@ -193,11 +193,20 @@
     <Filter Include="Header Files\Events\Engine Defined Events">
       <UniqueIdentifier>{d468c070-071b-424a-8c2f-886a9c16e0fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Physics">
+      <UniqueIdentifier>{d14ffe04-e18b-4365-b913-50d723ac5ff9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\General">
+      <UniqueIdentifier>{8896a8f5-d181-4e55-8c2f-b0604252b408}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Rendering">
+      <UniqueIdentifier>{63636b27-a461-4e62-bc33-6063b0390d02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\User">
+      <UniqueIdentifier>{420cd42f-47da-43de-a358-a2f35b9035be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Components.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="ECS.h">
       <Filter>Header Files\ECS\ECS</Filter>
     </ClInclude>
@@ -288,26 +297,11 @@
     <ClInclude Include="InputKeys.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="TransformComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TextComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="FPSCounterComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="BodyComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="InputDevice.h">
       <Filter>Header Files\Input\InputDevices</Filter>
@@ -453,9 +447,6 @@
     <ClInclude Include="AchievementSystem.h">
       <Filter>Header Files\Achievements</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="EntityId.h">
       <Filter>Header Files\ECS\ECS Components\Entities</Filter>
     </ClInclude>
@@ -464,9 +455,6 @@
     </ClInclude>
     <ClInclude Include="ImGUIWindow.h">
       <Filter>Header Files\Rendering\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="RectColliderComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\backends\imgui_impl_sdlrenderer2.h">
       <Filter>Header Files\3rd Party\ImGui</Filter>
@@ -503,9 +491,6 @@
     </ClInclude>
     <ClInclude Include="GameUUID.h">
       <Filter>Header Files\Core\UUID</Filter>
-    </ClInclude>
-    <ClInclude Include="UUIDComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="SceneData.h">
       <Filter>Header Files\Scene</Filter>
@@ -593,9 +578,6 @@
     </ClInclude>
     <ClInclude Include="..\3rdParty\boost_1_84_0\boost\uuid\uuid_serialize.hpp">
       <Filter>Header Files\3rd Party\Boost\UUID</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="SceneFileData.h">
       <Filter>Header Files\Scene</Filter>
@@ -1098,9 +1080,6 @@
     <ClInclude Include="SoundData.h">
       <Filter>Header Files\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="DebugDrawComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>Header Files\Events\Base</Filter>
     </ClInclude>
@@ -1121,9 +1100,6 @@
     </ClInclude>
     <ClInclude Include="LoggingSoundSystem.h">
       <Filter>Header Files\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="TestSerComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="FieldSerializer.h">
       <Filter>Header Files\FileSystem\Serialization\Field</Filter>
@@ -1167,8 +1143,47 @@
     <ClInclude Include="ThreadSafeQueue.h">
       <Filter>Header Files\Core\Threading</Filter>
     </ClInclude>
+    <ClInclude Include="BodyComponent.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
     <ClInclude Include="TagComponent.h">
-      <Filter>Header Files\Components</Filter>
+      <Filter>Header Files\Components\General</Filter>
+    </ClInclude>
+    <ClInclude Include="GridComponent.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSCounterComponent.h">
+      <Filter>Header Files\Components\General</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugDrawComponent.h">
+      <Filter>Header Files\Components\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>Header Files\Components\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="TextComponent.h">
+      <Filter>Header Files\Components\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteComponent.h">
+      <Filter>Header Files\Components\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>Header Files\Components\General</Filter>
+    </ClInclude>
+    <ClInclude Include="RectColliderComponent.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="TestSerComponent.h">
+      <Filter>Header Files\Components\General</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Header Files\Components\General</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Header Files\Components\User</Filter>
+    </ClInclude>
+    <ClInclude Include="UUIDComponent.h">
+      <Filter>Header Files\Components\User</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

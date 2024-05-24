@@ -97,4 +97,23 @@ namespace Pengin
         }(); \
     }
 
+
+#define CONCATENATE_IMPL(s1, s2) s1##s2
+#define CONCATENATE(s1, s2) CONCATENATE_IMPL(s1, s2)
+#define REGISTER_SERIALIZATION_FUNCTION_WITH_TYPEID(ComponentType, SerializeFunc) \
+    namespace { \
+        static const bool CONCATENATE(ComponentType, _registerSer) = []() { \
+            Pengin::SerializationRegistry::GetInstance().RegisterSerializationFunction<ComponentType>(SerializeFunc); \
+            return true; \
+        }(); \
+    }
+
+#define REGISTER_DESERIALIZATION_FUNCTION_WITH_TYPEID(ComponentType, DeSerializeFunc) \
+    namespace { \
+        static const bool CONCATENATE(ComponentType, _registerDeSer) = []() { \
+            Pengin::SerializationRegistry::GetInstance().RegisterDeSerializationFunction<ComponentType>(DeSerializeFunc); \
+            return true; \
+        }(); \
+    }
+
 #endif

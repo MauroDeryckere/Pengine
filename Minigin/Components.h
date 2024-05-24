@@ -16,6 +16,8 @@
 
 #include "FPSCounterComponent.h"
 
+#include "GridComponent.h"
+
 #include "TagComponent.h"
 
 #endif

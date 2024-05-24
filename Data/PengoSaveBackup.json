@@ -58,83 +58,13 @@
                 },
                 "isPosDirty": false
             },
-            "struct Pengin::BodyComponent": {
-                "Velocity": [
-                    0,
-                    0,
-                    0
-                ],
-                "CurrPosition": [
-                    0,
-                    0,
-                    0
-                ],
-                "LastPosition": [
-                    0,
-                    0,
-                    0
-                ],
-                "IsStatic": true
-            },
-            "struct Pengin::RectColliderComponent": {
-                "CollRect": [
-                    0,
-                    0,
-                    100,
-                    100
-                ]
-            },
             "struct Pengin::SpriteComponent": {
-                "Texturepath": "background.tga",
+                "Texturepath": "PengoFieldAndBlocks.png",
                 "SourceRect": [
                     0,
                     0,
-                    0,
-                    0
-                ],
-                "IsVisible": true
-            }
-        },
-        {
-            "Tag Component": "Logo",
-            "UUID": "2b64f87a-74fa-4b7b-b025-ccbc26c847a6",
-            "Transform Component": {
-                "worldPos": [
-                    216.0,
-                    180.0,
-                    0.0
-                ],
-                "localPos": [
-                    216.0,
-                    180.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            },
-            "struct Pengin::SpriteComponent": {
-                "Texturepath": "logo.tga",
-                "SourceRect": [
-                    0,
-                    0,
-                    0,
-                    0
+                    226,
+                    259
                 ],
                 "IsVisible": true
             }
@@ -183,7 +113,7 @@
                 "IsVisible": true
             },
             "struct Pengin::TextComponent": {
-                "Text": "Programming 4 Assignment",
+                "Text": "Pengo",
                 "FontPath": "Lingua.otf",
                 "FontSize": 36,
                 "Color": [
@@ -349,7 +279,7 @@
                 "IsVisible": true
             },
             "struct Pengin::TextComponent": {
-                "Text": "58.6",
+                "Text": "19.9",
                 "FontPath": "Lingua.otf",
                 "FontSize": 36,
                 "Color": [
@@ -365,13 +295,13 @@
             "UUID": "453103fa-fc85-4ce9-af04-b9d5b4fe2ead",
             "Transform Component": {
                 "worldPos": [
-                    128.0147705078125,
-                    -6.689118385314941,
+                    148.01446533203125,
+                    63.3110237121582,
                     0.0
                 ],
                 "localPos": [
-                    128.0147705078125,
-                    -6.689118385314941,
+                    148.01446533203125,
+                    63.3110237121582,
                     0.0
                 ],
                 "rotation": [
@@ -404,13 +334,13 @@
                     0
                 ],
                 "CurrPosition": [
-                    128.915,
-                    -6.00002,
+                    148.915,
+                    64.0001,
                     0
                 ],
                 "LastPosition": [
-                    128.915,
-                    -6.00002,
+                    148.915,
+                    64.0001,
                     0
                 ],
                 "IsStatic": false
@@ -752,7 +682,7 @@
             }
         },
         {
-            "Tag Component": "Player 1 Health Display",
+            "Tag Component": "Player 2 Health Display",
             "UUID": "8582bda1-e6c0-4969-a892-70a6fa8f330d",
             "Transform Component": {
                 "worldPos": [
@@ -811,7 +741,7 @@
             }
         },
         {
-            "Tag Component": "Player 1 Score Display",
+            "Tag Component": "Player 2 Score Display",
             "UUID": "a441b70d-89fd-4e31-9777-7c404b1fa586",
             "Transform Component": {
                 "worldPos": [
@@ -927,6 +857,46 @@
                     100,
                     100
                 ]
+            }
+        },
+        {
+            "UUID": "497ab806-6e4c-49b0-b76f-51b3ec1bfe45",
+            "Transform Component": {
+                "worldPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "struct Pengin::GridComponent": {
+                "Cells": [],
+                "Rows": 0,
+                "Cols": 0,
+                "CellWidth": 0,
+                "CellHeight": 0
             }
         }
     ]
