@@ -19,14 +19,14 @@
             "InputFilePath": "../Data/InputTest.json",
             "SceneLoadPath": "../Data/PengoSaveBackup.json",
             "SceneSavePath": "../Data/PengoSaveBackup.json",
-            "SaveSceneOnDestroy": false,
+            "SaveSceneOnDestroy": true,
             "AutoSaveTime": 0.0,
             "KeepPrevInput": false
         }
     },
     "Entities": [
         {
-            "Tag Component": "Background",
+            "Tag Component": "Pengo Background",
             "UUID": "cf0f18cb-7425-460b-9221-838f8160d448",
             "Transform Component": {
                 "worldPos": [
@@ -45,8 +45,8 @@
                     0.0
                 ],
                 "scale": [
-                    1.0,
-                    1.0,
+                    3.0,
+                    3.0,
                     1.0
                 ],
                 "relation": {
@@ -61,12 +61,834 @@
             "struct Pengin::SpriteComponent": {
                 "Texturepath": "PengoFieldAndBlocks.png",
                 "SourceRect": [
+                    228,
                     0,
-                    0,
-                    226,
-                    259
+                    224,
+                    256
                 ],
                 "IsVisible": true
+            }
+        },
+        {
+            "Tag Component": "Pengo Grid",
+            "UUID": "cf0f18cb-7425-460b-9221-999f8160d448",
+            "Transform Component": {
+                "worldPos": [
+                    24.0,
+                    24.0,
+                    0.0
+                ],
+                "localPos": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    3.0,
+                    3.0,
+                    1.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "struct Pengin::GridComponent": {
+                "Cells": [
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    },
+                    {
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
+                    }
+                ],
+                "Rows": 15,
+                "Cols": 13,
+                "CellWidth": 16,
+                "CellHeight": 16
             }
         },
         {
@@ -279,7 +1101,7 @@
                 "IsVisible": true
             },
             "struct Pengin::TextComponent": {
-                "Text": "19.9",
+                "Text": "58.6",
                 "FontPath": "Lingua.otf",
                 "FontSize": 36,
                 "Color": [
@@ -295,13 +1117,13 @@
             "UUID": "453103fa-fc85-4ce9-af04-b9d5b4fe2ead",
             "Transform Component": {
                 "worldPos": [
-                    148.01446533203125,
-                    63.3110237121582,
+                    152.01441955566406,
+                    207.30946350097656,
                     0.0
                 ],
                 "localPos": [
-                    148.01446533203125,
-                    63.3110237121582,
+                    152.01441955566406,
+                    207.30946350097656,
                     0.0
                 ],
                 "rotation": [
@@ -310,8 +1132,8 @@
                     0.0
                 ],
                 "scale": [
-                    4.0,
-                    4.0,
+                    3.0,
+                    3.0,
                     0.0
                 ],
                 "relation": {
@@ -334,13 +1156,13 @@
                     0
                 ],
                 "CurrPosition": [
-                    148.915,
-                    64.0001,
+                    152.915,
+                    207.998,
                     0
                 ],
                 "LastPosition": [
-                    148.915,
-                    64.0001,
+                    152.915,
+                    207.998,
                     0
                 ],
                 "IsStatic": false
@@ -476,6 +1298,9 @@
                     16
                 ],
                 "IsVisible": true
+            },
+            "struct Pengin::OnGridTag": {
+                "GridId": "cf0f18cb-7425-460b-9221-999f8160d448"
             },
             "struct Pengo::PengoComponent": {},
             "struct Pengo::ScoreComponent": {
@@ -857,46 +1682,6 @@
                     100,
                     100
                 ]
-            }
-        },
-        {
-            "UUID": "497ab806-6e4c-49b0-b76f-51b3ec1bfe45",
-            "Transform Component": {
-                "worldPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "localPos": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            },
-            "struct Pengin::GridComponent": {
-                "Cells": [],
-                "Rows": 0,
-                "Cols": 0,
-                "CellWidth": 0,
-                "CellHeight": 0
             }
         }
     ]

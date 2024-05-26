@@ -38,24 +38,24 @@ namespace Pengin
 		{
 			const auto& comp = ecs.GetComponent<SpriteComponent>(id);
 
-			fieldSer.SerializeField("Texturepath", comp.pTexture ? comp.pTexture->GetPath() : "NO PATH", fieldVector);
+			fieldSer.SerializeField("Texturepath", comp.pTexture ? comp.pTexture->GetPath() : "NO PATH", ecs, fieldVector);
 
-			fieldSer.SerializeField("SourceRect", std::vector<uint16_t>{ comp.sourceRect.x, comp.sourceRect.y, comp.sourceRect.width, comp.sourceRect.height }, fieldVector);
-			fieldSer.SerializeField("IsVisible", comp.isVisible, fieldVector);
+			fieldSer.SerializeField("SourceRect", std::vector<uint16_t>{ comp.sourceRect.x, comp.sourceRect.y, comp.sourceRect.width, comp.sourceRect.height }, ecs, fieldVector);
+			fieldSer.SerializeField("IsVisible", comp.isVisible, ecs, fieldVector);
 		}
 		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
 		{
 			std::string texturePath{};
-			fieldSer.DeserializeField("Texturepath", texturePath, serializedFields);
+			fieldSer.DeserializeField("Texturepath", texturePath, serializedFields, entityMap);
 
 			auto& sprite = (texturePath == "NO PATH" ? ecs.AddComponent<SpriteComponent>(id) : ecs.AddComponent<SpriteComponent>(id, texturePath));
 
 			std::vector<uint16_t> srcRect{};
 
-			fieldSer.DeserializeField("SourceRect", srcRect, serializedFields);
+			fieldSer.DeserializeField("SourceRect", srcRect, serializedFields, entityMap);
 			sprite.sourceRect = UtilStructs::Rectu16{ srcRect[0], srcRect[1], srcRect[2], srcRect[3] };
 
-			fieldSer.DeserializeField("IsVisible", sprite.isVisible, serializedFields);
+			fieldSer.DeserializeField("IsVisible", sprite.isVisible, serializedFields, entityMap);
 		}
 	};
 

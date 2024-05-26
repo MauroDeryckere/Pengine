@@ -2,6 +2,8 @@
 #define PENGIN_FIELDSERIALIZER
 
 #include "ServiceLocator.h"
+#include "GameUUID.h"
+#include "EntityId.h"
 #include "DebugOutput.h"
 
 #include <limits>
@@ -49,18 +51,18 @@ namespace Pengin
 	};
 
 	template<typename T, typename T2>
-	concept SerClassConcept = requires(T2& serializer, const T& object, std::vector<uint8_t>&buffer)
+	concept SerClassConcept = requires(T2& serializer, const T& object, std::vector<uint8_t>&buffer, const ECS & ecs)
 	{
-		{ T::Serialize(serializer, object, buffer) } -> std::same_as<void>;
+		{ T::Serialize(serializer, object, buffer, ecs) } -> std::same_as<void>;
 	}
 	&& !ContainerWithIterators<T>
 	&& !std::is_same_v<T, std::string>
 	&& std::is_class_v<T>;
 
 	template<typename T, typename T2>
-	concept DeserClassConcept = requires(T2& serializer, T& object, const std::unordered_map<std::string, std::vector<uint8_t>>& buffer)
+	concept DeserClassConcept = requires(T2& serializer, T& object, const std::unordered_map<std::string, std::vector<uint8_t>>& buffer, const std::unordered_map<GameUUID, EntityId>& entityMap)
 	{
-		{ T::Deserialize(serializer, object, buffer) } -> std::same_as<void>;
+		{ T::Deserialize(serializer, object, buffer, entityMap) } -> std::same_as<void>;
 	}
 	&& !ContainerWithIterators<T>
 	&& !std::is_same_v<T, std::string>
@@ -100,7 +102,7 @@ namespace Pengin
 	{
 	public:
 		template <typename FieldType>
-		void SerializeField(const char* fieldName [[maybe_unused]], const FieldType& fieldValue [[maybe_unused]], std::vector<uint8_t>& fieldsOut [[maybe_unused]]) const noexcept
+		void SerializeField(const char* fieldName [[maybe_unused]], const FieldType& fieldValue [[maybe_unused]], const ECS& ecs [[maybe_unused]], std::vector<uint8_t>& fieldsOut [[maybe_unused]] ) const noexcept
 		{
 			static_assert(!std::is_pointer_v<FieldType> , "Can not serialize a pointer");
 			static_assert(AllowedSerTypesConcept<FieldType, FieldSerializer>, "Invalid serialize field type");
@@ -109,7 +111,7 @@ namespace Pengin
 			{
 				case SerializationType::Json:
 				{
-					SerializeFieldJson(fieldName, fieldValue, fieldsOut);
+					SerializeFieldJson(fieldName, fieldValue, ecs ,fieldsOut);
 					break;
 				}
 				case SerializationType::Invalid:
@@ -121,7 +123,7 @@ namespace Pengin
 		}
 
 		template<typename FieldType>
-		void DeserializeField(const char* fieldName [[maybe_unused]], FieldType& fieldValueOut [[maybe_unused]], const std::unordered_map<std::string, std::vector<uint8_t>>& fields [[maybe_unused]]) const noexcept
+		void DeserializeField(const char* fieldName [[maybe_unused]], FieldType& fieldValueOut [[maybe_unused]], const std::unordered_map<std::string, std::vector<uint8_t>>& fields [[maybe_unused]], const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]]) const noexcept
 		{
 			static_assert(!std::is_pointer_v<FieldType>, "Can not deserialize a pointer");
 			static_assert(AllowedDeserTypesConcept<FieldType, FieldSerializer>, "Invalid deserialize field type");
@@ -130,7 +132,7 @@ namespace Pengin
 			{
 				case SerializationType::Json:
 				{
-					DeserializeFieldJson(fieldName, fieldValueOut, fields);
+					DeserializeFieldJson(fieldName, fieldValueOut, fields, entityMap);
 					break;
 				}
 				case SerializationType::Invalid:
@@ -160,7 +162,7 @@ namespace Pengin
 
 	private:
 		template <typename FieldType>
-		void SerializeFieldJson(const char* fieldName, const FieldType& fieldValue, std::vector<uint8_t>& fieldsOut) const noexcept
+		void SerializeFieldJson(const char* fieldName, const FieldType& fieldValue, const ECS& ecs, std::vector<uint8_t>& fieldsOut) const noexcept
 		{
 			std::ostringstream oss;
 
@@ -170,7 +172,7 @@ namespace Pengin
 
 			oss << "\"" << fieldName << "\":";
 
-			SerializeFieldValJson(fieldValue, oss);
+			SerializeFieldValJson(fieldValue, ecs, oss);
 
 			const std::string& serializedField = oss.str();
 
@@ -180,7 +182,7 @@ namespace Pengin
 		}
 
 		template <typename FieldType>
-		void SerializeFieldValJson(const FieldType& fieldValue, std::ostringstream& oss) const noexcept
+		void SerializeFieldValJson(const FieldType& fieldValue, const ECS& ecs [[maybe_unused]], std::ostringstream& oss) const noexcept
 		{
 			if constexpr(ContainerWithIterators<FieldType>)
 			{
@@ -191,14 +193,14 @@ namespace Pengin
 					if constexpr (AssociativeContainer<FieldType>)
 					{
 						oss << "[";
-						SerializeFieldValJson((*it).first, oss);
+						SerializeFieldValJson((*it).first, ecs, oss);
 						oss << ",";
-						SerializeFieldValJson((*it).second, oss);
+						SerializeFieldValJson((*it).second, ecs, oss);
 						oss << "]";
 					}
 					else
 					{
-						SerializeFieldValJson(*it, oss);
+						SerializeFieldValJson(*it, ecs, oss);
 					}
 					if (it != std::prev(end(fieldValue)) && fieldValue.size() >= 1)
 					{
@@ -220,7 +222,7 @@ namespace Pengin
 				oss.str("");
 
 				const size_t lastVecIdx{ tempVec.size() - 1 };
-				FieldType::Serialize((*this), fieldValue, tempVec);
+				FieldType::Serialize((*this), fieldValue, tempVec, ecs);
 
 				tempVec.erase(tempVec.begin() + lastVecIdx + 1);
 
@@ -268,7 +270,7 @@ namespace Pengin
 
 	private:
 		template<typename FieldType>
-		void DeserializeFieldJson(const char* fieldName, FieldType& fieldValueOut, const std::unordered_map<std::string, std::vector<uint8_t>>& fields) const noexcept
+		void DeserializeFieldJson(const char* fieldName, FieldType& fieldValueOut, const std::unordered_map<std::string, std::vector<uint8_t>>& fields, const std::unordered_map<GameUUID, EntityId>& entityMap) const noexcept
 		{
 			auto fieldIt = fields.find(fieldName);
 			assert(fieldIt != end(fields) && "Fieldname not found in the fieldsMap, incorrect name or never serialized");
@@ -276,11 +278,11 @@ namespace Pengin
 			const auto& field{ fieldIt->second };
 			const std::string fieldStr(reinterpret_cast<const char*>(field.data()), field.size());
 
-			DeserializeValJson(fieldStr, fieldValueOut);
+			DeserializeValJson(fieldStr, fieldValueOut, entityMap);
 		}
 
 		template<typename FieldType>
-		void DeserializeValJson(const std::string& fieldStr, FieldType& fieldValueOut) const noexcept
+		void DeserializeValJson(const std::string& fieldStr, FieldType& fieldValueOut, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]]) const noexcept
 		{
 			if constexpr (ContainerWithIterators<FieldType>)
 			{
@@ -303,8 +305,8 @@ namespace Pengin
 						std::string convMappKeyStr{ reinterpret_cast<const char*>(mappedKey.data()), mappedKey.size() };
 						std::string convMappedValStr{ reinterpret_cast<const char*>(mappedVal.data()), mappedVal.size() };
 
-						DeserializeValJson(convMappKeyStr, key);
-						DeserializeValJson(convMappedValStr, element);
+						DeserializeValJson(convMappKeyStr, key, entityMap);
+						DeserializeValJson(convMappedValStr, element, entityMap);
 
 						container[key] = element;
 					}
@@ -321,7 +323,7 @@ namespace Pengin
 						typename FieldType::value_type element{};
 						std::string convFieldStr(reinterpret_cast<const char*>(value.data()), value.size());
 
-						DeserializeValJson(convFieldStr, element);
+						DeserializeValJson(convFieldStr, element, entityMap);
 						container.emplace_back(element);
 					}
 
@@ -331,7 +333,7 @@ namespace Pengin
 			else if constexpr (DeserClassConcept<FieldType, FieldSerializer>)
 			{
 				const auto tempFieldsMap = ServiceLocator::GetSerializer().ParseJsonStr(fieldStr);
-				FieldType::Deserialize((*this), fieldValueOut, tempFieldsMap);
+				FieldType::Deserialize((*this), fieldValueOut, tempFieldsMap, entityMap);
 			}
 			else if constexpr (BasicTypeConcept<FieldType>)
 			{

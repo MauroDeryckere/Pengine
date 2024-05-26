@@ -24,10 +24,15 @@
 #include "GameTime.h"
 #include "ServiceLocator.h"
 
+#include "SceneInfoPanel.h"
+#include "InputInfoPanel.h"
+
 namespace Pengin
 {
 	Scene::Scene(const SceneData& sceneData) :
-		m_SceneData{ sceneData }
+		m_SceneData{ sceneData },
+		m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>(this) },
+		m_InputInfoPanel{ std::make_unique<InputInfoPanel>() } 
 	{
 		RegisterEngineSystems();
 
@@ -159,7 +164,7 @@ namespace Pengin
 		return ent;
 	}
 
-	bool Scene::DestroyEntity(Entity entity, bool keepChildren)
+	void Scene::DestroyEntity(Entity entity, bool keepChildren) noexcept
 	{
 		entity.SetParent({ NULL_ENTITY_ID, this }, keepChildren);
 
@@ -201,12 +206,12 @@ namespace Pengin
 
 		m_UUID_EntityIdMap.erase(it);
 
-		return m_Ecs.DestroyEntity(id);
+		m_Ecs.DestroyEntity(id);
 	}
 
-	bool Scene::DestroyEntity(const EntityId entityId, bool keepChildren)
+	void Scene::DestroyEntity(const EntityId entityId, bool keepChildren) noexcept
 	{
-		return DestroyEntity({entityId, this }, keepChildren);
+		DestroyEntity({entityId, this }, keepChildren);
 	}
 
 	const GameUUID& Scene::GetUUID(const EntityId id) const noexcept

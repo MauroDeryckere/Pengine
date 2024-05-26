@@ -205,6 +205,9 @@
     <Filter Include="Header Files\Components\User">
       <UniqueIdentifier>{420cd42f-47da-43de-a358-a2f35b9035be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\General\Grid">
+      <UniqueIdentifier>{65ad9503-bcc2-4e20-bca9-0c8d9065b8d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ECS.h">
@@ -1149,9 +1152,6 @@
     <ClInclude Include="TagComponent.h">
       <Filter>Header Files\Components\General</Filter>
     </ClInclude>
-    <ClInclude Include="GridComponent.h">
-      <Filter>Header Files\Components\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="FPSCounterComponent.h">
       <Filter>Header Files\Components\General</Filter>
     </ClInclude>
@@ -1184,6 +1184,15 @@
     </ClInclude>
     <ClInclude Include="UUIDComponent.h">
       <Filter>Header Files\Components\User</Filter>
+    </ClInclude>
+    <ClInclude Include="GridSystem.h">
+      <Filter>Header Files\ECS Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="GridComponent.h">
+      <Filter>Header Files\Components\General\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="OnGridTag.h">
+      <Filter>Header Files\Components\General\Grid</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1318,6 +1327,9 @@
     </ClCompile>
     <ClCompile Include="WorldPositionSystem.cpp">
       <Filter>Source Files\Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="GridSystem.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

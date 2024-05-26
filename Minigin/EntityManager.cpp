@@ -27,21 +27,9 @@ namespace Pengin
 		return m_EntityCompFlags.Contains(id);
 	}
 
-	bool EntityManager::DestroyEntity(const EntityId id) noexcept
-	{
-		const auto& ownedCompTypes{ GetAllCompTypes(id) };
-		
-		for (const auto& comp : ownedCompTypes)
-		{
-			if (!m_ComponentManagerRef.RemoveComponent(comp, id))
-			{
-				return false;
-			}
-		}
-				
+	void EntityManager::DestroyEntity(const EntityId id) noexcept
+	{		
 		m_EntityCompFlags.Remove(id);
-
-		return true;
 	}
 
 	const std::vector<EntityId>& EntityManager::GetAllEntityIds() const noexcept

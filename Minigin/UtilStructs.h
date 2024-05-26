@@ -11,7 +11,8 @@ namespace Pengin
 {
 	namespace UtilStructs
 	{
-		template<typename T>
+		template<typename T> 
+		requires std::is_arithmetic_v<T>
 		struct Rect final
 		{
 			T x;
@@ -33,6 +34,7 @@ namespace Pengin
 				width(_width),
 				height(_height)
 			{ }
+
 
 			Rect(const Rect& other) noexcept = default; 
 			Rect(Rect&& other) noexcept = default;
@@ -59,10 +61,12 @@ namespace Pengin
 
 		using Rect8 = Rect<int8_t>;
 		using Rect16 = Rect<int16_t>; 
+		using Rect32 = Rect<int32_t>;
 		using Recti = Rect<int32_t>;
 		
 		using Rectu8 = Rect<uint8_t>;
 		using Rectu16 = Rect<uint16_t>; 
+		using Rectu32 = Rect<uint32_t>; 
 		using Rectu = Rect<uint32_t>;
 	}
 
@@ -71,37 +75,48 @@ namespace Pengin
 		constexpr float EPSILON{ 0.001f };
 
 		template<typename T>
-		[[nodiscard]] inline constexpr bool IsCollidingAABB(const UtilStructs::Rect<T>& rect1, const UtilStructs::Rect<T>& rect2) noexcept
+		[[nodiscard]] inline constexpr bool IsPointInRect(const UtilStructs::Rect<T>& rect, T px, T py) noexcept
 		{
+			static_assert(std::is_arithmetic_v<T>, "IsPointInRect requires arithmetic types");
+		
 			if constexpr (std::is_floating_point_v<T>)
 			{
 				constexpr T CASTED_EPS{ static_cast<T>(EPSILON) };
 
-				if (rect1.x + rect1.width + CASTED_EPS < rect2.x || rect2.x + rect2.width + CASTED_EPS < rect1.x)
-				{
-					return false;
-				}
-
-				if (rect1.y + rect1.height + CASTED_EPS < rect2.y || rect2.y + rect2.height + CASTED_EPS < rect1.y)
-				{
-					return false;
-				}
-				
-				return true;
+				return !(px + CASTED_EPS < rect.x ||
+						px > rect.x + rect.width + CASTED_EPS ||
+						py + CASTED_EPS < rect.y ||
+						py > rect.y + rect.height + CASTED_EPS);
 			}
 			else
 			{
-				if ((rect1.x + rect1.width) < rect2.x || (rect2.x + rect2.width) < rect1.x)
-				{
-					return false;
-				}
+				return !(px < rect.x ||
+						px > rect.x + rect.width ||
+						py < rect.y ||
+						py > rect.y + rect.height);
+			}
+		}
 
-				if (rect1.y > (rect2.y + rect2.height) || rect2.y > (rect1.y + rect1.height))
-				{
-					return false;
-				}
+		template<typename T>
+		[[nodiscard]] inline constexpr bool IsCollidingAABB(const UtilStructs::Rect<T>& rect1, const UtilStructs::Rect<T>& rect2) noexcept
+		{
+			static_assert(std::is_arithmetic_v<T>, "IsCollidingAABB requires arithmetic types");
 
-				return true;
+			if constexpr (std::is_floating_point_v<T>)
+			{
+				constexpr T CASTED_EPS{ static_cast<T>(EPSILON) };
+
+				return !(rect1.x + rect1.width + CASTED_EPS < rect2.x ||
+						rect2.x + rect2.width + CASTED_EPS < rect1.x ||
+						rect1.y + rect1.height + CASTED_EPS < rect2.y ||
+						rect2.y + rect2.height + CASTED_EPS < rect1.y);
+			}
+			else
+			{
+				return !(rect1.x + rect1.width < rect2.x ||
+						rect2.x + rect2.width < rect1.x ||
+						rect1.y + rect1.height < rect2.y ||
+						rect2.y + rect2.height < rect1.y);
 			}
 		}
 	}

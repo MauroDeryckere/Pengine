@@ -495,6 +495,8 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)..\Data" /E /Y
     <ClInclude Include="AchievementSystem.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="GridComponent.h" />
+    <ClInclude Include="GridSystem.h" />
+    <ClInclude Include="OnGridTag.h" />
     <ClInclude Include="SwitchAnimationEvent.h" />
     <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="BaseComponentStorage.h" />
@@ -597,6 +599,7 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)..\Data" /E /Y
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSSystem.cpp" />
+    <ClCompile Include="GridSystem.cpp" />
     <ClCompile Include="ImGUIWindow.cpp" />
     <ClCompile Include="InputBuffer.cpp" />
     <ClCompile Include="InputCommand.cpp" />

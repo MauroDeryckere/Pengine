@@ -25,15 +25,15 @@ namespace Pengo
 		{ 
 			const auto& comp = ecs.GetComponent<TxtDisplayComponent>(id);
 
-			fieldSer.SerializeField("Prefix", comp.prefix, fieldVector);
-			fieldSer.SerializeField("Postfix", comp.postfix, fieldVector);
+			fieldSer.SerializeField("Prefix", comp.prefix, ecs, fieldVector);
+			fieldSer.SerializeField("Postfix", comp.postfix, ecs, fieldVector);
 		}
 		static void Deserialize(const Pengin::FieldSerializer& fieldSer, Pengin::ECS& ecs, const Pengin::EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<Pengin::GameUUID, Pengin::EntityId>& entityMap [[maybe_unused]] )
 		{
 			auto& comp = ecs.AddComponent<TxtDisplayComponent>(id);
 
-			fieldSer.DeserializeField("Prefix", comp.prefix, serializedFields);
-			fieldSer.DeserializeField("Postfix", comp.postfix, serializedFields);
+			fieldSer.DeserializeField("Prefix", comp.prefix, serializedFields, entityMap);
+			fieldSer.DeserializeField("Postfix", comp.postfix, serializedFields, entityMap);
 		}
 	};
 

@@ -71,11 +71,11 @@ namespace Pengin
 	void SceneManager::Update()
 	{
 		EventManager::GetInstance().ProcessEventQueue();
-
 		ServiceLocator::GetSoundSystem().Update();
 
 		if (m_SceneCounter > 0)
 		{
+			GetActiveScene()->m_Ecs.CleanUpDestroys(); //any component removes / entity destroys should happen here and not before an event or during the update.
 			GetActiveScene()->Update();
 		}
 	}

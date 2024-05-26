@@ -30,7 +30,7 @@ namespace Pengo
 		{
 			const auto& comp = ecs.GetComponent<ScoreComponent>(id);
 
-			fieldSer.SerializeField("Score", comp.score, fieldVector);
+			fieldSer.SerializeField("Score", comp.score, ecs, fieldVector);
 
 			std::vector<std::string> scoreDispUuids;
 			scoreDispUuids.reserve(comp.scoreDisplays.size());
@@ -40,16 +40,16 @@ namespace Pengo
 				scoreDispUuids.emplace_back(entity != Pengin::NULL_ENTITY_ID ? ecs.GetComponent<Pengin::UUIDComponent>(entity).uuid.GetUUID_PrettyStr() : "NULL_UUID");
 			}
 
-			fieldSer.SerializeField("ScoreDisplayIds", scoreDispUuids, fieldVector);
+			fieldSer.SerializeField("ScoreDisplayIds", scoreDispUuids, ecs, fieldVector);
 		}
 		static void Deserialize(const Pengin::FieldSerializer& fieldSer, Pengin::ECS& ecs, const Pengin::EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<Pengin::GameUUID, Pengin::EntityId>& entityMap [[maybe_unused]] )
 		{
 			auto& comp = ecs.AddComponent<ScoreComponent>(id);
 
-			fieldSer.DeserializeField("Score", comp.score, serializedFields);
+			fieldSer.DeserializeField("Score", comp.score, serializedFields, entityMap);
 
 			std::vector<std::string> idVec{};
-			fieldSer.DeserializeField("ScoreDisplayIds", idVec, serializedFields);
+			fieldSer.DeserializeField("ScoreDisplayIds", idVec, serializedFields, entityMap);
 
 			comp.scoreDisplays.reserve(idVec.size());
 			for (const auto& uuid : idVec)

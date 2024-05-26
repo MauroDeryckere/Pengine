@@ -76,18 +76,18 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
 	const SDL_WindowFlags windowFlags = static_cast<SDL_WindowFlags>( SDL_WINDOW_OPENGL
-																	| SDL_WINDOW_RESIZABLE
+																	//| SDL_WINDOW_RESIZABLE
 																	| SDL_WINDOW_ALLOW_HIGHDPI
 																	);
 	g_Window = SDL_CreateWindow(
 		"Pengine",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		640,
-		480,
+		672,
+		768,
 		windowFlags
 	);
-
+	
 	if (g_Window == nullptr) 
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());

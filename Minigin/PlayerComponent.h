@@ -26,16 +26,16 @@ namespace Pengin
 		{
 			const auto& comp = ecs.GetComponent<PlayerComponent>(id);
 
-			fieldSer.SerializeField("UserIdx", comp.userIdx.GetUUID_PrettyStr(), fieldVector);
-			fieldSer.SerializeField("MovementSpeed", comp.movementSpeed, fieldVector);
+			fieldSer.SerializeField("UserIdx", comp.userIdx.GetUUID_PrettyStr(),ecs,  fieldVector);
+			fieldSer.SerializeField("MovementSpeed", comp.movementSpeed, ecs, fieldVector);
 		}
 		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
 		{
 			std::string userIdxStr{};
 			float movementSpeed{};
 
-			fieldSer.DeserializeField("UserIdx", userIdxStr, serializedFields);
-			fieldSer.DeserializeField("MovementSpeed", movementSpeed, serializedFields);
+			fieldSer.DeserializeField("UserIdx", userIdxStr, serializedFields, entityMap);
+			fieldSer.DeserializeField("MovementSpeed", movementSpeed, serializedFields, entityMap);
 
 			ecs.AddComponent<PlayerComponent>(id, GameUUID{userIdxStr}, movementSpeed);
 		}

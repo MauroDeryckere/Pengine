@@ -9,9 +9,6 @@
 #include "SoundData.h"
 #include "ServiceLocator.h"
 
-#include "HealthChangeEvent.h"
-#include "ScoreChangeEvent.h"
-
 #include "ECS.h"
 #include "Entity.h"
 #include "Components.h"

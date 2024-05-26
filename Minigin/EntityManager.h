@@ -26,10 +26,9 @@ namespace Pengin
         const EntityId CreateEntity() noexcept;
         [[nodiscard]] bool HasEntity(const EntityId id) const noexcept;
 
-        [[nodiscard]] bool DestroyEntity(const EntityId id) noexcept;
+        void DestroyEntity(const EntityId id) noexcept;
 
         [[nodiscard]] const std::vector<EntityId>& GetAllEntityIds() const noexcept;
-
         [[nodiscard]] const std::vector<std::type_index> GetAllCompTypes(const EntityId id) const;
 
         void AddComponent(std::type_index typeIdx, const EntityId id) noexcept
@@ -47,7 +46,7 @@ namespace Pengin
         }
 
     private:
-        ComponentManager& m_ComponentManagerRef;
+        ComponentManager& m_ComponentManagerRef; //remove this ref and use the get all types to remove
 
         const std::unordered_map<std::type_index, size_t> m_TypeBitMap;
         const std::vector<std::type_index> m_TypeBitVector; //rev mapping

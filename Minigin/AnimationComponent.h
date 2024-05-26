@@ -20,24 +20,24 @@ namespace Pengin
 
 		uint8_t frameCt{};
 
-		static void Serialize(const FieldSerializer& fieldSer, const AnimationData& serStruct, std::vector<uint8_t>& fieldVector)
+		static void Serialize(const FieldSerializer& fieldSer, const AnimationData& serStruct, std::vector<uint8_t>& fieldVector, const ECS& ecs)
 		{
 			const std::vector<uint16_t> serSrcRect{ serStruct.frame0sourceRect.x, serStruct.frame0sourceRect.y, serStruct.frame0sourceRect.width, serStruct.frame0sourceRect.height };
 
-			fieldSer.SerializeField("Frame0SrcRect", serSrcRect, fieldVector);
-			fieldSer.SerializeField("FrameDuration", serStruct.frameDuration, fieldVector);
-			fieldSer.SerializeField("FrameCount", serStruct.frameCt, fieldVector);
+			fieldSer.SerializeField("Frame0SrcRect", serSrcRect, ecs, fieldVector);
+			fieldSer.SerializeField("FrameDuration", serStruct.frameDuration, ecs, fieldVector);
+			fieldSer.SerializeField("FrameCount", serStruct.frameCt, ecs, fieldVector);
 		}
-		static void Deserialize(const FieldSerializer& fieldSer, AnimationData& deserStruct, const std::unordered_map<std::string, std::vector<uint8_t>>& fields)
+		static void Deserialize(const FieldSerializer& fieldSer, AnimationData& deserStruct, const std::unordered_map<std::string, std::vector<uint8_t>>& fields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
 		{
 			std::vector<uint16_t> deserSrcRect{};
 
-			fieldSer.DeserializeField("Frame0SrcRect", deserSrcRect, fields);
+			fieldSer.DeserializeField("Frame0SrcRect", deserSrcRect, fields, entityMap);
 
 			deserStruct.frame0sourceRect = UtilStructs::Rectu16{ deserSrcRect[0], deserSrcRect[1], deserSrcRect[2], deserSrcRect[3] };
 
-			fieldSer.DeserializeField("FrameDuration", deserStruct.frameDuration, fields);
-			fieldSer.DeserializeField("FrameCount", deserStruct.frameCt, fields);
+			fieldSer.DeserializeField("FrameDuration", deserStruct.frameDuration, fields, entityMap);
+			fieldSer.DeserializeField("FrameCount", deserStruct.frameCt, fields, entityMap);
 		}
 	};
 
@@ -106,24 +106,24 @@ namespace Pengin
 		{
 			const auto& comp = ecs.GetComponent<AnimationComponent>(id);
 
-			fieldSer.SerializeField("AnimationData", comp.animations, fieldVector);
+			fieldSer.SerializeField("AnimationData", comp.animations, ecs, fieldVector);
 
-			fieldSer.SerializeField("FrameTimer", comp.frameTimer, fieldVector);
-			fieldSer.SerializeField("CurrAnimationIdx", comp.currAnimationIdx, fieldVector);
-			fieldSer.SerializeField("CurrFrame", comp.currFrame, fieldVector);
-			fieldSer.SerializeField("IsPlaying", comp.isPlaying, fieldVector);
+			fieldSer.SerializeField("FrameTimer", comp.frameTimer, ecs, fieldVector);
+			fieldSer.SerializeField("CurrAnimationIdx", comp.currAnimationIdx, ecs, fieldVector);
+			fieldSer.SerializeField("CurrFrame", comp.currFrame, ecs, fieldVector);
+			fieldSer.SerializeField("IsPlaying", comp.isPlaying, ecs, fieldVector);
 		}
 		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
 		{
 			auto& comp = ecs.AddComponent<AnimationComponent>(id);
 
-			fieldSer.DeserializeField("AnimationData", comp.animations, serializedFields);
+			fieldSer.DeserializeField("AnimationData", comp.animations, serializedFields, entityMap);
 
-			fieldSer.DeserializeField("FrameTimer", comp.frameTimer, serializedFields);
+			fieldSer.DeserializeField("FrameTimer", comp.frameTimer, serializedFields, entityMap);
 
-			fieldSer.DeserializeField("CurrAnimationIdx", comp.currAnimationIdx, serializedFields);
-			fieldSer.DeserializeField("CurrFrame", comp.currFrame, serializedFields);
-			fieldSer.DeserializeField("IsPlaying", comp.isPlaying, serializedFields);
+			fieldSer.DeserializeField("CurrAnimationIdx", comp.currAnimationIdx, serializedFields, entityMap);
+			fieldSer.DeserializeField("CurrFrame", comp.currFrame, serializedFields, entityMap);
+			fieldSer.DeserializeField("IsPlaying", comp.isPlaying, serializedFields, entityMap);
 		}
 	};
 

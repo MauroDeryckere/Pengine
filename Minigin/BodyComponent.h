@@ -31,12 +31,12 @@ namespace Pengin
 		{
 			const auto& comp = ecs.GetComponent<BodyComponent>(id);
 
-			fieldSer.SerializeField("Velocity", std::vector<float>{comp.velocity.x, comp.velocity.y, comp.velocity.z}, fieldVector);
+			fieldSer.SerializeField("Velocity", std::vector<float>{comp.velocity.x, comp.velocity.y, comp.velocity.z}, ecs, fieldVector);
 
-			fieldSer.SerializeField("CurrPosition", std::vector<float>{comp.currentPosition.x, comp.currentPosition.y, comp.currentPosition.z}, fieldVector);
-			fieldSer.SerializeField("LastPosition", std::vector<float>{comp.lastPosition.x, comp.lastPosition.y, comp.lastPosition.z}, fieldVector);
+			fieldSer.SerializeField("CurrPosition", std::vector<float>{comp.currentPosition.x, comp.currentPosition.y, comp.currentPosition.z}, ecs, fieldVector);
+			fieldSer.SerializeField("LastPosition", std::vector<float>{comp.lastPosition.x, comp.lastPosition.y, comp.lastPosition.z}, ecs, fieldVector);
 
-			fieldSer.SerializeField("IsStatic", comp.isStatic, fieldVector);
+			fieldSer.SerializeField("IsStatic", comp.isStatic, ecs, fieldVector);
 		}
 		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
 		{
@@ -44,18 +44,18 @@ namespace Pengin
 
 			std::vector<float> vec3f{};
 
-			fieldSer.DeserializeField("Velocity", vec3f, serializedFields);
+			fieldSer.DeserializeField("Velocity", vec3f, serializedFields, entityMap);
 			comp.velocity = { vec3f[0], vec3f[1], vec3f[2] };
 			vec3f.clear();
 
-			fieldSer.DeserializeField("CurrPosition", vec3f, serializedFields);
+			fieldSer.DeserializeField("CurrPosition", vec3f, serializedFields, entityMap);
 			comp.currentPosition = { vec3f[0], vec3f[1], vec3f[2] };
 			vec3f.clear();
 
-			fieldSer.DeserializeField("LastPosition", vec3f, serializedFields);
+			fieldSer.DeserializeField("LastPosition", vec3f, serializedFields, entityMap);
 			comp.lastPosition = { vec3f[0], vec3f[1], vec3f[2] };
 
-			fieldSer.DeserializeField("IsStatic", comp.isStatic, serializedFields);
+			fieldSer.DeserializeField("IsStatic", comp.isStatic, serializedFields, entityMap);
 		}
 	};
 

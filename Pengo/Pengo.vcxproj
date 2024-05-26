@@ -180,6 +180,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y</Command>
     <ClInclude Include="PengoBlockBreakEvent.h" />
     <ClInclude Include="PengoBreakingBlockState.h" />
     <ClInclude Include="PengoDyingState.h" />
+    <ClInclude Include="PengoGrid.h" />
     <ClInclude Include="PengoIdleState.h" />
     <ClInclude Include="PengoInputCommands.h" />
     <ClInclude Include="PengoComponent.h" />

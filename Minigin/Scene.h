@@ -1,15 +1,11 @@
-#ifndef SCENE
-#define SCENE
+#ifndef PENGIN_SCENE
+#define PENGIN_SCENE
 
 #include "CoreIncludes.h"
 #include "SceneData.h"
 
 #include "ECS.h"
 #include "glm/vec3.hpp"
-
-#include "SceneInfoPanel.h"
-#include "InputInfoPanel.h"
-
 #include "UtilStructs.h"
 
 #include "SystemManager.h"
@@ -21,6 +17,10 @@
 namespace Pengin
 {
 	class Entity;
+
+	class SceneInfoPanel;
+	class InputInfoPanel;
+
 	class Scene final 
 	{
 	public:
@@ -31,8 +31,8 @@ namespace Pengin
 		[[nodiscard]] Entity CreateEntity(const glm::vec3& position = { }, const glm::vec3& rotation = { }, const glm::vec3& scale = { 1, 1, 1 }, const UserIndex& userIdx  = GameUUID{ true } );
 		[[nodiscard]] Entity CreatePhysicsEntity(const UtilStructs::Rectu16& collRect = UtilStructs::Rectu16{ 0, 0 ,1, 1 }, const glm::vec3& position = {}, const glm::vec3& rotation = {}, const glm::vec3& scale = { 1, 1, 1 }, const UserIndex& userIdx = GameUUID{ true });
 
-		bool DestroyEntity(Entity entity, bool keepChildren = true);
-		bool DestroyEntity(const EntityId entityId, bool keepChildren = true);
+		void DestroyEntity(Entity entity, bool keepChildren = true) noexcept;
+		void DestroyEntity(const EntityId entityId, bool keepChildren = true) noexcept;
 
 		Entity AddEntityFromFile(const std::filesystem::path& entityLoadPath, bool newUUID = true); //Load a specific entity from file into the scene
 		bool SerializeEntity(const Entity entity, const std::filesystem::path& entitySavePath, bool keepUUID = false) const noexcept; //Save a specific entity to a file
@@ -64,6 +64,10 @@ namespace Pengin
 
 		//Systems
 		void RegisterSystems(const std::function<void(SystemManager&, ECS&)>& fRegisterSystems) noexcept; //Register any user defined systems for the scene
+		template<typename DerivedSystem>
+		[[nodiscard]] DerivedSystem* GetSystem() const noexcept { return static_cast<DerivedSystem*>(m_SysManager.GetSystem<DerivedSystem>().get()); }
+		template<typename DerivedSystem>
+		[[nodiscard]] BaseSystem* GetSystem() const noexcept { return (m_SysManager.GetSystem<DerivedSystem>().get()); }
 		//-------
 
 		Scene(const Scene&) = delete;
@@ -74,11 +78,8 @@ namespace Pengin
 	private:
 		friend class SceneManager;
 		Scene(const SceneData& sceneData);
-		void RegisterEngineSystems();
- 
-		bool SerializeScene() const noexcept;
 
-		friend class Entity;
+		friend class Entity; //to allow accessing the ecs
 		ECS m_Ecs;
 		std::unordered_map<GameUUID, EntityId> m_UUID_EntityIdMap;
 
@@ -90,13 +91,13 @@ namespace Pengin
 		//-----------------------------------
 
 		//GUI--------------------------------
-		std::unique_ptr<SceneInfoPanel> m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>(this) };
-		std::unique_ptr<InputInfoPanel> m_InputInfoPanel{ std::make_unique<InputInfoPanel>() };
+		std::unique_ptr<SceneInfoPanel> m_SceneInfoPanel{};
+		std::unique_ptr<InputInfoPanel> m_InputInfoPanel{};
 		//-----------------------------------
 
-		//TOOD maintain a list of entities to destroy, destroy end of frame
-
+		bool SerializeScene() const noexcept;
 		bool DeserializeScene() noexcept;
+		void RegisterEngineSystems();
 	};
 }
 

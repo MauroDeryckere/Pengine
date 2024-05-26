@@ -46,31 +46,31 @@ namespace Pengin
 		{
 			const auto& comp = ecs.GetComponent<TextComponent>(id);
 
-			fieldSer.SerializeField("Text", comp.text, fieldVector);
+			fieldSer.SerializeField("Text", comp.text, ecs, fieldVector);
 
-			fieldSer.SerializeField("FontPath", comp.pFont ? comp.pFont->GetPath() : "NO PATH", fieldVector);
-			fieldSer.SerializeField<unsigned>("FontSize", comp.pFont ? comp.pFont->GetFontSize() : 0, fieldVector);
+			fieldSer.SerializeField("FontPath", comp.pFont ? comp.pFont->GetPath() : "NO PATH", ecs, fieldVector);
+			fieldSer.SerializeField<unsigned>("FontSize", comp.pFont ? comp.pFont->GetFontSize() : 0, ecs, fieldVector);
 
 			const auto& color = comp.color;
-			fieldSer.SerializeField("Color", std::vector<uint8_t>{color.r, color.g, color.b, color.a}, fieldVector);
+			fieldSer.SerializeField("Color", std::vector<uint8_t>{color.r, color.g, color.b, color.a}, ecs, fieldVector);
 		}
 		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
 		{
 			std::string fontPath{};
-			fieldSer.DeserializeField("FontPath",fontPath, serializedFields);
+			fieldSer.DeserializeField("FontPath",fontPath, serializedFields, entityMap);
 			assert(fontPath != "NO PATH");
 
 			unsigned fontSize{};
-			fieldSer.DeserializeField("FontSize", fontSize, serializedFields);
+			fieldSer.DeserializeField("FontSize", fontSize, serializedFields, entityMap);
 			assert(fontSize != 0);
 
 			auto& textComp = ecs.AddComponent<TextComponent>(id, fontPath, fontSize);
 
 			std::vector<uint8_t> color{ };
-			fieldSer.DeserializeField("Color", color, serializedFields);
+			fieldSer.DeserializeField("Color", color, serializedFields, entityMap);
 			textComp.color = glm::u8vec4{ color[0], color[1], color[2], color[3] };
 
-			fieldSer.DeserializeField("Text", textComp.text, serializedFields);
+			fieldSer.DeserializeField("Text", textComp.text, serializedFields, entityMap);
 
 			textComp.needsTextureChange = true; //Always need to generate a texture upon deserializing
 		}

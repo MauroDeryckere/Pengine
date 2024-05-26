@@ -30,7 +30,7 @@ namespace Pengo
 		{
 			const auto& comp = ecs.GetComponent<HealthComponent>(id);
 
-			fieldSer.SerializeField("Health", comp.health, fieldVector);
+			fieldSer.SerializeField("Health", comp.health, ecs, fieldVector);
 
 			std::vector<std::string> healthDispUuids;
 			healthDispUuids.reserve(comp.healthDisplayIds.size());
@@ -40,16 +40,16 @@ namespace Pengo
 				healthDispUuids.emplace_back(entity != Pengin::NULL_ENTITY_ID ? ecs.GetComponent<Pengin::UUIDComponent>(entity).uuid.GetUUID_PrettyStr() : "NULL_UUID");
 			}
 
-			fieldSer.SerializeField("HealthDisplayIds", healthDispUuids, fieldVector);
+			fieldSer.SerializeField("HealthDisplayIds", healthDispUuids, ecs, fieldVector);
 		}
 		static void Deserialize(const Pengin::FieldSerializer& fieldSer, Pengin::ECS& ecs, const Pengin::EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<Pengin::GameUUID, Pengin::EntityId>& entityMap [[maybe_unused]] )
 		{
 			auto& comp = ecs.AddComponent<HealthComponent>(id);
 
-			fieldSer.DeserializeField("Health", comp.health, serializedFields);
+			fieldSer.DeserializeField("Health", comp.health, serializedFields, entityMap);
 
 			std::vector<std::string> idVec{};
-			fieldSer.DeserializeField("HealthDisplayIds", idVec, serializedFields);
+			fieldSer.DeserializeField("HealthDisplayIds", idVec, serializedFields, entityMap);
 
 			comp.healthDisplayIds.reserve(idVec.size());
 			for (const auto& uuid : idVec)
