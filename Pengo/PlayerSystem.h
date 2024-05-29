@@ -20,7 +20,6 @@ namespace Pengo
 			m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() }
 
 		{
-			m_pObserver->RegisterForEvent(m_pObserver, PengoBlockBreakEvent::PENGO_BLOCKBR_EVENT_NAME, [this](const Pengin::BaseEvent& event) { OnBlockBreakEvent(event); });
 			m_pObserver->RegisterForEvent(m_pObserver, "OnHealthChangeEvent", [this](const Pengin::BaseEvent& event) { OnDeathEvent(event); });
 			m_pObserver->RegisterForEvent(m_pObserver, "OnPengoRespawn", [this](const Pengin::BaseEvent& event) { OnRespawnEvent(event); });
 		}
@@ -46,7 +45,6 @@ namespace Pengo
 			MoveUp = 6,
 			MoveRight = 7,
 
-
 			PushDown = 8,
 			PushLeft = 9,
 			PushUp = 10,
@@ -58,7 +56,6 @@ namespace Pengo
 	private:
 		Pengin::ECS& m_ECS;
 
-		void OnBlockBreakEvent(const Pengin::BaseEvent& event);
 		void OnDeathEvent(const Pengin::BaseEvent& event);
 		void OnRespawnEvent(const Pengin::BaseEvent& event);
 

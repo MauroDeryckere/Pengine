@@ -24,6 +24,7 @@ namespace Pengo
 
 	std::unique_ptr<Pengin::PlayerState> PengoDyingState::Update(const Pengin::UserIndex& userIndex)
 	{
+		//if health >= 0 else broadcast gameover Event
 		using namespace Pengin;
 
 		static float timer = 0.0f;

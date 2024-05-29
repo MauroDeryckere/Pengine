@@ -6,49 +6,38 @@
 
 #include "EventManager.h"
 #include "SwitchAnimationEvent.h"
+#include "PengoBlockBreakEvent.h"
 #include "Entity.h"
 
 #include "SceneManager.h"
+#include "EventManager.h"
 
 #include "PlayerSystem.h"
 
 #include <string>
+#include <glm/vec2.hpp>
 
 namespace Pengo
 {
 	class PengoBreakingBlockState final : public Pengin::PlayerState
 	{
 	public:
-		PengoBreakingBlockState(const Pengin::UserIndex& userIdx) :
-			Pengin::PlayerState{ userIdx }
-		{ }
-
-		void OnEnter()
-		{
-			auto playerEntity{ Pengin::SceneManager::GetInstance().GetActiveScene()->GetPlayer(Pengin::PlayerState::GetUserIndex())};
-
-			if (playerEntity)
-			{
-				Pengin::EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<Pengin::SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::PushLeft)));
-			}
-
-			DEBUG_OUT("Enter Breaking Block");
+		PengoBreakingBlockState(const Pengin::UserIndex& userIdx, const glm::vec2& dir) :
+			Pengin::PlayerState{ userIdx },
+			m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() },
+			m_Direction{ dir }
+		{ 
+			m_pObserver->RegisterForEvent(m_pObserver, PengoBlockBreakEvent::PENGO_BLOCKBR_EVENT_NAME, [this](const Pengin::BaseEvent& ev) {OnBlockBreakEvent(ev); });
 		}
 
+		void OnEnter();
 		std::unique_ptr<Pengin::PlayerState> Update(const Pengin::UserIndex& userIndex);
 
-		std::unique_ptr<Pengin::PlayerState> HandleInput(const Pengin::UserIndex&)
-		{
-			return nullptr;
-		}
-
-		void OnExit()
-		{
-			DEBUG_OUT("Exit Breaking Block");
-		}
-
 	private:
+		std::shared_ptr<Pengin::Observer> m_pObserver;
+		const glm::vec2 m_Direction{  };
 
+		void OnBlockBreakEvent(const Pengin::BaseEvent& event);
 	};
 }
 

@@ -22,10 +22,16 @@ namespace Pengo
 	{
 	public:
 		PengoIdleState(const Pengin::UserIndex& userIdx, const glm::vec2& dir);
+
+		void OnEnter();
+
 		std::unique_ptr<Pengin::PlayerState> HandleInput(const Pengin::UserIndex& userIndex);
 
 	private:
 		bool coold{ true };
+		const glm::vec2 m_Direction{};
+
+		bool ValidateBlockBreak();
 	};
 }
 

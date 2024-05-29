@@ -42,23 +42,6 @@ namespace Pengo
 		}
 	}
 
-	void PlayerSystem::OnBlockBreakEvent(const Pengin::BaseEvent& event) //Should be inside states?
-	{
-		using namespace Pengin;
-
-		const auto& breakEv{ static_cast<const PengoBlockBreakEvent&>(event) };
-
-		const auto& userIdx = breakEv.GetUserInex();
-
-		auto player = SceneManager::GetInstance().GetActiveScene()->GetPlayer(userIdx);
-
-		if (player)
-		{
-			assert(player.HasComponent<PengoComponent>());
-			player.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx, glm::vec2{ 0, 1 }));
-		}
-	}
-
 	void PlayerSystem::OnDeathEvent(const Pengin:: BaseEvent& event)
 	{
 		using namespace Pengin;

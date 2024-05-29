@@ -59,10 +59,11 @@ namespace Pengo
 
 	std::unique_ptr<Pengin::PlayerState> PengoWalkState::HandleInput(const Pengin::UserIndex& userIndex)
 	{
-		if (Pengin::InputManager::GetInstance().IsActionExecuted(userIndex, "PengoBreakBlock"))
-		{
-			return std::move(std::make_unique<PengoBreakingBlockState>(userIndex));
-		}
+		userIndex;
+		//if (Pengin::InputManager::GetInstance().IsActionExecuted(userIndex, "PengoBreakBlock"))
+		//{
+		//	return std::move(std::make_unique<PengoBreakingBlockState>(userIndex));
+		//}
 
 		return nullptr;
 	}
@@ -91,8 +92,6 @@ namespace Pengo
 				(m_Direction.y > 0 && pengTransform.worldPos.y >= m_GoalPos.y) ||
 				(m_Direction.y < 0 && pengTransform.worldPos.y <= m_GoalPos.y)) 
 			{
-				DEBUG_OUT("GOAL REACHED\n \n\n");
-
 				// Clip to cell border
 				playerEntity.SetLocalPosition(m_GoalPos);
 				pengTransform.worldPos = m_GoalPos;
