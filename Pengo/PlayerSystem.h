@@ -34,22 +34,25 @@ namespace Pengo
 		PlayerSystem& operator=(const PlayerSystem&) = delete;
 		PlayerSystem& operator=(const PlayerSystem&&) = delete;
 
-		enum class PengoAnimations
+		enum class PengoAnimations : uint8_t
 		{
-			Idle = 0,
+			IdleDown = 0,
+			IdleLeft = 1,
+			IdleUp = 2,
+			IdleRight = 3,
 
-			MoveDown = 1,
-			MoveLeft = 2,
-			MoveUp = 3,
-			MoveRight = 4,
+			MoveDown = 4,
+			MoveLeft = 5,
+			MoveUp = 6,
+			MoveRight = 7,
 
 
-			PushDown = 5,
-			PushLeft = 6,
-			PushUp = 7,
-			PushRight = 8,
+			PushDown = 8,
+			PushLeft = 9,
+			PushUp = 10,
+			PushRight = 11,
 
-			Dying = 9
+			Dying = 12
 		};
 
 	private:

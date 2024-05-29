@@ -24,7 +24,7 @@ namespace Pengin
 
 	void PhysicsSystem::FixedUpdate()
 	{
-		const auto stepTime = GameTime::GetInstance().GetFixedTimeStep() / m_NumIterations;
+		const auto stepTime = GameTime::GetInstance().FixedTimeStep() / m_NumIterations;
 
 		auto bodyComps{ m_ECS.GetComponents<BodyComponent>() };
 

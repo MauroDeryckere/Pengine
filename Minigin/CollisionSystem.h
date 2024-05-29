@@ -63,8 +63,8 @@ namespace Pengin
 
 		std::unordered_set<CollPair, CollisionPairHash> m_FrameCollisions{};
 
-		constexpr UtilStructs::Rectf&& CalcCollRect(const TransformComponent& transform, const RectColliderComponent& rColl) const noexcept;
-		constexpr UtilStructs::Rectf&& CalcCollRect(const BodyComponent* body, const TransformComponent& transform, const RectColliderComponent& rColl) const noexcept;
+		constexpr UtilStructs::Rectf CalcCollRect(const TransformComponent& transform, const RectColliderComponent& rColl) const noexcept;
+		constexpr UtilStructs::Rectf CalcCollRect(const BodyComponent* body, const TransformComponent& transform, const RectColliderComponent& rColl) const noexcept;
 
 		const glm::vec3 CalcCollNormal(const UtilStructs::Rectf& rectA, const UtilStructs::Rectf& rectB) const noexcept;
 		const float CalcPenetrationDeth(const glm::vec3& normal, const UtilStructs::Rectf& rectA, const UtilStructs::Rectf& rectB) const noexcept;

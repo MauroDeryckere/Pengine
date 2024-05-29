@@ -75,25 +75,25 @@ namespace Pengin
 		constexpr float EPSILON{ 0.001f };
 
 		template<typename T>
-		[[nodiscard]] inline constexpr bool IsPointInRect(const UtilStructs::Rect<T>& rect, T px, T py) noexcept
+		[[nodiscard]] inline constexpr bool IsPointInRect(const UtilStructs::Rect<T>& rect, T px, T py) noexcept 
 		{
 			static_assert(std::is_arithmetic_v<T>, "IsPointInRect requires arithmetic types");
 		
 			if constexpr (std::is_floating_point_v<T>)
 			{
-				constexpr T CASTED_EPS{ static_cast<T>(EPSILON) };
+				static constexpr T CASTED_EPS{ static_cast<T>(EPSILON) };
 
-				return !(px + CASTED_EPS < rect.x ||
-						px > rect.x + rect.width + CASTED_EPS ||
-						py + CASTED_EPS < rect.y ||
-						py > rect.y + rect.height + CASTED_EPS);
+				return not (px + CASTED_EPS <= rect.x 
+						|| px >= rect.x + rect.width + CASTED_EPS 
+						|| py + CASTED_EPS <= rect.y 
+						|| py >= rect.y + rect.height + CASTED_EPS);
 			}
 			else
 			{
-				return !(px < rect.x ||
-						px > rect.x + rect.width ||
-						py < rect.y ||
-						py > rect.y + rect.height);
+				return not (px <= rect.x 
+						|| px >= rect.x + rect.width
+						|| py <= rect.y 
+						|| py >= rect.y + rect.height);
 			}
 		}
 
@@ -104,19 +104,19 @@ namespace Pengin
 
 			if constexpr (std::is_floating_point_v<T>)
 			{
-				constexpr T CASTED_EPS{ static_cast<T>(EPSILON) };
+				static constexpr T CASTED_EPS{ static_cast<T>(EPSILON) };
 
-				return !(rect1.x + rect1.width + CASTED_EPS < rect2.x ||
-						rect2.x + rect2.width + CASTED_EPS < rect1.x ||
-						rect1.y + rect1.height + CASTED_EPS < rect2.y ||
-						rect2.y + rect2.height + CASTED_EPS < rect1.y);
+				return not (rect1.x + rect1.width + CASTED_EPS < rect2.x 
+						|| rect2.x + rect2.width + CASTED_EPS < rect1.x 
+						|| rect1.y + rect1.height + CASTED_EPS < rect2.y 
+						|| rect2.y + rect2.height + CASTED_EPS < rect1.y);
 			}
 			else
 			{
-				return !(rect1.x + rect1.width < rect2.x ||
-						rect2.x + rect2.width < rect1.x ||
-						rect1.y + rect1.height < rect2.y ||
-						rect2.y + rect2.height < rect1.y);
+				return not (rect1.x + rect1.width < rect2.x 
+						|| rect2.x + rect2.width < rect1.x 
+						|| rect1.y + rect1.height < rect2.y 
+						|| rect2.y + rect2.height < rect1.y);
 			}
 		}
 	}

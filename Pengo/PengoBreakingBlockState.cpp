@@ -12,7 +12,7 @@ namespace Pengo
 
         static float timer = 0.0f;
 
-        float deltaTime = GameTime::GetInstance().GetElapsedSec();
+        float deltaTime = GameTime::GetInstance().ElapsedSec();
         timer += deltaTime;
 
         if (timer >= 1.0f)

@@ -87,9 +87,12 @@ namespace Pengin
 					inputBuffer->ClearBuffer();
 
 					combo.pResultingAction->Execute();
-					m_ExecutedActionsThisFrame[userIdx].insert(combo.pResultingAction->GetActionName());
-
 					inputBuffer->RecordInput(combo.pResultingAction);
+
+					if (m_ExecutedActionsThisFrame[userIdx].find(combo.pResultingAction->GetActionName()) == end(m_ExecutedActionsThisFrame[userIdx]))
+					{
+						m_ExecutedActionsThisFrame[userIdx][combo.pResultingAction->GetActionName()] = combo.pResultingAction;
+					}
 				}
 			}
 		}
@@ -278,7 +281,7 @@ namespace Pengin
 
 		m_InputCombos[it->second].emplace_back(combo);
 	}
-	bool InputManager::IsActionExecuted(const UserIndex& user, const std::string& actionName) const noexcept
+	bool InputManager::IsActionExecuted(const UserIndex& user, const std::string& actionName, std::shared_ptr<InputCommand>* ExecInpCommand) const noexcept
 	{
 		auto it = m_UserIdx_VecIdxMap.find(user);
 
@@ -292,7 +295,15 @@ namespace Pengin
 		assert(it->second < m_ExecutedActionsThisFrame.size());
 		assert(!actionName.empty());
 
-		return m_ExecutedActionsThisFrame[it->second].contains(actionName);
+		auto actionit = m_ExecutedActionsThisFrame[it->second].find(actionName);
+		if (actionit == end(m_ExecutedActionsThisFrame[it->second]))
+		{
+			ExecInpCommand ? (*ExecInpCommand) = nullptr : nullptr;
+			return false;
+		}
+
+		ExecInpCommand ? (*ExecInpCommand) = actionit->second : nullptr;
+		return true;
 	}
 }
 

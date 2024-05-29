@@ -23,7 +23,6 @@ namespace Pengo
 		using namespace Pengin;
 
 		auto& pSceneManager = SceneManager::GetInstance();
-
 		const auto& playerUUIDs = pSceneManager.GetActiveScene()->GetSceneData().playerUUIDs;
 
 		for (const auto& player : playerUUIDs)
@@ -33,10 +32,12 @@ namespace Pengo
 			if (playerEntity.HasComponent<PengoComponent>())
 			{
 				auto& pengoComp = playerEntity.GetComponent<PengoComponent>();
-				assert(playerEntity.HasComponent<PlayerComponent>());
 
-				pengoComp.HandleInput(playerEntity.GetComponent<PlayerComponent>().userIdx);
-				pengoComp.Update(playerEntity.GetComponent<PlayerComponent>().userIdx);
+				assert(playerEntity.HasComponent<PlayerComponent>());
+				const auto& playerComp{ playerEntity.GetComponent<PlayerComponent>() };
+
+				pengoComp.HandleInput(playerComp.userIdx);
+				pengoComp.Update(playerComp.userIdx);
 			}
 		}
 	}
@@ -54,7 +55,7 @@ namespace Pengo
 		if (player)
 		{
 			assert(player.HasComponent<PengoComponent>());
-			player.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx));
+			player.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx, glm::vec2{ 0, 1 }));
 		}
 	}
 
@@ -83,7 +84,7 @@ namespace Pengo
 		if (player)
 		{
 			assert(player.HasComponent<PengoComponent>());
-			player.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx));
+			player.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx, glm::vec2{0, 1}));
 		}
 	}
 }

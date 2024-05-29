@@ -28,6 +28,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Grid">
+      <UniqueIdentifier>{91df3d84-13ff-43ea-ac5f-df820696e2bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -102,7 +105,7 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="PengoGrid.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Grid</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,32 +3,40 @@
 
 #include "PlayerState.h"
 #include "DebugOutput.h"
-
+#include <glm/vec3.hpp>
 #include <string>
+
+namespace Pengin
+{
+	class GridSystem;
+}
 
 namespace Pengo
 {
 	class PengoWalkState final : public Pengin::PlayerState
 	{
 	public:
-		PengoWalkState(const Pengin::UserIndex& userIdx) :
-			Pengin::PlayerState{ userIdx }
-		{}
+		PengoWalkState(const Pengin::UserIndex& userIdx, const glm::vec3& direction) :
+			Pengin::PlayerState{ userIdx },
+			m_Direction{ direction },
 
-		void OnEnter()
-		{
-			DEBUG_OUT("Enter walk");
-		}
+			m_CheckedColl{ false },
 
-		std::unique_ptr<Pengin::PlayerState> Update(const Pengin::UserIndex& userIndex);
+			m_GoalPos{ }
+		{ }
+
+		void OnEnter();
 
 		std::unique_ptr<Pengin::PlayerState> HandleInput(const Pengin::UserIndex& userIndex);
+		std::unique_ptr<Pengin::PlayerState> Update(const Pengin::UserIndex& userIndex);
 
-		void OnExit()
-		{
-			DEBUG_OUT("Exit walk");
-		}
+	private:
+		const glm::vec3 m_Direction{ };
+		glm::vec3 m_GoalPos{ };
 
+		bool m_CheckedColl{ false };
+
+		bool CheckCollision();
 	};
 }
 

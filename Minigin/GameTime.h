@@ -9,8 +9,8 @@ namespace Pengin
 	class GameTime final : public Singleton<GameTime>
 	{
 	public:
-		[[nodiscard]] inline float GetElapsedSec() const noexcept { return m_ElapsedSec; }
-		[[nodiscard]] inline float GetFixedTimeStep() const { return (m_MsFixedTimeStep / 1000.f); }
+		[[nodiscard]] inline float ElapsedSec() const noexcept { return m_ElapsedSec; }
+		[[nodiscard]] inline float FixedTimeStep() const { return (m_MsFixedTimeStep / 1000.f); }
 
 		[[nodiscard]] inline bool IsLag() const noexcept { return m_MsLag >= m_MsFixedTimeStep;  }
 		inline void ProcessLag() noexcept { m_MsLag -= m_MsFixedTimeStep;}
@@ -26,10 +26,9 @@ namespace Pengin
 			m_LastTime = std::chrono::high_resolution_clock::now();
 		}
 
-		[[nodiscard]] inline auto GetSleepTime() const noexcept
+		[[nodiscard]] inline auto SleepTime() const noexcept
 		{
-			const auto sleepTime = m_LastTime + std::chrono::milliseconds(static_cast<long>(m_MsPerFrame)) - std::chrono::high_resolution_clock::now();
-			return sleepTime;
+			return m_LastTime + std::chrono::milliseconds(static_cast<long>(m_MsPerFrame)) - std::chrono::high_resolution_clock::now();
 		}
 
 		GameTime(const GameTime&) = delete;

@@ -45,7 +45,7 @@ namespace Pengin
 																			&m_ECS.GetComponent<BodyComponent>(entityB)
 																			: nullptr };
 
-				const UtilStructs::Rectf rectB = bodyAPtr ?
+				const UtilStructs::Rectf rectB = bodyBPtr ?
 												CalcCollRect(bodyBPtr, transB, rectCollB)
 												: CalcCollRect(transB, rectCollB);
 
@@ -105,36 +105,33 @@ namespace Pengin
 		}
 	}
 
-	#pragma warning(push)
-	#pragma warning(disable:4172)
-	constexpr UtilStructs::Rectf&& CollisionSystem::CalcCollRect(const TransformComponent& transform, const RectColliderComponent& rColl) const noexcept
+	constexpr UtilStructs::Rectf CollisionSystem::CalcCollRect(const TransformComponent& transform, const RectColliderComponent& rColl) const noexcept
 	{
 		static_assert(std::is_move_constructible_v<UtilStructs::Rectf>);
 		static_assert(std::is_move_assignable_v<UtilStructs::Rectf>);
 
-		return std::move(UtilStructs::Rectf
+		return UtilStructs::Rectf
 		{ 
 			(transform.worldPos.x + rColl.collRect.x * transform.scale.x),
 			(transform.worldPos.y + rColl.collRect.y * transform.scale.y),
 			(transform.scale.x * rColl.collRect.width),
 			(transform.scale.y * rColl.collRect.height) 
-		});
+		};
 	}
 
-	constexpr UtilStructs::Rectf&& CollisionSystem::CalcCollRect(const BodyComponent* body, const TransformComponent& transform, const RectColliderComponent& rColl) const noexcept
+	constexpr UtilStructs::Rectf CollisionSystem::CalcCollRect(const BodyComponent* body, const TransformComponent& transform, const RectColliderComponent& rColl) const noexcept
 	{
 		static_assert(std::is_move_constructible_v<UtilStructs::Rectf>);
 		static_assert(std::is_move_assignable_v<UtilStructs::Rectf>);
 
-		return std::move(UtilStructs::Rectf
+		return UtilStructs::Rectf
 		{
 			(body->currentPosition.x + rColl.collRect.x * transform.scale.x),
 			(body->currentPosition.y + rColl.collRect.y * transform.scale.y),
 			(rColl.collRect.width * transform.scale.x),
 			(rColl.collRect.height * transform.scale.y)
-		});
+		};
 	}
-	#pragma warning(pop)
 
 	const glm::vec3 CollisionSystem::CalcCollNormal(const UtilStructs::Rectf& rectA, const UtilStructs::Rectf& rectB) const noexcept
 	{

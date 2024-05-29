@@ -66,8 +66,6 @@ namespace Pengin
 		void RegisterSystems(const std::function<void(SystemManager&, ECS&)>& fRegisterSystems) noexcept; //Register any user defined systems for the scene
 		template<typename DerivedSystem>
 		[[nodiscard]] DerivedSystem* GetSystem() const noexcept { return static_cast<DerivedSystem*>(m_SysManager.GetSystem<DerivedSystem>().get()); }
-		template<typename DerivedSystem>
-		[[nodiscard]] BaseSystem* GetSystem() const noexcept { return (m_SysManager.GetSystem<DerivedSystem>().get()); }
 		//-------
 
 		Scene(const Scene&) = delete;

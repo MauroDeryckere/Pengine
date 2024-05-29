@@ -21,7 +21,7 @@ namespace Pengin
 		~WindowsInputControllerImpl() = default;
 
 		void ProcessInputState();
-		void ProcessMappedActions(InputBuffer* const inputBuffer, std::unordered_set<std::string>& execActions);
+		void ProcessMappedActions(InputBuffer* const inputBuffer, ExecActions& execActions);
 		void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
 		void UnMapInputAction(unsigned key, InputState inputState);
 
@@ -98,14 +98,14 @@ namespace Pengin
 		}
 	}
 
-	void WindowsInputControllerImpl::ProcessMappedActions(InputBuffer * const inputBuffer, std::unordered_set<std::string>& execActions)
+	void WindowsInputControllerImpl::ProcessMappedActions(InputBuffer * const inputBuffer, ExecActions& execActions)
 	{
 		for (auto& pair : m_ControllerActionMapping[static_cast<size_t>(InputState::DownThisFrame)]) {
 			if (IsDownThisFrame(GetCodeFromKey(pair.first)))
 			{
 				pair.second->Execute();
 
-				execActions.insert(pair.second->GetActionName());
+				execActions[pair.second->GetActionName()] = pair.second;
 
 				inputBuffer->RecordInput(pair.second);
 			}
@@ -115,7 +115,7 @@ namespace Pengin
 			{
 				pair.second->Execute();
 
-				execActions.insert(pair.second->GetActionName());
+				execActions[pair.second->GetActionName()] = pair.second;
 
 				inputBuffer->RecordInput(pair.second);
 			}
@@ -125,7 +125,7 @@ namespace Pengin
 			{
 				pair.second->Execute();
 
-				execActions.insert(pair.second->GetActionName());
+				execActions[pair.second->GetActionName()] = pair.second;
 
 				inputBuffer->RecordInput(pair.second);
 			}
@@ -221,7 +221,7 @@ namespace Pengin
 			}
 		}
 		
-		m_DisconnectedTime += GameTime::GetInstance().GetElapsedSec();
+		m_DisconnectedTime += GameTime::GetInstance().ElapsedSec();
 
 		if (m_DisconnectedTime >= MAX_ALLOWED_DISCONNECTED_TIME && !displayMessage)
 		{
@@ -240,7 +240,7 @@ namespace Pengin
 		m_WinImpl->ProcessInputState();
 	}
 
-	void InputController::ProcessActions(InputBuffer* const inputBuffer, std::unordered_set<std::string>& execActions)
+	void InputController::ProcessActions(InputBuffer* const inputBuffer, ExecActions& execActions)
 	{
 		m_WinImpl->ProcessMappedActions(inputBuffer, execActions);
 	}

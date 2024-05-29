@@ -28,6 +28,8 @@ namespace Pengo
 
 		virtual void Execute() override;
 
+		const glm::vec3& GetDirection() const noexcept { return m_Direction; }
+
 		virtual ~Movement() override = default;
 
 		Movement(const Movement&) = delete;

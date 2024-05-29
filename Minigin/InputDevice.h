@@ -14,6 +14,8 @@ namespace Pengin
 	enum class InputState;
 	struct InputCombo;
 
+	using ExecActions = std::unordered_map<std::string, std::shared_ptr<InputCommand>>;
+
 	class InputBuffer;
 
 	class InputDevice abstract
@@ -22,7 +24,7 @@ namespace Pengin
 		virtual ~InputDevice() = default;
 
 		virtual void ProcessInputState() = 0;
-		virtual void ProcessActions(InputBuffer* const inputbuffer, std::unordered_set<std::string>& execActions) = 0;
+		virtual void ProcessActions(InputBuffer* const inputbuffer, ExecActions& execActions) = 0;
 
 		virtual void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) = 0;
 		virtual void UnMapInputAction(unsigned key, InputState inputState) = 0;

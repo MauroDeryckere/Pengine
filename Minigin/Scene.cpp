@@ -18,6 +18,7 @@
 #include "FPSSystem.h"
 #include "DebugDrawSystem.h"
 #include "AnimationSystem.h"
+#include "GridSystem.h"
 
 #include "PhysicsSystem.h"
 
@@ -54,6 +55,8 @@ namespace Pengin
 		m_SysManager.RegisterSystem<PhysicsSystem>(std::make_shared<PhysicsSystem>(m_Ecs));
 
 		m_SysManager.RegisterSystem<RenderSystem>(std::make_shared<RenderSystem>(m_Ecs));
+
+		m_SysManager.RegisterSystem<GridSystem>(std::make_shared<GridSystem>(m_Ecs));
 	}
 
 	Scene::~Scene()
@@ -292,7 +295,7 @@ namespace Pengin
 		if (m_SceneData.sceneFileData.autoSaveTime > 0.f) //this should possibly be sent to a separate thread if very large save file
 		{
 			static float currTime{ 0.f };
-			currTime += GameTime::GetInstance().GetElapsedSec();
+			currTime += GameTime::GetInstance().ElapsedSec();
 
 			if (currTime >= m_SceneData.sceneFileData.autoSaveTime)
 			{

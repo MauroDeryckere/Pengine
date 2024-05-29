@@ -21,7 +21,7 @@ namespace Pengin
 
 	void AnimationSystem::Update()
 	{
-		const float elapsedSec = GameTime::GetInstance().GetElapsedSec();
+		const float elapsedSec = GameTime::GetInstance().ElapsedSec();
 		auto animationComps{ m_ECS.GetComponents<AnimationComponent>() };
 		
 		for (auto it{ animationComps.begin() }; auto& entity : animationComps)

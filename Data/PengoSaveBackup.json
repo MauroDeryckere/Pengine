@@ -19,7 +19,7 @@
             "InputFilePath": "../Data/InputTest.json",
             "SceneLoadPath": "../Data/PengoSaveBackup.json",
             "SceneSavePath": "../Data/PengoSaveBackup.json",
-            "SaveSceneOnDestroy": true,
+            "SaveSceneOnDestroy": false,
             "AutoSaveTime": 0.0,
             "KeepPrevInput": false
         }
@@ -109,15 +109,15 @@
                         "EntityId": "NULL_UUID"
                     },
                     {
-                        "Type": 0,
+                        "Type": 1,
                         "EntityId": "NULL_UUID"
                     },
                     {
-                        "Type": 0,
+                        "Type": 1,
                         "EntityId": "NULL_UUID"
                     },
                     {
-                        "Type": 0,
+                        "Type": 1,
                         "EntityId": "NULL_UUID"
                     },
                     {
@@ -1117,13 +1117,13 @@
             "UUID": "453103fa-fc85-4ce9-af04-b9d5b4fe2ead",
             "Transform Component": {
                 "worldPos": [
-                    152.01441955566406,
-                    207.30946350097656,
+                    24,
+                    24,
                     0.0
                 ],
                 "localPos": [
-                    152.01441955566406,
-                    207.30946350097656,
+                    24,
+                    24,
                     0.0
                 ],
                 "rotation": [
@@ -1146,8 +1146,7 @@
                 "isPosDirty": false
             },
             "struct Pengin::PlayerComponent": {
-                "UserIdx": "4013a137-0aab-426c-8fba-53f4c148f7ea",
-                "MovementSpeed": 100
+                "UserIdx": "4013a137-0aab-426c-8fba-53f4c148f7ea"
             },
             "struct Pengin::BodyComponent": {
                 "Velocity": [
@@ -1156,13 +1155,13 @@
                     0
                 ],
                 "CurrPosition": [
-                    152.915,
-                    207.998,
+                    24,
+                    24,
                     0
                 ],
                 "LastPosition": [
-                    152.915,
-                    207.998,
+                    24,
+                    24,
                     0
                 ],
                 "IsStatic": false
@@ -1172,6 +1171,36 @@
                     {
                         "Frame0SrcRect": [
                             0,
+                            0,
+                            16,
+                            16
+                        ],
+                        "FrameDuration": 0,
+                        "FrameCount": 1
+                    },
+                    {
+                        "Frame0SrcRect": [
+                            32,
+                            0,
+                            16,
+                            16
+                        ],
+                        "FrameDuration": 0,
+                        "FrameCount": 1
+                    },
+                     {
+                        "Frame0SrcRect": [
+                            64,
+                            0,
+                            16,
+                            16
+                        ],
+                        "FrameDuration": 0,
+                        "FrameCount": 1
+                    },
+                    {
+                        "Frame0SrcRect": [
+                         96,
                             0,
                             16,
                             16
@@ -1302,7 +1331,9 @@
             "struct Pengin::OnGridTag": {
                 "GridId": "cf0f18cb-7425-460b-9221-999f8160d448"
             },
-            "struct Pengo::PengoComponent": {},
+            "struct Pengo::PengoComponent": {
+                "MovementSpeed": 50
+            },
             "struct Pengo::ScoreComponent": {
                 "Score": 0,
                 "ScoreDisplayIds": [
@@ -1462,8 +1493,7 @@
                 "isPosDirty": false
             },
             "struct Pengin::PlayerComponent": {
-                "UserIdx": "c19674bb-595e-4c3a-87a1-db4620131f2b",
-                "MovementSpeed": 50
+                "UserIdx": "c19674bb-595e-4c3a-87a1-db4620131f2b"
             },
             "struct Pengin::BodyComponent": {
                 "Velocity": [
@@ -1622,66 +1652,6 @@
             "struct Pengo::TxtDisplayComponent": {
                 "Prefix": "Player 2 Score: ",
                 "Postfix": ""
-            }
-        },
-        {
-            "Tag Component": "Test Collider",
-            "UUID": "1d0eaef1-bf62-47b8-8123-3ca2f6c302e8",
-            "Transform Component": {
-                "worldPos": [
-                    250.0,
-                    250.0,
-                    0.0
-                ],
-                "localPos": [
-                    250.0,
-                    250.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            },
-            "struct Pengin::BodyComponent": {
-                "Velocity": [
-                    0,
-                    0,
-                    0
-                ],
-                "CurrPosition": [
-                    250,
-                    250,
-                    0
-                ],
-                "LastPosition": [
-                    250,
-                    250,
-                    0
-                ],
-                "IsStatic": true
-            },
-            "struct Pengin::RectColliderComponent": {
-                "CollRect": [
-                    0,
-                    0,
-                    100,
-                    100
-                ]
             }
         }
     ]

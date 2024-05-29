@@ -15,7 +15,7 @@ namespace Pengin
 		~WindowsKeyboardImpl() = default;
 
 		void ProcessInputState();
-		void ProcessMappedActions(InputBuffer* const inputBuffer, std::unordered_set<std::string>& execActions);
+		void ProcessMappedActions(InputBuffer* const inputBuffer, ExecActions& execActions);
 		void MapActionToInput(unsigned key, InputState inputState, std::shared_ptr<InputCommand> pInputAction);
 		void UnMapInputAction(unsigned key, InputState inputState);
 
@@ -57,14 +57,14 @@ namespace Pengin
 
 	}
 
-	void WindowsKeyboardImpl::ProcessMappedActions(InputBuffer* const inputBuffer, std::unordered_set<std::string>& execActions)
+	void WindowsKeyboardImpl::ProcessMappedActions(InputBuffer* const inputBuffer, ExecActions& execActions)
 	{
 		for (auto& pair : m_KeyboardActionMapping[static_cast<size_t>(InputState::DownThisFrame)]) {
 			if (IsDownThisFrame(GetCodeFromKey(pair.first)))
 			{
 				pair.second->Execute();
 
-				execActions.insert(pair.second->GetActionName());
+				execActions[pair.second->GetActionName()] = pair.second;
 
 				inputBuffer->RecordInput(pair.second);
 			}
@@ -74,7 +74,7 @@ namespace Pengin
 			{
 				pair.second->Execute();
 
-				execActions.insert(pair.second->GetActionName());
+				execActions[pair.second->GetActionName()] = pair.second;
 
 				inputBuffer->RecordInput(pair.second);
 			}			
@@ -84,7 +84,7 @@ namespace Pengin
 			{
 				pair.second->Execute();
 
-				execActions.insert(pair.second->GetActionName());
+				execActions[pair.second->GetActionName()] = pair.second;
 
 				inputBuffer->RecordInput(pair.second);
 			}
@@ -247,7 +247,7 @@ namespace Pengin
 		m_WinImpl->ProcessInputState();
 	}
 
-	void InputKeyboard::ProcessActions(InputBuffer* const inputBuffer, std::unordered_set<std::string>& execActions)
+	void InputKeyboard::ProcessActions(InputBuffer* const inputBuffer, ExecActions& execActions)
 	{
 		m_WinImpl->ProcessMappedActions(inputBuffer, execActions);
 	}

@@ -3,7 +3,9 @@
 
 #include "BaseSystem.h"
 
+#include <glm/vec2.hpp>
 #include "EntityId.h"
+#include "GridComponent.h"
 
 #include <unordered_map>
 
@@ -21,7 +23,13 @@ namespace Pengin
 		virtual ~GridSystem() override = default;
 		
 		[[nodiscard]] std::pair<uint16_t, uint16_t> GetCellCoords(EntityId entityId) const noexcept;
+		[[nodiscard]] glm::vec2 GetCellPos(EntityId gridId, uint16_t row, uint16_t col) const noexcept;
+
 		[[nodiscard]] bool IsEntityInGridArea(EntityId entityId, EntityId gridId) const noexcept;
+
+		[[nodiscard]] bool IsWithinBounds(EntityId gridId, uint16_t row, uint16_t col) const noexcept;
+		[[nodiscard]] const GridCellData& GetCellData(EntityId gridId, uint16_t row, uint16_t col) const noexcept;
+
 
 		GridSystem(const GridSystem&) = delete;
 		GridSystem(GridSystem&&) = delete;

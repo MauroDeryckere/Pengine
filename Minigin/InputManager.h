@@ -35,6 +35,7 @@ namespace Pengin
         std::shared_ptr<InputCommand> pResultingAction;
     }; 
 
+
     class InputManager final : public Singleton<InputManager>
     {
     public:
@@ -51,7 +52,7 @@ namespace Pengin
 
         void MapCombo(const UserIndex& userIdx, const InputCombo& combo) noexcept;
 
-        [[nodiscard]] bool IsActionExecuted(const UserIndex& user, const std::string& actionName) const noexcept;
+        [[nodiscard]] bool IsActionExecuted(const UserIndex& user, const std::string& actionName, std::shared_ptr<InputCommand>* ExecInpCommand = nullptr) const noexcept;
         
         [[nodiscard]] uint32_t RegisteredControllers() const noexcept { return static_cast<uint32_t>(m_RegControllers); }
 
@@ -77,8 +78,8 @@ namespace Pengin
         
         std::vector<std::vector<InputCombo>> m_InputCombos;
         std::vector<std::unique_ptr<InputBuffer>> m_InputBuffers;
-        
-        std::vector<std::unordered_set<std::string>> m_ExecutedActionsThisFrame;
+
+        std::vector<std::unordered_map<std::string, std::shared_ptr<InputCommand>>> m_ExecutedActionsThisFrame;
 
         static constexpr uint8_t MAX_ALLOWED_CONTROLLERS{ 4 };
         uint8_t m_RegControllers{ 0 };
@@ -93,7 +94,6 @@ namespace Pengin
         {
             Controller = 0
         };
-
     };
 }
 

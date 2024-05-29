@@ -13,7 +13,7 @@ namespace Pengin
 {
 	struct GridCellData final
 	{
-		uint8_t type{0};
+		uint8_t type{ 0 };
 		EntityId entity{ NULL_ENTITY_ID };
 
 		GridCellData() = default;
@@ -79,7 +79,7 @@ namespace Pengin
 
 		[[nodiscard]] std::pair<uint16_t, uint16_t> GetCellCoords(uint32_t x, uint32_t y) const noexcept
 		{
-			//x and y in grid space		
+			//x and y is in grid space		
 			assert(x < GetTotalWidth() && y < GetTotalHeight() && "Coordinates out of bounds");
 
 			uint16_t row = static_cast<uint16_t>(y / cellHeight);
@@ -107,15 +107,16 @@ namespace Pengin
 			cells[(row * cols) + col].type = 0;
 		}
 
-		[[nodiscard]] uint8_t& TypeAt(uint16_t row, uint16_t col) noexcept
+		[[nodiscard]] GridCellData& At(uint16_t row, uint16_t col) noexcept
 		{
 			assert(IsWithinBounds(row, col) && "out of bounds");
-			return cells[(row * cols) + col].type;
+			return cells[(row * cols) + col];
+
 		}
-		[[nodiscard]] uint8_t TypeAt(uint16_t row, uint16_t col) const noexcept
+		[[nodiscard]] const GridCellData& At(uint16_t row, uint16_t col) const noexcept
 		{
 			assert(IsWithinBounds(row, col) && "out of bounds");
-			return cells[(row * cols) + col].type;
+			return cells[(row * cols) + col];
 		}
 
 		static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, const EntityId id, std::vector<uint8_t>& fieldVector)
@@ -135,6 +136,16 @@ namespace Pengin
 			auto& comp = ecs.AddComponent<GridComponent>(id);
 
 			fieldSer.DeserializeField("Cells", comp.cells, serializedFields, entityMap);
+
+			for (int idx{0}; auto & cell : comp.cells)
+			{
+				std::cout << static_cast<int>(cell.type) << " ";
+				++idx;
+				if (idx % 13 == 0)
+				{
+					std::cout << "\n";
+				}
+			}
 
 			fieldSer.DeserializeField("Rows", comp.rows, serializedFields, entityMap);
 			fieldSer.DeserializeField("Cols", comp.cols, serializedFields, entityMap);

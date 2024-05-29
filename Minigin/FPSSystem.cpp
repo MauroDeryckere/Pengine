@@ -16,7 +16,7 @@ namespace Pengin
 
 		for (auto it{ fpsComps.begin() }; auto & entity : fpsComps)
 		{
-			entity.accumulatedTime += GameTime::GetInstance().GetElapsedSec();
+			entity.accumulatedTime += GameTime::GetInstance().ElapsedSec();
 
 			++entity.frameCount;
 

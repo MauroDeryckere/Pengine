@@ -317,16 +317,35 @@ namespace Pengin
 					const auto tempFieldsMap = ServiceLocator::GetSerializer().ParseJsonStr(fieldStr);
 
 					FieldType container{};
-
-					for (const auto& [idx, value] : tempFieldsMap)
+					if constexpr (requires(FieldType a, size_t i) { a[i]; }&& requires(FieldType a, size_t s) { a.resize(s); })
 					{
+						//std::ordered_map may allow us to get rid of this resize which could be faster - TODO, compare performace
+						container.resize(tempFieldsMap.size());
+					}
+
+					for (const auto& [key, value] : tempFieldsMap) 
+					{
+						//idx is required to ensure order of json file == order of container
+						const auto idx = static_cast<size_t>(std::stoi(key));
+
+						static_assert(std::is_default_constructible_v<typename FieldType::value_type>);
 						typename FieldType::value_type element{};
+
 						std::string convFieldStr(reinterpret_cast<const char*>(value.data()), value.size());
 
 						DeserializeValJson(convFieldStr, element, entityMap);
-						container.emplace_back(element);
-					}
 
+						if constexpr (requires(FieldType a, size_t i) { a[i]; } && requires(FieldType a, size_t s) { a.resize(s); })
+						{
+							container[idx] = element;
+						}
+						else 
+						{
+							auto it = container.begin();
+							std::advance(it, idx);
+							*it = element;
+						}
+					}
 					fieldValueOut = container;
 				}
 			}

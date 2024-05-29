@@ -7,17 +7,17 @@
 
 void Pengo::Movement::Execute()
 {
-	using namespace Pengin;
+	//using namespace Pengin;
 
-	auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
+	//auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
 
-	Entity playerEntity{ pActiveScene->GetPlayer(InputCommand::GetUserIdx()) };
+	//Entity playerEntity{ pActiveScene->GetPlayer(InputCommand::GetUserIdx()) };
 
-	if (playerEntity.HasComponent<PengoComponent>())
-	{
-		const auto movementSpeed = playerEntity.GetComponent<PlayerComponent>().movementSpeed;
-		playerEntity.GetComponent<BodyComponent>().inputVelocity += (m_Direction * movementSpeed);
-	}
+	//if (playerEntity.HasComponent<PengoComponent>())
+	//{
+	//	const auto movementSpeed = playerEntity.GetComponent<PlayerComponent>().movementSpeed;
+	//	playerEntity.GetComponent<BodyComponent>().inputVelocity += (m_Direction * movementSpeed);
+	//}
 }
 
 void Pengo::BreakBlock::Execute()

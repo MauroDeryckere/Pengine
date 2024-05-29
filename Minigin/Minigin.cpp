@@ -148,6 +148,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			SteamAPI_RunCallbacks();
 		#endif
 
-		std::this_thread::sleep_for(time.GetSleepTime());
+		std::this_thread::sleep_for(time.SleepTime());
 	}
 }
