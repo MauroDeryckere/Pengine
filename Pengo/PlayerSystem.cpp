@@ -70,5 +70,24 @@ namespace Pengo
 			player.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx, glm::vec2{0, 1}));
 		}
 	}
+
+	void PlayerSystem::OnBlockBreakEvent(const Pengin::BaseEvent& event)
+	{
+		using namespace Pengin;
+
+		const auto& breakEv{ static_cast<const PengoBlockBreakEvent&>(event) };
+		const auto& userIdx = breakEv.GetUserIndex();
+
+		auto player = SceneManager::GetInstance().GetActiveScene()->GetPlayer(userIdx);
+
+		const SoundData blockBreak{"../Data/Audio/Ice Block Destroyed.mp3"};
+		ServiceLocator::GetSoundSystem().PlaySound(blockBreak);
+
+		m_ECS.DestroyEntity(breakEv.GetBlockId());
+
+		player;
+
+
+	}
 }
 

@@ -77,6 +77,14 @@ namespace Pengin
 
 		return gridComp.At(row, col);
 	}
+
+	GridCellData& GridSystem::GetCellData(EntityId gridId, uint16_t row, uint16_t col) noexcept
+	{
+		assert(m_ECS.HasComponent<GridComponent>(gridId));
+		auto& gridComp = m_ECS.GetComponent<GridComponent>(gridId);
+
+		return gridComp.At(row, col);
+	}
 }
 
 

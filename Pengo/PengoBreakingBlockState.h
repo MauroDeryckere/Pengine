@@ -24,20 +24,14 @@ namespace Pengo
 	public:
 		PengoBreakingBlockState(const Pengin::UserIndex& userIdx, const glm::vec2& dir) :
 			Pengin::PlayerState{ userIdx },
-			m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() },
 			m_Direction{ dir }
-		{ 
-			m_pObserver->RegisterForEvent(m_pObserver, PengoBlockBreakEvent::PENGO_BLOCKBR_EVENT_NAME, [this](const Pengin::BaseEvent& ev) {OnBlockBreakEvent(ev); });
-		}
+		{ }
 
 		void OnEnter();
 		std::unique_ptr<Pengin::PlayerState> Update(const Pengin::UserIndex& userIndex);
 
 	private:
-		std::shared_ptr<Pengin::Observer> m_pObserver;
 		const glm::vec2 m_Direction{  };
-
-		void OnBlockBreakEvent(const Pengin::BaseEvent& event);
 	};
 }
 

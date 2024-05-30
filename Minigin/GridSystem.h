@@ -29,6 +29,7 @@ namespace Pengin
 
 		[[nodiscard]] bool IsWithinBounds(EntityId gridId, uint16_t row, uint16_t col) const noexcept;
 		[[nodiscard]] const GridCellData& GetCellData(EntityId gridId, uint16_t row, uint16_t col) const noexcept;
+		[[nodiscard]] GridCellData& GetCellData(EntityId gridId, uint16_t row, uint16_t col) noexcept;
 
 
 		GridSystem(const GridSystem&) = delete;

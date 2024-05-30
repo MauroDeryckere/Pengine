@@ -1696,8 +1696,36 @@
                     16
                 ],
                 "IsVisible": true
+            },
+             "struct Pengin::AnimationComponent": {
+                "AnimationData": [
+                    {
+                        "Frame0SrcRect": [
+                            708,
+                            0,
+                            16,
+                            16
+                        ],
+                        "FrameDuration": 0,
+                        "FrameCount": 1
+                    },
+                    {
+                        "Frame0SrcRect": [
+                            708,
+                            48,
+                            16,
+                            16
+                        ],
+                        "FrameDuration": 0.125,
+                        "FrameCount": 8
+                    }
+                ],
+                "FrameTimer": 0,
+                "CurrAnimationIdx": 0,
+                "CurrFrame": 0,
+                "IsPlaying": true
             }
-        },
+          },
            {
             "Tag Component": "Block entity",
             "UUID": "1aa64e4a-0339-8888-aab0-ac5110d5dfee",
@@ -1740,8 +1768,37 @@
                     16
                 ],
                 "IsVisible": true
-            }
-        },
+            },
+             "struct Pengin::AnimationComponent": {
+                "AnimationData": [
+                    {
+                        "Frame0SrcRect": [
+                            708,
+                            0,
+                            16,
+                            16
+                        ],
+                        "FrameDuration": 0,
+                        "FrameCount": 1
+                    },
+                    {
+                        "Frame0SrcRect": [
+                            708,
+                            48,
+                            16,
+                            16
+                        ],
+                        "FrameDuration": 0.125,
+                        "FrameCount": 8
+                    }
+                ],
+                "FrameTimer": 0,
+                "CurrAnimationIdx": 0,
+                "CurrFrame": 0,
+                "IsPlaying": true
+            }           
+
+           },
             {
             "Tag Component": "Block entity",
             "UUID": "1aa64e4a-0339-7777-aab0-ac5110d5dfee",
@@ -1784,7 +1841,36 @@
                     16
                 ],
                 "IsVisible": true
+            },
+              "struct Pengin::AnimationComponent": {
+                "AnimationData": [
+                  {
+                    "Frame0SrcRect": [
+                      708,
+                      0,
+                      16,
+                      16
+                    ],
+                    "FrameDuration": 0,
+                    "FrameCount": 1
+                  },
+                  {
+                    "Frame0SrcRect": [
+                      708,
+                      48,
+                      16,
+                      16
+                    ],
+                    "FrameDuration": 0.125,
+                    "FrameCount": 8
+                  }
+                ],
+                "FrameTimer": 0,
+                "CurrAnimationIdx": 0,
+                "CurrFrame": 0,
+                "IsPlaying": true
+              }        
+
             }
-        }
     ]
 }

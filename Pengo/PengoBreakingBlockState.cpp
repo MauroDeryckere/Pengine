@@ -5,6 +5,9 @@
 #include "PengoComponent.h"
 #include "PengoBlockBreakEvent.h"
 #include "PengoIdleState.h"
+#include "GridSystem.h"
+#include "OnGridTag.h"
+#include "PengoGrid.h"
 
 namespace Pengo
 {
@@ -47,35 +50,29 @@ namespace Pengo
 	{
         using namespace Pengin;
 
-        static float timer = 0.0f;
-
-        float deltaTime = GameTime::GetInstance().ElapsedSec();
-        timer += deltaTime;
+		static float timer { 0.0f };
+        timer += GameTime::GetInstance().ElapsedSec();
 
         if (timer >= 1.0f)
         {
             timer = 0.0f;
             
-            EventManager::GetInstance().BroadcoastEvent(std::make_unique<PengoBlockBreakEvent>(PlayerState::GetUserIndex()));
-        }
+			auto activeScene = SceneManager::GetInstance().GetActiveScene();
+			auto player = activeScene->GetPlayer(GetUserIndex());
+
+			auto pGridSys = activeScene->GetSystem<GridSystem>();
+			const auto& coords = pGridSys->GetCellCoords(player.GetEntityId());
+
+			OnGridTag onGridTag{ player.GetComponent<OnGridTag>() };
+			auto& cellData = pGridSys->GetCellData(onGridTag.gridId, static_cast<uint16_t>(coords.first + m_Direction.y), 
+																	 static_cast<uint16_t>(coords.second + m_Direction.x));
+
+			cellData.type = static_cast<uint8_t>(PengoCellType::Walkable);
+
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<PengoBlockBreakEvent>(PlayerState::GetUserIndex(), cellData.entity));
+			return std::make_unique<PengoIdleState>(GetUserIndex(), m_Direction);
+		}
 		
 		return nullptr;
-	}
-
-
-	void PengoBreakingBlockState::OnBlockBreakEvent(const Pengin::BaseEvent& event) 
-	{
-		using namespace Pengin;
-
-		const auto& breakEv{ static_cast<const PengoBlockBreakEvent&>(event) };
-		const auto& userIdx = breakEv.GetUserIndex();
-
-		auto player = SceneManager::GetInstance().GetActiveScene()->GetPlayer(userIdx);
-
-		if (player)
-		{
-			assert(player.HasComponent<PengoComponent>());
-			player.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx, m_Direction));
-		}
 	}
 }
