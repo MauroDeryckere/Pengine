@@ -31,6 +31,12 @@
     <Filter Include="Header Files\Grid">
       <UniqueIdentifier>{91df3d84-13ff-43ea-ac5f-df820696e2bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\State\Pengo">
+      <UniqueIdentifier>{fc0a5170-fa0e-4c9c-a06d-fc51c4c5ab6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\State\SnoBee">
+      <UniqueIdentifier>{4ae8fd86-cff6-4862-a273-c1fb44286a21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -57,28 +63,25 @@
     <ClCompile Include="UIDisplaySystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EnemySystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SnobeeSpawningState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SnobeeWalkState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PengoComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="PengoWalkState.h">
-      <Filter>Header Files\State</Filter>
-    </ClInclude>
     <ClInclude Include="PengoInputCommands.h">
       <Filter>Header Files\InputCommands</Filter>
     </ClInclude>
-    <ClInclude Include="PengoIdleState.h">
-      <Filter>Header Files\State</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerSystem.h">
       <Filter>Header Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="PengoDyingState.h">
-      <Filter>Header Files\State</Filter>
-    </ClInclude>
-    <ClInclude Include="PengoBreakingBlockState.h">
-      <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="PengoBlockBreakEvent.h">
       <Filter>Header Files\Events</Filter>
@@ -106,6 +109,30 @@
     </ClInclude>
     <ClInclude Include="PengoGrid.h">
       <Filter>Header Files\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="PengoWalkState.h">
+      <Filter>Header Files\State\Pengo</Filter>
+    </ClInclude>
+    <ClInclude Include="PengoBreakingBlockState.h">
+      <Filter>Header Files\State\Pengo</Filter>
+    </ClInclude>
+    <ClInclude Include="PengoDyingState.h">
+      <Filter>Header Files\State\Pengo</Filter>
+    </ClInclude>
+    <ClInclude Include="PengoIdleState.h">
+      <Filter>Header Files\State\Pengo</Filter>
+    </ClInclude>
+    <ClInclude Include="SnobeeSpawningState.h">
+      <Filter>Header Files\State\SnoBee</Filter>
+    </ClInclude>
+    <ClInclude Include="SnobeeComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SnobeeWalkState.h">
+      <Filter>Header Files\State\SnoBee</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

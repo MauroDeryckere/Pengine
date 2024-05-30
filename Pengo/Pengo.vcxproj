@@ -164,6 +164,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EnemySystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PengoBreakingBlockState.cpp" />
     <ClCompile Include="PengoDyingState.cpp" />
@@ -171,10 +172,13 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y</Command>
     <ClCompile Include="PengoInputCommands.cpp" />
     <ClCompile Include="PengoWalkState.cpp" />
     <ClCompile Include="PlayerSystem.cpp" />
+    <ClCompile Include="SnobeeSpawningState.cpp" />
+    <ClCompile Include="SnobeeWalkState.cpp" />
     <ClCompile Include="UIDisplaySystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DisplayComponent.h" />
+    <ClInclude Include="EnemySystem.h" />
     <ClInclude Include="HealthChangeEvent.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="PengoBlockBreakEvent.h" />
@@ -189,6 +193,9 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y</Command>
     <ClInclude Include="PlayerSystem.h" />
     <ClInclude Include="ScoreChangeEvent.h" />
     <ClInclude Include="ScoreComponent.h" />
+    <ClInclude Include="SnobeeComponent.h" />
+    <ClInclude Include="SnobeeSpawningState.h" />
+    <ClInclude Include="SnobeeWalkState.h" />
     <ClInclude Include="UIDisplaySystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

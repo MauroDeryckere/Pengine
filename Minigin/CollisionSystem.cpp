@@ -59,7 +59,6 @@ namespace Pengin
 				{
 					if (bodyAPtr->isStatic && bodyBPtr->isStatic)
 					{
-						DEBUG_OUT("collision between 2 static bodies, no resolution: " << entityA << " and " << entityB);
 						//No collision to deal with, 2 static bodies
 						continue;
 					}

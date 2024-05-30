@@ -1194,6 +1194,9 @@
     <ClInclude Include="OnGridTag.h">
       <Filter>Header Files\Components\General\Grid</Filter>
     </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui-1.90.4\imgui_widgets.cpp">

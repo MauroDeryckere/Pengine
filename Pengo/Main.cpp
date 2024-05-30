@@ -29,6 +29,7 @@
 
 #include "DebugDrawSystem.h"
 #include "PlayerSystem.h"
+#include "EnemySystem.h"
 #include "UIDisplaySystem.h"
 
 #include "TestSerComponent.h"
@@ -97,137 +98,10 @@ void LoadDemo()
 	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs) 
 		{ 
 			sysManager.RegisterSystem<Pengo::PlayerSystem>(std::make_shared<Pengo::PlayerSystem>(ecs) ); 
+			sysManager.RegisterSystem<Pengo::EnemySystem>(std::make_shared<Pengo::EnemySystem>(ecs) );
+
 			sysManager.RegisterSystem<Pengo::UIDisplaySystem>(std::make_shared<Pengo::UIDisplaySystem>(ecs, pScene.get()) );
 		});
-
-	//auto entt = pScene->CreateEntity({250,250,0});
-	//auto& rc = entt.AddComponent<RectColliderComponent>();
-	//rc.collRect.width = 100;
-	//rc.collRect.height = 100;
-
-	//auto& b = entt.AddComponent<BodyComponent>();
-	//b.currentPosition = { 250,250,0 };
-	//b.isStatic = true;
-	//b.lastPosition = { 250, 250, 0 };
-
-	//Entity testLoadedEntity = pScene->AddEntityFromFile("../Data/TestEntityFFile.json");
-	//testLoadedEntity.GetComponent<TextComponent>().SetText("TEXT TEST");
-
-	//pScene->SerializeEntity(testLoadedEntity, "../Data/TestEntityToFile.json");
-
-
-	//Manual scene initialization (no load file)
-	//auto& input = InputManager::GetInstance();
-	//auto user1 = input.RegisterUser(UserType::Keyboard);
-	//auto user2 = input.RegisterUser(UserType::Controller);
-	//
-	////Background && logo
-	//auto background = pScene->CreateEntity();
-	//background.AddComponent<SpriteComponent>("background.tga");
-	////Temp testing
-	//background.AddComponent<RectColliderComponent>(UtilStructs::Rectu16{0, 0, 100, 100});
-
-	//auto logo = pScene->CreateEntity( { 216, 180, 0 } );
-	//logo.AddComponent<SpriteComponent>("logo.tga");
-	////-------------------
-
-	////Text---------------
-	//auto title = pScene->CreateEntity({ 80, 20, 0 });
-	//title.AddComponent<SpriteComponent>();
-	//title.AddComponent<TextComponent>("Lingua.otf", 36, "Programming 4 Assignment");
-
-	//auto descr1 = pScene->CreateEntity({ 100, 75, 0 });
-	//descr1.AddComponent<SpriteComponent>();
-	//descr1.AddComponent<TextComponent>("Lingua.otf", 20, "WASD to move, C attack, B score");
-
-	//auto descr2 = pScene->CreateEntity({ 100, 100, 0 });
-	//descr2.AddComponent<SpriteComponent>();
-	//descr2.AddComponent<TextComponent>("Lingua.otf", 20, "IJKL/D-Pad to move, V attack, N score");
-	////---------------------
-
-	////FPS----------------
-	//auto fps = pScene->CreateEntity();
-	//fps.AddComponent<SpriteComponent>();
-	//fps.AddComponent<TextComponent>("Lingua.otf", 36);
-	//fps.AddComponent<FPSCounterComponent>();
-	////-------------------
-
-	////2 Players
-	////Player 1-----------
-	//auto player1 = pScene->CreateEntity({ 200, 200, 0 }, {}, {2,2,0});
-	//player1.AddComponent<PlayerComponent>(user1);
-	//player1.AddComponent<SpriteComponent>("pengoLowQualityFortesting.png");
-	//player1.AddComponent<VelocityComponent>(); need to change to body
-	//auto& player1Health = player1.AddComponent<HealthComponent>(3);
-	//auto& player1Score = player1.AddComponent<ScoreComponent>();
-
-	//player1.AddComponent<RectColliderComponent>( UtilStructs::Rectu16{10, 10, 100, 100} );
-
-	////Displays
-	//auto healthChar1 = pScene->CreateEntity({ 0, 150, 0 });
-	//healthChar1.AddComponent<SpriteComponent>();
-	//healthChar1.AddComponent<TextComponent>("Lingua.otf", 18, "Player 1 Health: 3");
-	//healthChar1.AddComponent<TxtDisplayComponent>("Player 1 Health: ");
-
-	//player1Health.healthDisplayIds.emplace_back(healthChar1.GetEntityId());
-
-	//auto scoreChar1 = pScene->CreateEntity({ 0, 175, 0 });
-	//scoreChar1.AddComponent<SpriteComponent>();
-	//scoreChar1.AddComponent<TextComponent>("Lingua.otf", 18, "Player 1 Score: 0"); //Todo no text display init
-	//scoreChar1.AddComponent<TxtDisplayComponent>("Player 1 Score: ");
-
-	//player1Score.scoreDisplays.emplace_back(scoreChar1.GetEntityId());
-
-	//pScene->SetPlayer(user1, player1); 
-	////-------------------
-	//
-	////Player 2-----------
-	//auto player2 = pScene->CreateEntity({ 100, 200, 0 });
-	//player2.AddComponent<PlayerComponent>(user2);
-	//player2.AddComponent<SpriteComponent>("pengoLowQualityFortesting.png");
-	//player2.AddComponent<VelocityComponent>(); need to change to body
-	//auto& player2Health = player2.AddComponent<HealthComponent>(3);
-	//auto& player2Score = player2.AddComponent<ScoreComponent>();
-
-	////Displays
-	//auto healthChar2 = pScene->CreateEntity({ 0, 200, 0 });
-	//healthChar2.AddComponent<SpriteComponent>();
-	//healthChar2.AddComponent<TextComponent>("Lingua.otf", 18, "Player 2 Health: 3");
-	//healthChar2.AddComponent<TxtDisplayComponent>("Player 2 Health: ");
-
-	//player2Health.healthDisplayIds.emplace_back(healthChar2.GetEntityId());
-
-	//auto scoreChar2 = pScene->CreateEntity({ 0, 225, 0 });
-	//scoreChar2.AddComponent<SpriteComponent>();
-	//scoreChar2.AddComponent<TextComponent>("Lingua.otf", 18, "Player 2 Score: 0"); //Todo no text display init
-	//scoreChar2.AddComponent<TxtDisplayComponent>("Player 2 Score: ");
-
-	//player2Score.scoreDisplays.emplace_back(scoreChar2.GetEntityId());
-	//
-	//pScene->SetPlayer(user2, player2);
-	////----------------------------------------
-
-	////---------------
-	////animation test code
-	//auto aniPengo = pScene->CreateEntity({ 200, 200, 0 }, { }, { 4,4,0 });
-	//aniPengo.AddComponent<SpriteComponent>("Pengo_Snobee_Spritesheet.png", UtilStructs::Rectu16{ 32, 0, 16, 16 });
-	//
-	//AnimationData ani{};
-	//ani.frameCt = 2;
-	//ani.frameDuration = 1.f;
-	//ani.frame0sourceRect = UtilStructs::Rectu16{ 32, 0, 16, 16 };
-
-	//AnimationData ani1{};
-	//ani1.frameCt = 2;
-	//ani1.frameDuration = 1.f;
-	//ani1.frame0sourceRect = UtilStructs::Rectu16{ 0, 0, 16, 16 };
-
-	//std::vector<AnimationData> anis;
-	//anis.emplace_back(ani);
-	//anis.emplace_back(ani1);
-
-	//aniPengo.AddComponent<AnimationComponent>(anis);
-	//---------------------------
 }
 
 void LoadGamePlayScripting()

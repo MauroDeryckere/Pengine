@@ -76,18 +76,9 @@ namespace Pengo
 		using namespace Pengin;
 
 		const auto& breakEv{ static_cast<const PengoBlockBreakEvent&>(event) };
-		const auto& userIdx = breakEv.GetUserIndex();
-
-		auto player = SceneManager::GetInstance().GetActiveScene()->GetPlayer(userIdx);
-
-		const SoundData blockBreak{"../Data/Audio/Ice Block Destroyed.mp3"};
-		ServiceLocator::GetSoundSystem().PlaySound(blockBreak);
+		//const auto& userIdx = breakEv.GetUserIndex();
 
 		m_ECS.DestroyEntity(breakEv.GetBlockId());
-
-		player;
-
-
 	}
 }
 

@@ -97,7 +97,6 @@ namespace Pengo
 
 		if (!pGridSys->IsWithinBounds(gridTag.gridId, static_cast<uint16_t>(row), static_cast<uint16_t>(col)) || row < 0 || col < 0)
 		{
-			//Play sound TODO
 			return false;
 		}
 
@@ -106,9 +105,16 @@ namespace Pengo
 		const auto& cellData = pGridSys->GetCellData(gridTag.gridId, static_cast<uint16_t>(row), static_cast<uint16_t>(col));
 		PengoCellType type = static_cast<PengoCellType>(cellData.type);
 
-		return (type == Pengo::PengoCellType::Wall);
+		if (type == Pengo::PengoCellType::Wall)
+		{
+			EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(
+				cellData.entity,
+				static_cast<uint8_t>(BlockType::Breaking)));
+
+			return true;
+		}
+
+		return false;
 	}
-
-
 }
 

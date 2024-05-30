@@ -82,8 +82,8 @@ namespace Pengin
 			//x and y is in grid space		
 			assert(x < GetTotalWidth() && y < GetTotalHeight() && "Coordinates out of bounds");
 
-			uint16_t row = static_cast<uint16_t>(y / cellHeight);
-			uint16_t col = static_cast<uint16_t>(x / cellWidth);
+			const uint16_t row = static_cast<uint16_t>(y / cellHeight);
+			const uint16_t col = static_cast<uint16_t>(x / cellWidth);
 
 			assert(IsWithinBounds(row, col));
 
@@ -137,15 +137,15 @@ namespace Pengin
 
 			fieldSer.DeserializeField("Cells", comp.cells, serializedFields, entityMap);
 
-			for (int idx{0}; auto & cell : comp.cells)
-			{
-				std::cout << static_cast<int>(cell.type) << " ";
-				++idx;
-				if (idx % 13 == 0)
-				{
-					std::cout << "\n";
-				}
-			}
+			//for (int idx{0}; auto & cell : comp.cells)
+			//{
+			//	std::cout << static_cast<int>(cell.type) << " ";
+			//	++idx;
+			//	if (idx % 13 == 0)
+			//	{
+			//		std::cout << "\n";
+			//	}
+			//}
 
 			fieldSer.DeserializeField("Rows", comp.rows, serializedFields, entityMap);
 			fieldSer.DeserializeField("Cols", comp.cols, serializedFields, entityMap);
