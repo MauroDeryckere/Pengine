@@ -29,7 +29,7 @@ namespace Pengo
 
 		~PengoBlockBreakEvent() = default;
 
-		[[nodiscard]] const Pengin::UserIndex& GetUserInex() const noexcept
+		[[nodiscard]] const Pengin::UserIndex& GetUserIndex() const noexcept
 		{
 			return m_UserIdx;
 		}
