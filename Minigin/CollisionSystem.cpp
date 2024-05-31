@@ -57,9 +57,16 @@ namespace Pengin
 
 				if (bodyAPtr && bodyBPtr)
 				{
-					if (bodyAPtr->isStatic && bodyBPtr->isStatic)
+					if (bodyAPtr->collType == BodyComponent::CollType::Static && bodyBPtr->collType == BodyComponent::CollType::Static)
 					{
 						//No collision to deal with, 2 static bodies
+						continue;
+					}
+					else if (bodyAPtr->collType == BodyComponent::CollType::Trigger || bodyBPtr->collType == BodyComponent::CollType::Trigger)
+					{
+						DEBUG_OUT("trigger COLL\n\n\n");
+						const CollPair pair{ entityA, entityB };
+						m_FrameCollisions.insert(pair);
 						continue;
 					}
 				}
@@ -85,11 +92,11 @@ namespace Pengin
 						constexpr float restitutionFactor = -1.f; //For now, we do not support elasticity (it does work but not added as a parameter in body and still need to dd physics for friction,..)
 						const float impulseMagnitude = -(1.0f + restitutionFactor) * relativeVelocityAlongNormal;
 
-						if (bodyAPtr->isStatic) 
+						if (bodyAPtr->collType == BodyComponent::CollType::Static)
 						{
 							bodyBPtr->velocity += normal * impulseMagnitude;
 						}
-						else if (bodyBPtr->isStatic) 
+						else if (bodyBPtr->collType == BodyComponent::CollType::Static)
 						{
 							bodyAPtr->velocity -= normal * impulseMagnitude;
 						}
@@ -180,11 +187,11 @@ namespace Pengin
 
 	void CollisionSystem::SeparateBodies(BodyComponent* bodyA, BodyComponent* bodyB, const glm::vec3& normal, const float penDepth) noexcept
 	{
-		if (bodyA->isStatic)
+		if (bodyA->collType == BodyComponent::CollType::Static)
 		{
 			bodyB->currentPosition += penDepth * normal;
 		}
-		else if (bodyB->isStatic)
+		else if (bodyB->collType == BodyComponent::CollType::Static)
 		{
 			bodyA->currentPosition -= penDepth * normal;
 		}

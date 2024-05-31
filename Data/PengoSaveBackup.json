@@ -940,7 +940,7 @@
                     72,
                     0
                 ],
-                "IsStatic": true
+                "CollType": 2
             },
             "struct Pengin::AnimationComponent": {
                 "AnimationData": [
@@ -1133,7 +1133,7 @@
                     24,
                     0
                 ],
-                "IsStatic": true
+                "CollType": 2
             },
             "struct Pengin::AnimationComponent": {
                 "AnimationData": [
@@ -1480,7 +1480,7 @@
                     0,
                     0
                 ],
-                "IsStatic": true
+                "CollType": 2
             },
             "struct Pengo::HealthComponent": {
                 "Health": 3,
