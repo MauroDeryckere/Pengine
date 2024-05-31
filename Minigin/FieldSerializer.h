@@ -360,8 +360,17 @@ namespace Pengin
 				{
 					std::stringstream ss(fieldStr);
 					std::underlying_type_t<FieldType> temp{};
-					ss >> temp;
 
+					if constexpr (std::numeric_limits<std::underlying_type_t<FieldType>>::is_integer && 
+						sizeof(std::underlying_type_t<FieldType>) == 1)
+					{
+						temp = static_cast<std::underlying_type_t<FieldType>>(std::stoi(fieldStr));
+					}
+					else
+					{
+						ss >> temp;
+					}
+						
 					fieldValueOut = static_cast<FieldType>(temp);
 				}
 				else
