@@ -1,6 +1,6 @@
 #include "PengoInputCommands.h"
 
-#include "HealthChangeEvent.h"
+#include "DeathEvent.h"
 #include "ScoreChangeEvent.h"
 #include "HealthComponent.h"
 #include "ScoreComponent.h"
@@ -35,7 +35,7 @@ void Pengo::BreakBlock::Execute()
 
 void Pengo::AttackPlayer::Execute()
 {
-	using namespace Pengin;
+	/*using namespace Pengin;
 
 	auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
 	Entity playerEntity{ pActiveScene->GetPlayer(InputCommand::GetUserIdx()) };
@@ -47,8 +47,8 @@ void Pengo::AttackPlayer::Execute()
 	}
 
 	playerEntity.GetComponent<HealthComponent>().health--;
-
-	EventManager::GetInstance().BroadcoastEvent(std::make_unique<HealthChangeEvent>("OnHealthChangeEvent", playerEntity.GetEntityId()));
+	EventManager::GetInstance().BroadcoastEvent(std::make_unique<DeathEvent>("PengoDeath", playerEntity.GetEntityId()));
+*/
 }
 
 void Pengo::CollectScore::Execute()

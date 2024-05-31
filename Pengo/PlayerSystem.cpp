@@ -12,9 +12,12 @@
 #include "BodyComponent.h"
 
 #include "PengoIdleState.h"
+#include "Gridsystem.h"
+#include "OnGridTag.h"
+#include "HealthComponent.h"
 #include "PengoDyingState.h"
 
-#include "HealthChangeEvent.h"
+#include "DeathEvent.h"
 
 namespace Pengo
 {
@@ -46,11 +49,13 @@ namespace Pengo
 	{
 		using namespace Pengin;
 
-		const auto& deahtEv{ static_cast<const HealthChangeEvent&>(event) };
+		const auto& deahtEv{ static_cast<const DeathEvent&>(event) };
 
 		assert(m_ECS.HasComponent<PlayerComponent>(deahtEv.GetEntityId()));
 		assert(m_ECS.HasComponent<PengoComponent>(deahtEv.GetEntityId()));
+		assert(m_ECS.HasComponent<HealthComponent>(deahtEv.GetEntityId()));
 
+		m_ECS.GetComponent<HealthComponent>(deahtEv.GetEntityId()).health--;
 		m_ECS.GetComponent<PengoComponent>(deahtEv.GetEntityId()).SetPlayerState(std::make_unique<PengoDyingState>(m_ECS.GetComponent<PlayerComponent>(deahtEv.GetEntityId()).userIdx));
 	}
 
@@ -67,6 +72,18 @@ namespace Pengo
 		if (player)
 		{
 			assert(player.HasComponent<PengoComponent>());
+			
+			GridSystem* pGridSys = SceneManager::GetInstance().GetActiveScene()->GetSystem<GridSystem>();
+			assert(pGridSys);
+
+			assert(player.HasComponent<OnGridTag>());
+			const auto& gridTag{ player.GetComponent<OnGridTag>() };
+
+			const auto& cellCoords{ pGridSys->GetCellCoords(player.GetEntityId()) };
+
+			const auto pos = pGridSys->GetCellPos(gridTag.gridId, cellCoords.first, cellCoords.second);
+			player.SetLocalPosition({ pos.x, pos.y, 0.f });
+
 			player.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx, glm::vec2{0, 1}));
 		}
 	}
@@ -76,8 +93,6 @@ namespace Pengo
 		using namespace Pengin;
 
 		const auto& breakEv{ static_cast<const PengoBlockBreakEvent&>(event) };
-		//const auto& userIdx = breakEv.GetUserIndex();
-
 		m_ECS.DestroyEntity(breakEv.GetBlockId());
 	}
 }

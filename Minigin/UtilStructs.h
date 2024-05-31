@@ -106,17 +106,17 @@ namespace Pengin
 			{
 				static constexpr T CASTED_EPS{ static_cast<T>(EPSILON) };
 
-				return not (rect1.x + rect1.width + CASTED_EPS < rect2.x 
-						|| rect2.x + rect2.width + CASTED_EPS < rect1.x 
-						|| rect1.y + rect1.height + CASTED_EPS < rect2.y 
-						|| rect2.y + rect2.height + CASTED_EPS < rect1.y);
+				return not (rect1.x + rect1.width + CASTED_EPS <= rect2.x 
+						|| rect2.x + rect2.width + CASTED_EPS <= rect1.x 
+						|| rect1.y + rect1.height + CASTED_EPS <= rect2.y 
+						|| rect2.y + rect2.height + CASTED_EPS <= rect1.y);
 			}
 			else
 			{
-				return not (rect1.x + rect1.width < rect2.x 
-						|| rect2.x + rect2.width < rect1.x 
-						|| rect1.y + rect1.height < rect2.y 
-						|| rect2.y + rect2.height < rect1.y);
+				return not (rect1.x + rect1.width <= rect2.x 
+						|| rect2.x + rect2.width <= rect1.x 
+						|| rect1.y + rect1.height <= rect2.y 
+						|| rect2.y + rect2.height <= rect1.y);
 			}
 		}
 	}

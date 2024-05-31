@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-#include "SpriteComponent.h"
+#include "BodyComponent.h"
 
 namespace Pengin
 {
@@ -17,6 +17,12 @@ namespace Pengin
 		thisTransform.localPos = position;
 		
 		SceneGraph::SetPosDirty(thisTransform, m_pScene->m_Ecs);
+
+		if (HasComponent<BodyComponent>())
+		{
+			GetComponent<BodyComponent>().currentPosition = position;
+			GetComponent<BodyComponent>().lastPosition = position;
+		}
 	}
 }
 

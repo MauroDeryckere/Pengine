@@ -21,7 +21,7 @@ namespace Pengo
 
 		{
 			m_pObserver->RegisterForEvent(m_pObserver, PengoBlockBreakEvent::PENGO_BLOCKBR_EVENT_NAME, [this](const Pengin::BaseEvent& ev) {OnBlockBreakEvent(ev); });
-			m_pObserver->RegisterForEvent(m_pObserver, "OnHealthChangeEvent", [this](const Pengin::BaseEvent& event) { OnDeathEvent(event); });
+			m_pObserver->RegisterForEvent(m_pObserver, "PengoDeath", [this](const Pengin::BaseEvent& event) { OnDeathEvent(event); });
 			m_pObserver->RegisterForEvent(m_pObserver, "OnPengoRespawn", [this](const Pengin::BaseEvent& event) { OnRespawnEvent(event); });
 		}
 

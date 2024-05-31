@@ -17,6 +17,8 @@
 #include "BodyComponent.h"
 #include "PengoComponent.h"
 #include "OnGridTag.h"
+#include "SnobeeComponent.h"
+#include "DeathEvent.h"
 #include "Entity.h"
 
 #include "GridSystem.h"
@@ -57,17 +59,6 @@ namespace Pengo
 		}
 	}
 
-	std::unique_ptr<Pengin::PlayerState> PengoWalkState::HandleInput(const Pengin::UserIndex& userIndex)
-	{
-		userIndex;
-		//if (Pengin::InputManager::GetInstance().IsActionExecuted(userIndex, "PengoBreakBlock"))
-		//{
-		//	return std::move(std::make_unique<PengoBreakingBlockState>(userIndex));
-		//}
-
-		return nullptr;
-	}
-
 	std::unique_ptr<Pengin::PlayerState> PengoWalkState::Update(const Pengin::UserIndex& userIndex)
 	{
 		using namespace Pengin;
@@ -105,6 +96,29 @@ namespace Pengo
 		}
 
 		return nullptr;
+	}
+
+	void PengoWalkState::OnCollision(const Pengin::BaseEvent& event)
+	{
+		using namespace Pengin;
+		const auto& collEvent{ static_cast<const CollisionEvent&>(event) };
+
+		auto activeScene = SceneManager::GetInstance().GetActiveScene();
+		auto player = activeScene->GetPlayer(GetUserIndex());
+
+		const auto entityA{ Pengin::Entity{ collEvent.GetEntityA(), activeScene.get()} };
+		const auto entityB{ Pengin::Entity{ collEvent.GetEntityB(), activeScene.get()} };
+
+		if (player.GetEntityId() == entityA.GetEntityId()
+			&& entityA.HasComponent<PengoComponent>() && entityB.HasComponent<SnobeeComponent>())
+		{
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<DeathEvent>("PengoDeath", collEvent.GetEntityA()));
+		}
+		else if (player.GetEntityId() == entityB.GetEntityId()
+			&& entityB.HasComponent<PengoComponent>() && entityA.HasComponent<SnobeeComponent>())
+		{
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<DeathEvent>("PengoDeath", collEvent.GetEntityB()));
+		}
 	}
 
 	bool PengoWalkState::CheckCollision()

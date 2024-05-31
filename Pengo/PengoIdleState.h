@@ -31,7 +31,11 @@ namespace Pengo
 		bool coold{ true };
 		const glm::vec2 m_Direction{};
 
+		std::shared_ptr<Pengin::Observer> m_pObserver;
+
+		void OnCollision(const Pengin::BaseEvent& event);
 		bool ValidateBlockBreak();
+
 	};
 }
 

@@ -5,6 +5,8 @@
 #include "PengoInputCommands.h"
 #include "SwitchAnimationEvent.h"
 #include "EventManager.h"
+#include "SnobeeComponent.h"
+#include "DeathEvent.h"
 
 #include "InputManager.h"
 #include "GridSystem.h"
@@ -15,8 +17,11 @@ namespace Pengo
 {
 	PengoIdleState::PengoIdleState(const Pengin::UserIndex& userIdx, const glm::vec2& dir = {}) :
 		Pengin::PlayerState{ userIdx },
-		m_Direction{ dir }
-	{ }
+		m_Direction{ dir },
+		m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() }
+	{
+		m_pObserver->RegisterForEvent(m_pObserver, Pengin::CollisionEvent::COLLISION_EVENT_NAME, [this](const Pengin::BaseEvent& event) {OnCollision(event); });
+	}
 
 	void PengoIdleState::OnEnter()
 	{
@@ -75,6 +80,29 @@ namespace Pengo
 		}
 
 		return nullptr;
+	}
+
+	void PengoIdleState::OnCollision(const Pengin::BaseEvent& event)
+	{
+		using namespace Pengin;
+		const auto& collEvent{ static_cast<const CollisionEvent&>(event) };
+
+		auto activeScene = SceneManager::GetInstance().GetActiveScene();
+		auto player = activeScene->GetPlayer(GetUserIndex());
+
+		const auto entityA{ Pengin::Entity{ collEvent.GetEntityA(), activeScene.get()} };
+		const auto entityB{ Pengin::Entity{ collEvent.GetEntityB(), activeScene.get()} };
+
+		if (player.GetEntityId() == entityA.GetEntityId()
+			&& entityA.HasComponent<PengoComponent>() && entityB.HasComponent<SnobeeComponent>())
+		{
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<DeathEvent>("PengoDeath", collEvent.GetEntityA()));
+		}
+		else if (player.GetEntityId() == entityB.GetEntityId()
+			&& entityB.HasComponent<PengoComponent>() && entityA.HasComponent<SnobeeComponent>())
+		{
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<DeathEvent>("PengoDeath", collEvent.GetEntityB()));
+		}
 	}
 
 	bool PengoIdleState::ValidateBlockBreak()

@@ -64,7 +64,6 @@ namespace Pengin
 					}
 					else if (bodyAPtr->collType == BodyComponent::CollType::Trigger || bodyBPtr->collType == BodyComponent::CollType::Trigger)
 					{
-						DEBUG_OUT("trigger COLL\n\n\n");
 						const CollPair pair{ entityA, entityB };
 						m_FrameCollisions.insert(pair);
 						continue;

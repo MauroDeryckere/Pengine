@@ -2,6 +2,7 @@
 #define PENGOWALKSTATE
 
 #include "PlayerState.h"
+#include "CollisionEvent.h"
 #include "DebugOutput.h"
 #include <glm/vec3.hpp>
 #include <string>
@@ -22,12 +23,14 @@ namespace Pengo
 
 			m_CheckedColl{ false },
 
-			m_GoalPos{ }
-		{ }
+			m_GoalPos{ },
+			m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() }
+		{
+			m_pObserver->RegisterForEvent(m_pObserver, Pengin::CollisionEvent::COLLISION_EVENT_NAME, [this](const Pengin::BaseEvent& event) {OnCollision(event); });
+		}
 
 		void OnEnter();
 
-		std::unique_ptr<Pengin::PlayerState> HandleInput(const Pengin::UserIndex& userIndex);
 		std::unique_ptr<Pengin::PlayerState> Update(const Pengin::UserIndex& userIndex);
 
 	private:
@@ -36,6 +39,9 @@ namespace Pengo
 
 		bool m_CheckedColl{ false };
 
+		std::shared_ptr<Pengin::Observer> m_pObserver;
+
+		void OnCollision(const Pengin::BaseEvent& event);
 		bool CheckCollision();
 	};
 }

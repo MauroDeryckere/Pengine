@@ -897,12 +897,12 @@
             "Transform Component": {
                 "worldPos": [
                     24.0,
-                    72.0,
+                    312.0,
                     0.0
                 ],
                 "localPos": [
                     24.0,
-                    72.0,
+                    312.0,
                     0.0
                 ],
                 "rotation": [
@@ -932,12 +932,12 @@
                 ],
                 "CurrPosition": [
                     24,
-                    72,
+                    312,
                     0
                 ],
                 "LastPosition": [
                     24,
-                    72,
+                    312,
                     0
                 ],
                 "CollType": 2
@@ -1002,10 +1002,10 @@
             },
             "struct Pengin::RectColliderComponent": {
                 "CollRect": [
-                    0,
-                    0,
-                    16,
-                    16
+                    2,
+                    2,
+                    12,
+                    12
                 ]
             },
             "struct Pengin::SpriteComponent": {

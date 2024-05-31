@@ -14,7 +14,7 @@
 #include "TextComponent.h"
 #include "DisplayComponent.h"
 
-#include "HealthChangeEvent.h"
+#include "DeathEvent.h"
 #include "ScoreChangeEvent.h"
 
 namespace Pengo
@@ -25,14 +25,14 @@ namespace Pengo
 		m_pScene { pScene },
 		m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() }
 	{
-		m_pObserver->RegisterForEvent(m_pObserver, "OnHealthChangeEvent", [this](const Pengin::BaseEvent& event) { OnHealthChangeEvent(event); } );
+		m_pObserver->RegisterForEvent(m_pObserver, "PengoDeath", [this](const Pengin::BaseEvent& event) { OnHealthChangeEvent(event); } );
 		m_pObserver->RegisterForEvent(m_pObserver, "OnScoreCollectEvent", [this](const Pengin::BaseEvent& event) { OnScoreCollectEvent(event); } );
 	}
 
 	void UIDisplaySystem::OnHealthChangeEvent(const Pengin::BaseEvent& event)
 	{
 		using namespace Pengin;
-		const HealthChangeEvent& healthEv{ static_cast<const HealthChangeEvent&>(event) };
+		const DeathEvent& healthEv{ static_cast<const DeathEvent&>(event) };
 				
 		const EntityId id{ healthEv.GetEntityId() };
 		assert(m_ECS.HasComponent<HealthComponent>(id));

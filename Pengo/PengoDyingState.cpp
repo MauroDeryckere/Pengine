@@ -4,6 +4,7 @@
 
 #include "EventManager.h"
 #include "PengoRespawnEvent.h"
+#include "HealthComponent.h"
 
 namespace Pengo
 {
@@ -11,34 +12,34 @@ namespace Pengo
 	{
 		using namespace Pengin;
 
-
 		auto playerEntity{ Pengin::SceneManager::GetInstance().GetActiveScene()->GetPlayer(Pengin::PlayerState::GetUserIndex()) };
 
 		if (playerEntity)
 		{
 			EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(playerEntity.GetEntityId(), static_cast<uint8_t>(PlayerSystem::PengoAnimations::Dying)));
 		}
-
-		DEBUG_OUT("Enter Dying");
 	}
 
 	std::unique_ptr<Pengin::PlayerState> PengoDyingState::Update(const Pengin::UserIndex& userIndex)
 	{
-		//if health >= 0 else broadcast gameover Event
 		using namespace Pengin;
 
-		static float timer = 0.0f;
-
 		float deltaTime = GameTime::GetInstance().ElapsedSec();
-		timer += deltaTime;
+		m_Timer += deltaTime;
 
-		if (timer >= 1.0f)
+		if (m_Timer >= 1.0f)
 		{
-			timer = 0.0f;
+			auto playerEntity{ Pengin::SceneManager::GetInstance().GetActiveScene()->GetPlayer(Pengin::PlayerState::GetUserIndex()) };
+			if (playerEntity.GetComponent<HealthComponent>().health > 0)
+			{
+				EventManager::GetInstance().BroadcoastEvent(std::make_unique<PengoRespawnEvent>(userIndex));
+			}
+			else
+			{
+				//GAME OVER
+			}
 
-			EventManager::GetInstance().BroadcoastEvent(std::make_unique<PengoRespawnEvent>(userIndex));
 		}
-
 		return nullptr;;
 	}
 }

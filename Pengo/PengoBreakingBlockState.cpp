@@ -8,6 +8,8 @@
 #include "GridSystem.h"
 #include "OnGridTag.h"
 #include "PengoGrid.h"
+#include "SnobeeComponent.h"
+#include "DeathEvent.h"
 
 namespace Pengo
 {
@@ -50,13 +52,10 @@ namespace Pengo
 	{
         using namespace Pengin;
 
-		static float timer { 0.0f };
-        timer += GameTime::GetInstance().ElapsedSec();
+        m_Timer += GameTime::GetInstance().ElapsedSec();
 
-        if (timer >= 1.0f)
-        {
-            timer = 0.0f;
-            
+        if (m_Timer >= 1.0f)
+        {            
 			auto activeScene = SceneManager::GetInstance().GetActiveScene();
 			auto player = activeScene->GetPlayer(GetUserIndex());
 
@@ -67,12 +66,60 @@ namespace Pengo
 			auto& cellData = pGridSys->GetCellData(onGridTag.gridId, static_cast<uint16_t>(coords.first + m_Direction.y), 
 																	 static_cast<uint16_t>(coords.second + m_Direction.x));
 
-			cellData.type = static_cast<uint8_t>(PengoCellType::Walkable);
+			if (cellData.type == static_cast<uint8_t>(PengoCellType::Wall))
+			{
+				cellData.type = static_cast<uint8_t>(PengoCellType::Walkable);
 
-			EventManager::GetInstance().BroadcoastEvent(std::make_unique<PengoBlockBreakEvent>(PlayerState::GetUserIndex(), cellData.entity));
+				EventManager::GetInstance().BroadcoastEvent(std::make_unique<PengoBlockBreakEvent>(PlayerState::GetUserIndex(), cellData.entity));
+			}
+
 			return std::make_unique<PengoIdleState>(GetUserIndex(), m_Direction);
 		}
 		
 		return nullptr;
+	}
+
+	void PengoBreakingBlockState::OnCollision(const Pengin::BaseEvent& event)
+	{
+		using namespace Pengin;
+		const auto& collEvent{ static_cast<const CollisionEvent&>(event) };
+
+		auto activeScene = SceneManager::GetInstance().GetActiveScene();
+		auto player = activeScene->GetPlayer(GetUserIndex());
+
+		const auto entityA{ Pengin::Entity{ collEvent.GetEntityA(), activeScene.get()} };
+		const auto entityB{ Pengin::Entity{ collEvent.GetEntityB(), activeScene.get()} };
+		
+		if (player.GetEntityId() == entityA.GetEntityId() 
+			&& entityA.HasComponent<PengoComponent>() && entityB.HasComponent<SnobeeComponent>())
+		{
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<DeathEvent>("PengoDeath", collEvent.GetEntityA()));
+			ResetBlock();
+		}
+		else if (player.GetEntityId() == entityB.GetEntityId() 
+			&& entityB.HasComponent<PengoComponent>() && entityA.HasComponent<SnobeeComponent>())
+		{
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<DeathEvent>("PengoDeath", collEvent.GetEntityB()));
+			ResetBlock();
+		}
+	}
+
+	void PengoBreakingBlockState::ResetBlock()
+	{
+		using namespace Pengin;
+		auto activeScene = SceneManager::GetInstance().GetActiveScene();
+		auto player = activeScene->GetPlayer(GetUserIndex());
+
+		auto pGridSys = activeScene->GetSystem<GridSystem>();
+		const auto& coords = pGridSys->GetCellCoords(player.GetEntityId());
+
+		OnGridTag onGridTag{ player.GetComponent<OnGridTag>() };
+		auto& cellData = pGridSys->GetCellData(onGridTag.gridId, static_cast<uint16_t>(coords.first + m_Direction.y),
+			static_cast<uint16_t>(coords.second + m_Direction.x));
+
+		if (cellData.type == static_cast<uint8_t>(PengoCellType::Wall))
+		{
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<SwitchAnimationEvent>(cellData.entity, static_cast<uint8_t>(BlockType::Idle)));
+		}
 	}
 }

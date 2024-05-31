@@ -179,7 +179,8 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y</Command>
   <ItemGroup>
     <ClInclude Include="DisplayComponent.h" />
     <ClInclude Include="EnemySystem.h" />
-    <ClInclude Include="HealthChangeEvent.h" />
+    <ClInclude Include="DeathEvent.h" />
+    <ClInclude Include="GameSystem.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="PengoBlockBreakEvent.h" />
     <ClInclude Include="PengoBreakingBlockState.h" />

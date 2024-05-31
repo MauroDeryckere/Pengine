@@ -95,7 +95,7 @@
     <ClInclude Include="ScoreChangeEvent.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
-    <ClInclude Include="HealthChangeEvent.h">
+    <ClInclude Include="DeathEvent.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
     <ClInclude Include="ScoreComponent.h">
@@ -133,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="SnobeeWalkState.h">
       <Filter>Header Files\State\SnoBee</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystem.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

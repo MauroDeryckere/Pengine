@@ -23,19 +23,10 @@ namespace Pengo
 		{}
 
 		void OnEnter();
-
 		std::unique_ptr<Pengin::PlayerState> Update(const Pengin::UserIndex& userIndex);
 
-		std::unique_ptr<Pengin::PlayerState> HandleInput(const Pengin::UserIndex&)
-		{
-			return nullptr;
-		}
-
-		void OnExit()
-		{
-			DEBUG_OUT("Exit Dying");
-		}
-
+	private:
+		float m_Timer{ 0.f };
 	};
 }
 
