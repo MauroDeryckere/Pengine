@@ -23,6 +23,12 @@ namespace Pengin
 		{}
 
 		~GridCellData() = default;
+		
+		void Reset() noexcept
+		{
+			type = 0;
+			entity = NULL_ENTITY_ID;
+		}
 
 		static void Serialize(const FieldSerializer& fieldSer, const GridCellData& serStruct, std::vector<uint8_t>& fieldVector, const ECS& ecs)
 		{

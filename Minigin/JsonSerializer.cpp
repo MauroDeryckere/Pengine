@@ -312,6 +312,12 @@ namespace Pengin
 			return false;
 		}
 
+		if (ecs.HasComponent<PlayerComponent>(id))
+		{
+			const auto& playerComp = ecs.GetComponent<PlayerComponent>(id);
+			j["Player Component"] = playerComp.userIdx ? playerComp.userIdx.GetUUID_PrettyStr() : "NULL_UUID";
+		}
+
 		using namespace nlohmann::literals;
 		auto& map = SerializationRegistry::GetInstance().m_SerMap;
 
@@ -358,6 +364,15 @@ namespace Pengin
 		{
 			DEBUG_OUT("No transform");
 			return { false, entity };
+		}
+
+		if (entityData.contains("Player Component"))
+		{
+			PlayerComponent playerComp{};
+			std::string userIdxStr{ entityData["Player Component"].get<std::string>() };
+			playerComp.userIdx = userIdxStr == "NULL_UUID" ? GameUUID{ true } : GameUUID{ userIdxStr };
+
+			ecs.AddComponent<PlayerComponent>(entity, std::move(playerComp));
 		}
 
 		auto& map{ SerializationRegistry::GetInstance().m_DeSerMap };

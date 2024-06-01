@@ -11,6 +11,20 @@ namespace Pengin
 		SceneGraph::SetParent(m_EntityId, parentEntity.GetEntityId(), m_pScene->m_Ecs, keepWorldPos);
 	}
 
+	void Entity::SetWorldPosition(const glm::vec3& position)
+	{
+		auto& thisTransform = GetComponent<TransformComponent>();
+		thisTransform.worldPos = position;
+
+		SceneGraph::SetPosDirty(thisTransform, m_pScene->m_Ecs);
+
+		if (HasComponent<BodyComponent>())
+		{
+			GetComponent<BodyComponent>().currentPosition = position;
+			GetComponent<BodyComponent>().lastPosition = position;
+		}
+	}
+
 	void Entity::SetLocalPosition(const glm::vec3& position)
 	{
 		auto& thisTransform = GetComponent<TransformComponent>();

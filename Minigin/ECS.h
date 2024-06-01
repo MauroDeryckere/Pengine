@@ -36,7 +36,7 @@ namespace Pengin
         {
             std::for_each(m_EntitiesToDestroy.begin(), m_EntitiesToDestroy.end(), [this](const EntityId id) 
                 { 
-                    const auto& ownedCompTypes{ m_EntityManager.GetAllCompTypes(id) };
+                    const auto ownedCompTypes{ m_EntityManager.GetAllCompTypes(id) };
                     for (const auto& comp : ownedCompTypes)
                     {
                         m_ComponentManager.RemoveComponent(comp, id);

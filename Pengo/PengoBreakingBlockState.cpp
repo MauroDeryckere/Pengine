@@ -8,6 +8,8 @@
 #include "GridSystem.h"
 #include "OnGridTag.h"
 #include "PengoGrid.h"
+#include "BlockSystem.h"
+#include "BlockComponent.h"
 #include "SnobeeComponent.h"
 #include "DeathEvent.h"
 
@@ -66,11 +68,12 @@ namespace Pengo
 			auto& cellData = pGridSys->GetCellData(onGridTag.gridId, static_cast<uint16_t>(coords.first + m_Direction.y), 
 																	 static_cast<uint16_t>(coords.second + m_Direction.x));
 
-			if (cellData.type == static_cast<uint8_t>(PengoCellType::Wall))
+			if (cellData.type == static_cast<uint8_t>(PengoCellType::Block))
 			{
-				cellData.type = static_cast<uint8_t>(PengoCellType::Walkable);
-
 				EventManager::GetInstance().BroadcoastEvent(std::make_unique<PengoBlockBreakEvent>(PlayerState::GetUserIndex(), cellData.entity));
+				
+				cellData.type = static_cast<uint8_t>(PengoCellType::Walkable);
+				cellData.entity = NULL_ENTITY_ID;
 			}
 
 			return std::make_unique<PengoIdleState>(GetUserIndex(), m_Direction);
@@ -117,9 +120,14 @@ namespace Pengo
 		auto& cellData = pGridSys->GetCellData(onGridTag.gridId, static_cast<uint16_t>(coords.first + m_Direction.y),
 			static_cast<uint16_t>(coords.second + m_Direction.x));
 
-		if (cellData.type == static_cast<uint8_t>(PengoCellType::Wall))
+		if (cellData.type == static_cast<uint8_t>(PengoCellType::Block))
 		{
-			EventManager::GetInstance().BroadcoastEvent(std::make_unique<SwitchAnimationEvent>(cellData.entity, static_cast<uint8_t>(BlockType::Idle)));
+			Entity block{ cellData.entity, activeScene.get() };
+			auto& blockComp = block.GetComponent<BlockComponent>();
+
+			blockComp.blockState = BlockComponent::BlockState::Still;
+
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<SwitchAnimationEvent>(cellData.entity, static_cast<uint8_t>(BlockSystem::BlockAnimations::Still)));
 		}
 	}
 }

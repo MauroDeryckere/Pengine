@@ -65,7 +65,7 @@ namespace Pengo
 
 		const auto& respawnEv{ static_cast<const PengoRespawnEvent&>(event) };
 
-		const auto& userIdx = respawnEv.GetUserInex();
+		const auto& userIdx = respawnEv.GetUserIndex();
 
 		auto player = SceneManager::GetInstance().GetActiveScene()->GetPlayer(userIdx);
 
@@ -79,21 +79,13 @@ namespace Pengo
 			assert(player.HasComponent<OnGridTag>());
 			const auto& gridTag{ player.GetComponent<OnGridTag>() };
 
-			const auto& cellCoords{ pGridSys->GetCellCoords(player.GetEntityId()) };
+			const auto pos = pGridSys->GetCellPos(gridTag.gridId, 0, 0);
 
-			const auto pos = pGridSys->GetCellPos(gridTag.gridId, cellCoords.first, cellCoords.second);
 			player.SetLocalPosition({ pos.x, pos.y, 0.f });
+			player.SetWorldPosition({ pos.x, pos.y, 0.f });
 
 			player.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx, glm::vec2{0, 1}));
 		}
-	}
-
-	void PlayerSystem::OnBlockBreakEvent(const Pengin::BaseEvent& event)
-	{
-		using namespace Pengin;
-
-		const auto& breakEv{ static_cast<const PengoBlockBreakEvent&>(event) };
-		m_ECS.DestroyEntity(breakEv.GetBlockId());
 	}
 }
 

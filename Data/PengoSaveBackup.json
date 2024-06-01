@@ -1025,6 +1025,140 @@
               "MovementSpeed": 50.0
             }
         },
+          {
+            "Tag Component": "Snobee",
+            "UUID": "432103fa-fc85-4ce9-af04-b9d5b4fe2ead",
+            "Transform Component": {
+                "worldPos": [
+                    504.0,
+                    24.0,
+                    0.0
+                ],
+                "localPos": [
+                    504.0,
+                    24.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    3.0,
+                    3.0,
+                    0.0
+                ],
+                "relation": {
+                    "children": 0,
+                    "firstChild": "NULL_UUID",
+                    "prevSibling": "NULL_UUID",
+                    "nextSibling": "NULL_UUID",
+                    "parent": "NULL_UUID"
+                },
+                "isPosDirty": false
+            },
+            "struct Pengin::BodyComponent": {
+                "Velocity": [
+                    0,
+                    0,
+                    0
+                ],
+                "CurrPosition": [
+                    504,
+                    24,
+                    0
+                ],
+                "LastPosition": [
+                    504,
+                    24,
+                    0
+                ],
+                "CollType": 2
+            },
+            "struct Pengin::AnimationComponent": {
+                "AnimationData": [
+                    {
+                        "Frame0SrcRect": [
+                            0,
+                            128,
+                            16,
+                            16
+                        ],
+                        "FrameDuration": 0.5,
+                        "FrameCount": 6
+                    },
+                    {
+                        "Frame0SrcRect": [
+                            0,
+                            144,
+                            16,
+                            16
+                        ],
+                        "FrameDuration": 0.50,
+                        "FrameCount": 2
+                    },
+                    {
+                        "Frame0SrcRect": [
+                            32,
+                            144,
+                            16,
+                            16
+                        ],
+                        "FrameDuration": 0.50,
+                        "FrameCount": 2
+                    },
+                    {
+                        "Frame0SrcRect": [
+                            64,
+                            144,
+                            16,
+                            16
+                        ],
+                        "FrameDuration": 0.50,
+                        "FrameCount": 2
+                    },
+                    {
+                        "Frame0SrcRect": [
+                            96,
+                            144,
+                            16,
+                            16
+                        ],
+                        "FrameDuration": 0.50,
+                        "FrameCount": 2
+                    }
+                ],
+                "FrameTimer": 0,
+                "CurrAnimationIdx": 0,
+                "CurrFrame": 0,
+                "IsPlaying": true
+            },
+            "struct Pengin::RectColliderComponent": {
+                "CollRect": [
+                    2,
+                    2,
+                    12,
+                    12
+                ]
+            },
+            "struct Pengin::SpriteComponent": {
+                "Texturepath": "PengoPlayerAndEnemies.png",
+                "SourceRect": [
+                    0,
+                    128,
+                    16,
+                    16
+                ],
+                "IsVisible": true
+            },
+            "struct Pengin::OnGridTag": {
+                "GridId": "cf0f18cb-7425-460b-9221-999f8160d448"
+            },
+            "struct Pengo::SnobeeComponent": {
+              "MovementSpeed": 50.0
+            }
+        },
         {
             "Tag Component": "FPS Counter",
             "UUID": "1aa64e4a-0339-4050-bbb0-ac5110d5dfee",
@@ -1114,9 +1248,7 @@
                 },
                 "isPosDirty": false
             },
-            "struct Pengin::PlayerComponent": {
-                "UserIdx": "4013a137-0aab-426c-8fba-53f4c148f7ea"
-            },
+            "Player Component":  "4013a137-0aab-426c-8fba-53f4c148f7ea",
             "struct Pengin::BodyComponent": {
                 "Velocity": [
                     0,
@@ -1461,9 +1593,7 @@
                 },
                 "isPosDirty": false
             },
-            "struct Pengin::PlayerComponent": {
-                "UserIdx": "c19674bb-595e-4c3a-87a1-db4620131f2b"
-            },
+            "Player Component": "c19674bb-595e-4c3a-87a1-db4620131f2b",
             "struct Pengin::BodyComponent": {
                 "Velocity": [
                     0,
@@ -1633,8 +1763,8 @@
                     0.0
                 ],
                 "localPos": [
-                    0.0,
-                    0.0,
+                    72.0,
+                    24.0,
                     0.0
                 ],
                 "rotation": [
@@ -1655,6 +1785,32 @@
                     "parent": "NULL_UUID"
                 },
                 "isPosDirty": false
+            },
+            "struct Pengin::RectColliderComponent": {
+                "CollRect": [
+                    0,
+                    0,
+                    16,
+                    16
+                ]
+            },
+            "struct Pengin::BodyComponent": {
+                "Velocity": [
+                    0,
+                    0,
+                    0
+                ],
+                "CurrPosition": [
+                    72,
+                    24,
+                    0
+                ],
+                "LastPosition": [
+                    72,
+                    24,
+                    0
+                ],
+                "CollType": 1
             },
             "struct Pengin::AnimationComponent": {
                 "AnimationData": [
@@ -1693,6 +1849,8 @@
                     16
                 ],
                 "IsVisible": true
+            },
+            "struct Pengo::BlockComponent": {
             }
         },
         {
@@ -1705,8 +1863,8 @@
                     0.0
                 ],
                 "localPos": [
-                    0.0,
-                    0.0,
+                    120.0,
+                    24.0,
                     0.0
                 ],
                 "rotation": [
@@ -1727,6 +1885,32 @@
                     "parent": "NULL_UUID"
                 },
                 "isPosDirty": false
+            },
+            "struct Pengin::RectColliderComponent": {
+                "CollRect": [
+                    0,
+                    0,
+                    16,
+                    16
+                ]
+            },
+            "struct Pengin::BodyComponent": {
+                "Velocity": [
+                    0,
+                    0,
+                    0
+                ],
+                "CurrPosition": [
+                    120,
+                    24,
+                    0
+                ],
+                "LastPosition": [
+                    120,
+                    24,
+                    0
+                ],
+                "CollType": 1
             },
             "struct Pengin::AnimationComponent": {
                 "AnimationData": [
@@ -1765,6 +1949,8 @@
                     16
                 ],
                 "IsVisible": true
+            },
+            "struct Pengo::BlockComponent": {
             }
         },
         {
@@ -1772,13 +1958,13 @@
             "UUID": "1aa64e4a-0339-7777-aab0-ac5110d5dfee",
             "Transform Component": {
                 "worldPos": [
-                    164.0,
+                    168.0,
                     24.0,
                     0.0
                 ],
                 "localPos": [
-                    0.0,
-                    0.0,
+                    168.0,
+                    24.0,
                     0.0
                 ],
                 "rotation": [
@@ -1799,6 +1985,32 @@
                     "parent": "NULL_UUID"
                 },
                 "isPosDirty": false
+            },
+            "struct Pengin::RectColliderComponent": {
+                "CollRect": [
+                    0,
+                    0,
+                    16,
+                    16
+                ]
+            },
+            "struct Pengin::BodyComponent": {
+                "Velocity": [
+                    0,
+                    0,
+                    0
+                ],
+                "CurrPosition": [
+                    168,
+                    24,
+                    0
+                ],
+                "LastPosition": [
+                    168,
+                    24,
+                    0
+                ],
+                "CollType": 1
             },
             "struct Pengin::AnimationComponent": {
                 "AnimationData": [
@@ -1837,6 +2049,8 @@
                     16
                 ],
                 "IsVisible": true
+            },
+            "struct Pengo::BlockComponent": {
             }
         }
     ]

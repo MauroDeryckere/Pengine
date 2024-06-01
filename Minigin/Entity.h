@@ -55,6 +55,7 @@ namespace Pengin
 		}
 
 		void SetParent(Entity parentEntity, bool keepWorldPos = false);
+		void SetWorldPosition(const glm::vec3& position);
 		void SetLocalPosition(const glm::vec3& position);
 
 		const EntityId GetEntityId() const noexcept { return m_EntityId; }

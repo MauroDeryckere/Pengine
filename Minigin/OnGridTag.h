@@ -13,6 +13,10 @@ namespace Pengin
 	{
 		EntityId gridId;
 
+		OnGridTag(EntityId id) :
+			gridId{ id }
+		{}
+
 		OnGridTag() = default;
 		~OnGridTag() = default;
 
@@ -24,7 +28,6 @@ namespace Pengin
 		}
 		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
 		{
-			DEBUG_OUT("deser");
 			auto& comp = ecs.AddComponent<OnGridTag>(id);
 			
 			std::string uuidStr{};

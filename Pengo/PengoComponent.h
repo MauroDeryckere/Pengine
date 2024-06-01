@@ -6,6 +6,7 @@
 
 #include "PlayerState.h"
 #include "PengoIdleState.h"
+#include "PlayerComponent.h"
 
 #include "SerializationRegistry.h"
 
@@ -68,7 +69,7 @@ namespace Pengo
 		{
 			auto& comp = ecs.AddComponent<PengoComponent>(id);
 
-			comp.pPlayerState = std::make_unique<PengoIdleState>(Pengin::GameUUID{}, glm::vec2{});
+			comp.pPlayerState = std::make_unique<PengoIdleState>(ecs.GetComponent<Pengin::PlayerComponent>(id).userIdx, glm::vec2{});
 			fieldSer.DeserializeField("MovementSpeed", comp.movementSpeed, serializedFields, entityMap);
 		}
 	};

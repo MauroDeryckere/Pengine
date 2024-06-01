@@ -72,6 +72,9 @@
     <ClCompile Include="SnobeeWalkState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BlockSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PengoComponent.h">
@@ -136,6 +139,15 @@
     </ClInclude>
     <ClInclude Include="GameSystem.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="PengoPushingBlockState.h">
+      <Filter>Header Files\State\Pengo</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

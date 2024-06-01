@@ -6,14 +6,10 @@
 
 std::unique_ptr<Pengin::State> Pengo::SnobeeSpawningState::Update()
 {
-	static float timer{ 0.f };
+	m_Timer += Pengin::GameTime::GetInstance().ElapsedSec();
 
-	timer += Pengin::GameTime::GetInstance().ElapsedSec();
-
-	if (timer >= 3.f)
+	if (m_Timer >= 3.f)
 	{
-		timer = 0.f;
-
 		return std::move(std::make_unique<SnobeeWalkState>(GetEntityId()));
 	}
 

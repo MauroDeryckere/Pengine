@@ -8,6 +8,9 @@
 #include "SnobeeComponent.h"
 #include "DeathEvent.h"
 
+#include "BlockComponent.h"
+#include "BlockSystem.h"
+
 #include "InputManager.h"
 #include "GridSystem.h"
 #include "PengoGrid.h"
@@ -57,9 +60,9 @@ namespace Pengo
 
 	std::unique_ptr<Pengin::PlayerState> Pengo::PengoIdleState::HandleInput(const Pengin::UserIndex& userIndex)
 	{
-		if (coold)
+		if (m_Cooldown)
 		{
-			coold = false;
+			m_Cooldown = false;
 			return nullptr;
 		}
 
@@ -73,10 +76,7 @@ namespace Pengo
 		}
 		if (Pengin::InputManager::GetInstance().IsActionExecuted(userIndex, "PengoBreakBlock"))
 		{
-			if (ValidateBlockBreak())
-			{
-				return std::move(std::make_unique<PengoBreakingBlockState>(userIndex, m_Direction));
-			}
+			return ValidateBlockBreak();
 		}
 
 		return nullptr;
@@ -84,6 +84,11 @@ namespace Pengo
 
 	void PengoIdleState::OnCollision(const Pengin::BaseEvent& event)
 	{
+		if (m_Cooldown)
+		{
+			return;
+		}
+
 		using namespace Pengin;
 		const auto& collEvent{ static_cast<const CollisionEvent&>(event) };
 
@@ -105,7 +110,7 @@ namespace Pengo
 		}
 	}
 
-	bool PengoIdleState::ValidateBlockBreak()
+	std::unique_ptr<Pengin::PlayerState> PengoIdleState::ValidateBlockBreak()
 	{
 		using namespace Pengin;
 
@@ -125,24 +130,74 @@ namespace Pengo
 
 		if (!pGridSys->IsWithinBounds(gridTag.gridId, static_cast<uint16_t>(row), static_cast<uint16_t>(col)) || row < 0 || col < 0)
 		{
-			return false;
+			return nullptr;
 		}
 
 		const auto pos = pGridSys->GetCellPos(gridTag.gridId, static_cast<uint16_t>(row), static_cast<uint16_t>(col));
 
-		const auto& cellData = pGridSys->GetCellData(gridTag.gridId, static_cast<uint16_t>(row), static_cast<uint16_t>(col));
+		auto& cellData = pGridSys->GetCellData(gridTag.gridId, static_cast<uint16_t>(row), static_cast<uint16_t>(col));
 		PengoCellType type = static_cast<PengoCellType>(cellData.type);
-
-		if (type == Pengo::PengoCellType::Wall)
+		
+		if (type == Pengo::PengoCellType::Block)
 		{
-			EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(
-				cellData.entity,
-				static_cast<uint8_t>(BlockType::Breaking)));
+			Entity block{ cellData.entity, pActiveScene.get() };
 
-			return true;
+			auto& blockComp = block.GetComponent<BlockComponent>();
+
+			if (blockComp.blockState == BlockComponent::BlockState::Still)
+			{
+				//check if we should push or break
+				bool push = true;
+
+				const int nextRow{ static_cast<int>(cellCoords.first) + static_cast<int>(m_Direction.y * 2) };
+				const int nextCol{ static_cast<int>(cellCoords.second) + static_cast<int>(m_Direction.x * 2) };
+
+				if (!pGridSys->IsWithinBounds(gridTag.gridId, static_cast<uint16_t>(nextRow), static_cast<uint16_t>(nextCol)))
+				{
+					push = false;
+				}
+				else
+				{
+					const auto& nextCellData = pGridSys->GetCellData(gridTag.gridId, static_cast<uint16_t>(nextRow), static_cast<uint16_t>(nextCol));
+					PengoCellType nextType = static_cast<PengoCellType>(nextCellData.type);
+
+					if (nextType != Pengo::PengoCellType::Walkable)
+					{
+						push = false;
+					}
+				}
+
+				if (push)
+				{
+					DEBUG_OUT("PUSH");
+
+					blockComp.blockState = BlockComponent::BlockState::Moving;
+					blockComp.dir = m_Direction;
+
+					cellData.entity = NULL_ENTITY_ID;
+					cellData.type = static_cast<uint8_t>(Pengo::PengoCellType::Walkable);
+
+					block.GetComponent<BodyComponent>().collType = CollType::Dynamic;
+
+					block.AddComponent<OnGridTag>(gridTag.gridId);
+
+					//PengoPushingBlockState
+				}
+				else
+				{
+					DEBUG_OUT("BREAK");
+					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(
+						cellData.entity,
+						static_cast<uint8_t>(BlockSystem::BlockAnimations::Breaking)));
+
+					blockComp.blockState = BlockComponent::BlockState::Breaking;
+
+					return std::make_unique<PengoBreakingBlockState>(GetUserIndex(), m_Direction);
+				}
+			}
 		}
 
-		return false;
+		return nullptr;
 	}
 }
 

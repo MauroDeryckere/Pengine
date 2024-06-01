@@ -28,14 +28,14 @@ namespace Pengo
 		std::unique_ptr<Pengin::PlayerState> HandleInput(const Pengin::UserIndex& userIndex);
 
 	private:
-		bool coold{ true };
+		bool m_Cooldown{ true };
 		const glm::vec2 m_Direction{};
 
 		std::shared_ptr<Pengin::Observer> m_pObserver;
 
 		void OnCollision(const Pengin::BaseEvent& event);
-		bool ValidateBlockBreak();
 
+		std::unique_ptr<Pengin::PlayerState> ValidateBlockBreak();
 	};
 }
 

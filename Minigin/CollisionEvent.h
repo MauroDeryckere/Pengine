@@ -4,6 +4,8 @@
 #include "Event.h"
 #include "EntityId.h"
 
+#include "CollisionTypes.h"
+
 #include <cassert>
 
 namespace Pengin
@@ -13,11 +15,15 @@ namespace Pengin
 	public:
 		constexpr static const char* COLLISION_EVENT_NAME{ "OnCollisionEvent" };
 
-		CollisionEvent(const EntityId entityA, const EntityId entityB) :
+		CollisionEvent(const EntityId entityA, const EntityId entityB, CollType collTypeA, CollType collTypeB) :
 			BaseEvent{ COLLISION_EVENT_NAME },
 
 			m_EntityA{ entityA },
-			m_EntityB{ entityB }
+			m_EntityB{ entityB },
+
+			m_CollTypeA{ collTypeA },
+			m_CollTypeB{ collTypeB }
+
 		{
 			assert(entityA != NULL_ENTITY_ID);
 			assert(entityB != NULL_ENTITY_ID);
@@ -29,10 +35,18 @@ namespace Pengin
 		{
 			return m_EntityA;
 		}
-
 		[[nodiscard]] const EntityId GetEntityB() const noexcept
 		{
 			return m_EntityB;
+		}
+
+		[[nodiscard]] const CollType GetCollTypeA() const noexcept
+		{
+			return m_CollTypeA;
+		}
+		[[nodiscard]] const CollType GetCollTypeB() const noexcept
+		{
+			return m_CollTypeB;
 		}
 
 		CollisionEvent(const CollisionEvent&) = delete;
@@ -43,6 +57,9 @@ namespace Pengin
 	private:
 		const EntityId m_EntityA{ NULL_ENTITY_ID };
 		const EntityId m_EntityB{ NULL_ENTITY_ID };
+
+		const CollType m_CollTypeA{};
+		const CollType m_CollTypeB{};
 	};
 }
 

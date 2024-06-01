@@ -15,6 +15,9 @@ namespace Pengo
 		~SnobeeSpawningState() = default;
 
 		std::unique_ptr<Pengin::State> Update();
+
+	private:
+		float m_Timer{ 0.f };
 	};
 }
 

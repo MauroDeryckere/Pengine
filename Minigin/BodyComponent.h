@@ -5,25 +5,19 @@
 
 #include "SerializationRegistry.h"
 
+#include "CollisionTypes.h"
+
 namespace Pengin
 {
 	struct BodyComponent final
 	{
-
 		glm::vec3 lastPosition{ 0, 0, 0 };
-		glm::vec3 currentPosition{ 0, 0, 0 }; //center of mass pos for physics simulation
+		glm::vec3 currentPosition{ 0, 0, 0 }; //center of mass pos for physics simulation (currently just the same as transform)
 
 		glm::vec3 inputVelocity{ 0, 0 ,0 };
 		glm::vec3 lastFrInputVelocity{ 0, 0, 0 };
 
 		glm::vec3 velocity{ 0, 0, 0 };
-
-		enum class CollType : uint8_t
-		{
-			Dynamic = 0,
-			Static = 1,
-			Trigger = 2
-		};
 
 		CollType collType{ CollType::Dynamic };
 
@@ -64,22 +58,6 @@ namespace Pengin
 			comp.lastPosition = { vec3f[0], vec3f[1], vec3f[2] };
 
 			fieldSer.DeserializeField("CollType", comp.collType, serializedFields, entityMap);
-
-			switch (comp.collType)
-			{
-			case CollType::Static:
-				DEBUG_OUT("COLL TYPE == static \n");
-				break;
-			case CollType::Dynamic:
-				DEBUG_OUT("COLL TYPE == dynamic \n");
-				break;
-			case CollType::Trigger:
-				DEBUG_OUT("COLL TYPE == trigger \n");
-				break;
-			default:
-				break;
-			}
-
 		}
 	};
 

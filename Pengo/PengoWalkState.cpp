@@ -152,6 +152,6 @@ namespace Pengo
 		const auto& cellData = pGridSys->GetCellData(gridTag.gridId, static_cast<uint16_t>(row), static_cast<uint16_t>(col));
 		PengoCellType type = static_cast<PengoCellType>(cellData.type);
 
-		return (type == Pengo::PengoCellType::Wall);
+		return (type == Pengo::PengoCellType::Block);
 	}
 }

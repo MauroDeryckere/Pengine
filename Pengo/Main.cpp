@@ -31,6 +31,8 @@
 #include "PlayerSystem.h"
 #include "EnemySystem.h"
 #include "UIDisplaySystem.h"
+#include "BlockSystem.h"
+#include "GameSystem.h"
 
 #include "TestSerComponent.h"
 
@@ -97,8 +99,11 @@ void LoadDemo()
 
 	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs) 
 		{ 
+			sysManager.RegisterSystem<Pengo::GameSystem>(std::make_shared<Pengo::GameSystem>(ecs) );
+
 			sysManager.RegisterSystem<Pengo::PlayerSystem>(std::make_shared<Pengo::PlayerSystem>(ecs) ); 
 			sysManager.RegisterSystem<Pengo::EnemySystem>(std::make_shared<Pengo::EnemySystem>(ecs) );
+			sysManager.RegisterSystem<Pengo::BlockSystem>(std::make_shared<Pengo::BlockSystem>(ecs) );
 
 			sysManager.RegisterSystem<Pengo::UIDisplaySystem>(std::make_shared<Pengo::UIDisplaySystem>(ecs, pScene.get()) );
 		});

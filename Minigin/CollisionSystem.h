@@ -6,6 +6,8 @@
 #include "EntityId.h"
 #include "EventManager.h"
 
+#include "CollisionTypes.h"
+
 #include "UtilStructs.h"
 #include "glm/vec2.hpp"
 #include "glm/vec3.hpp"
@@ -41,27 +43,30 @@ namespace Pengin
 
 		bool m_CollisionResolution{ true };
 
-		struct CollPair final
+		struct CollInfo final
 		{
 			const EntityId entityA;
 			const EntityId entityB;
 
-			bool operator==(const CollPair& other) const noexcept
+			const CollType collTypeA;
+			const CollType collTypeB;
+
+			bool operator==(const CollInfo& other) const noexcept
 			{
 				return (entityA == other.entityA && entityB == other.entityB) ||
-					(entityA == other.entityB && entityB == other.entityA);
+					   (entityA == other.entityB && entityB == other.entityA);
 			}
 		};
 
 		struct CollisionPairHash final
 		{
-			std::size_t operator()(const CollPair& pair) const noexcept
+			std::size_t operator()(const CollInfo& pair) const noexcept
 			{
 				return std::hash<int>()(pair.entityA) ^ std::hash<int>()(pair.entityB);
 			}
 		};
 
-		std::unordered_set<CollPair, CollisionPairHash> m_FrameCollisions{};
+		std::unordered_set<CollInfo, CollisionPairHash> m_FrameCollisions{};
 
 		constexpr UtilStructs::Rectf CalcCollRect(const TransformComponent& transform, const RectColliderComponent& rColl) const noexcept;
 		constexpr UtilStructs::Rectf CalcCollRect(const BodyComponent* body, const TransformComponent& transform, const RectColliderComponent& rColl) const noexcept;

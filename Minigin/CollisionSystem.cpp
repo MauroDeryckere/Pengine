@@ -57,23 +57,21 @@ namespace Pengin
 
 				if (bodyAPtr && bodyBPtr)
 				{
-					if (bodyAPtr->collType == BodyComponent::CollType::Static && bodyBPtr->collType == BodyComponent::CollType::Static)
+					if (bodyAPtr->collType == CollType::Static && bodyBPtr->collType == CollType::Static)
 					{
 						//No collision to deal with, 2 static bodies
 						continue;
 					}
-					else if (bodyAPtr->collType == BodyComponent::CollType::Trigger || bodyBPtr->collType == BodyComponent::CollType::Trigger)
+					else if (bodyAPtr->collType == CollType::Trigger || bodyBPtr->collType == CollType::Trigger)
 					{
-						const CollPair pair{ entityA, entityB };
-						m_FrameCollisions.insert(pair);
+						m_FrameCollisions.emplace(entityA, entityB, bodyAPtr->collType, bodyBPtr->collType);
 						continue;
 					}
 				}
 
 				//Add to the set of unqiue collisions to later dispatch an event
 				{
-					const CollPair pair { entityA, entityB };
-					m_FrameCollisions.insert(pair);
+					m_FrameCollisions.emplace(entityA, entityB, bodyAPtr->collType, bodyBPtr->collType);
 				}
 
 				if (bodyAPtr && bodyBPtr)
@@ -91,11 +89,11 @@ namespace Pengin
 						constexpr float restitutionFactor = -1.f; //For now, we do not support elasticity (it does work but not added as a parameter in body and still need to dd physics for friction,..)
 						const float impulseMagnitude = -(1.0f + restitutionFactor) * relativeVelocityAlongNormal;
 
-						if (bodyAPtr->collType == BodyComponent::CollType::Static)
+						if (bodyAPtr->collType == CollType::Static)
 						{
 							bodyBPtr->velocity += normal * impulseMagnitude;
 						}
-						else if (bodyBPtr->collType == BodyComponent::CollType::Static)
+						else if (bodyBPtr->collType == CollType::Static)
 						{
 							bodyAPtr->velocity -= normal * impulseMagnitude;
 						}
@@ -186,11 +184,11 @@ namespace Pengin
 
 	void CollisionSystem::SeparateBodies(BodyComponent* bodyA, BodyComponent* bodyB, const glm::vec3& normal, const float penDepth) noexcept
 	{
-		if (bodyA->collType == BodyComponent::CollType::Static)
+		if (bodyA->collType == CollType::Static)
 		{
 			bodyB->currentPosition += penDepth * normal;
 		}
-		else if (bodyB->collType == BodyComponent::CollType::Static)
+		else if (bodyB->collType == CollType::Static)
 		{
 			bodyA->currentPosition -= penDepth * normal;
 		}
@@ -203,9 +201,9 @@ namespace Pengin
 
 	void CollisionSystem::BroadCastCollisionsEvents() noexcept
 	{
-		for (const auto& pair : m_FrameCollisions)
+		for (const auto& collInfo : m_FrameCollisions)
 		{;
-			EventManager::GetInstance().BroadcoastEvent(std::make_unique<CollisionEvent>(pair.entityA, pair.entityB));
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<CollisionEvent>(collInfo.entityA, collInfo.entityB, collInfo.collTypeA, collInfo.collTypeB));
 		}
 
 		m_FrameCollisions.clear();

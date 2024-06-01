@@ -3,6 +3,7 @@
 
 #include "BaseSystem.h"
 #include "EventManager.h"
+#include "CollisionEvent.h"
 
 namespace Pengin
 {
@@ -18,7 +19,9 @@ namespace Pengo
 			m_ECS{ ecs },
 			m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() }
 
-		{ }
+		{ 
+			m_pObserver->RegisterForEvent(m_pObserver, Pengin::CollisionEvent::COLLISION_EVENT_NAME, [this](const Pengin::BaseEvent& ev) { OnCollision(ev); });
+		}
 
 		~EnemySystem() = default;
 
@@ -43,6 +46,8 @@ namespace Pengo
 		Pengin::ECS& m_ECS;
 
 		std::shared_ptr<Pengin::Observer> m_pObserver;
+
+		void OnCollision(const Pengin::BaseEvent& event);
 	};
 }
 
