@@ -65,6 +65,46 @@ namespace Pengin
 		return gridComp.GetCellCoords(static_cast<uint32_t>(posX), static_cast<uint32_t>(posY));
 	}
 
+	uint16_t GridSystem::GetRow(EntityId gridId, EntityId entityId) const noexcept
+	{
+		assert(m_ECS.Exists(entityId));
+		assert(m_ECS.Exists(gridId));
+
+		assert(m_ECS.HasComponent<GridComponent>(gridId));
+
+		const auto& gridComp = m_ECS.GetComponent<GridComponent>(gridId);
+
+		const auto& entityTransform = m_ECS.GetComponent<TransformComponent>(entityId);
+		const auto& gridTransform = m_ECS.GetComponent<TransformComponent>(gridId);
+
+		const float posY = (entityTransform.worldPos.y - gridTransform.worldPos.y) / gridTransform.scale.y;
+
+		assert(posY >= 0.f);
+		assert(static_cast<uint32_t>(posY) < gridComp.GetTotalHeight());
+
+		return static_cast<uint16_t>(posY / gridComp.cellHeight);
+	}
+
+	uint16_t GridSystem::GetCol(EntityId gridId, EntityId entityId) const noexcept
+	{
+		assert(m_ECS.Exists(entityId));
+		assert(m_ECS.Exists(gridId));
+
+		assert(m_ECS.HasComponent<GridComponent>(gridId));
+
+		const auto& gridComp = m_ECS.GetComponent<GridComponent>(gridId);
+
+		const auto& entityTransform = m_ECS.GetComponent<TransformComponent>(entityId);
+		const auto& gridTransform = m_ECS.GetComponent<TransformComponent>(gridId);
+
+		const float posX = (entityTransform.worldPos.x - gridTransform.worldPos.x) / gridTransform.scale.x;
+
+		assert(posX >= 0.f);
+		assert(static_cast<uint32_t>(posX) < gridComp.GetTotalWidth());
+
+		return static_cast<uint16_t>(posX / gridComp.cellWidth);
+	}
+
 	bool GridSystem::IsEntityInGridArea(EntityId entityId, EntityId gridId) const noexcept
 	{
 		assert(m_ECS.Exists(entityId));

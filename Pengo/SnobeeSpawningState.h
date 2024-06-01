@@ -2,6 +2,8 @@
 #define PENGO_SNOOBEESPAWNSTATE
 
 #include "State.h"
+#include "EventManager.h"
+#include "SwitchAnimationEvent.h"
 
 namespace Pengo
 {
@@ -10,7 +12,9 @@ namespace Pengo
 	public:
 		SnobeeSpawningState(Pengin::EntityId id) :
 			State{ id }
-		{}
+		{
+			Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::SwitchAnimationEvent>(id, uint8_t{0} ));
+		}
 
 		~SnobeeSpawningState() = default;
 

@@ -25,6 +25,9 @@ namespace Pengin
 		[[nodiscard]] std::pair<uint16_t, uint16_t> GetCellCoords(EntityId entityId) const noexcept;
 		[[nodiscard]] std::pair<uint16_t, uint16_t> GetCellCoords(EntityId gridId, EntityId entityId) const noexcept;
 
+		[[nodiscard]] uint16_t GetRow(EntityId gridId, EntityId entityId) const noexcept;
+		[[nodiscard]] uint16_t GetCol(EntityId gridId, EntityId entityId) const noexcept;
+
 		[[nodiscard]] glm::vec2 GetCellPos(EntityId gridId, uint16_t row, uint16_t col) const noexcept;
 
 		[[nodiscard]] bool IsEntityInGridArea(EntityId entityId, EntityId gridId) const noexcept;

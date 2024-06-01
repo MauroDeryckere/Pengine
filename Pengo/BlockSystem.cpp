@@ -8,6 +8,8 @@
 #include "ECS.h"
 #include "PengoGrid.h"
 #include "Entity.h"
+#include "WallComponent.h"
+#include "GridComponent.h"
 
 void Pengo::BlockSystem::Update()
 {
@@ -91,5 +93,72 @@ void Pengo::BlockSystem::OnCollision(const Pengin::BaseEvent& event)
 		cellData.entity = movingBlock.GetEntityId();
 
 		movingBlock.RemoveComponent<OnGridTag>();
+
+		return;
 	}
+
+	EntityId blockEntity{};
+
+	if (m_ECS.HasComponent<BlockComponent>(entB) && m_ECS.HasComponent<WallComponent>(entA))
+	{
+		blockEntity = entB;
+	}
+	else if (m_ECS.HasComponent<BlockComponent>(entA) && m_ECS.HasComponent<WallComponent>(entB))
+	{
+		blockEntity = entA;
+	}
+	else
+	{
+		return;
+	}
+	auto& blockComp = m_ECS.GetComponent<BlockComponent>(blockEntity);
+
+	if (blockComp.blockState != BlockComponent::BlockState::Moving)
+	{
+		return;
+	}
+
+	auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
+	GridSystem* pGridSys = pActiveScene->GetSystem<GridSystem>();
+	assert(pGridSys);
+
+	Entity block
+	{
+		blockEntity,
+		pActiveScene.get()
+	};
+
+	const auto& gridTag = m_ECS.GetComponent<OnGridTag>(blockEntity);
+	const auto currCoords = pGridSys->GetCellCoords(gridTag.gridId, blockEntity);
+
+	auto& gridComp = m_ECS.GetComponent<GridComponent>(gridTag.gridId);
+	assert(blockComp.dir != glm::vec2{});
+	
+	uint16_t row{ 0 };
+	uint16_t col{ 0 };
+
+	if (blockComp.dir.x > 0)
+	{
+		col = gridComp.cols - 1;
+
+	}
+	else if (blockComp.dir.y > 0)
+	{
+		row = gridComp.rows - 1;
+	}
+
+	const auto pos = pGridSys->GetCellPos(gridTag.gridId, row, col);
+
+	block.SetLocalPosition({ pos.x, pos.y, 0.f });
+	block.SetWorldPosition({ pos.x, pos.y, 0.f });
+
+	auto& cellData = gridComp.At(row, col);
+
+	assert(cellData.entity == NULL_ENTITY_ID);
+
+	cellData.entity = blockEntity;
+	cellData.type = static_cast<uint8_t>(PengoCellType::Block);
+
+	blockComp.dir = {  };
+	blockComp.blockState = BlockComponent::BlockState::Still;
 }

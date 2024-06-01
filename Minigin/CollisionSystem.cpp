@@ -71,7 +71,7 @@ namespace Pengin
 
 				//Add to the set of unqiue collisions to later dispatch an event
 				{
-					m_FrameCollisions.emplace(entityA, entityB, bodyAPtr->collType, bodyBPtr->collType);
+					m_FrameCollisions.emplace(entityA, entityB, bodyAPtr ? bodyAPtr->collType : CollType::Trigger, bodyBPtr ? bodyBPtr->collType : CollType::Trigger);
 				}
 
 				if (bodyAPtr && bodyBPtr)

@@ -176,6 +176,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y</Command>
     <ClCompile Include="SnobeeSpawningState.cpp" />
     <ClCompile Include="SnobeeWalkState.cpp" />
     <ClCompile Include="UIDisplaySystem.cpp" />
+    <ClCompile Include="WallSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlockComponent.h" />
@@ -202,6 +203,8 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y</Command>
     <ClInclude Include="SnobeeSpawningState.h" />
     <ClInclude Include="SnobeeWalkState.h" />
     <ClInclude Include="UIDisplaySystem.h" />
+    <ClInclude Include="WallComponent.h" />
+    <ClInclude Include="WallSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
