@@ -71,9 +71,9 @@
              "struct Pengin::RectColliderComponent": {
                 "CollRect": [
                     0,
-                    0,
+                    8,
                     7,
-                    256
+                    240
                 ]
             },
             "struct Pengo::WallComponent": {
@@ -179,7 +179,7 @@
             "struct Pengin::RectColliderComponent": {
                 "CollRect": [
                     0,
-                    0,
+                    1,
                     224,
                     7
                 ]
@@ -232,10 +232,10 @@
             },
             "struct Pengin::RectColliderComponent": {
                 "CollRect": [
-                    0,
-                    0,
+                    1,
+                    8,
                     7,
-                    256
+                    240
                 ]
             },
             "struct Pengo::WallComponent": {
@@ -281,16 +281,16 @@
                         "EntityId": "NULL_UUID"
                     },
                     {
-                        "Type": 1,
-                        "EntityId": "1aa64e4a-0339-9999-aab0-ac5110d5dfee"
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
                     },
                     {
-                        "Type": 1,
-                        "EntityId": "1aa64e4a-0339-8888-aab0-ac5110d5dfee"
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
                     },
                     {
-                        "Type": 1,
-                        "EntityId": "1aa64e4a-0339-7777-aab0-ac5110d5dfee"
+                        "Type": 0,
+                        "EntityId": "NULL_UUID"
                     },
                     {
                         "Type": 0,
@@ -1923,303 +1923,6 @@
             "struct Pengo::TxtDisplayComponent": {
                 "Prefix": "Player 2 Score: ",
                 "Postfix": ""
-            }
-        },
-        {
-            "Tag Component": "Block entity",
-            "UUID": "1aa64e4a-0339-9999-aab0-ac5110d5dfee",
-            "Transform Component": {
-                "worldPos": [
-                    72.0,
-                    24.0,
-                    0.0
-                ],
-                "localPos": [
-                    72.0,
-                    24.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    3.0,
-                    3.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            },
-            "struct Pengin::BodyComponent": {
-                "Velocity": [
-                    0,
-                    0,
-                    0
-                ],
-                "CurrPosition": [
-                    72,
-                    24,
-                    0
-                ],
-                "LastPosition": [
-                    72,
-                    24,
-                    0
-                ],
-                "CollType": 1
-            },
-            "struct Pengo::BlockComponent": {},
-            "struct Pengin::SpriteComponent": {
-                "Texturepath": "PengoFieldAndBlocks.png",
-                "SourceRect": [
-                    708,
-                    0,
-                    16,
-                    16
-                ],
-                "IsVisible": true
-            },
-            "struct Pengin::RectColliderComponent": {
-                "CollRect": [
-                    0,
-                    0,
-                    16,
-                    16
-                ]
-            },
-            "struct Pengin::AnimationComponent": {
-                "AnimationData": [
-                    {
-                        "Frame0SrcRect": [
-                            708,
-                            0,
-                            16,
-                            16
-                        ],
-                        "FrameDuration": 0,
-                        "FrameCount": 1
-                    },
-                    {
-                        "Frame0SrcRect": [
-                            708,
-                            48,
-                            16,
-                            16
-                        ],
-                        "FrameDuration": 0.125,
-                        "FrameCount": 8
-                    }
-                ],
-                "FrameTimer": 0,
-                "CurrAnimationIdx": 0,
-                "CurrFrame": 0,
-                "IsPlaying": true
-            }
-        },
-        {
-            "Tag Component": "Block entity",
-            "UUID": "1aa64e4a-0339-8888-aab0-ac5110d5dfee",
-            "Transform Component": {
-                "worldPos": [
-                    120.0,
-                    24.0,
-                    0.0
-                ],
-                "localPos": [
-                    120.0,
-                    24.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    3.0,
-                    3.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            },
-            "struct Pengin::BodyComponent": {
-                "Velocity": [
-                    0,
-                    0,
-                    0
-                ],
-                "CurrPosition": [
-                    120,
-                    24,
-                    0
-                ],
-                "LastPosition": [
-                    120,
-                    24,
-                    0
-                ],
-                "CollType": 1
-            },
-            "struct Pengo::BlockComponent": {},
-            "struct Pengin::SpriteComponent": {
-                "Texturepath": "PengoFieldAndBlocks.png",
-                "SourceRect": [
-                    708,
-                    0,
-                    16,
-                    16
-                ],
-                "IsVisible": true
-            },
-            "struct Pengin::RectColliderComponent": {
-                "CollRect": [
-                    0,
-                    0,
-                    16,
-                    16
-                ]
-            },
-            "struct Pengin::AnimationComponent": {
-                "AnimationData": [
-                    {
-                        "Frame0SrcRect": [
-                            708,
-                            0,
-                            16,
-                            16
-                        ],
-                        "FrameDuration": 0,
-                        "FrameCount": 1
-                    },
-                    {
-                        "Frame0SrcRect": [
-                            708,
-                            48,
-                            16,
-                            16
-                        ],
-                        "FrameDuration": 0.125,
-                        "FrameCount": 8
-                    }
-                ],
-                "FrameTimer": 0,
-                "CurrAnimationIdx": 0,
-                "CurrFrame": 0,
-                "IsPlaying": true
-            }
-        },
-        {
-            "Tag Component": "Block entity",
-            "UUID": "1aa64e4a-0339-7777-aab0-ac5110d5dfee",
-            "Transform Component": {
-                "worldPos": [
-                    168.0,
-                    24.0,
-                    0.0
-                ],
-                "localPos": [
-                    168.0,
-                    24.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    3.0,
-                    3.0,
-                    1.0
-                ],
-                "relation": {
-                    "children": 0,
-                    "firstChild": "NULL_UUID",
-                    "prevSibling": "NULL_UUID",
-                    "nextSibling": "NULL_UUID",
-                    "parent": "NULL_UUID"
-                },
-                "isPosDirty": false
-            },
-            "struct Pengin::BodyComponent": {
-                "Velocity": [
-                    0,
-                    0,
-                    0
-                ],
-                "CurrPosition": [
-                    168,
-                    24,
-                    0
-                ],
-                "LastPosition": [
-                    168,
-                    24,
-                    0
-                ],
-                "CollType": 1
-            },
-            "struct Pengo::BlockComponent": {},
-            "struct Pengin::SpriteComponent": {
-                "Texturepath": "PengoFieldAndBlocks.png",
-                "SourceRect": [
-                    708,
-                    0,
-                    16,
-                    16
-                ],
-                "IsVisible": true
-            },
-            "struct Pengin::RectColliderComponent": {
-                "CollRect": [
-                    0,
-                    0,
-                    16,
-                    16
-                ]
-            },
-            "struct Pengin::AnimationComponent": {
-                "AnimationData": [
-                    {
-                        "Frame0SrcRect": [
-                            708,
-                            0,
-                            16,
-                            16
-                        ],
-                        "FrameDuration": 0,
-                        "FrameCount": 1
-                    },
-                    {
-                        "Frame0SrcRect": [
-                            708,
-                            48,
-                            16,
-                            16
-                        ],
-                        "FrameDuration": 0.125,
-                        "FrameCount": 8
-                    }
-                ],
-                "FrameTimer": 0,
-                "CurrAnimationIdx": 0,
-                "CurrFrame": 0,
-                "IsPlaying": true
             }
         }
     ]

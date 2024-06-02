@@ -49,7 +49,7 @@ namespace Pengin
 
 					body.lastFrInputVelocity = body.inputVelocity;
 
-					body.inputVelocity = {};
+					body.inputVelocity = { };
 
 					body.lastPosition = body.currentPosition;
 

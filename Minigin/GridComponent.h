@@ -143,16 +143,6 @@ namespace Pengin
 
 			fieldSer.DeserializeField("Cells", comp.cells, serializedFields, entityMap);
 
-			//for (int idx{0}; auto & cell : comp.cells)
-			//{
-			//	std::cout << static_cast<int>(cell.type) << " ";
-			//	++idx;
-			//	if (idx % 13 == 0)
-			//	{
-			//		std::cout << "\n";
-			//	}
-			//}
-
 			fieldSer.DeserializeField("Rows", comp.rows, serializedFields, entityMap);
 			fieldSer.DeserializeField("Cols", comp.cols, serializedFields, entityMap);
 

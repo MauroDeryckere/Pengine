@@ -16,7 +16,7 @@ namespace Pengin
 	class PhysicsSystem final : public BaseSystem
 	{
 	public:
-		PhysicsSystem(ECS& ecs, const uint32_t numIterations = 10);
+		PhysicsSystem(ECS& ecs, const uint32_t numIterations = 2);
 
 		virtual ~PhysicsSystem() override = default;
 

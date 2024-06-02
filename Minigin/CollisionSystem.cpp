@@ -62,7 +62,8 @@ namespace Pengin
 						//No collision to deal with, 2 static bodies
 						continue;
 					}
-					else if (bodyAPtr->collType == CollType::Trigger || bodyBPtr->collType == CollType::Trigger)
+
+					if (bodyAPtr->collType == CollType::Trigger || bodyBPtr->collType == CollType::Trigger)
 					{
 						m_FrameCollisions.emplace(entityA, entityB, bodyAPtr->collType, bodyBPtr->collType);
 						continue;

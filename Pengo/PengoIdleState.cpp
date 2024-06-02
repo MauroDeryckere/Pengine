@@ -1,6 +1,7 @@
 #include "PengoIdleState.h"
 
 #include "PengoWalkState.h"
+#include "PengoPushingBlockState.h"
 #include "PengoBreakingBlockState.h"
 #include "PengoInputCommands.h"
 #include "SwitchAnimationEvent.h"
@@ -169,8 +170,6 @@ namespace Pengo
 
 				if (push)
 				{
-					DEBUG_OUT("PUSH");
-
 					blockComp.blockState = BlockComponent::BlockState::Moving;
 					blockComp.dir = m_Direction;
 
@@ -178,14 +177,12 @@ namespace Pengo
 					cellData.type = static_cast<uint8_t>(Pengo::PengoCellType::Walkable);
 
 					block.GetComponent<BodyComponent>().collType = CollType::Dynamic;
-
 					block.AddComponent<OnGridTag>(gridTag.gridId);
-
-					//PengoPushingBlockState
+					
+					return std::make_unique<PengoPushingBlockState>(GetUserIndex(), m_Direction);
 				}
 				else
 				{
-					DEBUG_OUT("BREAK");
 					EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(
 						cellData.entity,
 						static_cast<uint8_t>(BlockSystem::BlockAnimations::Breaking)));

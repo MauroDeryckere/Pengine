@@ -35,6 +35,9 @@
 #include "GameSystem.h"
 #include "WallSystem.h"
 
+#include "PengoGrid.h"
+#include "BlockComponent.h"
+
 void LoadGamePlayScripting();
 
 void LoadDemo();
@@ -107,6 +110,82 @@ void LoadDemo()
 
 			sysManager.RegisterSystem<Pengo::UIDisplaySystem>(std::make_shared<Pengo::UIDisplaySystem>(ecs, pScene.get()) );
 		});
+
+
+	auto grid = pScene->GetEntity(GameUUID{ std::string{"cf0f18cb-7425-460b-9221-999f8160d448"} });
+	auto& gridComp = grid.GetComponent<GridComponent>();
+	
+	std::vector<uint8_t> cells
+	{   
+		0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+		0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0,
+		0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+		0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0,
+		0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0,
+		0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0,
+		0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0,
+		0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0,
+		0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+		0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0,
+		0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+		0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0,
+		0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+		0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0,
+		0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 
+	};
+
+	constexpr float SCALE{ 3.f };
+
+
+	uint16_t row = 0;
+	uint16_t col = 0;
+
+	for (int idx{ 0 }; const auto& cell : cells)
+	{
+		if (cell == uint8_t{1})
+		{
+			auto ent = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 1, 1, 14, 14 },
+				{ 8.f * SCALE + (col * 16.f * SCALE), 8.f * SCALE + (row * 16.f * SCALE), 0.f },
+				{},
+				{ SCALE, SCALE, 0.f });
+
+			auto& cellData = gridComp.At(row, col);
+			cellData.type = static_cast<uint8_t>(Pengo::PengoCellType::Block);
+			cellData.entity = ent.GetEntityId();
+
+			ent.AddComponent<TagComponent>("Block Entity");
+			ent.AddComponent<Pengo::BlockComponent>();
+			ent.GetComponent<BodyComponent>().collType = CollType::Static;
+
+			ent.AddComponent<SpriteComponent>("PengoFieldAndBlocks.png", UtilStructs::Rectu16{ 708, 0, 16, 16 });
+
+			std::vector<AnimationData> aniData;
+
+			AnimationData ani1;
+			ani1.frame0sourceRect = UtilStructs::Rectu16{ 708, 0, 16, 16 };
+			ani1.frameDuration = 0.f;
+			ani1.frameCt = 1;
+
+			AnimationData ani2;
+			ani2.frame0sourceRect = UtilStructs::Rectu16{ 708, 48, 16, 16 };
+			ani2.frameDuration = 0.125f;
+			ani2.frameCt = 8;
+
+			aniData.emplace_back(ani1);
+			aniData.emplace_back(ani2);
+
+			ent.AddComponent<AnimationComponent>(aniData);
+		}
+		
+		++idx;
+		++col;
+
+		if (idx % 13 == 0)
+		{
+			col = 0;
+			++row;
+		}
+	}
 }
 
 void LoadGamePlayScripting()

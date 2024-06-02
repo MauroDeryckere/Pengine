@@ -129,22 +129,31 @@ void Pengo::BlockSystem::OnCollision(const Pengin::BaseEvent& event)
 	};
 
 	const auto& gridTag = m_ECS.GetComponent<OnGridTag>(blockEntity);
-	const auto currCoords = pGridSys->GetCellCoords(gridTag.gridId, blockEntity);
-
 	auto& gridComp = m_ECS.GetComponent<GridComponent>(gridTag.gridId);
 	assert(blockComp.dir != glm::vec2{});
 	
-	uint16_t row{ 0 };
-	uint16_t col{ 0 };
+	uint16_t row{ };
+	uint16_t col{ };
 
 	if (blockComp.dir.x > 0)
 	{
+		row = pGridSys->GetRow(gridTag.gridId, blockEntity);
 		col = gridComp.cols - 1;
-
+	}
+	else if (blockComp.dir.x < 0)
+	{
+		row = pGridSys->GetRow(gridTag.gridId, blockEntity);
+		col = 0;
 	}
 	else if (blockComp.dir.y > 0)
 	{
+		col = pGridSys->GetCol(gridTag.gridId, blockEntity);
 		row = gridComp.rows - 1;
+	}
+	else if (blockComp.dir.y < 0)
+	{
+		col = pGridSys->GetCol(gridTag.gridId, blockEntity);
+		row = 0;
 	}
 
 	const auto pos = pGridSys->GetCellPos(gridTag.gridId, row, col);
@@ -161,4 +170,8 @@ void Pengo::BlockSystem::OnCollision(const Pengin::BaseEvent& event)
 
 	blockComp.dir = {  };
 	blockComp.blockState = BlockComponent::BlockState::Still;
+
+	block.GetComponent<BodyComponent>().collType = CollType::Static;
+
+	block.RemoveComponent<OnGridTag>();
 }

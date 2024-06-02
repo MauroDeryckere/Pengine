@@ -12,7 +12,6 @@ namespace Pengin
 {
 	void WorldPositionSystem::FixedUpdate()
 	{
-
 		auto transforms{ m_ECS.GetComponents<TransformComponent>() };
 
 		for (auto& entity : transforms)
