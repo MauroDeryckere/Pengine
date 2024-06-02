@@ -67,7 +67,6 @@ namespace Pengin
 
 	std::pair<uint16_t, uint16_t> GridSystem::GetCellCoords(EntityId gridId, const glm::vec3& position) const noexcept
 	{
-		assert(m_ECS.Exists(entityId));
 		assert(m_ECS.Exists(gridId));
 
 		assert(m_ECS.HasComponent<GridComponent>(gridId));
