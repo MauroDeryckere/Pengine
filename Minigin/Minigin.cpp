@@ -75,7 +75,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-	const SDL_WindowFlags windowFlags = static_cast<SDL_WindowFlags>( SDL_WINDOW_OPENGL
+	constexpr SDL_WindowFlags windowFlags = static_cast<SDL_WindowFlags>( SDL_WINDOW_OPENGL
 																	//| SDL_WINDOW_RESIZABLE
 																	| SDL_WINDOW_ALLOW_HIGHDPI
 																	);
@@ -84,7 +84,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		672,
-		768,
+		840,
 		windowFlags
 	);
 	

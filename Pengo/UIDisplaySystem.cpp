@@ -12,7 +12,7 @@
 #include "ScoreComponent.h"
 
 #include "TextComponent.h"
-#include "DisplayComponent.h"
+#include "TxtDisplayComponent.h"
 
 #include "DeathEvent.h"
 #include "ScoreChangeEvent.h"

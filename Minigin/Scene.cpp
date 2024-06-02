@@ -83,6 +83,7 @@ namespace Pengin
 			return;
 		}
 
+
 		if (m_SceneData.sceneFileData.inputFilePath.empty()) //no path but still provided a function (empty inpData)
 		{
 			if (isKeyboarsFunc)

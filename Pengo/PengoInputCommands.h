@@ -95,6 +95,23 @@ namespace Pengo
 		BreakBlock(BreakBlock&&) noexcept = delete;
 		BreakBlock& operator=(BreakBlock&&) noexcept = delete;
 	};
+
+	class PengoPlayGame final : public Pengin::InputCommand
+	{
+	public:
+		PengoPlayGame(const Pengin::UserIndex& user) :
+			Pengin::InputCommand{ user, "PlayGame" }
+		{ }
+
+		virtual void Execute() override;
+
+		virtual ~PengoPlayGame() override = default;
+
+		PengoPlayGame(const PengoPlayGame&) = delete;
+		PengoPlayGame& operator=(const PengoPlayGame&) = delete;
+		PengoPlayGame(PengoPlayGame&&) noexcept = delete;
+		PengoPlayGame& operator=(PengoPlayGame&&) noexcept = delete;
+	};
 }
 
 #endif

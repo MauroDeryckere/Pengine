@@ -20,6 +20,8 @@ void dae::ResourceManager::Init(const std::string& dataPath)
 
 std::shared_ptr<dae::Texture2D> dae::ResourceManager::LoadTexture(const std::string& path) const
 {
+	assert(!path.empty());
+
 	const auto fullPath = m_DataPath + path;
 
 	auto it = m_Textures.find(fullPath);
@@ -42,6 +44,8 @@ std::shared_ptr<dae::Texture2D> dae::ResourceManager::LoadTexture(const std::str
 
 std::shared_ptr<dae::Font> dae::ResourceManager::LoadFont(const std::string& path, unsigned size) const
 {
+	assert(!path.empty());
+
 	const auto fullPath = m_DataPath + path;
 	
 	auto fontKey = fullPath + std::to_string(size);

@@ -2,6 +2,7 @@
 
 #include "DeathEvent.h"
 #include "ScoreChangeEvent.h"
+#include "GameManager.h"
 #include "HealthComponent.h"
 #include "ScoreComponent.h"
 
@@ -68,4 +69,9 @@ void Pengo::CollectScore::Execute()
 	playerEntity.GetComponent<ScoreComponent>().score += m_ScoreVal;
 
 	EventManager::GetInstance().BroadcoastEvent(std::make_unique<ScoreChangeEvent>("OnScoreCollectEvent", playerEntity.GetEntityId()));
+}
+
+void Pengo::PengoPlayGame::Execute()
+{
+	GameManager::GetInstance().PlayGame();
 }

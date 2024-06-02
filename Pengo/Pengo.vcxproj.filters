@@ -81,6 +81,9 @@
     <ClCompile Include="PengoPushingBlockState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PengoComponent.h">
@@ -110,7 +113,7 @@
     <ClInclude Include="ScoreComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="DisplayComponent.h">
+    <ClInclude Include="TxtDisplayComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="HealthComponent.h">
@@ -143,7 +146,7 @@
     <ClInclude Include="SnobeeWalkState.h">
       <Filter>Header Files\State\SnoBee</Filter>
     </ClInclude>
-    <ClInclude Include="GameSystem.h">
+    <ClInclude Include="GameManager.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="BlockComponent.h">

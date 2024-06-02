@@ -128,7 +128,7 @@ namespace Pengin
 		{
 		case Pengin::KeyBoardKey::Backspace: return static_cast<unsigned>(VK_BACK);
 			case Pengin::KeyBoardKey::Tab: return static_cast<unsigned>(VK_TAB);
-			case Pengin::KeyBoardKey::Return: return static_cast<unsigned>(VK_RETURN);
+			case Pengin::KeyBoardKey::Enter: return static_cast<unsigned>(VK_RETURN);
 			case Pengin::KeyBoardKey::Shift: return static_cast<unsigned>(VK_SHIFT);
 			case Pengin::KeyBoardKey::LeftShift: return static_cast<unsigned>(VK_LSHIFT);
 			case Pengin::KeyBoardKey::RightShift: return static_cast<unsigned>(VK_RSHIFT);
@@ -141,7 +141,7 @@ namespace Pengin
 			case Pengin::KeyBoardKey::Pause: return static_cast<unsigned>(VK_PAUSE);
 			case Pengin::KeyBoardKey::Capslock: return static_cast<unsigned>(VK_CAPITAL);
 			case Pengin::KeyBoardKey::Escape: return static_cast<unsigned>(VK_ESCAPE);
-			case Pengin::KeyBoardKey::pageUp: return static_cast<unsigned>(VK_PRIOR);
+			case Pengin::KeyBoardKey::PageUp: return static_cast<unsigned>(VK_PRIOR);
 			case Pengin::KeyBoardKey::PageDown: return static_cast<unsigned>(VK_NEXT);
 			case Pengin::KeyBoardKey::Home: return static_cast<unsigned>(VK_HOME);
 			case Pengin::KeyBoardKey::End: return static_cast<unsigned>(VK_END);
@@ -152,6 +152,7 @@ namespace Pengin
 			case Pengin::KeyBoardKey::PrintScreen: return static_cast<unsigned>(VK_PRINT);
 			case Pengin::KeyBoardKey::Insert: return static_cast<unsigned>(VK_INSERT);
 			case Pengin::KeyBoardKey::Delete: return static_cast<unsigned>(VK_DELETE);
+			case Pengin::KeyBoardKey::SpaceBar: return static_cast<unsigned>(VK_SPACE);
 			case Pengin::KeyBoardKey::Key0: return static_cast<unsigned>(0x30);
 			case Pengin::KeyBoardKey::Key1: return static_cast<unsigned>(0x31);
 			case Pengin::KeyBoardKey::Key2: return static_cast<unsigned>(0x32);

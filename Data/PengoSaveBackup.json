@@ -31,12 +31,12 @@
             "Transform Component": {
                 "worldPos": [
                     0.0,
-                    0.0,
+                    72.0,
                     0.0
                 ],
                 "localPos": [
                     0.0,
-                    0.0,
+                    72.0,
                     0.0
                 ],
                 "rotation": [
@@ -85,12 +85,12 @@
             "Transform Component": {
                 "worldPos": [
                     0.0,
-                    0.0,
+                    72.0,
                     0.0
                 ],
                 "localPos": [
                     0.0,
-                    0.0,
+                    72.0,
                     0.0
                 ],
                 "rotation": [
@@ -139,12 +139,12 @@
             "Transform Component": {
                 "worldPos": [
                     0.0,
-                    744.0,
+                    816.0,
                     0.0
                 ],
                 "localPos": [
                     0.0,
-                    744.0,
+                    816.0,
                     0.0
                 ],
                 "rotation": [
@@ -193,12 +193,12 @@
             "Transform Component": {
                 "worldPos": [
                     648.0,
-                    0.0,
+                    72.0,
                     0.0
                 ],
                 "localPos": [
                     648.0,
-                    0.0,
+                    72.0,
                     0.0
                 ],
                 "rotation": [
@@ -247,12 +247,12 @@
             "Transform Component": {
                 "worldPos": [
                     24.0,
-                    24.0,
+                    96.0,
                     0.0
                 ],
                 "localPos": [
-                    0.0,
-                    0.0,
+                    24.0,
+                    96.0,
                     0.0
                 ],
                 "rotation": [
@@ -1069,12 +1069,12 @@
             "Transform Component": {
                 "worldPos": [
                     24.0,
-                    312.0,
+                    384.0,
                     0.0
                 ],
                 "localPos": [
                     24.0,
-                    312.0,
+                    384.0,
                     0.0
                 ],
                 "rotation": [
@@ -1104,12 +1104,12 @@
                 ],
                 "CurrPosition": [
                     24,
-                    312,
+                    384,
                     0
                 ],
                 "LastPosition": [
                     24,
-                    312,
+                    384,
                     0
                 ],
                 "CollType": 2
@@ -1203,12 +1203,12 @@
             "Transform Component": {
                 "worldPos": [
                     504.0,
-                    24.0,
+                    96.0,
                     0.0
                 ],
                 "localPos": [
                     504.0,
-                    24.0,
+                    96.0,
                     0.0
                 ],
                 "rotation": [
@@ -1238,12 +1238,12 @@
                 ],
                 "CurrPosition": [
                     504,
-                    24,
+                    96,
                     0
                 ],
                 "LastPosition": [
                     504,
-                    24,
+                    96,
                     0
                 ],
                 "CollType": 2
@@ -1393,12 +1393,12 @@
             "Transform Component": {
                 "worldPos": [
                     24.0,
-                    24.0,
+                    96.0,
                     0.0
                 ],
                 "localPos": [
                     24.0,
-                    24.0,
+                    96.0,
                     0.0
                 ],
                 "rotation": [
@@ -1429,12 +1429,12 @@
                 ],
                 "CurrPosition": [
                     24,
-                    24,
+                    96,
                     0
                 ],
                 "LastPosition": [
                     24,
-                    24,
+                    96,
                     0
                 ],
                 "CollType": 2
@@ -1619,13 +1619,13 @@
             "UUID": "676c5dbc-5bde-4e93-8d44-a04925b83082",
             "Transform Component": {
                 "worldPos": [
+                    75.0,
                     0.0,
-                    150.0,
                     0.0
                 ],
                 "localPos": [
+                    75.0,
                     0.0,
-                    150.0,
                     0.0
                 ],
                 "rotation": [
@@ -1658,9 +1658,9 @@
                 "IsVisible": true
             },
             "struct Pengin::TextComponent": {
-                "Text": "Player 1 Health: 3",
+                "Text": "P1 Health: 3",
                 "FontPath": "Lingua.otf",
-                "FontSize": 18,
+                "FontSize": 26,
                 "Color": [
                     255,
                     255,
@@ -1669,7 +1669,7 @@
                 ]
             },
             "struct Pengo::TxtDisplayComponent": {
-                "Prefix": "Player 1 Health: ",
+                "Prefix": "P1 Health: ",
                 "Postfix": ""
             }
         },
@@ -1678,13 +1678,13 @@
             "UUID": "3b57420a-ec7d-4cfc-b782-f6748f9d1144",
             "Transform Component": {
                 "worldPos": [
+                    300.0,
                     0.0,
-                    175.0,
                     0.0
                 ],
                 "localPos": [
+                    300.0,
                     0.0,
-                    175.0,
                     0.0
                 ],
                 "rotation": [
@@ -1717,9 +1717,9 @@
                 "IsVisible": true
             },
             "struct Pengin::TextComponent": {
-                "Text": "Player 1 Score: 0",
+                "Text": "P1 Score: 0",
                 "FontPath": "Lingua.otf",
-                "FontSize": 18,
+                "FontSize": 26,
                 "Color": [
                     255,
                     255,
@@ -1728,7 +1728,7 @@
                 ]
             },
             "struct Pengo::TxtDisplayComponent": {
-                "Prefix": "Player 1 Score: ",
+                "Prefix": "P1 Score: ",
                 "Postfix": ""
             }
         },
@@ -1812,13 +1812,13 @@
             "UUID": "8582bda1-e6c0-4969-a892-70a6fa8f330d",
             "Transform Component": {
                 "worldPos": [
-                    0.0,
-                    200.0,
+                    75.0,
+                    30.0,
                     0.0
                 ],
                 "localPos": [
-                    0.0,
-                    200.0,
+                    75.0,
+                    30.0,
                     0.0
                 ],
                 "rotation": [
@@ -1851,9 +1851,9 @@
                 "IsVisible": true
             },
             "struct Pengin::TextComponent": {
-                "Text": "Player 2 Health: 3",
+                "Text": "P2 Health: 3",
                 "FontPath": "Lingua.otf",
-                "FontSize": 18,
+                "FontSize": 26,
                 "Color": [
                     255,
                     255,
@@ -1862,7 +1862,7 @@
                 ]
             },
             "struct Pengo::TxtDisplayComponent": {
-                "Prefix": "Player 2 Health: ",
+                "Prefix": "P2 Health: ",
                 "Postfix": ""
             }
         },
@@ -1871,13 +1871,13 @@
             "UUID": "a441b70d-89fd-4e31-9777-7c404b1fa586",
             "Transform Component": {
                 "worldPos": [
-                    0.0,
-                    225.0,
+                    300.0,
+                    30.0,
                     0.0
                 ],
                 "localPos": [
-                    0.0,
-                    225.0,
+                    300.0,
+                    30.0,
                     0.0
                 ],
                 "rotation": [
@@ -1910,9 +1910,9 @@
                 "IsVisible": true
             },
             "struct Pengin::TextComponent": {
-                "Text": "Player 2 Score: 0",
+                "Text": "P2 Score: 0",
                 "FontPath": "Lingua.otf",
-                "FontSize": 18,
+                "FontSize": 26,
                 "Color": [
                     255,
                     255,
@@ -1921,7 +1921,7 @@
                 ]
             },
             "struct Pengo::TxtDisplayComponent": {
-                "Prefix": "Player 2 Score: ",
+                "Prefix": "P2 Score: ",
                 "Postfix": ""
             }
         }

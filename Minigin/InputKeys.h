@@ -7,7 +7,7 @@ namespace Pengin
     {
         Backspace,
         Tab,
-        Return,
+        Enter,
         Shift,
         LeftShift,
         RightShift,
@@ -20,7 +20,7 @@ namespace Pengin
         Pause,
         Capslock,
         Escape,
-        pageUp,
+        PageUp,
         PageDown,
         Home,
         End,
@@ -29,6 +29,8 @@ namespace Pengin
         Right,
         Up,
         Down,
+
+        SpaceBar,
 
         PrintScreen,
         Insert,
