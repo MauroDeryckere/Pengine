@@ -67,18 +67,20 @@ namespace Pengin
 
 		//auto& t = m_ECS.GetComponent<AnimationComponent>(aniEv.GetEntityId());
 		//t;
-
-		auto& aniComp = entity.GetComponent<AnimationComponent>();
-
-		if (aniComp.currAnimationIdx != aniEv.NewAniIdx())
+		if (entity.HasComponent<AnimationComponent>())
 		{
-			aniComp.ChangeAnimation(aniEv.NewAniIdx(), aniEv.KeepPrevTime(), aniEv.IsPlaying(), aniEv.GetNewFrame());
+			auto& aniComp = entity.GetComponent<AnimationComponent>();
 
-			auto newSrcRect = aniComp.animations[aniComp.currAnimationIdx].frame0sourceRect;
-			newSrcRect.x += aniComp.currFrame * newSrcRect.width;
+			if (aniComp.currAnimationIdx != aniEv.NewAniIdx())
+			{
+				aniComp.ChangeAnimation(aniEv.NewAniIdx(), aniEv.KeepPrevTime(), aniEv.IsPlaying(), aniEv.GetNewFrame());
 
-			auto& spriteComp = entity.GetComponent<SpriteComponent>();
-			spriteComp.sourceRect = newSrcRect;
+				auto newSrcRect = aniComp.animations[aniComp.currAnimationIdx].frame0sourceRect;
+				newSrcRect.x += aniComp.currFrame * newSrcRect.width;
+
+				auto& spriteComp = entity.GetComponent<SpriteComponent>();
+				spriteComp.sourceRect = newSrcRect;
+			}
 		}
 	}
 }

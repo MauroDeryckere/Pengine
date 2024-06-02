@@ -10,12 +10,15 @@
 #include "PlayerComponent.h"
 #include "PengoComponent.h"
 #include "BodyComponent.h"
+#include "ScoreComponent.h"
 
 #include "PengoIdleState.h"
 #include "Gridsystem.h"
 #include "OnGridTag.h"
 #include "HealthComponent.h"
 #include "PengoDyingState.h"
+#include "ScoreCollectEvent.h"
+#include "SnobeeDeathEvent.h"
 
 #include "DeathEvent.h"
 
@@ -86,6 +89,12 @@ namespace Pengo
 
 			player.GetComponent<PengoComponent>().SetPlayerState(std::make_unique<PengoIdleState>(userIdx, glm::vec2{0, 1}));
 		}
+	}
+
+	void PlayerSystem::OnSnobeeDeathEvent(const Pengin::BaseEvent& event)
+	{
+		using namespace Pengin;
+		EventManager::GetInstance().BroadcoastEvent(std::make_unique<ScoreCollectEvent>(400, static_cast<const SnobeeDeathEvent&>(event).GetKillerId()));
 	}
 }
 

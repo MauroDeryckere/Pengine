@@ -9,6 +9,8 @@
 #include "SnobeeComponent.h"
 #include "DeathEvent.h"
 
+#include "BodyComponent.h"
+#include "PengoComponent.h"
 #include "BlockComponent.h"
 #include "BlockSystem.h"
 
@@ -172,6 +174,8 @@ namespace Pengo
 				{
 					blockComp.blockState = BlockComponent::BlockState::Moving;
 					blockComp.dir = m_Direction;
+
+					blockComp.pusherId = SceneManager::GetInstance().GetActiveScene()->GetPlayer(GetUserIndex()).GetEntityId();
 
 					cellData.entity = NULL_ENTITY_ID;
 					cellData.type = static_cast<uint8_t>(Pengo::PengoCellType::Walkable);

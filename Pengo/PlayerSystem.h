@@ -3,7 +3,6 @@
 
 #include "BaseSystem.h"
 #include "EventManager.h"
-#include "PengoBlockBreakEvent.h"
 
 namespace Pengin
 {
@@ -22,6 +21,7 @@ namespace Pengo
 		{
 			m_pObserver->RegisterForEvent(m_pObserver, "PengoDeath", [this](const Pengin::BaseEvent& event) { OnDeathEvent(event); });
 			m_pObserver->RegisterForEvent(m_pObserver, "OnPengoRespawn", [this](const Pengin::BaseEvent& event) { OnRespawnEvent(event); });
+			m_pObserver->RegisterForEvent(m_pObserver, "SnobeeDeath", [this](const Pengin::BaseEvent& event) { OnSnobeeDeathEvent(event); });
 		}
 
 		~PlayerSystem() = default;
@@ -58,6 +58,8 @@ namespace Pengo
 
 		void OnDeathEvent(const Pengin::BaseEvent& event);
 		void OnRespawnEvent(const Pengin::BaseEvent& event);
+
+		void OnSnobeeDeathEvent(const Pengin::BaseEvent& event);
 
 		std::shared_ptr<Pengin::Observer> m_pObserver;
 	};

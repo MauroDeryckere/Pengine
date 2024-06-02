@@ -3,6 +3,7 @@
 #include "SnobeeComponent.h"
 #include "BlockSystem.h"
 #include "BlockComponent.h"
+#include "SnobeeDeathEvent.h"
 #include "CollisionEvent.h"
 
 void Pengo::EnemySystem::Update()
@@ -24,16 +25,26 @@ void Pengo::EnemySystem::OnCollision(const Pengin::BaseEvent& event)
 	
 	if (m_ECS.HasComponent<SnobeeComponent>(entB) && m_ECS.HasComponent<BlockComponent>(entA))
 	{	
-		if (m_ECS.GetComponent<BlockComponent>(entA).blockState == BlockComponent::BlockState::Moving)
+		auto& block = m_ECS.GetComponent<BlockComponent>(entA);
+		if (block.blockState == BlockComponent::BlockState::Moving)
 		{
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<SnobeeDeathEvent>(block.pusherId));
+
+			block.pusherId = NULL_ENTITY_ID;
+
 			m_ECS.DestroyEntity(entB);
 		}
 		return;
 	}
 	if (m_ECS.HasComponent<SnobeeComponent>(entA) && m_ECS.HasComponent<BlockComponent>(entB))
 	{
-		if (m_ECS.GetComponent<BlockComponent>(entB).blockState == BlockComponent::BlockState::Moving)
+		auto& block = m_ECS.GetComponent<BlockComponent>(entB);
+		if (block.blockState == BlockComponent::BlockState::Moving)
 		{
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<SnobeeDeathEvent>(block.pusherId));
+
+			block.pusherId = NULL_ENTITY_ID;
+
 			m_ECS.DestroyEntity(entA);
 		}
 		return;

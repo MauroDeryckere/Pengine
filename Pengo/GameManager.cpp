@@ -15,7 +15,7 @@
 #include "BlockSystem.h"
 #include "EnemySystem.h"
 #include "PlayerSystem.h"
-#include "GameManager.h"
+#include "LevelSystem.h"
 
 
 void Pengo::GameManager::LoadUI()
@@ -44,6 +44,10 @@ void Pengo::GameManager::LoadLevel1()
 {
 	using namespace Pengin;
 
+	SoundData music{ "../Data/Audio/Main BGM (Popcorn).mp3" };
+	music.isLooping = true;
+	ServiceLocator::GetSoundSystem().PlaySound(music);
+
 	//Most of thesceneData is actually read from a file if you choose a loadPath, just typing it here too for readability
 	SceneData sceneData{};
 	sceneData.name = "Pengo Scene";
@@ -60,11 +64,12 @@ void Pengo::GameManager::LoadLevel1()
 
 	sceneData.sceneFileData = data;
 
-	ServiceLocator::GetSoundSystem().LoadSoundsFromFolder("../Data/Audio");
 	auto pScene = SceneManager::GetInstance().CreateScene(sceneData, true);
 
 	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs)
 		{
+			sysManager.RegisterSystem<Pengo::LevelSystem>(std::make_shared<Pengo::LevelSystem>(ecs));
+
 			sysManager.RegisterSystem<Pengo::PlayerSystem>(std::make_shared<Pengo::PlayerSystem>(ecs));
 			sysManager.RegisterSystem<Pengo::EnemySystem>(std::make_shared<Pengo::EnemySystem>(ecs));
 			sysManager.RegisterSystem<Pengo::BlockSystem>(std::make_shared<Pengo::BlockSystem>(ecs));
@@ -150,12 +155,51 @@ void Pengo::GameManager::LoadLevel1()
 	}
 }
 
+void Pengo::GameManager::LoadLevel2()
+{
+}
+
+void Pengo::GameManager::LoadLevel3()
+{
+}
+
+void Pengo::GameManager::LoadNextLevel()
+{
+	switch (m_CurrLevel)
+	{
+	case 0:
+	{
+		LoadLevel1();
+		m_CurrLevel = 1;
+		break;
+	}
+	case 1:
+	{
+		LoadLevel2();
+		m_CurrLevel = 2;
+		break;
+	}
+	case 2:
+	{
+		LoadLevel3();
+		m_CurrLevel = 3;
+		break;
+	}
+	case 3:
+	{
+		Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("GameWon"));
+		break;
+	}
+	default:
+		break;
+	}
+}
+
 void Pengo::GameManager::PlayGame()
 {
-	if (!playing)
+	if (m_CurrLevel == 0)
 	{
-		playing = true;
-		Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("LoadLevel"));
+		Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("PlayGame"));
 	}
 }
 
@@ -173,8 +217,6 @@ void Pengo::GameManager::RegisterControllerInputLevel(const Pengin::InputData& i
 	input.MapControllerAction(userIndex, ControllerButton::DPadUp, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, -1, 0 }));
 	input.MapControllerAction(userIndex, ControllerButton::DPadDown, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, 1, 0 }));
 
-	input.MapControllerAction(userIndex, ControllerButton::A, InputState::UpThisFrame, std::make_shared<AttackPlayer>(userIndex));
-	input.MapControllerAction(userIndex, ControllerButton::B, InputState::Pressed, std::make_shared<CollectScore>(userIndex));
 	input.MapControllerAction(userIndex, ControllerButton::X, InputState::DownThisFrame, std::make_shared<MakeSound>(userIndex, SoundData{ "../Data/Audio/Act Start.mp3" }));
 }
 
@@ -192,7 +234,14 @@ void Pengo::GameManager::RegisterKeyboardInputUI(const Pengin::InputData& inpDat
 
 void Pengo::GameManager::RegisterControllerInputUI(const Pengin::InputData& inpData)
 {
-	inpData;
+	using namespace Pengin;
+
+	auto& input = InputManager::GetInstance();
+
+	const auto& userIndex = std::get<0>(inpData);
+	assert(userIndex);
+
+	input.MapControllerAction(userIndex, ControllerButton::A, InputState::Pressed, std::make_shared<PengoPlayGame>(userIndex));
 }
 
 void Pengo::GameManager::RegisterKeyboardInputLevel(const Pengin::InputData& inpData)
@@ -215,9 +264,6 @@ void Pengo::GameManager::RegisterKeyboardInputLevel(const Pengin::InputData& inp
 	input.MapKeyboardAction(userIndex, KeyBoardKey::S, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, 1, 0 }));
 
 	input.MapKeyboardAction(userIndex, KeyBoardKey::E, InputState::Pressed, std::make_shared<Pengo::BreakBlock>(userIndex));
-
-	input.MapKeyboardAction(userIndex, KeyBoardKey::C, InputState::UpThisFrame, std::make_shared<AttackPlayer>(userIndex));
-	input.MapKeyboardAction(userIndex, KeyBoardKey::V, InputState::Pressed, std::make_shared<CollectScore>(userIndex));
 
 	SoundData data{ "../Data/Audio/Act Start.mp3" };
 

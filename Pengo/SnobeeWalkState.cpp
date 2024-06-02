@@ -74,6 +74,8 @@ std::unique_ptr<Pengin::State> Pengo::SnobeeWalkState::Update()
 
 	if (!pGridSystem->IsPosInGridArea(predPos, gridId))
 	{
+		std::cout << "not in grid\n";
+
 		const auto coords = pGridSystem->GetCellCoords(gridId, GetEntityId());
 		const auto cellPos = pGridSystem->GetCellPos(gridId, coords.first, coords.second);
 
@@ -87,18 +89,31 @@ std::unique_ptr<Pengin::State> Pengo::SnobeeWalkState::Update()
 
 		auto& predCellData = pGridSystem->GetCellData(gridId, predCoords.first, predCoords.second);
 
-		if (predCellData.type == static_cast<uint8_t>(PengoCellType::Block) )
+		if (predCellData.type == static_cast<uint8_t>(PengoCellType::Block))
 		{
-			Entity block{ predCellData.entity, pActiveScene.get() };
+			auto chance = UtilFuncs::RandomNumber(0, 2);
+			if (chance == 0)
+			{
+				std::cout << "breaking\n";
+				Entity block{ predCellData.entity, pActiveScene.get() };
 
-			EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(
-				predCellData.entity,
-				static_cast<uint8_t>(BlockSystem::BlockAnimations::Breaking)));
+				EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(
+					predCellData.entity,
+					static_cast<uint8_t>(BlockSystem::BlockAnimations::Breaking)));
 
-			auto& blockComp = block.GetComponent<BlockComponent>();
-			blockComp.blockState = BlockComponent::BlockState::Breaking;
+				auto& blockComp = block.GetComponent<BlockComponent>();
+				blockComp.blockState = BlockComponent::BlockState::Breaking;
 
-			predCellData.Reset();
+				predCellData.Reset();
+			}
+			else
+			{
+				std::cout << "not breaking\n";
+				const auto cellPos = pGridSystem->GetCellPos(gridId, static_cast<uint16_t>(predCoords.first - m_Direction.y), static_cast<uint16_t>(predCoords.second - m_Direction.x));
+				snobee.SetLocalPosition({ cellPos.x, cellPos.y, 0 });
+
+				return std::make_unique<SnobeeWalkState>(GetEntityId());
+			}
 		}
 	}
 
@@ -147,6 +162,6 @@ glm::vec2 Pengo::SnobeeWalkState::CalcDirection()
 		avDirs.emplace_back(dir);
 	}
 
-	const auto dir = UtilFuncs::RandomNumber<size_t>(0, avDirs.size()); dir;
+	const auto dir = UtilFuncs::RandomNumber<size_t>(0, avDirs.size() - 1);
 	return glm::vec2{ avDirs[dir].second, avDirs[dir].first };
 }

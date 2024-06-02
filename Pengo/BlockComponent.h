@@ -2,6 +2,7 @@
 #define PENGO_BLOCK
 
 #include "SerializationRegistry.h"
+#include "EntityId.h"
 #include <glm/vec2.hpp>
 
 namespace Pengo
@@ -20,6 +21,8 @@ namespace Pengo
 		glm::vec2 dir{};
 
 		float breakingTimer{ 0.f };
+
+		Pengin::EntityId pusherId{ Pengin::NULL_ENTITY_ID };
 
 		BlockComponent() = default;
 		~BlockComponent() = default;

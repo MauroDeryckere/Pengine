@@ -15,7 +15,7 @@
 #include "TxtDisplayComponent.h"
 
 #include "DeathEvent.h"
-#include "ScoreChangeEvent.h"
+#include "ScoreCollectEvent.h"
 
 namespace Pengo
 {
@@ -26,7 +26,7 @@ namespace Pengo
 		m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() }
 	{
 		m_pObserver->RegisterForEvent(m_pObserver, "PengoDeath", [this](const Pengin::BaseEvent& event) { OnHealthChangeEvent(event); } );
-		m_pObserver->RegisterForEvent(m_pObserver, "OnScoreCollectEvent", [this](const Pengin::BaseEvent& event) { OnScoreCollectEvent(event); } );
+		m_pObserver->RegisterForEvent(m_pObserver, "ScoreCollect", [this](const Pengin::BaseEvent& event) { OnScoreCollectEvent(event); } );
 	}
 
 	void UIDisplaySystem::OnHealthChangeEvent(const Pengin::BaseEvent& event)
@@ -71,12 +71,13 @@ namespace Pengo
 	void UIDisplaySystem::OnScoreCollectEvent(const Pengin::BaseEvent& event)
 	{
 		using namespace Pengin;
-		const ScoreChangeEvent& scoreEv{ static_cast<const ScoreChangeEvent&>(event) };
+		const ScoreCollectEvent& scoreEv{ static_cast<const ScoreCollectEvent&>(event) };
 
 		const EntityId id{ scoreEv.GetEntityId() };
 		assert(m_ECS.HasComponent<ScoreComponent>(id));
 
 		auto& scoreComp = m_ECS.GetComponent<ScoreComponent>(id);
+		scoreComp.score += scoreEv.GetScore();
 
 		std::vector<EntityId> idsToErase;
 		for (const auto& entity : scoreComp.scoreDisplays)

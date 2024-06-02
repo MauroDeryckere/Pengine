@@ -12,7 +12,6 @@ namespace Pengo
 	{
 	public:
 		void LoadUI();
-		void LoadLevel1();
 
 		void PlayGame();
 
@@ -28,13 +27,20 @@ namespace Pengo
 			m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() }
 
 		{ 
-			m_pObserver->RegisterForEvent(m_pObserver, "LoadLevel", [this](const Pengin::BaseEvent&) { LoadLevel1(); });
+			m_pObserver->RegisterForEvent(m_pObserver, "PlayGame", [this](const Pengin::BaseEvent&) { LoadNextLevel(); });
+			m_pObserver->RegisterForEvent(m_pObserver, "NextLevel", [this](const Pengin::BaseEvent&) { LoadNextLevel(); });
 		}
 
 		~GameManager() = default;
 
 		std::shared_ptr<Pengin::Observer> m_pObserver;
-		bool playing = false;
+		uint8_t m_CurrLevel{ 0 };
+
+		void LoadNextLevel();
+
+		void LoadLevel1();
+		void LoadLevel2();
+		void LoadLevel3();
 
 		void RegisterKeyboardInputLevel(const Pengin::InputData& inpData);
 		void RegisterControllerInputLevel(const Pengin::InputData& inpData);
