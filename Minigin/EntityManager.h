@@ -10,12 +10,10 @@
 
 namespace Pengin
 {
-    class ComponentManager;
-
     class EntityManager final
     {
     public:
-        EntityManager(ComponentManager& componentManager);
+        EntityManager();
         ~EntityManager() = default;
 
         EntityManager(const EntityManager&) = delete;
@@ -46,7 +44,7 @@ namespace Pengin
         }
 
     private:
-        ComponentManager& m_ComponentManagerRef; //remove this ref and use the get all types to remove
+        EntityId CURRENT_ID_COUNT{ 0 };
 
         const std::unordered_map<std::type_index, size_t> m_TypeBitMap;
         const std::vector<std::type_index> m_TypeBitVector; //rev mapping

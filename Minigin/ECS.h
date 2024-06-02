@@ -140,7 +140,6 @@ namespace Pengin
         ComponentManager m_ComponentManager;
         EntityManager m_EntityManager;
 
-
         struct CompRemovalData final
         {
             const EntityId id;

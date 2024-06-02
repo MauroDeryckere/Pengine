@@ -16,8 +16,6 @@ namespace Pengin
     {
 		return (id == NULL_ENTITY_ID) ? "NULL" : std::to_string(id);
     }
-
-	static EntityId CURRENT_ID_COUNT{ 0 };
 }
 
 #endif

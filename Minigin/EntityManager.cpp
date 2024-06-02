@@ -6,8 +6,7 @@
 
 namespace Pengin
 {
-	EntityManager::EntityManager(ComponentManager& componentManager):
-		m_ComponentManagerRef{ componentManager },
+	EntityManager::EntityManager():
 		m_TypeBitMap{ InitTypeBitMapping() },
 		m_TypeBitVector{ InitTypeBitVector() }
 	{ }
