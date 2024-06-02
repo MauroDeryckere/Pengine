@@ -23,15 +23,19 @@ void Pengo::EnemySystem::OnCollision(const Pengin::BaseEvent& event)
 	const auto entB = collEv.GetEntityB();
 	
 	if (m_ECS.HasComponent<SnobeeComponent>(entB) && m_ECS.HasComponent<BlockComponent>(entA))
-	{
-		DEBUG_OUT("destroy snobee/block");
-		m_ECS.DestroyEntity(entB);
+	{	
+		if (m_ECS.GetComponent<BlockComponent>(entA).blockState == BlockComponent::BlockState::Moving)
+		{
+			m_ECS.DestroyEntity(entB);
+		}
 		return;
 	}
 	if (m_ECS.HasComponent<SnobeeComponent>(entA) && m_ECS.HasComponent<BlockComponent>(entB))
 	{
-		DEBUG_OUT("destroy snobee/block");
-		m_ECS.DestroyEntity(entA);
+		if (m_ECS.GetComponent<BlockComponent>(entB).blockState == BlockComponent::BlockState::Moving)
+		{
+			m_ECS.DestroyEntity(entA);
+		}
 		return;
 	}
 }

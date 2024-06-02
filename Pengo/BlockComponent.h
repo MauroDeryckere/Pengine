@@ -19,6 +19,8 @@ namespace Pengo
 
 		glm::vec2 dir{};
 
+		float breakingTimer{ 0.f };
+
 		BlockComponent() = default;
 		~BlockComponent() = default;
 

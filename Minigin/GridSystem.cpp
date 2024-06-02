@@ -65,6 +65,23 @@ namespace Pengin
 		return gridComp.GetCellCoords(static_cast<uint32_t>(posX), static_cast<uint32_t>(posY));
 	}
 
+	std::pair<uint16_t, uint16_t> GridSystem::GetCellCoords(EntityId gridId, const glm::vec3& position) const noexcept
+	{
+		assert(m_ECS.Exists(entityId));
+		assert(m_ECS.Exists(gridId));
+
+		assert(m_ECS.HasComponent<GridComponent>(gridId));
+
+		const auto& gridComp = m_ECS.GetComponent<GridComponent>(gridId);
+
+		const auto& gridTransform = m_ECS.GetComponent<TransformComponent>(gridId);
+
+		const float posX = (position.x - gridTransform.worldPos.x) / gridTransform.scale.x;
+		const float posY = (position.y - gridTransform.worldPos.y) / gridTransform.scale.y;
+
+		return gridComp.GetCellCoords(static_cast<uint32_t>(posX), static_cast<uint32_t>(posY));
+	}
+
 	uint16_t GridSystem::GetRow(EntityId gridId, EntityId entityId) const noexcept
 	{
 		assert(m_ECS.Exists(entityId));
@@ -103,6 +120,21 @@ namespace Pengin
 		assert(static_cast<uint32_t>(posX) < gridComp.GetTotalWidth());
 
 		return static_cast<uint16_t>(posX / gridComp.cellWidth);
+	}
+
+	bool GridSystem::IsPosInGridArea(const glm::vec3& position, EntityId gridId) const noexcept
+	{
+		assert(m_ECS.Exists(gridId));
+		assert(m_ECS.HasComponent<GridComponent>(gridId));
+
+		const auto& gridComp = m_ECS.GetComponent<GridComponent>(gridId);
+		const auto& gridTransform = m_ECS.GetComponent<TransformComponent>(gridId);
+
+		return UtilFuncs::IsPointInRect(UtilStructs::Rectf{ (gridTransform.worldPos.x - 1.f),
+															(gridTransform.worldPos.y - 1.f),
+															(gridComp.cellWidth * gridComp.cols * gridTransform.scale.x + 2.f),
+															(gridComp.cellHeight * gridComp.rows * gridTransform.scale.y + 2.f) },
+									   (position.x), (position.y));
 	}
 
 	bool GridSystem::IsEntityInGridArea(EntityId entityId, EntityId gridId) const noexcept

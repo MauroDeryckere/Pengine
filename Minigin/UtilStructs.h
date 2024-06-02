@@ -77,7 +77,7 @@ namespace Pengin
 		{
 			static_assert(std::is_arithmetic_v<T>, "T must be a numeric type");
 
-			thread_local static constinit std::mt19937 gen{ std::random_device{} };
+			thread_local static std::mt19937 gen{ std::random_device{}() };
 
 			if constexpr (std::is_integral_v<T>) 
 			{

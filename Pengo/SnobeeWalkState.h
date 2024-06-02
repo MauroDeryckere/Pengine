@@ -18,28 +18,7 @@ namespace Pengo
 		~SnobeeWalkState() = default;
 
 		void OnEnter();
-		std::unique_ptr<Pengin::State> Update()
-		{
-			m_CheckedCollision = true;
-			///TODO pengo movement pattern
-			return nullptr;
-		
-			//Check all directions && decide what to do
-			//store a temp list of all available dirs
-
-			//A: 
-			//Out of border, skip this dir
-
-			//B: 
-			//Wall
-			//Enter blockbreak state
-
-			//C:
-			//Walkable
-			//Stay in this state until reached, then repeat process
-
-			//Need idle or decisionmake state?
-		}
+		std::unique_ptr<Pengin::State> Update();
 
 	private:
 		bool m_CheckedCollision{ false };

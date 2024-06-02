@@ -8,6 +8,7 @@
 #include "ECS.h"
 #include "PengoGrid.h"
 #include "Entity.h"
+#include "GameTime.h"
 #include "WallComponent.h"
 #include "GridComponent.h"
 
@@ -26,6 +27,16 @@ void Pengo::BlockSystem::Update()
 			m_ECS.GetComponent<BodyComponent>(blocks.GetIdFromIterator(it)).inputVelocity += glm::vec3{inptvel.x, inptvel.y, 0.f};
 		}
 
+		else if (block.blockState == BlockComponent::BlockState::Breaking)
+		{
+			block.breakingTimer += GameTime::GetInstance().ElapsedSec();
+
+			if (block.breakingTimer >= 1.f)
+			{
+				m_ECS.DestroyEntity(blocks.GetIdFromIterator(it));
+			}
+		}
+
 		++it;
 	}
 }
@@ -35,8 +46,7 @@ void Pengo::BlockSystem::OnBlockBreakEvent(const Pengin::BaseEvent& event)
 	using namespace Pengin;
 
 	const auto& breakEv{ static_cast<const PengoBlockBreakEvent&>(event) };
-
-	m_ECS.DestroyEntity(breakEv.GetBlockId());
+	breakEv;
 }
 
 void Pengo::BlockSystem::OnCollision(const Pengin::BaseEvent& event)

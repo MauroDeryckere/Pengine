@@ -68,12 +68,11 @@ namespace Pengo
 			auto& cellData = pGridSys->GetCellData(onGridTag.gridId, static_cast<uint16_t>(coords.first + m_Direction.y), 
 																	 static_cast<uint16_t>(coords.second + m_Direction.x));
 
+			cellData.entity = NULL_ENTITY_ID;
+			
 			if (cellData.type == static_cast<uint8_t>(PengoCellType::Block))
 			{
-				EventManager::GetInstance().BroadcoastEvent(std::make_unique<PengoBlockBreakEvent>(PlayerState::GetUserIndex(), cellData.entity));
-				
 				cellData.type = static_cast<uint8_t>(PengoCellType::Walkable);
-				cellData.entity = NULL_ENTITY_ID;
 			}
 
 			return std::make_unique<PengoIdleState>(GetUserIndex(), m_Direction);
