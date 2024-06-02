@@ -6,6 +6,8 @@
 void Pengo::PengoPushingBlockState::OnEnter()
 {
 	using namespace Pengin;
+	
+	ServiceLocator::GetSoundSystem().PlaySound({ "../Data/Audio/Push Ice Block.mp3" });
 
 	auto playerEntity{ Pengin::SceneManager::GetInstance().GetActiveScene()->GetPlayer(Pengin::PlayerState::GetUserIndex()) };
 

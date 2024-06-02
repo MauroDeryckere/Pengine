@@ -32,6 +32,8 @@ void Pengo::EnemySystem::OnCollision(const Pengin::BaseEvent& event)
 
 			block.pusherId = NULL_ENTITY_ID;
 
+			ServiceLocator::GetSoundSystem().PlaySound({"../Data/Audio/Snow-Bee Squashed.mp3"});
+
 			m_ECS.DestroyEntity(entB);
 		}
 		return;
@@ -44,6 +46,8 @@ void Pengo::EnemySystem::OnCollision(const Pengin::BaseEvent& event)
 			EventManager::GetInstance().BroadcoastEvent(std::make_unique<SnobeeDeathEvent>(block.pusherId));
 
 			block.pusherId = NULL_ENTITY_ID;
+
+			ServiceLocator::GetSoundSystem().PlaySound({ "../Data/Audio/Snow-Bee Squashed.mp3" });
 
 			m_ECS.DestroyEntity(entA);
 		}

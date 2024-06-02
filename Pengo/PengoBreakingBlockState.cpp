@@ -19,6 +19,8 @@ namespace Pengo
 	{		
 		using namespace Pengin;
 
+		ServiceLocator::GetSoundSystem().PlaySound({ "../Data/Audio/Ice Block Destroyed.mp3" });
+
 		auto playerEntity{ Pengin::SceneManager::GetInstance().GetActiveScene()->GetPlayer(Pengin::PlayerState::GetUserIndex())};
 
 		if (playerEntity)
