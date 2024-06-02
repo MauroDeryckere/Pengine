@@ -35,8 +35,6 @@ namespace Pengin
 		m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>(this) },
 		m_InputInfoPanel{ std::make_unique<InputInfoPanel>() } 
 	{
-		RegisterEngineSystems();
-
 		if (!m_SceneData.sceneFileData.sceneLoadPath.empty())
 		{
 			if (!DeserializeScene())
@@ -44,6 +42,8 @@ namespace Pengin
 				throw std::runtime_error("Failed to deserialize scene at: " + m_SceneData.sceneFileData.sceneLoadPath.string());
 			}
 		}
+
+		RegisterEngineSystems();
 	}
 
 	void Scene::RegisterEngineSystems()
@@ -86,6 +86,9 @@ namespace Pengin
 
 		if (m_SceneData.sceneFileData.inputFilePath.empty()) //no path but still provided a function (empty inpData)
 		{
+			auto& input = InputManager::GetInstance();
+			input.Reset();
+
 			if (isKeyboarsFunc)
 			{
 				m_SceneData.sceneFileData.f_RegKeyboardInput({});

@@ -27,7 +27,9 @@ namespace Pengo
 		GameManager():
 			m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() }
 
-		{ }
+		{ 
+			m_pObserver->RegisterForEvent(m_pObserver, "LoadLevel", [this](const Pengin::BaseEvent&) { LoadLevel1(); });
+		}
 
 		~GameManager() = default;
 

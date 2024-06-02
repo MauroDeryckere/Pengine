@@ -7,7 +7,7 @@ namespace Pengin
     {
         Backspace,
         Tab,
-        Enter,
+        Return,
         Shift,
         LeftShift,
         RightShift,

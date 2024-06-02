@@ -78,10 +78,10 @@ namespace Pengin
 		Scene(const SceneData& sceneData);
 
 		friend class Entity; //to allow accessing the ecs
-		ECS m_Ecs;
-		std::unordered_map<GameUUID, EntityId> m_UUID_EntityIdMap;
+		ECS m_Ecs{};
+		std::unordered_map<GameUUID, EntityId> m_UUID_EntityIdMap{};
 
-		SceneData m_SceneData;
+		SceneData m_SceneData{};
 		SystemManager m_SysManager{};
 		
 		//Achievements-------------------------------

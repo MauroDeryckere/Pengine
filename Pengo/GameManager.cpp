@@ -28,14 +28,15 @@ void Pengo::GameManager::LoadUI()
 	SceneFileData data{};
 	data.inputFilePath = "../Data/InputTest.json";
 
-	sceneData.sceneFileData = data;
-	data.f_RegControllerInput = [this](const Pengin::InputData& data) { RegisterControllerInputUI(data); };
 	data.f_RegKeyboardInput = [this](const Pengin::InputData& data) { RegisterKeyboardInputUI(data); };
+	data.f_RegControllerInput = [this](const Pengin::InputData& data) { RegisterControllerInputUI(data); };
+
+	sceneData.sceneFileData = data;
 
 	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
 
 	auto ent = pScene->CreateEntity();
-	ent.AddComponent<TextComponent>("Lingua.otf", 56, "Press Enter to play");
+	ent.AddComponent<TextComponent>("Lingua.otf", 56, "Press spacebar to play");
 	ent.AddComponent<SpriteComponent>();
 }
 
@@ -154,7 +155,7 @@ void Pengo::GameManager::PlayGame()
 	if (!playing)
 	{
 		playing = true;
-		LoadLevel1();
+		Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("LoadLevel"));
 	}
 }
 
@@ -186,7 +187,7 @@ void Pengo::GameManager::RegisterKeyboardInputUI(const Pengin::InputData& inpDat
 	const auto& userIndex = std::get<0>(inpData);
 	assert(userIndex);
 
-	input.MapKeyboardAction(userIndex, KeyBoardKey::Enter, InputState::Pressed, std::make_shared<PengoPlayGame>(userIndex));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::SpaceBar, InputState::Pressed, std::make_shared<PengoPlayGame>(userIndex));
 }
 
 void Pengo::GameManager::RegisterControllerInputUI(const Pengin::InputData& inpData)

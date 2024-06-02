@@ -5,8 +5,10 @@
 
 #include "ECS.h"
 #include "AnimationComponent.h"
+#include "SceneManager.h"
 #include "SpriteComponent.h"
 
+#include "Entity.h"
 #include "GameTime.h"
 
 namespace Pengin
@@ -53,13 +55,17 @@ namespace Pengin
 		}
 	}
 
-	void AnimationSystem::OnSwitchAnimationEvent(const BaseEvent& event) noexcept
+	void AnimationSystem::OnSwitchAnimationEvent(const BaseEvent& event)
 	{
 		const auto& aniEv = static_cast<const SwitchAnimationEvent&>(event);
+		auto entity = Entity{ aniEv.GetEntityId(), SceneManager::GetInstance().GetActiveScene().get() };
 
-		assert(m_ECS.HasComponent<AnimationComponent>(aniEv.GetEntityId()));
+		assert(entity.HasComponent<AnimationComponent>());
 
-		auto& aniComp = m_ECS.GetComponent<AnimationComponent>(aniEv.GetEntityId());
+		auto& t = m_ECS.GetComponent<AnimationComponent>(aniEv.GetEntityId());
+		t;
+
+		auto& aniComp = entity.GetComponent<AnimationComponent>();
 
 		if (aniComp.currAnimationIdx != aniEv.NewAniIdx())
 		{
@@ -68,7 +74,7 @@ namespace Pengin
 			auto newSrcRect = aniComp.animations[aniComp.currAnimationIdx].frame0sourceRect;
 			newSrcRect.x += aniComp.currFrame * newSrcRect.width;
 
-			auto& spriteComp = m_ECS.GetComponent<SpriteComponent>(aniEv.GetEntityId());
+			auto& spriteComp = entity.GetComponent<SpriteComponent>();
 			spriteComp.sourceRect = newSrcRect;
 		}
 	}

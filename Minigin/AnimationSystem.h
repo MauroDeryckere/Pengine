@@ -2,20 +2,19 @@
 #define ANIMATIONSYSTEM
 
 #include "BaseSystem.h"
-#include "Observer.h"
+#include "EventManager.h"
 
 namespace Pengin
 {
 	class ECS;
-	class BaseEvent;
 
 	class AnimationSystem final : public BaseSystem
 	{
 	public:
 		AnimationSystem(ECS& ecs);
-		virtual ~AnimationSystem() override = default;
+		~AnimationSystem() = default;
 
-		virtual void Update() override;
+		void Update();
 
 		AnimationSystem(const AnimationSystem&) = delete;
 		AnimationSystem(AnimationSystem&&) = delete;
@@ -27,7 +26,7 @@ namespace Pengin
 
 		std::shared_ptr<Observer> m_pObserer;
 
-		void OnSwitchAnimationEvent(const BaseEvent& event) noexcept;
+		void OnSwitchAnimationEvent(const BaseEvent& event);
 	};
 }
 

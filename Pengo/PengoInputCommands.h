@@ -100,7 +100,7 @@ namespace Pengo
 	{
 	public:
 		PengoPlayGame(const Pengin::UserIndex& user) :
-			Pengin::InputCommand{ user, "PlayGame" }
+			Pengin::InputCommand{ user, "PengoPlayGame" }
 		{ }
 
 		virtual void Execute() override;

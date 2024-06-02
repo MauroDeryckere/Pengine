@@ -137,6 +137,7 @@ namespace Pengin
             {
                 return set[id];
             }
+
             throw std::out_of_range("Component not found for the given entity ID");
         }
 

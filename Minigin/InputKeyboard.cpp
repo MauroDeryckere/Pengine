@@ -128,7 +128,7 @@ namespace Pengin
 		{
 		case Pengin::KeyBoardKey::Backspace: return static_cast<unsigned>(VK_BACK);
 			case Pengin::KeyBoardKey::Tab: return static_cast<unsigned>(VK_TAB);
-			case Pengin::KeyBoardKey::Enter: return static_cast<unsigned>(VK_RETURN);
+			case Pengin::KeyBoardKey::Return: return static_cast<unsigned>(VK_RETURN);
 			case Pengin::KeyBoardKey::Shift: return static_cast<unsigned>(VK_SHIFT);
 			case Pengin::KeyBoardKey::LeftShift: return static_cast<unsigned>(VK_LSHIFT);
 			case Pengin::KeyBoardKey::RightShift: return static_cast<unsigned>(VK_RSHIFT);

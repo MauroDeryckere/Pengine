@@ -7,7 +7,6 @@
 #include <algorithm>
 
 #include "SerializationRegistry.h"
-
 #include "SwitchAnimationEvent.h"
 
 namespace Pengin
@@ -116,6 +115,8 @@ namespace Pengin
 		static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, const EntityId id, const std::unordered_map<std::string, std::vector<uint8_t>>& serializedFields, const std::unordered_map<GameUUID, EntityId>& entityMap [[maybe_unused]] )
 		{
 			auto& comp = ecs.AddComponent<AnimationComponent>(id);
+
+			std::cout << "deser animation comp" << "\n";
 
 			fieldSer.DeserializeField("AnimationData", comp.animations, serializedFields, entityMap);
 

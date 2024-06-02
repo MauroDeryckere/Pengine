@@ -68,10 +68,7 @@ void Load()
 
 void LoadPengo()  
 {
-	//Need to load a UI
-
 	Pengo::GameManager::GetInstance().LoadUI();
-	//Pengo::GameManager::GetInstance().LoadLevel1();
 }
 
 void LoadGamePlayScripting()
