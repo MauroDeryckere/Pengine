@@ -62,8 +62,8 @@ namespace Pengin
 
 		assert(entity.HasComponent<AnimationComponent>());
 
-		auto& t = m_ECS.GetComponent<AnimationComponent>(aniEv.GetEntityId());
-		t;
+		//auto& t = m_ECS.GetComponent<AnimationComponent>(aniEv.GetEntityId());
+		//t;
 
 		auto& aniComp = entity.GetComponent<AnimationComponent>();
 

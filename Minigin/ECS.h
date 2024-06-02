@@ -26,8 +26,8 @@ namespace Pengin
     {
     public:
         ECS() :
-            m_ComponentManager{},
-            m_EntityManager{ m_ComponentManager }
+            m_ComponentManager{ },
+            m_EntityManager{ }
         { }
 
         ~ECS() = default;

@@ -60,7 +60,7 @@ namespace Pengin
 
 		for (const auto& type : UniqueTypes::GetConstSet())
 		{
-			typeBitMap.insert({ type, bit });
+			typeBitMap.emplace(type, bit );
 			++bit;
 		}
 
