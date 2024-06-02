@@ -4,7 +4,7 @@
 #include <compare>
 #include <cstdint>
 #include <cassert>
-
+#include <random>
 #include <type_traits> // For std::is_floating_point_v
 
 namespace Pengin
@@ -72,6 +72,25 @@ namespace Pengin
 
 	namespace UtilFuncs
 	{
+		template <typename T>
+		[[nodiscard]] inline const T RandomNumber(const T min, const T max) noexcept
+		{
+			static_assert(std::is_arithmetic_v<T>, "T must be a numeric type");
+
+			thread_local static constinit std::mt19937 gen{ std::random_device{} };
+
+			if constexpr (std::is_integral_v<T>) 
+			{
+				std::uniform_int_distribution<T> dis(min, max);
+				return dis(gen);
+			}
+			else 
+			{
+				std::uniform_real_distribution<T> dis(min, max);
+				return dis(gen);
+			}
+		}
+
 		constexpr float EPSILON{ 0.001f };
 
 		template<typename T>
