@@ -146,7 +146,7 @@ void LoadDemo()
 		{
 			auto ent = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 1, 1, 14, 14 },
 				{ 8.f * SCALE + (col * 16.f * SCALE), 8.f * SCALE + (row * 16.f * SCALE), 0.f },
-				{},
+				{ },
 				{ SCALE, SCALE, 0.f });
 
 			auto& cellData = gridComp.At(row, col);

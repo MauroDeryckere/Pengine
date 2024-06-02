@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <unordered_map>
 #include "Singleton.h"
 
 #include "Texture2D.h"
@@ -29,6 +30,9 @@ namespace dae
 		~ResourceManager() = default;
 
 		std::string m_DataPath;
+
+		mutable std::unordered_map<std::string, std::shared_ptr<Texture2D>> m_Textures;
+		mutable std::unordered_map<std::string, std::shared_ptr<Font>> m_Fonts;
 	};
 }
 
