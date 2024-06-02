@@ -191,6 +191,7 @@ void Pengo::GameManager::RegisterKeyboardInputUI(const Pengin::InputData& inpDat
 
 void Pengo::GameManager::RegisterControllerInputUI(const Pengin::InputData& inpData)
 {
+	inpData;
 }
 
 void Pengo::GameManager::RegisterKeyboardInputLevel(const Pengin::InputData& inpData)
