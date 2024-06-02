@@ -11,6 +11,9 @@
 #include "Entity.h"
 #include "GameTime.h"
 
+#include <algorithm>
+#include <execution>
+
 namespace Pengin
 {
 	AnimationSystem::AnimationSystem(ECS& ecs):
@@ -25,34 +28,34 @@ namespace Pengin
 	{
 		const float elapsedSec = GameTime::GetInstance().ElapsedSec();
 		auto animationComps{ m_ECS.GetComponents<AnimationComponent>() };
-		
-		for (auto it{ animationComps.begin() }; auto& entity : animationComps)
-		{
-			if (entity.animations[entity.currAnimationIdx].frameDuration == 0.f)
+
+		std::for_each(std::execution::par_unseq, animationComps.begin(), animationComps.end(),
+			[this, &elapsedSec, &animationComps](AnimationComponent& entity)
 			{
-				++it;
-				continue;
-			}
+				if (entity.animations[entity.currAnimationIdx].frameDuration == 0.f)
+				{
+					return;
+				}
 
-			entity.frameTimer += elapsedSec;
+				entity.frameTimer += elapsedSec;
 
-			if (entity.frameTimer >= entity.animations[entity.currAnimationIdx].frameDuration)
-			{
-				++entity.currFrame %= entity.animations[entity.currAnimationIdx].frameCt;
+				if (entity.frameTimer >= entity.animations[entity.currAnimationIdx].frameDuration)
+				{
+					++entity.currFrame %= entity.animations[entity.currAnimationIdx].frameCt;
 
-				const auto id = animationComps.GetIdFromIterator(it);
-				auto& spriteComp = m_ECS.GetComponent<SpriteComponent>(id);
+					auto it = animationComps.begin() + std::distance(&*animationComps.begin(), &entity);
 
-				auto newSrcRect = entity.animations[entity.currAnimationIdx].frame0sourceRect;
-				newSrcRect.x += entity.currFrame * newSrcRect.width;
+					const auto id = animationComps.GetIdFromIterator(it);
+					auto& spriteComp = m_ECS.GetComponent<SpriteComponent>(id);
 
-				spriteComp.sourceRect = newSrcRect;
+					auto newSrcRect = entity.animations[entity.currAnimationIdx].frame0sourceRect;
+					newSrcRect.x += entity.currFrame * newSrcRect.width;
 
-				entity.frameTimer -= entity.animations[entity.currAnimationIdx].frameDuration;
-			}
+					spriteComp.sourceRect = newSrcRect;
 
-			++it;
-		}
+					entity.frameTimer -= entity.animations[entity.currAnimationIdx].frameDuration;
+				}
+			});
 	}
 
 	void AnimationSystem::OnSwitchAnimationEvent(const BaseEvent& event)
