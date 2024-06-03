@@ -8,7 +8,7 @@
 
 namespace Pengin
 {
-	Scene* SceneManager::CreateScene(const SceneData& sceneData, bool setAsActive) noexcept
+	Scene* SceneManager::CreateScene(const SceneData& sceneData, bool setAsActive, bool destroyActive) noexcept
 	{
 		m_Scenes.emplace_back(std::make_unique<Scene>(sceneData));
 
@@ -18,6 +18,13 @@ namespace Pengin
 		if (it == end(m_SceneName_IdMap))
 		{
 			m_SceneName_IdMap[sceneData.name] = m_Scenes.size() - 1;
+			
+			if (m_ActiveSceneIdx >= 0 && destroyActive)
+			{
+				DEBUG_OUT("Destroying scene: " << m_ActiveSceneIdx << "Name: " << m_Scenes[m_ActiveSceneIdx]->GetName());
+				m_SceneName_IdMap.erase(m_Scenes[m_ActiveSceneIdx]->GetName());
+				std::erase(m_Scenes, m_Scenes[m_ActiveSceneIdx]);
+			}
 
 			if (setAsActive)
 			{

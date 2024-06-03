@@ -15,7 +15,7 @@ namespace Pengin
 	class SceneManager final : public Pengin::Singleton<SceneManager>
 	{
 	public:
-		Scene* CreateScene(const SceneData& sceneData, bool setAsActive = true)  noexcept;
+		Scene* CreateScene(const SceneData& sceneData, bool setAsActive = true, bool destroyActive = true)  noexcept;
 
 		[[nodiscard]] Scene* GetActiveScene() noexcept 
 		{

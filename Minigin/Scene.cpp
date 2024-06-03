@@ -228,6 +228,11 @@ namespace Pengin
 	void Scene::SetPlayer(const UserIndex& userIdx, const GameUUID& uuid) noexcept
 	{
 		m_SceneData.SetPlayerUUID(userIdx, uuid);
+
+		if (const EntityId id{ GetEntityId(uuid) }; !m_Ecs.HasComponent<PlayerComponent>(id))
+		{
+			m_Ecs.AddComponent<PlayerComponent>(id).userIdx = userIdx;
+		}
 	}
 
 	void Scene::SetPlayer(const UserIndex& userIdx, const EntityId id) noexcept
