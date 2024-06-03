@@ -95,8 +95,8 @@ namespace Pengin
 
 		if (m_ActiveSceneIdx >= 0)
 		{
-			GetActiveScene()->m_Ecs.CleanUpDestroys(); //any component removes / entity destroys should happen here and not before an event or during the update.
-			GetActiveScene()->Update();
+			m_Scenes[m_ActiveSceneIdx]->m_Ecs.CleanUpDestroys(); //any component removes / entity destroys should happen here and not before an event or during the update.
+			m_Scenes[m_ActiveSceneIdx]->Update();
 		}
 	}
 
@@ -104,7 +104,7 @@ namespace Pengin
 	{
 		if (m_ActiveSceneIdx >= 0)
 		{
-			GetActiveScene()->FixedUpdate();
+			m_Scenes[m_ActiveSceneIdx]->FixedUpdate();
 		}
 	}
 
@@ -120,7 +120,7 @@ namespace Pengin
 	{
 		if (m_ActiveSceneIdx >= 0)
 		{
-			GetActiveScene()->RenderImGUI();
+			m_Scenes[m_ActiveSceneIdx]->RenderImGUI();
 		}
 	}
 }
