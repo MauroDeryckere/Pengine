@@ -163,7 +163,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="OreSystem.cpp" />
+    <ClCompile Include="MinerSystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FactoryComponent.h" />
+    <ClInclude Include="GSInputCommands.h" />
+    <ClInclude Include="LevelManager.h" />
+    <ClInclude Include="MinerComponent.h" />
+    <ClInclude Include="OreComponent.h" />
+    <ClInclude Include="OreSystem.h" />
+    <ClInclude Include="MinerSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

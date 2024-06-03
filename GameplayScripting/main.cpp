@@ -14,20 +14,10 @@
 #pragma warning (pop)
 #endif
 
-#include "SceneManager.h"
+#include "LevelManager.h"
 
-#include "Entity.h"
-#include "Scene.h"
-
-#include "InputCommands.h"
-#include "InputManager.h"
-
-#include "ServiceLocator.h"
-
-#include "DebugDrawSystem.h"
-
-void LoadGamePlayScripting();
 void Load();
+void LoadGamePlayScripting();
 
 int main(int, char* [])
 {
@@ -57,22 +47,11 @@ void Load()
 
 void LoadGamePlayScripting()
 {
-	//using namespace Pengin;
+	using namespace Pengin;
+	using namespace GS;
 
-	//SceneData sceneData{};
-	//sceneData.name = "Gameplay Scripting";
+	//Init
+	auto& l [[maybe_unused]] = LevelManager::GetInstance();
 
-	//auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
-
-	//auto& input = InputManager::GetInstance();
-	//const auto userIdx = input.RegisterUser(UserType::Keyboard);
-
-	//pScene->RegisterSystems([](SystemManager& sysManager, ECS& ecs)
-	//	{
-	//		sysManager.RegisterSystem<DebugDrawSystem>(std::make_shared<DebugDrawSystem>(ecs));
-	//	}
-	//);
-
-	//auto player = pScene->CreateEntity({ 20, 20, 0 }, {}, { 1,1,1 }, userIdx);
-	//player.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,255,255,255 }, uint16_t{ 100 }, uint16_t{ 100 }, true);
+	EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("LoadRestart"));
 }
