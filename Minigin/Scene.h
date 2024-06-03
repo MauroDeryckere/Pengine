@@ -11,6 +11,9 @@
 #include "SystemManager.h"
 #include "AchievementSystem.h"
 
+#include "SceneInfoPanel.h"
+#include "InputInfoPanel.h"
+
 #include <memory>
 #include <filesystem>
 
@@ -18,12 +21,29 @@ namespace Pengin
 {
 	class Entity;
 
-	class SceneInfoPanel;
-	class InputInfoPanel;
-
 	class Scene final 
 	{
 	public:
+		Scene(const SceneData& sceneData) :
+			m_SceneData{ sceneData },
+			m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>(this) },
+			m_InputInfoPanel{ std::make_unique<InputInfoPanel>() },
+			m_SysManager{}
+		{
+			std::cout << "scene cinstruct\n";
+
+			if (!m_SceneData.sceneFileData.sceneLoadPath.empty())
+			{
+				if (!DeserializeScene())
+				{
+					throw std::runtime_error("Failed to deserialize scene at: " + m_SceneData.sceneFileData.sceneLoadPath.string());
+				}
+			}
+
+			RegisterEngineSystems();
+		}
+
+
 		~Scene();
 		void Start();
 
@@ -75,8 +95,7 @@ namespace Pengin
 
 	private:
 		friend class SceneManager;
-		Scene(const SceneData& sceneData);
-
+		
 		friend class Entity; //to allow accessing the ecs
 		ECS m_Ecs{};
 		std::unordered_map<GameUUID, EntityId> m_UUID_EntityIdMap{};

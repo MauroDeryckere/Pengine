@@ -28,9 +28,14 @@ namespace Pengin
         ECS() :
             m_ComponentManager{ },
             m_EntityManager{ }
-        { }
+        { 
+            std::cout << "ecs construct\n";
+        }
 
-        ~ECS() = default;
+        ~ECS()
+        {
+            std::cout << "ecs destroy\n";
+        }
 
         void CleanUpDestroys() noexcept
         {

@@ -148,6 +148,18 @@ namespace Pengin
 
 			fieldSer.DeserializeField("CellWidth", comp.cellWidth, serializedFields, entityMap);
 			fieldSer.DeserializeField("CellHeight", comp.cellHeight, serializedFields, entityMap);
+
+			for (auto idx = 0; auto& cell : comp.cells)
+			{
+				std::cout << static_cast<int>(cell.type) << ", ";
+
+				++idx;
+
+				if (idx%13 ==0)
+				{
+					std::cout << "\n";
+				}
+			}
 		}
 	};
 

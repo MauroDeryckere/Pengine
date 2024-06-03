@@ -61,12 +61,9 @@ namespace Pengin
 	void AnimationSystem::OnSwitchAnimationEvent(const BaseEvent& event)
 	{
 		const auto& aniEv = static_cast<const SwitchAnimationEvent&>(event);
-		auto entity = Entity{ aniEv.GetEntityId(), SceneManager::GetInstance().GetActiveScene().get() };
+		auto entity = Entity{ aniEv.GetEntityId(), SceneManager::GetInstance().GetActiveScene() };
 
 		assert(entity.HasComponent<AnimationComponent>());
-
-		//auto& t = m_ECS.GetComponent<AnimationComponent>(aniEv.GetEntityId());
-		//t;
 		if (entity.HasComponent<AnimationComponent>())
 		{
 			auto& aniComp = entity.GetComponent<AnimationComponent>();

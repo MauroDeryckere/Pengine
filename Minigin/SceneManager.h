@@ -15,11 +15,20 @@ namespace Pengin
 	class SceneManager final : public Pengin::Singleton<SceneManager>
 	{
 	public:
-		std::shared_ptr<Scene> CreateScene(const SceneData& sceneData, bool swapToNext = true)  noexcept;
+		Scene* CreateScene(const SceneData& sceneData, bool setAsActive = true)  noexcept;
 
-		[[nodiscard]] std::shared_ptr<Scene> GetActiveScene() noexcept { return m_Scenes[m_ActiveSceneIdx]; }
+		[[nodiscard]] Scene* GetActiveScene() noexcept 
+		{
+			if (m_ActiveSceneIdx >= 0)
+			{
+				return m_Scenes[m_ActiveSceneIdx].get(); 
+			}
 
-		[[nodiscard]] std::shared_ptr<Scene> GetScene(const std::string& sceneName) noexcept;
+			return nullptr;
+		}
+
+		[[nodiscard]] Scene* GetScene(const std::string& sceneName) noexcept;
+
 		void SetSceneActive(const std::string& sceneName, bool destroyActive = true) noexcept;
 
 		void DestroyScene(const std::string& sceneName) noexcept;
@@ -42,11 +51,10 @@ namespace Pengin
 		SceneManager() = default;
 		~SceneManager() = default;
 
-		std::vector<std::shared_ptr<Scene>> m_Scenes;
-		std::unordered_map<std::string, size_t> m_SceneName_IdMap;
+		std::vector<std::unique_ptr<Scene>> m_Scenes{ };
+		std::unordered_map<std::string, size_t> m_SceneName_IdMap{ };
 
-		size_t m_ActiveSceneIdx{ 0 };
-		uint32_t m_SceneCounter{ 0 };
+		int32_t m_ActiveSceneIdx{ -1 };
 	};
 }
 

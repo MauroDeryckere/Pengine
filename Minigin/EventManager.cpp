@@ -37,7 +37,7 @@ namespace Pengin
 	
 	void EventManager::ProcessEvent(BaseEvent* event) noexcept
 	{
-		const auto eventName{ event->GetEventName() };
+		const auto& eventName{ event->GetEventName() };
 
 		auto it{ m_EventCallbacks.find(eventName) };
 

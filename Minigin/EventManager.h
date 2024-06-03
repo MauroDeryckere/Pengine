@@ -30,6 +30,8 @@ namespace Pengin
 
 		void EraseEvent(const std::string& eventName) noexcept;
 
+		size_t Size() const noexcept { return m_EventQueue.size(); }
+
 		EventManager(const EventManager&) = delete;
 		EventManager(EventManager&&) = delete;
 		EventManager& operator=(const EventManager&) = delete;

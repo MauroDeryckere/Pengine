@@ -106,8 +106,8 @@ namespace Pengo
 		auto activeScene = SceneManager::GetInstance().GetActiveScene();
 		auto player = activeScene->GetPlayer(GetUserIndex());
 
-		const auto entityA{ Pengin::Entity{ collEvent.GetEntityA(), activeScene.get()} };
-		const auto entityB{ Pengin::Entity{ collEvent.GetEntityB(), activeScene.get()} };
+		const auto entityA{ Pengin::Entity{ collEvent.GetEntityA(), activeScene} };
+		const auto entityB{ Pengin::Entity{ collEvent.GetEntityB(), activeScene} };
 
 		if (player.GetEntityId() == entityA.GetEntityId()
 			&& entityA.HasComponent<PengoComponent>() && entityB.HasComponent<SnobeeComponent>())

@@ -54,7 +54,7 @@ std::unique_ptr<Pengin::State> Pengo::SnobeeWalkState::Update()
 	auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
 	auto pGridSystem = pActiveScene->GetSystem<GridSystem>();
 
-	Entity snobee{ GetEntityId(), pActiveScene.get() };
+	Entity snobee{ GetEntityId(), pActiveScene };
 	const EntityId gridId = snobee.GetComponent<OnGridTag>().gridId;
 
 	const auto vel = m_Direction * snobee.GetComponent<SnobeeComponent>().movementSpeed;
@@ -95,7 +95,7 @@ std::unique_ptr<Pengin::State> Pengo::SnobeeWalkState::Update()
 			if (chance == 0)
 			{
 				std::cout << "breaking\n";
-				Entity block{ predCellData.entity, pActiveScene.get() };
+				Entity block{ predCellData.entity, pActiveScene };
 
 				EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(
 					predCellData.entity,
@@ -128,7 +128,7 @@ glm::vec2 Pengo::SnobeeWalkState::CalcDirection()
 
 	auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
 
-	Entity snobee{ GetEntityId(), pActiveScene.get()};
+	Entity snobee{ GetEntityId(), pActiveScene };
 	const EntityId gridId = snobee.GetComponent<OnGridTag>().gridId;
 
 	auto pGridSystem = pActiveScene->GetSystem<GridSystem>();

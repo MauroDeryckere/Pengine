@@ -62,6 +62,23 @@ namespace Pengo
 		PengoPlayGame(PengoPlayGame&&) noexcept = delete;
 		PengoPlayGame& operator=(PengoPlayGame&&) noexcept = delete;
 	};
+
+	class PengoSkipLevel final : public Pengin::InputCommand
+	{
+	public:
+		PengoSkipLevel(const Pengin::UserIndex& user) :
+			Pengin::InputCommand{ user, "PengoSkipLevel" }
+		{ }
+
+		void Execute();
+
+		virtual ~PengoSkipLevel() override = default;
+
+		PengoSkipLevel(const PengoSkipLevel&) = delete;
+		PengoSkipLevel& operator=(const PengoSkipLevel&) = delete;
+		PengoSkipLevel(PengoSkipLevel&&) noexcept = delete;
+		PengoSkipLevel& operator=(PengoSkipLevel&&) noexcept = delete;
+	};
 }
 
 #endif

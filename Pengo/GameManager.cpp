@@ -50,7 +50,7 @@ void Pengo::GameManager::LoadLevel1()
 
 	//Most of thesceneData is actually read from a file if you choose a loadPath, just typing it here too for readability
 	SceneData sceneData{};
-	sceneData.name = "Pengo Scene";
+	sceneData.name = "Pengo level1";
 
 	SceneFileData data{};
 	data.sceneSavePath = "";
@@ -64,6 +64,7 @@ void Pengo::GameManager::LoadLevel1()
 
 	sceneData.sceneFileData = data;
 
+	SceneManager::GetInstance().DestroyScene("Pengo UI");
 	auto pScene = SceneManager::GetInstance().CreateScene(sceneData, true);
 
 	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs)
@@ -75,7 +76,7 @@ void Pengo::GameManager::LoadLevel1()
 			sysManager.RegisterSystem<Pengo::BlockSystem>(std::make_shared<Pengo::BlockSystem>(ecs));
 			sysManager.RegisterSystem<Pengo::WallSystem>(std::make_shared<Pengo::WallSystem>(ecs));
 
-			sysManager.RegisterSystem<Pengo::UIDisplaySystem>(std::make_shared<Pengo::UIDisplaySystem>(ecs, pScene.get()));
+			sysManager.RegisterSystem<Pengo::UIDisplaySystem>(std::make_shared<Pengo::UIDisplaySystem>(ecs, pScene));
 		});
 
 
@@ -153,14 +154,279 @@ void Pengo::GameManager::LoadLevel1()
 			++row;
 		}
 	}
+
+	for (auto idx = 0; auto & cell : gridComp.cells)
+	{
+		std::cout << static_cast<int>(cell.type) << ", ";
+
+		++idx;
+
+		if (idx % 13 == 0)
+		{
+			std::cout << "\n";
+		}
+	}
+
+	auto levelText = pScene->CreateEntity({ 500.f, 0.f, 0.f });
+	levelText.AddComponent<TextComponent>("Lingua.otf", 26, "L1");
+	levelText.AddComponent<SpriteComponent>();
 }
 
 void Pengo::GameManager::LoadLevel2()
 {
+	using namespace Pengin;
+
+	//Most of thesceneData is actually read from a file if you choose a loadPath, just typing it here too for readability
+	SceneData sceneData{};
+	sceneData.name = "Pengo level2";
+
+	SceneFileData data{};
+	data.sceneSavePath = "";
+	data.saveSceneOnDestroy = false;
+	data.sceneLoadPath = "../Data/PengoSaveBackup.json";
+
+	data.inputFilePath = "../Data/InputTest.json";
+	data.f_RegControllerInput = [this](const Pengin::InputData& data) { RegisterControllerInputLevel(data); };
+	data.f_RegKeyboardInput = [this](const Pengin::InputData& data) { RegisterKeyboardInputLevel(data); };
+	data.keepPrevInput = false; //boolean to override any funcs
+
+	sceneData.sceneFileData = data;
+	SceneManager::GetInstance().DestroyScene("Pengo level1");
+	auto pScene = SceneManager::GetInstance().CreateScene(sceneData, true);
+
+	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs)
+		{
+			sysManager.RegisterSystem<Pengo::LevelSystem>(std::make_shared<Pengo::LevelSystem>(ecs));
+
+			sysManager.RegisterSystem<Pengo::PlayerSystem>(std::make_shared<Pengo::PlayerSystem>(ecs));
+			sysManager.RegisterSystem<Pengo::EnemySystem>(std::make_shared<Pengo::EnemySystem>(ecs));
+			sysManager.RegisterSystem<Pengo::BlockSystem>(std::make_shared<Pengo::BlockSystem>(ecs));
+			sysManager.RegisterSystem<Pengo::WallSystem>(std::make_shared<Pengo::WallSystem>(ecs));
+
+			sysManager.RegisterSystem<Pengo::UIDisplaySystem>(std::make_shared<Pengo::UIDisplaySystem>(ecs, pScene));
+		});
+
+
+	auto grid = pScene->GetEntity(GameUUID{ std::string{"cf0f18cb-7425-460b-9221-999f8160d448"} });
+	auto& gridComp = grid.GetComponent<GridComponent>();
+
+	std::vector<uint8_t> cells
+	{
+		0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+		0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0,
+		0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+		0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0,
+		0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0,
+		0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0,
+		0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0,
+		0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0,
+		0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+		0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0,
+		0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+		0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0,
+		0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+		0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0,
+		0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0
+	};
+
+	constexpr float SCALE{ 3.f };
+
+
+	uint16_t row = 0;
+	uint16_t col = 0;
+
+	for (int idx{ 0 }; const auto & cell : cells)
+	{
+		if (cell == uint8_t{ 1 })
+		{
+			auto ent = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 1, 1, 14, 14 },
+				{ 8.f * SCALE + (col * 16.f * SCALE), 72.f + 8.f * SCALE + (row * 16.f * SCALE), 0.f },
+				{ },
+				{ SCALE, SCALE, 0.f });
+
+			auto& cellData = gridComp.At(row, col);
+			cellData.type = static_cast<uint8_t>(Pengo::PengoCellType::Block);
+			cellData.entity = ent.GetEntityId();
+
+			ent.AddComponent<TagComponent>("Block Entity");
+			ent.AddComponent<Pengo::BlockComponent>();
+			ent.GetComponent<BodyComponent>().collType = CollType::Static;
+
+			ent.AddComponent<SpriteComponent>("PengoFieldAndBlocks.png", UtilStructs::Rectu16{ 708, 0, 16, 16 });
+
+			std::vector<AnimationData> aniData;
+
+			AnimationData ani1;
+			ani1.frame0sourceRect = UtilStructs::Rectu16{ 708, 0, 16, 16 };
+			ani1.frameDuration = 0.f;
+			ani1.frameCt = 1;
+
+			AnimationData ani2;
+			ani2.frame0sourceRect = UtilStructs::Rectu16{ 708, 48, 16, 16 };
+			ani2.frameDuration = 0.125f;
+			ani2.frameCt = 8;
+
+			aniData.emplace_back(ani1);
+			aniData.emplace_back(ani2);
+
+			ent.AddComponent<AnimationComponent>(aniData);
+		}
+
+		++idx;
+		++col;
+
+		if (idx % 13 == 0)
+		{
+			col = 0;
+			++row;
+		}
+	}
+
+	for (auto idx = 0; auto & cell : gridComp.cells)
+	{
+		std::cout << static_cast<int>(cell.type) << ", ";
+
+		++idx;
+
+		if (idx % 13 == 0)
+		{
+			std::cout << "\n";
+		}
+	}
+
+
+	for (auto idx = 0; auto & cell : gridComp.cells)
+	{
+		std::cout << cell.entity << ", ";
+
+		++idx;
+
+		if (idx % 13 == 0)
+		{
+			std::cout << "\n";
+		}
+	}
+
+
+	auto levelText = pScene->CreateEntity({ 500.f, 0.f, 0.f });
+	levelText.AddComponent<TextComponent>("Lingua.otf", 26, "L2");
+	levelText.AddComponent<SpriteComponent>();
 }
 
 void Pengo::GameManager::LoadLevel3()
 {
+	using namespace Pengin;
+
+	//Most of thesceneData is actually read from a file if you choose a loadPath, just typing it here too for readability
+	SceneData sceneData{};
+	sceneData.name = "Pengo level3";
+
+	SceneFileData data{};
+	data.sceneSavePath = "";
+	data.saveSceneOnDestroy = false;
+	data.sceneLoadPath = "../Data/PengoSaveBackup.json";
+
+	data.inputFilePath = "../Data/InputTest.json";
+	data.f_RegControllerInput = [this](const Pengin::InputData& data) { RegisterControllerInputLevel(data); };
+	data.f_RegKeyboardInput = [this](const Pengin::InputData& data) { RegisterKeyboardInputLevel(data); };
+	data.keepPrevInput = false; //boolean to override any funcs
+
+	sceneData.sceneFileData = data;
+
+	SceneManager::GetInstance().DestroyScene("Pengo level2");
+	auto pScene = SceneManager::GetInstance().CreateScene(sceneData, true);
+
+	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs)
+		{
+			sysManager.RegisterSystem<Pengo::LevelSystem>(std::make_shared<Pengo::LevelSystem>(ecs));
+
+			sysManager.RegisterSystem<Pengo::PlayerSystem>(std::make_shared<Pengo::PlayerSystem>(ecs));
+			sysManager.RegisterSystem<Pengo::EnemySystem>(std::make_shared<Pengo::EnemySystem>(ecs));
+			sysManager.RegisterSystem<Pengo::BlockSystem>(std::make_shared<Pengo::BlockSystem>(ecs));
+			sysManager.RegisterSystem<Pengo::WallSystem>(std::make_shared<Pengo::WallSystem>(ecs));
+
+			sysManager.RegisterSystem<Pengo::UIDisplaySystem>(std::make_shared<Pengo::UIDisplaySystem>(ecs, pScene));
+		});
+
+
+	auto grid = pScene->GetEntity(GameUUID{ std::string{"cf0f18cb-7425-460b-9221-999f8160d448"} });
+	auto& gridComp = grid.GetComponent<GridComponent>();
+
+	std::vector<uint8_t> cells
+	{
+		0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+		0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0,
+		0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+		0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0,
+		0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0,
+		0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0,
+		0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0,
+		0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0,
+		0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+		0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0,
+		0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+		0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0,
+		0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+		0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0,
+		0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0
+	};
+
+	constexpr float SCALE{ 3.f };
+
+
+	uint16_t row = 0;
+	uint16_t col = 0;
+
+	for (int idx{ 0 }; const auto & cell : cells)
+	{
+		if (cell == uint8_t{ 1 })
+		{
+			auto ent = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 1, 1, 14, 14 },
+				{ 8.f * SCALE + (col * 16.f * SCALE), 72.f + 8.f * SCALE + (row * 16.f * SCALE), 0.f },
+				{ },
+				{ SCALE, SCALE, 0.f });
+
+			auto& cellData = gridComp.At(row, col);
+			cellData.type = static_cast<uint8_t>(Pengo::PengoCellType::Block);
+			cellData.entity = ent.GetEntityId();
+
+			ent.AddComponent<TagComponent>("Block Entity");
+			ent.AddComponent<Pengo::BlockComponent>();
+			ent.GetComponent<BodyComponent>().collType = CollType::Static;
+
+			ent.AddComponent<SpriteComponent>("PengoFieldAndBlocks.png", UtilStructs::Rectu16{ 708, 0, 16, 16 });
+
+			std::vector<AnimationData> aniData;
+
+			AnimationData ani1;
+			ani1.frame0sourceRect = UtilStructs::Rectu16{ 708, 0, 16, 16 };
+			ani1.frameDuration = 0.f;
+			ani1.frameCt = 1;
+
+			AnimationData ani2;
+			ani2.frame0sourceRect = UtilStructs::Rectu16{ 708, 48, 16, 16 };
+			ani2.frameDuration = 0.125f;
+			ani2.frameCt = 8;
+
+			aniData.emplace_back(ani1);
+			aniData.emplace_back(ani2);
+
+			ent.AddComponent<AnimationComponent>(aniData);
+		}
+
+		++idx;
+		++col;
+
+		if (idx % 13 == 0)
+		{
+			col = 0;
+			++row;
+		}
+	}
+
+	auto levelText = pScene->CreateEntity({ 500.f, 0.f, 0.f });
+	levelText.AddComponent<TextComponent>("Lingua.otf", 26, "L3");
+	levelText.AddComponent<SpriteComponent>();
 }
 
 void Pengo::GameManager::LoadNextLevel()
@@ -181,7 +447,7 @@ void Pengo::GameManager::LoadNextLevel()
 	}
 	case 2:
 	{
-		LoadLevel3();
+		//LoadLevel3();
 		m_CurrLevel = 3;
 		break;
 	}
@@ -270,6 +536,7 @@ void Pengo::GameManager::RegisterKeyboardInputLevel(const Pengin::InputData& inp
 	ServiceLocator::GetSoundSystem().LoadSound(data);
 
 	input.MapKeyboardAction(userIndex, KeyBoardKey::B, InputState::DownThisFrame, std::make_shared<MakeSound>(userIndex, data));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::X, InputState::DownThisFrame, std::make_shared<PengoSkipLevel>(userIndex));
 
 	auto a1 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::T, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "T down"));
 	auto a2 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::Y, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "Y down"));

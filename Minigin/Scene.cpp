@@ -25,27 +25,8 @@
 #include "GameTime.h"
 #include "ServiceLocator.h"
 
-#include "SceneInfoPanel.h"
-#include "InputInfoPanel.h"
-
 namespace Pengin
 {
-	Scene::Scene(const SceneData& sceneData) :
-		m_SceneData{ sceneData },
-		m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>(this) },
-		m_InputInfoPanel{ std::make_unique<InputInfoPanel>() } 
-	{
-		if (!m_SceneData.sceneFileData.sceneLoadPath.empty())
-		{
-			if (!DeserializeScene())
-			{
-				throw std::runtime_error("Failed to deserialize scene at: " + m_SceneData.sceneFileData.sceneLoadPath.string());
-			}
-		}
-
-		RegisterEngineSystems();
-	}
-
 	void Scene::RegisterEngineSystems()
 	{
 		m_SysManager.RegisterSystem<FPSSystem>(std::make_shared<FPSSystem>(m_Ecs));
@@ -61,6 +42,8 @@ namespace Pengin
 
 	Scene::~Scene()
 	{
+		std::cout << "\n\n\nscene destroy\n\n\n";
+
 		if (m_SceneData.sceneFileData.saveSceneOnDestroy && !m_SceneData.sceneFileData.sceneSavePath.empty())
 		{
 			DEBUG_OUT("Saving scene " << m_SceneData.name);

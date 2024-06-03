@@ -8,9 +8,40 @@
 
 namespace Pengin
 {
-	std::shared_ptr<Scene> SceneManager::GetScene(const std::string& sceneName) noexcept
+	Scene* SceneManager::CreateScene(const SceneData& sceneData, bool setAsActive) noexcept
 	{
-		return m_Scenes[m_SceneName_IdMap.at(sceneName)];
+		m_Scenes.emplace_back(std::make_unique<Scene>(sceneData));
+
+		auto it{ m_SceneName_IdMap.find(sceneData.name) };
+		assert(it == end(m_SceneName_IdMap) && "Can't have 2 scenes with same name.");
+
+		if (it == end(m_SceneName_IdMap))
+		{
+			m_SceneName_IdMap[sceneData.name] = m_Scenes.size() - 1;
+
+			if (setAsActive)
+			{
+				m_ActiveSceneIdx = static_cast<int32_t>(m_Scenes.size() - 1);
+				m_Scenes[m_ActiveSceneIdx]->Start();
+			}
+
+			return m_Scenes.back().get();
+		}
+
+		return nullptr;
+	}
+
+	Scene* SceneManager::GetScene(const std::string& sceneName) noexcept
+	{
+		auto it{ m_SceneName_IdMap.find(sceneName) };
+		assert(it == end(m_SceneName_IdMap) && "Scenename not found in map");
+
+		if (it != end(m_SceneName_IdMap))
+		{
+			return m_Scenes[it->second].get();
+		}
+
+		return nullptr;
 	}
 
 	void SceneManager::SetSceneActive(const std::string& sceneName, bool destroyActive) noexcept
@@ -23,7 +54,7 @@ namespace Pengin
 			return;
 		}
 
-		const auto idx = (*it).second;;
+		const auto idx{ (*it).second };
 
 		if (destroyActive)
 		{
@@ -32,7 +63,7 @@ namespace Pengin
 			std::erase(m_Scenes, m_Scenes[m_ActiveSceneIdx]);
 		}
 
-		m_ActiveSceneIdx = idx;
+		m_ActiveSceneIdx = static_cast<int32_t>(idx);
 		m_Scenes[idx]->Start();
 	}
 
@@ -47,33 +78,22 @@ namespace Pengin
 		}
 
 		DEBUG_OUT("Destroying scene: " << sceneName);
+
+		if ((*it).second == m_ActiveSceneIdx)
+		{
+			m_ActiveSceneIdx = -1;
+		}
+
 		std::erase(m_Scenes, m_Scenes[(*it).second]);
 		m_SceneName_IdMap.erase(it);
 	}
 
-	bool SceneManager::SwitchToNextScene() noexcept
-	{
-		++m_ActiveSceneIdx;
-
-		m_SceneName_IdMap.erase(m_Scenes[m_ActiveSceneIdx - 1]->GetName());
-		std::erase(m_Scenes, m_Scenes[m_ActiveSceneIdx - 1]);
-
-		if (m_ActiveSceneIdx >= m_SceneCounter)
-		{
-			DEBUG_OUT("Can't switch to next scene, last scene reached in scene vector.");
-			return false;
-		}
-
-
-		m_Scenes[m_ActiveSceneIdx]->Start();
-		return true;
-	}
 	void SceneManager::Update()
 	{
 		EventManager::GetInstance().ProcessEventQueue();
 		ServiceLocator::GetSoundSystem().Update();
 
-		if (m_SceneCounter > 0)
+		if (m_ActiveSceneIdx >= 0)
 		{
 			GetActiveScene()->m_Ecs.CleanUpDestroys(); //any component removes / entity destroys should happen here and not before an event or during the update.
 			GetActiveScene()->Update();
@@ -82,7 +102,7 @@ namespace Pengin
 
 	void SceneManager::FixedUpdate()
 	{
-		if (m_SceneCounter > 0)
+		if (m_ActiveSceneIdx >= 0)
 		{
 			GetActiveScene()->FixedUpdate();
 		}
@@ -90,7 +110,7 @@ namespace Pengin
 
 	void SceneManager::Render() const
 	{
-		if (m_SceneCounter > 0)
+		if (m_ActiveSceneIdx >= 0)
 		{
 			m_Scenes[m_ActiveSceneIdx]->Render();
 		}
@@ -98,29 +118,9 @@ namespace Pengin
 
 	void SceneManager::RenderImGUI()
 	{
-		if (m_SceneCounter > 0)
+		if (m_ActiveSceneIdx >= 0)
 		{
 			GetActiveScene()->RenderImGUI();
 		}
-	}
-
-	std::shared_ptr<Scene> SceneManager::CreateScene(const SceneData& sceneData, bool swapToNext) noexcept
-	{
-		const auto& scene = std::shared_ptr<Scene>(new Scene{ sceneData });
-		m_Scenes.emplace_back(scene);
-
-		auto it = m_SceneName_IdMap.find(sceneData.name);
-		assert(it == end(m_SceneName_IdMap) && "Don't have 2 scenes with same name.");
-
-		++m_SceneCounter;
-		m_SceneName_IdMap.insert({ sceneData.name, m_SceneCounter });
-
-		if (swapToNext)
-		{
-			m_ActiveSceneIdx = m_SceneCounter - 1;
-			m_Scenes[m_ActiveSceneIdx]->Start();
-		}
-
-		return scene;
 	}
 }

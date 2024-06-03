@@ -61,22 +61,21 @@ void Pengo::BlockSystem::OnCollision(const Pengin::BaseEvent& event)
 	if (m_ECS.HasComponent<BlockComponent>(entB) && m_ECS.HasComponent<BlockComponent>(entA))
 	{
 		auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
+
 		GridSystem* pGridSys = pActiveScene->GetSystem<GridSystem>();
 		assert(pGridSys);
 
 		Entity movingBlock
 		{ 
 			collEv.GetCollTypeA() == CollType::Dynamic ? entA : entB, 
-			pActiveScene.get() 
+			pActiveScene
 		};
 
 		Entity staticBlock
 		{
 			collEv.GetCollTypeA() == CollType::Static ? entA : entB,
-			pActiveScene.get()
+			pActiveScene
 		};
-
-		movingBlock.GetComponent<BodyComponent>().collType = CollType::Static;
 
 		auto& dynBlockComp = movingBlock.GetComponent<BlockComponent>();
 
@@ -90,19 +89,19 @@ void Pengo::BlockSystem::OnCollision(const Pengin::BaseEvent& event)
 		auto& cellData = pGridSys->GetCellData(gridTag.gridId, 
 											   static_cast<uint16_t>(staticBlockCoords.first - dynBlockComp.dir.y), 
 											   static_cast<uint16_t>(staticBlockCoords.second - dynBlockComp.dir.x));
-
+		
 		assert(cellData.entity == NULL_ENTITY_ID);
-
-		movingBlock.SetLocalPosition({ pos.x, pos.y, 0.f });
-		movingBlock.SetWorldPosition({ pos.x, pos.y, 0.f });
-
+		
 		dynBlockComp.dir = {};
 		dynBlockComp.blockState = BlockComponent::BlockState::Still;
+
+		movingBlock.SetLocalPosition({ pos.x, pos.y, 0.f });
 
 		cellData.type = static_cast<uint8_t>(PengoCellType::Block);
 		cellData.entity = movingBlock.GetEntityId();
 
 		movingBlock.RemoveComponent<OnGridTag>();
+		movingBlock.GetComponent<BodyComponent>().collType = CollType::Static;
 
 		return;
 	}
@@ -135,7 +134,7 @@ void Pengo::BlockSystem::OnCollision(const Pengin::BaseEvent& event)
 	Entity block
 	{
 		blockEntity,
-		pActiveScene.get()
+		pActiveScene
 	};
 
 	const auto& gridTag = m_ECS.GetComponent<OnGridTag>(blockEntity);
