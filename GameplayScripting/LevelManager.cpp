@@ -31,7 +31,7 @@ void GS::LevelManager::LoadLevel()
 	pScene->RegisterSystems([](SystemManager& sysManager, ECS& ecs)
 		{
 			sysManager.RegisterSystem<DebugDrawSystem>(std::make_shared<DebugDrawSystem>(ecs));
-			sysManager.RegisterSystem<FactorySystem>(std::make_shared<MinerSystem>(ecs));
+			sysManager.RegisterSystem<FactorySystem>(std::make_shared<FactorySystem>(ecs));
 			sysManager.RegisterSystem<MinerSystem>(std::make_shared<MinerSystem>(ecs));
 			sysManager.RegisterSystem<OreSytem>(std::make_shared<OreSytem>(ecs));
 		}
