@@ -155,18 +155,6 @@ void Pengo::GameManager::LoadLevel1()
 		}
 	}
 
-	for (auto idx = 0; auto & cell : gridComp.cells)
-	{
-		std::cout << static_cast<int>(cell.type) << ", ";
-
-		++idx;
-
-		if (idx % 13 == 0)
-		{
-			std::cout << "\n";
-		}
-	}
-
 	auto levelText = pScene->CreateEntity({ 500.f, 0.f, 0.f });
 	levelText.AddComponent<TextComponent>("Lingua.otf", 26, "L1");
 	levelText.AddComponent<SpriteComponent>();
@@ -281,32 +269,6 @@ void Pengo::GameManager::LoadLevel2()
 			++row;
 		}
 	}
-
-	for (auto idx = 0; auto & cell : gridComp.cells)
-	{
-		std::cout << static_cast<int>(cell.type) << ", ";
-
-		++idx;
-
-		if (idx % 13 == 0)
-		{
-			std::cout << "\n";
-		}
-	}
-
-
-	for (auto idx = 0; auto & cell : gridComp.cells)
-	{
-		std::cout << cell.entity << ", ";
-
-		++idx;
-
-		if (idx % 13 == 0)
-		{
-			std::cout << "\n";
-		}
-	}
-
 
 	auto levelText = pScene->CreateEntity({ 500.f, 0.f, 0.f });
 	levelText.AddComponent<TextComponent>("Lingua.otf", 26, "L2");

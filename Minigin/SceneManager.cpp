@@ -79,7 +79,7 @@ namespace Pengin
 
 		DEBUG_OUT("Destroying scene: " << sceneName);
 
-		if ((*it).second == m_ActiveSceneIdx)
+		if (static_cast<int32_t>((*it).second) == m_ActiveSceneIdx)
 		{
 			m_ActiveSceneIdx = -1;
 		}

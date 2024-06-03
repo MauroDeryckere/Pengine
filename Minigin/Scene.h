@@ -30,8 +30,6 @@ namespace Pengin
 			m_InputInfoPanel{ std::make_unique<InputInfoPanel>() },
 			m_SysManager{}
 		{
-			std::cout << "scene cinstruct\n";
-
 			if (!m_SceneData.sceneFileData.sceneLoadPath.empty())
 			{
 				if (!DeserializeScene())

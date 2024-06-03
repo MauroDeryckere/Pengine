@@ -28,10 +28,8 @@ namespace Pengo
 
 		{ 
 			m_pObserver->RegisterForEvent(m_pObserver, "PlayGame", [this](const Pengin::BaseEvent&) { LoadNextLevel(); });
-			m_pObserver->RegisterForEvent(m_pObserver, "NextLevel", [this](const Pengin::BaseEvent&) { Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("LoadNextLevel"));
-			std::cout << "event queue size: " << Pengin::EventManager::GetInstance().Size() << "\n"; });
-			m_pObserver->RegisterForEvent(m_pObserver, "LoadNextLevel", [this](const Pengin::BaseEvent&) { LoadNextLevel();
-			std::cout << "event queue size: " << Pengin::EventManager::GetInstance().Size() << "\n"; });
+			m_pObserver->RegisterForEvent(m_pObserver, "NextLevel", [this](const Pengin::BaseEvent&) { Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("LoadNextLevel")); });
+			m_pObserver->RegisterForEvent(m_pObserver, "LoadNextLevel", [this](const Pengin::BaseEvent&) { LoadNextLevel(); });
 		}
 
 		~GameManager() = default;

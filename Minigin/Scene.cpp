@@ -42,8 +42,6 @@ namespace Pengin
 
 	Scene::~Scene()
 	{
-		std::cout << "\n\n\nscene destroy\n\n\n";
-
 		if (m_SceneData.sceneFileData.saveSceneOnDestroy && !m_SceneData.sceneFileData.sceneSavePath.empty())
 		{
 			DEBUG_OUT("Saving scene " << m_SceneData.name);

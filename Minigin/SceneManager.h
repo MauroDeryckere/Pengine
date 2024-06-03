@@ -30,10 +30,7 @@ namespace Pengin
 		[[nodiscard]] Scene* GetScene(const std::string& sceneName) noexcept;
 
 		void SetSceneActive(const std::string& sceneName, bool destroyActive = true) noexcept;
-
 		void DestroyScene(const std::string& sceneName) noexcept;
-
-		[[nodiscard]] bool SwitchToNextScene() noexcept;
 
 		void Update();
 		void FixedUpdate();
