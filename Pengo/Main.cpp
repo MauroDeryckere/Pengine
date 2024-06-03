@@ -29,8 +29,6 @@
 
 #include "DebugDrawSystem.h"
 
-void LoadGamePlayScripting();
-
 void LoadPengo();
 void LoadSceneGraphDemo();
 
@@ -61,35 +59,12 @@ void Load()
 {
 	LoadPengo();
 	//LoadSceneGraphDemo();
-	//LoadGamePlayScripting();
 }
 
 void LoadPengo()  
 {
 	Pengin::ServiceLocator::GetSoundSystem().LoadSoundsFromFolder("../Data/Audio");
 	Pengo::GameManager::GetInstance().LoadUI();
-}
-
-void LoadGamePlayScripting()
-{
-	using namespace Pengin;
-
-	SceneData sceneData{};
-	sceneData.name = "Gameplay Scripting";
-
-	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);	
-
-	auto& input = InputManager::GetInstance();
-	const auto userIdx = input.RegisterUser(UserType::Keyboard);
-
-	pScene->RegisterSystems([](SystemManager& sysManager, ECS& ecs)
-		{
-			sysManager.RegisterSystem<DebugDrawSystem>(std::make_shared<DebugDrawSystem>(ecs));
-		}
-	);
-
-	auto player = pScene->CreateEntity({ 20, 20, 0 }, {}, {1,1,1}, userIdx);
-	player.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,255,255,255 }, uint16_t{ 100 }, uint16_t{100}, true);
 }
 
 void LoadSceneGraphDemo()

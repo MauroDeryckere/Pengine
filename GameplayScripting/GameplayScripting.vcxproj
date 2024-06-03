@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{604967ad-476b-465d-97df-c00cd97674c4}</ProjectGuid>
-    <RootNamespace>Pengo</RootNamespace>
+    <ProjectGuid>{906554ce-1907-447a-bced-0fdba239d3dd}</ProjectGuid>
+    <RootNamespace>GameplayScripting</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -79,12 +79,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -97,14 +97,11 @@
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Minigin.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutputPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PostBuildEvent>
-      <Command>
-      </Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -119,6 +116,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -137,6 +135,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Minigin.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutputPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -155,6 +154,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -163,52 +163,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BlockSystem.cpp" />
-    <ClCompile Include="EnemySystem.cpp" />
-    <ClCompile Include="GameManager.cpp" />
-    <ClCompile Include="LevelSystem.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="PengoBreakingBlockState.cpp" />
-    <ClCompile Include="PengoDyingState.cpp" />
-    <ClCompile Include="PengoIdleState.cpp" />
-    <ClCompile Include="PengoInputCommands.cpp" />
-    <ClCompile Include="PengoPushingBlockState.cpp" />
-    <ClCompile Include="PengoWalkState.cpp" />
-    <ClCompile Include="PlayerSystem.cpp" />
-    <ClCompile Include="SnobeeSpawningState.cpp" />
-    <ClCompile Include="SnobeeWalkState.cpp" />
-    <ClCompile Include="UIDisplaySystem.cpp" />
-    <ClCompile Include="WallSystem.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BlockComponent.h" />
-    <ClInclude Include="BlockSystem.h" />
-    <ClInclude Include="LevelSystem.h" />
-    <ClInclude Include="SnobeeDeathEvent.h" />
-    <ClInclude Include="TxtDisplayComponent.h" />
-    <ClInclude Include="EnemySystem.h" />
-    <ClInclude Include="DeathEvent.h" />
-    <ClInclude Include="GameManager.h" />
-    <ClInclude Include="HealthComponent.h" />
-    <ClInclude Include="PengoBlockBreakEvent.h" />
-    <ClInclude Include="PengoBreakingBlockState.h" />
-    <ClInclude Include="PengoDyingState.h" />
-    <ClInclude Include="PengoGrid.h" />
-    <ClInclude Include="PengoIdleState.h" />
-    <ClInclude Include="PengoInputCommands.h" />
-    <ClInclude Include="PengoComponent.h" />
-    <ClInclude Include="PengoPushingBlockState.h" />
-    <ClInclude Include="PengoRespawnEvent.h" />
-    <ClInclude Include="PengoWalkState.h" />
-    <ClInclude Include="PlayerSystem.h" />
-    <ClInclude Include="ScoreCollectEvent.h" />
-    <ClInclude Include="ScoreComponent.h" />
-    <ClInclude Include="SnobeeComponent.h" />
-    <ClInclude Include="SnobeeSpawningState.h" />
-    <ClInclude Include="SnobeeWalkState.h" />
-    <ClInclude Include="UIDisplaySystem.h" />
-    <ClInclude Include="WallComponent.h" />
-    <ClInclude Include="WallSystem.h" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
