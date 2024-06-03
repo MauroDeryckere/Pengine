@@ -60,6 +60,8 @@ namespace GS
 			auto player = pActiveScene->GetPlayer(GetUserIdx());
 
 			player.GetComponent<MinerComponent>().DropOre();
+
+			Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("MinerOreChange"));
 		}
 	};
 

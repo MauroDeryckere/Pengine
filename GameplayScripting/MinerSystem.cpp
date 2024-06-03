@@ -7,6 +7,7 @@
 #include "BodyComponent.h"
 
 #include "TransformComponent.h"
+#include "TextComponent.h"
 
 void GS::MinerSystem::Update()
 {
@@ -34,4 +35,15 @@ void GS::MinerSystem::OnPlayerDeath()
 	using namespace Pengin;
 
 	EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("LoadRestart"));
+}
+
+void GS::MinerSystem::OnMinerOreChange()
+{
+	using namespace Pengin;
+
+	auto miner = m_ECS.GetComponents<MinerComponent>();
+	for (auto & m : miner)
+	{		
+		m_ECS.GetComponent<TextComponent>(m.oreDisplayId).SetText(std::to_string(m.totalWeight));
+	}
 }

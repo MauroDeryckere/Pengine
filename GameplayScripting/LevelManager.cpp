@@ -48,11 +48,18 @@ void GS::LevelManager::LoadLevel()
 
 	//Player
 	auto player = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 100, 100 }, { 100, 100, 0 });
+	pScene->SetPlayer(userIdx, player);
+
 	player.AddComponent<DebugDrawComponent>(glm::u8vec4{ 0,255,0,255 }, uint16_t{ 100 }, uint16_t{ 100 }, true);
+
 	auto& miner = player.AddComponent<MinerComponent>();
 	miner.totalWeight = -10;
 
-	pScene->SetPlayer(userIdx, player);
+	auto scoreDispl = pScene->CreateEntity();
+	scoreDispl.AddComponent<SpriteComponent>();
+	scoreDispl.AddComponent<TextComponent>("Lingua.otf", 32, "-10", glm::uvec4{0, 0, 255, 255});
+
+	miner.oreDisplayId = scoreDispl.GetEntityId();
 	//----------
 
 	//Enviroment
@@ -83,14 +90,10 @@ void GS::LevelManager::LoadRestart()
 	data.name = "Game Over Screen";
 
 	auto pScene = SceneManager::GetInstance().CreateScene(data);
-	
-	auto textEnt = pScene->CreateEntity();
-	textEnt.AddComponent<SpriteComponent>();
-	textEnt.AddComponent<TextComponent>("Lingua.otf", 56, "Game Over");
 
 	auto textEnt2 = pScene->CreateEntity({ 100.f, 200.f, 0.f });
 	textEnt2.AddComponent<SpriteComponent>();
-	textEnt2.AddComponent<TextComponent>("Lingua.otf", 56, "Press Space to replay");
+	textEnt2.AddComponent<TextComponent>("Lingua.otf", 56, "Press Space to play");
 
 	auto textEnt3 = pScene->CreateEntity({ 100.f, 400.f, 0.f });
 	textEnt3.AddComponent<SpriteComponent>();

@@ -15,6 +15,7 @@ namespace GS
 			m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() }
 		{
 			m_pObserver->RegisterForEvent(m_pObserver, "PlayerDeath", [this](const Pengin::BaseEvent&) { OnPlayerDeath(); });
+			m_pObserver->RegisterForEvent(m_pObserver, "MinerOreChange", [this](const Pengin::BaseEvent&) { OnMinerOreChange(); });
 		}
 
 		~MinerSystem() = default;
@@ -27,5 +28,6 @@ namespace GS
 		std::shared_ptr<Pengin::Observer> m_pObserver;
 
 		void OnPlayerDeath();
+		void OnMinerOreChange();
 	};
 }
