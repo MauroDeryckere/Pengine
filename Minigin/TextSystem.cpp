@@ -33,7 +33,7 @@ namespace Pengin
 		{
 			if (entity.needsTextureChange)
 			{
-				const SDL_Color color{ entity.color.w, entity.color.x, entity.color.y, entity.color.z };
+				const SDL_Color color{ entity.color.x, entity.color.y, entity.color.z, entity.color.w };
 				const auto surf = TTF_RenderText_Blended(entity.pFont->GetFont(), entity.text.c_str(), color);
 				if (!surf)
 				{
@@ -67,7 +67,7 @@ namespace Pengin
 		auto& textComp = m_ECS.GetComponent<TextComponent>(id);
 		textComp.text = text;
 
-		const SDL_Color color{ textComp.color.w, textComp.color.x, textComp.color.y, textComp.color.z };
+		const SDL_Color color{ textComp.color.x, textComp.color.y, textComp.color.z, textComp.color.w };
 		const auto surf = TTF_RenderText_Blended(textComp.pFont->GetFont(), textComp.text.c_str(), color);
 		if (!surf)
 		{
