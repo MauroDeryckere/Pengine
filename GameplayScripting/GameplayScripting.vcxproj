@@ -163,6 +163,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FactorySystem.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OreSystem.cpp" />
@@ -170,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FactoryComponent.h" />
+    <ClInclude Include="FactorySystem.h" />
     <ClInclude Include="GSInputCommands.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="MinerComponent.h" />

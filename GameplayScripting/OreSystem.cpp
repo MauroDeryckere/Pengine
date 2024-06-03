@@ -25,7 +25,7 @@ void GS::OreSytem::OnCollision(const Pengin::BaseEvent& event)
 			auto& OreComp = m_ECS.GetComponent<OreComponent>(entB);
 
 			minerComp.ores.emplace_back(OreComp.weight);
-			minerComp.totalWeight += OreComp.weight;
+			minerComp.totOreWeight += OreComp.weight;
 
 			EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("MinerOreChange"));
 
@@ -45,7 +45,7 @@ void GS::OreSytem::OnCollision(const Pengin::BaseEvent& event)
 			auto& OreComp = m_ECS.GetComponent<OreComponent>(entA);
 
 			minerComp.ores.emplace_back(OreComp.weight);
-			minerComp.totalWeight += OreComp.weight;
+			minerComp.totOreWeight += OreComp.weight;
 
 			EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("MinerOreChange"));
 

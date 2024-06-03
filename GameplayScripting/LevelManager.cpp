@@ -11,6 +11,7 @@
 #include "DebugDrawSystem.h"
 #include "MinerSystem.h"
 #include "OreSystem.h"
+#include "FactorySystem.h"
 
 #include "GSInputCommands.h"
 
@@ -30,6 +31,7 @@ void GS::LevelManager::LoadLevel()
 	pScene->RegisterSystems([](SystemManager& sysManager, ECS& ecs)
 		{
 			sysManager.RegisterSystem<DebugDrawSystem>(std::make_shared<DebugDrawSystem>(ecs));
+			sysManager.RegisterSystem<FactorySystem>(std::make_shared<MinerSystem>(ecs));
 			sysManager.RegisterSystem<MinerSystem>(std::make_shared<MinerSystem>(ecs));
 			sysManager.RegisterSystem<OreSytem>(std::make_shared<OreSytem>(ecs));
 		}
@@ -53,11 +55,11 @@ void GS::LevelManager::LoadLevel()
 	player.AddComponent<DebugDrawComponent>(glm::u8vec4{ 0,255,0,255 }, uint16_t{ 100 }, uint16_t{ 100 }, true);
 
 	auto& miner = player.AddComponent<MinerComponent>();
-	miner.totalWeight = -10;
+	miner.baseWeight = -10;
 
-	auto scoreDispl = pScene->CreateEntity();
+	auto scoreDispl = pScene->CreateEntity({20.f, 680.f, 0.f});
 	scoreDispl.AddComponent<SpriteComponent>();
-	scoreDispl.AddComponent<TextComponent>("Lingua.otf", 32, "-10", glm::uvec4{0, 0, 255, 255});
+	scoreDispl.AddComponent<TextComponent>("Lingua.otf", 32, "0", glm::u8vec4{0, 0, 255, 255});
 
 	miner.oreDisplayId = scoreDispl.GetEntityId();
 	//----------

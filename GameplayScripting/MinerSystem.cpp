@@ -18,7 +18,7 @@ void GS::MinerSystem::Update()
 	{
 		const EntityId id = miner.GetIdFromIterator(it);
 
-		m_ECS.GetComponent<BodyComponent>(id).inputVelocity += glm::vec3{ 0.f, 1.f, 0.f } * static_cast<float>(m.totalWeight);
+		m_ECS.GetComponent<BodyComponent>(id).inputVelocity += glm::vec3{ 0.f, 1.f, 0.f } * static_cast<float>(m.totOreWeight + m.baseWeight);
 
 		const auto& transform = m_ECS.GetComponent<TransformComponent>(id);
 		if (transform.worldPos.x < 0.f || transform.worldPos.x > 1280.f || transform.worldPos.y < 0.f || transform.worldPos.y > 720.f)
@@ -44,6 +44,6 @@ void GS::MinerSystem::OnMinerOreChange()
 	auto miner = m_ECS.GetComponents<MinerComponent>();
 	for (auto & m : miner)
 	{		
-		m_ECS.GetComponent<TextComponent>(m.oreDisplayId).SetText(std::to_string(m.totalWeight));
+		m_ECS.GetComponent<TextComponent>(m.oreDisplayId).SetText(std::to_string(m.totOreWeight));
 	}
 }
