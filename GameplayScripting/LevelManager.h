@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+
 #include "Singleton.h"
 
 #include "EventManager.h"
@@ -20,14 +22,22 @@ namespace GS
 			m_pObserver{ Pengin::EventManager::GetInstance().CreateObserver() }
 		{
 			m_pObserver->RegisterForEvent(m_pObserver, "LoadLevel", [this](const Pengin::BaseEvent&) { LoadLevel(); });
-			m_pObserver->RegisterForEvent(m_pObserver, "LoadRestart", [this](const Pengin::BaseEvent&) {LoadRestart(); });
+			m_pObserver->RegisterForEvent(m_pObserver, "LoadPlayGame", [this](const Pengin::BaseEvent&) { LoadPlayGame(); });
+
+			m_pObserver->RegisterForEvent(m_pObserver, "GameOver", [this](const Pengin::BaseEvent& event) { LoadGameOver(event); });
+			m_pObserver->RegisterForEvent(m_pObserver, "Victory", [this](const Pengin::BaseEvent& event) { LoadVictory(event); });
 		}
 
 		~LevelManager() = default;
 
 		std::shared_ptr<Pengin::Observer> m_pObserver;
 
+		std::chrono::steady_clock::time_point m_StartTime;
+
 		void LoadLevel();
-		void LoadRestart();
+		void LoadPlayGame();
+
+		void LoadGameOver(const Pengin::BaseEvent& event);
+		void LoadVictory(const Pengin::BaseEvent& event);
 	};
 }

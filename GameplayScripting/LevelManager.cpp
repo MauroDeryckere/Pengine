@@ -21,13 +21,16 @@
 #include "FactoryComponent.h"
 #include "SpikeComponent.h"
 
+#include "GameOverEvent.h"
+#include "VictoryEvent.h"
+
 void GS::LevelManager::LoadLevel()
 {
 	using namespace Pengin;
 
 	//Scene Setup
 	SceneData sceneData{};
-	sceneData.name = "Gameplay Scripting";
+	sceneData.name = "Gameplay Scripting Level";
 
 	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
 	pScene->RegisterSystems([](SystemManager& sysManager, ECS& ecs)
@@ -181,14 +184,16 @@ void GS::LevelManager::LoadLevel()
 	//-------
 	
 	//----------
+
+	m_StartTime = std::chrono::steady_clock::now();
 }
 
-void GS::LevelManager::LoadRestart() 
+void GS::LevelManager::LoadPlayGame() 
 {
 	using namespace Pengin;
 
 	SceneData data{ };
-	data.name = "Game Over Screen";
+	data.name = "Play Game Screen";
 
 	auto pScene = SceneManager::GetInstance().CreateScene(data);
 
@@ -233,6 +238,78 @@ void GS::LevelManager::LoadRestart()
 	textEnt11.AddComponent<SpriteComponent>();
 	textEnt11.AddComponent<TextComponent>("Lingua.otf", 26, "Red rects are spikes and will kill you");
 
+
+	auto& input = InputManager::GetInstance();
+	input.Clear();
+
+	auto user = input.RegisterUser(UserType::Keyboard);
+	input.MapKeyboardAction(user, KeyBoardKey::SpaceBar, InputState::DownThisFrame, std::make_shared<Restart>(user));
+}
+
+void GS::LevelManager::LoadGameOver(const Pengin::BaseEvent& event)
+{
+	using namespace Pengin;
+	event;
+	//const auto& gameOverEvent{ static_cast<const GameOverEvent&>(event) };
+
+	SceneData data{ };
+	data.name = "Game over";
+
+	auto pScene = SceneManager::GetInstance().CreateScene(data);
+
+	auto title = pScene->CreateEntity({ 75.f, 50, 0.f });
+	title.AddComponent<SpriteComponent>();
+	title.AddComponent<TextComponent>("Lingua.otf", 56, "Game Over");
+
+	auto textEnt = pScene->CreateEntity({ 75.f, 200.f, 0.f });
+	textEnt.AddComponent<SpriteComponent>();
+	textEnt.AddComponent<TextComponent>("Lingua.otf", 48, "Press Space to play again");
+
+	auto& input = InputManager::GetInstance();
+	input.Clear();
+
+	auto user = input.RegisterUser(UserType::Keyboard);
+	input.MapKeyboardAction(user, KeyBoardKey::SpaceBar, InputState::DownThisFrame, std::make_shared<Restart>(user));
+}
+
+void GS::LevelManager::LoadVictory(const Pengin::BaseEvent& event)
+{
+	const auto winTime{ std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - m_StartTime).count() };
+
+	using namespace Pengin;
+	auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
+
+	const auto& victoryEvent{ static_cast<const VictoryEvent&>(event) };
+	auto player = pActiveScene->GetPlayer(victoryEvent.GetUserIndex());
+
+	const auto oreWeight{ player.GetComponent<MinerComponent>().totOreWeight };
+
+	SceneData data{ };
+	data.name = "Victory Screen";
+
+	auto pScene = SceneManager::GetInstance().CreateScene(data);
+
+	auto title = pScene->CreateEntity({ 75.f, 50, 0.f });
+	title.AddComponent<SpriteComponent>();
+	title.AddComponent<TextComponent>("Lingua.otf", 56, "Victory");
+
+	auto textEnt = pScene->CreateEntity({ 75.f, 200.f, 0.f });
+	textEnt.AddComponent<SpriteComponent>();
+	textEnt.AddComponent<TextComponent>("Lingua.otf", 48, "Press Space to play again");
+
+	auto textEnt2 = pScene->CreateEntity({ 75.f, 300.f, 0.f });
+	textEnt2.AddComponent<SpriteComponent>();
+	std::string oreStr{ "Total mined ore: " + std::to_string(oreWeight) };
+	textEnt2.AddComponent<TextComponent>("Lingua.otf", 48, oreStr);
+
+	auto textEnt3 = pScene->CreateEntity({ 75.f, 400.f, 0.f });
+	textEnt3.AddComponent<SpriteComponent>();
+
+	const auto minutes{ winTime / 60 };
+	const auto seconds{ winTime - minutes * 60 };
+
+	std::string timeStr{ "Time spent: " + (minutes != 0 ? std::to_string(minutes) + " min " : "" ) +  std::to_string(seconds) + " seconds"};
+	textEnt3.AddComponent<TextComponent>("Lingua.otf", 48, timeStr);
 
 	auto& input = InputManager::GetInstance();
 	input.Clear();

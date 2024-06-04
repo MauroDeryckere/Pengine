@@ -22,6 +22,9 @@
     <Filter Include="Header Files\Systems">
       <UniqueIdentifier>{0ead6a60-1a9b-413f-bb69-a76ac21d4cdb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{d75789ae-0bab-49b4-bcd0-f33015d1aaea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -73,6 +76,12 @@
     </ClInclude>
     <ClInclude Include="SpikeSystem.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="VictoryEvent.h">
+      <Filter>Header Files\Events</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

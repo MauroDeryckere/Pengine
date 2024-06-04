@@ -173,6 +173,7 @@
   <ItemGroup>
     <ClInclude Include="FactoryComponent.h" />
     <ClInclude Include="FactorySystem.h" />
+    <ClInclude Include="GameOverEvent.h" />
     <ClInclude Include="GSInputCommands.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="MinerComponent.h" />
@@ -181,6 +182,7 @@
     <ClInclude Include="MinerSystem.h" />
     <ClInclude Include="SpikeComponent.h" />
     <ClInclude Include="SpikeSystem.h" />
+    <ClInclude Include="VictoryEvent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,6 +8,9 @@
 
 #include "TransformComponent.h"
 #include "TextComponent.h"
+#include "PlayerComponent.h"
+
+#include "GameOverEvent.h"
 
 void GS::MinerSystem::Update()
 {
@@ -34,7 +37,7 @@ void GS::MinerSystem::OnPlayerDeath()
 {
 	using namespace Pengin;
 
-	EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("LoadRestart"));
+	EventManager::GetInstance().BroadcoastEvent(std::make_unique<GameOverEvent>(m_ECS.GetComponents<PlayerComponent>().cbegin()->userIdx));
 }
 
 void GS::MinerSystem::OnMinerOreChange()

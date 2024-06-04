@@ -2,8 +2,11 @@
 
 #include "FactoryComponent.h"
 #include "MinerComponent.h"
+#include "PlayerComponent.h"
 
 #include "InputManager.h"
+
+#include "VictoryEvent.h"
 
 void GS::FactorySystem::OnCollision(const Pengin::BaseEvent& event)
 {
@@ -16,14 +19,14 @@ void GS::FactorySystem::OnCollision(const Pengin::BaseEvent& event)
 
 	if (m_ECS.HasComponent<FactoryComponent>(entB) && m_ECS.HasComponent<MinerComponent>(entA))
 	{
-		EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("LoadRestart"));
+		EventManager::GetInstance().BroadcoastEvent(std::make_unique<VictoryEvent>(m_ECS.GetComponents<PlayerComponent>().cbegin()->userIdx));
 
 		return;
 	}
 
 	if (m_ECS.HasComponent<FactoryComponent>(entA) && m_ECS.HasComponent<MinerComponent>(entB))
 	{
-		EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("LoadRestart"));
+		EventManager::GetInstance().BroadcoastEvent(std::make_unique<VictoryEvent>(m_ECS.GetComponents<PlayerComponent>().cbegin()->userIdx));
 
 		return;
 	}

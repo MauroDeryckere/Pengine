@@ -53,5 +53,5 @@ void LoadGamePlayScripting()
 	//Init
 	auto& l [[maybe_unused]] = LevelManager::GetInstance();
 
-	EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("LoadRestart"));
+	EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("LoadPlayGame"));
 }
