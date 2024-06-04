@@ -43,16 +43,18 @@ void GS::LevelManager::LoadLevel()
 
 	//INPUT
 	auto& input = InputManager::GetInstance();
+	input.Clear();
+
 	const auto userIdx = input.RegisterUser(UserType::Keyboard);
 
 	input.MapKeyboardAction(userIdx, KeyBoardKey::Left, InputState::Pressed, std::make_shared<Movement>(userIdx, glm::vec3{ -1.f, 0.f, 0.f }));
 	input.MapKeyboardAction(userIdx, KeyBoardKey::Right, InputState::Pressed, std::make_shared<Movement>(userIdx, glm::vec3{ 1.f, 0.f, 0.f }));
 	input.MapKeyboardAction(userIdx, KeyBoardKey::Up, InputState::Pressed, std::make_shared<Mine>(userIdx));
-	input.MapKeyboardAction(userIdx, KeyBoardKey::Down, InputState::Pressed, std::make_shared<DropOre>(userIdx));
+	input.MapKeyboardAction(userIdx, KeyBoardKey::Down, InputState::DownThisFrame, std::make_shared<DropOre>(userIdx));
 	//----------
 
 	//Player
-	auto player = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 100, 100 }, { 100, 100, 0 });
+	auto player = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 100, 100 }, { 100, 250, 0 });
 	pScene->SetPlayer(userIdx, player);
 
 	player.AddComponent<DebugDrawComponent>(glm::u8vec4{ 0,255,0,255 }, uint16_t{ 100 }, uint16_t{ 100 }, true);
@@ -62,9 +64,11 @@ void GS::LevelManager::LoadLevel()
 
 	auto scoreDispl = pScene->CreateEntity({20.f, 680.f, 0.f});
 	scoreDispl.AddComponent<SpriteComponent>();
-	scoreDispl.AddComponent<TextComponent>("Lingua.otf", 32, "0", glm::u8vec4{0, 0, 255, 255});
+	scoreDispl.AddComponent<TextComponent>("Lingua.otf", 32, "50", glm::u8vec4{0, 0, 255, 255});
 
 	miner.oreDisplayId = scoreDispl.GetEntityId();
+	miner.ores.emplace_back(50);
+	miner.totOreWeight = 50;
 	//----------
 
 	//Enviroment
@@ -73,10 +77,29 @@ void GS::LevelManager::LoadLevel()
 	auto topLevel = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 1280, 75 }, { 0,-50.f,0 });
 	topLevel.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,255,255,255 }, uint16_t{ 1280 }, uint16_t{ 75 }, true);
 	topLevel.GetComponent<BodyComponent>().collType = CollType::Static;
-	//----
 
-	//factor
-	auto factory = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 100, 75 }, { 1230.f, 100.f, 0.f });
+	auto rock0 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 200, 50}, { 175.f, 400.f,0 });
+	rock0.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,255,255,255 }, uint16_t{ 200 }, uint16_t{ 50 }, true);
+	rock0.GetComponent<BodyComponent>().collType = CollType::Static;
+
+	auto rock1 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 50, 300 }, { 675.f, 100.f,0 });
+	rock1.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,255,255,255 }, uint16_t{ 50 }, uint16_t{ 300 }, true);
+	rock1.GetComponent<BodyComponent>().collType = CollType::Static;
+
+	auto rock2 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 500, 50 }, { 475.f, 550.f,0 });
+	rock2.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,255,255,255 }, uint16_t{ 500 }, uint16_t{ 50 }, true);
+	rock2.GetComponent<BodyComponent>().collType = CollType::Static;
+
+	auto rock3 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 200, 50 }, { 900.f, 100.f,0 });
+	rock3.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,255,255,255 }, uint16_t{ 200 }, uint16_t{ 50 }, true);
+	rock3.GetComponent<BodyComponent>().collType = CollType::Static;
+	auto rock4 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 100, 50 }, { 900.f, 275 ,0 });
+	rock4.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,255,255,255 }, uint16_t{ 100 }, uint16_t{ 50 }, true);
+	rock4.GetComponent<BodyComponent>().collType = CollType::Static;
+	//-----
+
+	//factory
+	auto factory = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 100, 75 }, { 1230.f, 550.f, 0.f });
 	factory.AddComponent<DebugDrawComponent>(glm::u8vec4{ 0,255,0,255 }, uint16_t{ 100 }, uint16_t{ 75 }, true);
 	factory.GetComponent<BodyComponent>().collType = CollType::Static;
 	factory.AddComponent<FactoryComponent>();
@@ -87,13 +110,74 @@ void GS::LevelManager::LoadLevel()
 	ore0.AddComponent<DebugDrawComponent>(glm::u8vec4{ 0,0,255,255 }, uint16_t{ 25 }, uint16_t{ 75 }, true);
 	ore0.GetComponent<BodyComponent>().collType = CollType::Static;
 	ore0.AddComponent<OreComponent>().weight = 100;
+
+	auto ore1 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 25, 50 }, { 25.f, 20.f,0.f });
+	ore1.AddComponent<DebugDrawComponent>(glm::u8vec4{ 0,0,255,255 }, uint16_t{ 25 }, uint16_t{ 50 }, true);
+	ore1.GetComponent<BodyComponent>().collType = CollType::Static;
+	ore1.AddComponent<OreComponent>().weight = 65;
+
+
+	auto ore2 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 50, 12 }, { 635.f, 100.f ,0.f });
+	ore2.AddComponent<DebugDrawComponent>(glm::u8vec4{ 0,0,255,255 }, uint16_t{ 50 }, uint16_t{ 12 }, true);
+	ore2.GetComponent<BodyComponent>().collType = CollType::Static;
+	ore2.AddComponent<OreComponent>().weight = 65;
+
+	auto ore3 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 50, 10 }, { 635.f, 200.f ,0.f });
+	ore3.AddComponent<DebugDrawComponent>(glm::u8vec4{ 0,0,255,255 }, uint16_t{ 50 }, uint16_t{ 10 }, true);
+	ore3.GetComponent<BodyComponent>().collType = CollType::Static;
+	ore3.AddComponent<OreComponent>().weight = 50;
+
+	auto ore4 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 50, 10 }, { 635.f, 240.f ,0.f });
+	ore4.AddComponent<DebugDrawComponent>(glm::u8vec4{ 0,0,255,255 }, uint16_t{ 50 }, uint16_t{ 10 }, true);
+	ore4.GetComponent<BodyComponent>().collType = CollType::Static;
+	ore4.AddComponent<OreComponent>().weight = 50;
+
+	auto ore5 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 50, 10 }, { 675.f + 5.F , 250.f ,0.f });
+	ore5.AddComponent<DebugDrawComponent>(glm::u8vec4{ 0,0,255,255 }, uint16_t{ 50 }, uint16_t{ 10 }, true);
+	ore5.GetComponent<BodyComponent>().collType = CollType::Static;
+	ore5.AddComponent<OreComponent>().weight = 50;
+
+	auto ore6 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 12, 30 }, { 1050, 150.f ,0.f });
+	ore6.AddComponent<DebugDrawComponent>(glm::u8vec4{ 0,0,255,255 }, uint16_t{ 12 }, uint16_t{ 30 }, true);
+	ore6.GetComponent<BodyComponent>().collType = CollType::Static;
+	ore6.AddComponent<OreComponent>().weight = 50;
+
+	auto ore7 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 115, 20 }, { 850 + 100.f + 50.f, 275.f + 50.f - 10.f ,0.f });
+	ore7.AddComponent<DebugDrawComponent>(glm::u8vec4{ 0,0,255,255 }, uint16_t{ 115 }, uint16_t{ 20 }, true);
+	ore7.GetComponent<BodyComponent>().collType = CollType::Static;
+	ore7.AddComponent<OreComponent>().weight = 200;
 	//----------
 
 	//Spikes
-	auto spike0 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 10, 300 }, { 300, 20.f,0.f });
-	spike0.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,0,0,255 }, uint16_t{ 10 }, uint16_t{ 300 }, true);
+	auto spike0 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 10, 45 }, { 300, 20.f,0.f });
+	spike0.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,0,0,255 }, uint16_t{ 10 }, uint16_t{ 45 }, true);
 	spike0.GetComponent<BodyComponent>().collType = CollType::Static;
 	spike0.AddComponent<SpikeComponent>();
+
+	auto spike1 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 10, 175 }, { 300, 225.f ,0.f });
+	spike1.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,0,0,255 }, uint16_t{ 10 }, uint16_t{ 175 }, true);
+	spike1.GetComponent<BodyComponent>().collType = CollType::Static;
+	spike1.AddComponent<SpikeComponent>();
+
+	auto spike2 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 50, 10 }, { 375.f, 425.f ,0.f });
+	spike2.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,0,0,255 }, uint16_t{ 50 }, uint16_t{ 10 }, true);
+	spike2.GetComponent<BodyComponent>().collType = CollType::Static;
+	spike2.AddComponent<SpikeComponent>();
+
+	auto spike3 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 100, 10 }, { 375.f + 50.f + 175.f, 400.f ,0.f });
+	spike3.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,0,0,255 }, uint16_t{ 100 }, uint16_t{ 10 }, true);
+	spike3.GetComponent<BodyComponent>().collType = CollType::Static;
+	spike3.AddComponent<SpikeComponent>();
+
+	auto spike4 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 50, 10 }, { 850, 275.f + 50.f - 10.f ,0.f });
+	spike4.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,0,0,255 }, uint16_t{ 50 }, uint16_t{ 10 }, true);
+	spike4.GetComponent<BodyComponent>().collType = CollType::Static;
+	spike4.AddComponent<SpikeComponent>();
+
+	auto spike5 = pScene->CreatePhysicsEntity(UtilStructs::Rectu16{ 0, 0, 20, 100 }, { 850 + 100.f + 50.f - 40.f, 275.f + 50.f - 10.f ,0.f });
+	spike5.AddComponent<DebugDrawComponent>(glm::u8vec4{ 255,0,0,255 }, uint16_t{ 20 }, uint16_t{ 100 }, true);
+	spike5.GetComponent<BodyComponent>().collType = CollType::Static;
+	spike5.AddComponent<SpikeComponent>();
 	//-------
 	
 	//----------
