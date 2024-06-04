@@ -303,8 +303,10 @@ namespace Pengin
 
 	void Scene::RenderImGUI()
 	{
+	#ifdef USE_IMGUI
 		m_SceneInfoPanel->Render(m_Ecs);
 		m_InputInfoPanel->Render();
+	#endif
 	}
 
 	void Scene::RegisterSystems(const std::function<void(SystemManager&, ECS&)>& fRegisterSystems) noexcept

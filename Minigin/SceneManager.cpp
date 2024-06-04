@@ -125,9 +125,11 @@ namespace Pengin
 
 	void SceneManager::RenderImGUI()
 	{
+	#ifdef USE_IMGUI
 		if (m_ActiveSceneIdx >= 0)
 		{
 			m_Scenes[m_ActiveSceneIdx]->RenderImGUI();
 		}
+	#endif
 	}
 }

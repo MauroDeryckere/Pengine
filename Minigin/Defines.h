@@ -9,6 +9,8 @@
 	#define USE_VLD 
 #endif
 
+#define USE_IMGUI
+
 //#define USE_STEAMWORKS
 
 #endif

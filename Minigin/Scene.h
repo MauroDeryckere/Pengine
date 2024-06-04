@@ -26,8 +26,10 @@ namespace Pengin
 	public:
 		Scene(const SceneData& sceneData) :
 			m_SceneData{ sceneData },
+		#ifdef USE_IMGUI
 			m_SceneInfoPanel{ std::make_unique<SceneInfoPanel>(this) },
 			m_InputInfoPanel{ std::make_unique<InputInfoPanel>() },
+		#endif
 			m_SysManager{}
 		{
 			if (!m_SceneData.sceneFileData.sceneLoadPath.empty())
