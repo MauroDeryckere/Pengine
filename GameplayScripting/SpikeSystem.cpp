@@ -1,11 +1,9 @@
-#include "FactorySystem.h"
+#include "SpikeSystem.h"
 
-#include "FactoryComponent.h"
 #include "MinerComponent.h"
+#include "SpikeComponent.h"
 
-#include "InputManager.h"
-
-void GS::FactorySystem::OnCollision(const Pengin::BaseEvent& event)
+void GS::SpikeSystem::OnCollision(const Pengin::BaseEvent& event)
 {
 	using namespace Pengin;
 
@@ -14,17 +12,15 @@ void GS::FactorySystem::OnCollision(const Pengin::BaseEvent& event)
 	const EntityId entA = collEv.GetEntityA();
 	const EntityId entB = collEv.GetEntityB();
 
-	if (m_ECS.HasComponent<FactoryComponent>(entB) && m_ECS.HasComponent<MinerComponent>(entA))
+	if (m_ECS.HasComponent<SpikeComponent>(entB) && m_ECS.HasComponent<MinerComponent>(entA))
 	{
 		EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("LoadRestart"));
-
 		return;
 	}
 
-	if (m_ECS.HasComponent<FactoryComponent>(entA) && m_ECS.HasComponent<MinerComponent>(entB))
+	if (m_ECS.HasComponent<SpikeComponent>(entA) && m_ECS.HasComponent<MinerComponent>(entB))
 	{
 		EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("LoadRestart"));
-
 		return;
 	}
 }

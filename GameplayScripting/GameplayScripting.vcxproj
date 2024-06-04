@@ -168,6 +168,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OreSystem.cpp" />
     <ClCompile Include="MinerSystem.cpp" />
+    <ClCompile Include="SpikeSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FactoryComponent.h" />
@@ -178,6 +179,8 @@
     <ClInclude Include="OreComponent.h" />
     <ClInclude Include="OreSystem.h" />
     <ClInclude Include="MinerSystem.h" />
+    <ClInclude Include="SpikeComponent.h" />
+    <ClInclude Include="SpikeSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

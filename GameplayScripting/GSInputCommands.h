@@ -11,6 +11,8 @@
 #include "LevelManager.h"
 #include "SceneManager.h"
 
+#include <algorithm>
+
 namespace GS
 {
 	class Movement final : public Pengin::InputCommand
@@ -23,10 +25,21 @@ namespace GS
 
 		~Movement() = default;
 
-		void Execute()
+		void Execute() override
 		{
 			auto pActiveScene = Pengin::SceneManager::GetInstance().GetActiveScene();
-			pActiveScene->GetPlayer(GetUserIdx()).GetComponent<Pengin::BodyComponent>().inputVelocity += (m_Direction * 100.f);
+			auto player = pActiveScene->GetPlayer(GetUserIdx());
+
+			const auto& minerComp = player.GetComponent<MinerComponent>();
+
+			float movementSpeed = 100.f;
+
+			if (minerComp.totOreWeight > 0)
+			{
+				movementSpeed *= std::min(1.0f, std::abs(static_cast<float>(minerComp.baseWeight) / static_cast<float>(minerComp.totOreWeight)));
+			}
+
+			player.GetComponent<Pengin::BodyComponent>().inputVelocity += (m_Direction * movementSpeed);
 		}
 
 	private:
