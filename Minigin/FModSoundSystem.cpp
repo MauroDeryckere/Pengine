@@ -139,8 +139,6 @@ namespace Pengin
 				{
 					for (auto& soundData : reqIt->second)
 					{
-						soundData.PrintSoundInfo();
-
 						PlaySoundImpl(pSound, soundData);
 					}
 
@@ -300,7 +298,6 @@ namespace Pengin
 			return GameUUID::INVALID_UUID;
 		}
 
-
 		if (auto loadedIt{ m_Sounds.find(soundData.soundPath.string()) }; loadedIt != end(m_Sounds))
 		{
 			return PlaySoundImpl(loadedIt->second, soundData);
@@ -317,6 +314,65 @@ namespace Pengin
 		m_SoundPlayRequests[pSound].emplace_back(soundData);
 
 		return GameUUID::INVALID_UUID;
+	}
+
+	bool FModSoundSystem::StopPlaying(const ChannelId& channel) noexcept
+	{
+		auto it = m_Channels.find(channel);
+
+		if (it == end(m_Channels))
+		{
+			std::cout << channel.GetUUID_PrettyStr() << "\n";
+			std::cout << "not found\n";
+			return false;
+		}
+
+		ErrorCheck(it->second->stop());
+
+		return true;
+	}
+
+	bool FModSoundSystem::Mute(const ChannelId& channel) noexcept
+	{
+		auto it = m_Channels.find(channel);
+
+		if (it == end(m_Channels))
+		{
+			return false;
+		}
+
+		ErrorCheck(it->second->setMute(true));
+
+		return true;
+	}
+
+	bool FModSoundSystem::Unmute(const ChannelId& channel) noexcept
+	{
+		auto it = m_Channels.find(channel);
+
+		if (it == end(m_Channels))
+		{
+			return false;
+		}
+
+		ErrorCheck(it->second->setMute(false));
+
+		return true;
+	}
+
+	bool FModSoundSystem::IsMuted(const ChannelId& channel) const noexcept
+	{
+		auto it = m_Channels.find(channel);
+
+		if (it == end(m_Channels))
+		{
+			return false;
+		}
+
+		bool muted{ };
+		ErrorCheck(it->second->getMute(&muted));
+
+		return muted;
 	}
 
 	void FModSoundSystem::SetChannel3DPosition(const ChannelId& id, const glm::vec3& position) noexcept
@@ -354,13 +410,13 @@ namespace Pengin
 		ErrorCheck(m_pMusicGroup->setVolume(vol));
 	}
 
-	void FModSoundSystem::MuteAll() noexcept
+	void FModSoundSystem::Mute() noexcept
 	{
 		ErrorCheck(m_MasterGroup->setMute(true));
 		m_IsMuted = true;
 	}
 
-	void FModSoundSystem::UnmuteAll() noexcept
+	void FModSoundSystem::Unmute() noexcept
 	{
 		ErrorCheck(m_MasterGroup->setMute(false));
 		m_IsMuted = false;

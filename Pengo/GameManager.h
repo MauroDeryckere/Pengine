@@ -7,6 +7,8 @@
 #include "EventManager.h"
 #include "ServiceLocator.h"
 
+#include <chrono>
+
 namespace Pengo
 {
 	class GameManager final : public Pengin::Singleton<GameManager>
@@ -30,12 +32,16 @@ namespace Pengo
 			m_pObserver->RegisterForEvent(m_pObserver, "LevelWon", [this](const Pengin::BaseEvent&) { Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("LoadNextLevel")); });
 			m_pObserver->RegisterForEvent(m_pObserver, "GameOver", [this](const Pengin::BaseEvent&) 
 				{
+					assert(m_BackGroundMusicId != Pengin::GameUUID::INVALID_UUID);
+					Pengin::ServiceLocator::GetSoundSystem().StopPlaying(m_BackGroundMusicId);
 					m_CurrLevel = 0;
 					LoadUI(); 
 				});
 
 			m_pObserver->RegisterForEvent(m_pObserver, "GameWon", [this](const Pengin::BaseEvent&)
 				{
+					assert(m_BackGroundMusicId != Pengin::GameUUID::INVALID_UUID);
+					Pengin::ServiceLocator::GetSoundSystem().StopPlaying(m_BackGroundMusicId);
 					m_CurrLevel = 0;
 					LoadUI();
 				});
@@ -48,6 +54,10 @@ namespace Pengo
 
 		std::shared_ptr<Pengin::Observer> m_pObserver;
 		uint8_t m_CurrLevel{ 0 };
+
+		std::chrono::steady_clock::time_point m_LevelStartTime;
+
+		Pengin::ChannelId m_BackGroundMusicId;
 
 		void LoadNextLevel();
 

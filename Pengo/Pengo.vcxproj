@@ -166,7 +166,6 @@
     <ClCompile Include="BlockSystem.cpp" />
     <ClCompile Include="EnemySystem.cpp" />
     <ClCompile Include="GameManager.cpp" />
-    <ClCompile Include="LevelSystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PengoBreakingBlockState.cpp" />
     <ClCompile Include="PengoDyingState.cpp" />
@@ -183,7 +182,6 @@
   <ItemGroup>
     <ClInclude Include="BlockComponent.h" />
     <ClInclude Include="BlockSystem.h" />
-    <ClInclude Include="LevelSystem.h" />
     <ClInclude Include="SnobeeDeathEvent.h" />
     <ClInclude Include="TxtDisplayComponent.h" />
     <ClInclude Include="EnemySystem.h" />

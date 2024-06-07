@@ -84,9 +84,6 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LevelSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PengoComponent.h">
@@ -165,9 +162,6 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="WallSystem.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="SnobeeDeathEvent.h">

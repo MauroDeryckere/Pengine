@@ -233,10 +233,6 @@ namespace Pengin
 			sceneData.user_UUIDVecIdxMap[GameUUID{ user[0].get<std::string>() }] = user[1].get<size_t>();
 		}
 		
-		if (true)
-		{
-
-		}
 		sceneData.sceneFileData.inputFilePath = inpSceneData_Json["SceneFileData"]["InputFilePath"].get<std::string>();
 		sceneData.sceneFileData.sceneLoadPath = inpSceneData_Json["SceneFileData"]["SceneLoadPath"].get<std::string>();
 		sceneData.sceneFileData.sceneSavePath = inpSceneData_Json["SceneFileData"]["SceneSavePath"].get<std::string>();

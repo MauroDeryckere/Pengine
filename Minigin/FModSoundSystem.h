@@ -24,9 +24,10 @@
 
 /*
 Audio Engine TODO:
+- Optimize the value stored in maps, we could just store the name instead of the full path, this would not allow sounds with the same name in different folders though
+
 - Pausing all
 - Support velocity for 3D Sound
-- Stop playing a Sound
 
 - FMOD Event / bank support
 - Reverb support
@@ -35,6 +36,8 @@ Audio Engine TODO:
 
 - ImGUI debug window
 */
+
+//TODO: allow to play with a channel ID param
 
 namespace Pengin
 {
@@ -46,20 +49,25 @@ namespace Pengin
 
 		void Update() noexcept;
 
-		void LoadSound(const SoundData& soundData) noexcept;
-		void UnLoadSound(const std::filesystem::path& soundPath) noexcept;
-
-		void Clear() noexcept;
-
-		//It is important to load the sound first if you want a valid channel id
-		const ChannelId PlaySound(const SoundData& soundData) noexcept;
-
 		void SetVFXVolume(const float vol) noexcept;
 		void SetMusicVolume(const float vol) noexcept;
 
-		void MuteAll() noexcept;
-		void UnmuteAll() noexcept;
+		void Mute() noexcept;
+		void Unmute() noexcept;
 		[[nodiscard]] bool IsMuted() const noexcept;
+
+		void Clear() noexcept;
+
+		void LoadSound(const SoundData& soundData) noexcept;
+		void UnLoadSound(const std::filesystem::path& soundPath) noexcept;
+
+		//It is important to load the sound first if you want a valid channel id
+		const ChannelId PlaySound(const SoundData& soundData) noexcept;
+		bool StopPlaying(const ChannelId& channel) noexcept;
+
+		bool Mute(const ChannelId& channel) noexcept;
+		bool Unmute(const ChannelId& channel) noexcept;
+		bool IsMuted(const ChannelId& channel) const noexcept;
 
 		void SetChannel3DPosition(const ChannelId& id, const glm::vec3& position) noexcept;
 		void SetChannelVolume(const ChannelId& id, float volume) noexcept;

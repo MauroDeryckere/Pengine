@@ -47,6 +47,17 @@ namespace Pengin
 
 			return m_pRealSoundSystem->PlaySound(soundData);
 		}
+		bool StopPlaying(const ChannelId& channel) noexcept
+		{
+			const bool stopped = m_pRealSoundSystem->StopPlaying(channel);
+
+			if (stopped)
+			{
+				std::cout << "Stop playing id: "<< channel << "\n";
+			}
+
+			return stopped;
+		}
 
 		void SetChannel3DPosition(const ChannelId& id, const glm::vec3& position) noexcept
 		{
@@ -57,17 +68,30 @@ namespace Pengin
 			m_pRealSoundSystem->SetChannelVolume(id, volume);
 		}
 
-		void MuteAll() noexcept
+		void Mute() noexcept
 		{
-			m_pRealSoundSystem->MuteAll();
+			m_pRealSoundSystem->Mute();
 		}
-		void UnmuteAll() noexcept
+		void Unmute() noexcept
 		{
-			m_pRealSoundSystem->UnmuteAll();
+			m_pRealSoundSystem->Unmute();
 		}
 		[[nodiscard]] bool IsMuted() const noexcept
 		{
 			return m_pRealSoundSystem->IsMuted();
+		}
+
+		bool Mute(const ChannelId& channel) noexcept
+		{
+			return m_pRealSoundSystem->Mute(channel);
+		}
+		bool Unmute(const ChannelId& channel) noexcept
+		{
+			return m_pRealSoundSystem->Unmute(channel);
+		}
+		bool IsMuted(const ChannelId& channel) const noexcept
+		{
+			return m_pRealSoundSystem->IsMuted(channel);
 		}
 
 		void SetVFXVolume(const float vol) noexcept { m_pRealSoundSystem->SetVFXVolume(vol); }
