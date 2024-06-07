@@ -15,8 +15,6 @@ namespace Pengin
 
 namespace Pengo
 {
-
-
 	class UIDisplaySystem final : public Pengin::BaseSystem
 	{
 	public:

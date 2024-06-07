@@ -5,6 +5,7 @@
 
 #include "SceneManager.h"
 #include "EventManager.h"
+#include "ServiceLocator.h"
 
 namespace Pengo
 {
@@ -12,8 +13,6 @@ namespace Pengo
 	{
 	public:
 		void LoadUI();
-
-		void PlayGame();
 
 		GameManager(const GameManager&) = delete;
 		GameManager(GameManager&&) = delete;
@@ -28,7 +27,20 @@ namespace Pengo
 
 		{ 
 			m_pObserver->RegisterForEvent(m_pObserver, "PlayGame", [this](const Pengin::BaseEvent&) { LoadNextLevel(); });
-			m_pObserver->RegisterForEvent(m_pObserver, "NextLevel", [this](const Pengin::BaseEvent&) { Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("LoadNextLevel")); });
+			m_pObserver->RegisterForEvent(m_pObserver, "LevelWon", [this](const Pengin::BaseEvent&) { Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("LoadNextLevel")); });
+			m_pObserver->RegisterForEvent(m_pObserver, "GameOver", [this](const Pengin::BaseEvent&) 
+				{
+					m_CurrLevel = 0;
+					LoadUI(); 
+				});
+
+			m_pObserver->RegisterForEvent(m_pObserver, "GameWon", [this](const Pengin::BaseEvent&)
+				{
+					m_CurrLevel = 0;
+					LoadUI();
+				});
+
+
 			m_pObserver->RegisterForEvent(m_pObserver, "LoadNextLevel", [this](const Pengin::BaseEvent&) { LoadNextLevel(); });
 		}
 

@@ -22,6 +22,9 @@ namespace Pengin
 			if (m_ActiveSceneIdx >= 0 && destroyActive)
 			{
 				DEBUG_OUT("Destroying scene: " << m_ActiveSceneIdx << "Name: " << m_Scenes[m_ActiveSceneIdx]->GetName());
+				std::cout << "Destroying scene: " << m_ActiveSceneIdx << "Name: " << m_Scenes[m_ActiveSceneIdx]->GetName() << "\n";
+				
+				//GetName != the sceneData name in file
 				m_SceneName_IdMap.erase(m_Scenes[m_ActiveSceneIdx]->GetName());
 				std::erase(m_Scenes, m_Scenes[m_ActiveSceneIdx]);
 			}
@@ -34,6 +37,8 @@ namespace Pengin
 
 			return m_Scenes.back().get();
 		}
+
+		std::cout << "a scene with the name was already found \n";
 
 		return nullptr;
 	}

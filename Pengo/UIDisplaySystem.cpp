@@ -54,12 +54,8 @@ namespace Pengo
 			assert(m_ECS.HasComponent<TxtDisplayComponent>(entity));
 
 			auto& textComp = m_ECS.GetComponent<TextComponent>(entity);
-			auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(entity);
-
-			const std::string newText{ displayComp.prefix + std::to_string(healthComp.health) + displayComp.postfix };
-
-			textComp.text = newText; //TODO change (text system)
-			textComp.needsTextureChange = true;
+			const auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(entity);
+			textComp.SetText(displayComp.prefix + std::to_string(healthComp.health) + displayComp.postfix);
 		}
 
 		std::erase_if(healthComp.healthDisplayIds, [&idsToErase](const EntityId id)
@@ -94,12 +90,8 @@ namespace Pengo
 			assert(m_ECS.HasComponent<TxtDisplayComponent>(entity));
 
 			auto& textComp = m_ECS.GetComponent<TextComponent>(entity);
-			auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(entity);
-
-			const std::string newText{ displayComp.prefix + std::to_string(scoreComp.score) + displayComp.postfix };
-
-			textComp.text = newText; //TODO change
-			textComp.needsTextureChange = true;
+			const auto& displayComp = m_ECS.GetComponent<TxtDisplayComponent>(entity);
+			textComp.SetText(displayComp.prefix + std::to_string(scoreComp.score) + displayComp.postfix);
 		}
 
 		std::erase_if(scoreComp.scoreDisplays, [&idsToErase](const EntityId id)

@@ -58,7 +58,13 @@ namespace Pengo
 		assert(m_ECS.HasComponent<PengoComponent>(deahtEv.GetEntityId()));
 		assert(m_ECS.HasComponent<HealthComponent>(deahtEv.GetEntityId()));
 
-		m_ECS.GetComponent<HealthComponent>(deahtEv.GetEntityId()).health--;
+		auto& healthComp = m_ECS.GetComponent<HealthComponent>(deahtEv.GetEntityId());
+		
+		if (--healthComp.health == 0)
+		{
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("GameOver"));
+;		}
+
 		m_ECS.GetComponent<PengoComponent>(deahtEv.GetEntityId()).SetPlayerState(std::make_unique<PengoDyingState>(m_ECS.GetComponent<PlayerComponent>(deahtEv.GetEntityId()).userIdx));
 	}
 

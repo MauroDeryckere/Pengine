@@ -83,10 +83,10 @@ dae::Minigin::Minigin(const std::string &dataPath)
 		"Pengine",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		//672, //PENGO
-		//840,
-		1280, //Gameplay scriping
-		720,
+		672, //PENGO
+		840,
+		//1280, //Gameplay scriping
+		//720,
 		windowFlags
 	);
 	

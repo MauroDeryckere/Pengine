@@ -5,10 +5,10 @@
 
 void Pengo::PengoPlayGame::Execute()
 {
-	GameManager::GetInstance().PlayGame();
+	Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("PlayGame"));
 }
 
 void Pengo::PengoSkipLevel::Execute()
 {
-	Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("NextLevel"));
+	Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("LevelWon"));
 }

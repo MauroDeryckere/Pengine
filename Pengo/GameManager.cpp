@@ -16,6 +16,13 @@
 #include "EnemySystem.h"
 #include "PlayerSystem.h"
 #include "LevelSystem.h"
+#include "ScoreComponent.h"
+#include "PlayerComponent.h"
+#include "HealthComponent.h"
+#include "EventManager.h"
+
+#include "textComponent.h"
+#include "TxtDisplayComponent.h"
 
 
 void Pengo::GameManager::LoadUI()
@@ -64,8 +71,7 @@ void Pengo::GameManager::LoadLevel1()
 
 	sceneData.sceneFileData = data;
 
-	SceneManager::GetInstance().DestroyScene("Pengo UI");
-	auto pScene = SceneManager::GetInstance().CreateScene(sceneData, true);
+	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
 
 	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs)
 		{
@@ -164,6 +170,29 @@ void Pengo::GameManager::LoadLevel2()
 {
 	using namespace Pengin;
 
+	auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
+	
+	struct OldPlayerData final
+	{
+		const UserIndex uIdx;
+		const unsigned score;
+		const unsigned health;
+	};
+
+	std::vector<OldPlayerData> oldPlayerData{};
+	oldPlayerData.reserve(2);
+
+	for (const auto& player : pActiveScene->GetSceneData().playerUUIDs)
+	{
+		auto p = pActiveScene->GetEntity(player);
+		const auto& userIdx = p.GetComponent<PlayerComponent>().userIdx;
+		const auto& scoreComp = p.GetComponent<ScoreComponent>();
+		const auto& healthComp = p.GetComponent<HealthComponent>();
+
+		oldPlayerData.emplace_back(userIdx, scoreComp.score, healthComp.health);
+	}
+
+
 	//Most of thesceneData is actually read from a file if you choose a loadPath, just typing it here too for readability
 	SceneData sceneData{};
 	sceneData.name = "Pengo level2";
@@ -179,8 +208,7 @@ void Pengo::GameManager::LoadLevel2()
 	data.keepPrevInput = false; //boolean to override any funcs
 
 	sceneData.sceneFileData = data;
-	SceneManager::GetInstance().DestroyScene("Pengo level1");
-	auto pScene = SceneManager::GetInstance().CreateScene(sceneData, true);
+	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
 
 	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs)
 		{
@@ -273,6 +301,46 @@ void Pengo::GameManager::LoadLevel2()
 	auto levelText = pScene->CreateEntity({ 500.f, 0.f, 0.f });
 	levelText.AddComponent<TextComponent>("Lingua.otf", 26, "L2");
 	levelText.AddComponent<SpriteComponent>();
+
+
+	for (const auto& oldPData : oldPlayerData)
+	{
+		auto player = pScene->GetPlayer(oldPData.uIdx);
+		auto& healthComp = player.GetComponent<HealthComponent>();
+		healthComp.health = oldPData.health;
+
+		auto& scoreComp = player.GetComponent<ScoreComponent>();
+		scoreComp.score = oldPData.score;
+
+		for (const auto& entity : healthComp.healthDisplayIds)
+		{
+			assert(entity != NULL_ENTITY_ID);
+			Entity ent{ entity, pScene };
+
+			assert(ent.HasComponent<TextComponent>());
+			assert(ent.HasComponent<TxtDisplayComponent>());
+
+			auto& textComp = ent.GetComponent<TextComponent>();
+			const auto& displayComp = ent.GetComponent<TxtDisplayComponent>();
+
+			textComp.SetText(displayComp.prefix + std::to_string(healthComp.health) + displayComp.postfix);
+		}
+
+
+		for (const auto& entity : scoreComp.scoreDisplays)
+		{
+			assert(entity != NULL_ENTITY_ID);
+			Entity ent{ entity, pScene };
+
+			assert(ent.HasComponent<TextComponent>());
+			assert(ent.HasComponent<TxtDisplayComponent>());
+
+			auto& textComp = ent.GetComponent<TextComponent>();
+			const auto& displayComp = ent.GetComponent<TxtDisplayComponent>();
+
+			textComp.SetText(displayComp.prefix + std::to_string(scoreComp.score) + displayComp.postfix);
+		}
+	}
 }
 
 void Pengo::GameManager::LoadLevel3()
@@ -295,8 +363,7 @@ void Pengo::GameManager::LoadLevel3()
 
 	sceneData.sceneFileData = data;
 
-	SceneManager::GetInstance().DestroyScene("Pengo level2");
-	auto pScene = SceneManager::GetInstance().CreateScene(sceneData, true);
+	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
 
 	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs)
 		{
@@ -420,14 +487,6 @@ void Pengo::GameManager::LoadNextLevel()
 	}
 	default:
 		break;
-	}
-}
-
-void Pengo::GameManager::PlayGame()
-{
-	if (m_CurrLevel == 0)
-	{
-		Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("PlayGame"));
 	}
 }
 
