@@ -8,6 +8,10 @@
 #include "PlayerComponent.h"
 #include "UISelectorComponent.h"
 #include "TextComponent.h"
+
+#include "UIGamemodeSelectorComponent.h"
+#include "UIGamemodeComponent.h"
+
 #include "UILetterComponent.h"
 
 void Pengo::PengoPlayGame::Execute()
@@ -67,4 +71,31 @@ void Pengo::SelectLetter::Execute()
 void Pengo::Continue::Execute()
 {
 	Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("BackToMainMenu"));
+}
+
+void Pengo::SelectGameMode::Execute()
+{
+	using namespace Pengin;
+
+	auto comps = SceneManager::GetInstance().GetActiveScene()->GetECS().GetComponents<UIGameModeSelectorComponent>();
+	assert(player.HasComponent<UISelectorComponent>());
+
+	if (m_Direction.y > 0)
+	{
+		comps.begin()->ChangeGameMode(true);
+		const auto currId = comps.begin()->gamemodeIds[comps.begin()->currGameMode];
+
+		auto gmEnt = Entity{ currId, SceneManager::GetInstance().GetActiveScene() };
+		const auto& gmComp = gmEnt.GetComponent<UIGameModeComponent>();
+		SceneManager::GetInstance().GetActiveScene()->GetECS().GetComponent<TextComponent>(comps.GetIdFromIterator(comps.cbegin())).SetText(gmComp.gameMode);
+	}
+	else if (m_Direction.y < 0)
+	{
+		comps.begin()->ChangeGameMode(false);
+		const auto currId = comps.begin()->gamemodeIds[comps.begin()->currGameMode];
+
+		auto gmEnt = Entity{ currId, SceneManager::GetInstance().GetActiveScene() };
+		const auto& gmComp = gmEnt.GetComponent<UIGameModeComponent>();
+		SceneManager::GetInstance().GetActiveScene()->GetECS().GetComponent<TextComponent>(comps.GetIdFromIterator(comps.cbegin())).SetText(gmComp.gameMode);
+	}
 }

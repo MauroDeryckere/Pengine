@@ -206,6 +206,8 @@
     <ClInclude Include="SnobeeSpawningState.h" />
     <ClInclude Include="SnobeeWalkState.h" />
     <ClInclude Include="UIDisplaySystem.h" />
+    <ClInclude Include="UIGameModeComponent.h" />
+    <ClInclude Include="UIGameModeSelectorComponent.h" />
     <ClInclude Include="UILetterComponent.h" />
     <ClInclude Include="UISelectorComponent.h" />
     <ClInclude Include="WallComponent.h" />

@@ -29,6 +29,8 @@
 
 #include "UISelectorComponent.h"
 #include "UILetterComponent.h"
+#include "UIGameModeSelectorComponent.h"
+#include "UIGameModeComponent.h"
 
 #include <iostream>
 #include <fstream>
@@ -92,6 +94,29 @@ void Pengo::GameManager::LoadStartUI()
 	auto cBind4 = pScene->CreateEntity({ 50.f, 460.f, 0.f });
 	cBind4.AddComponent<TextComponent>("Lingua.otf", 25, "Rs: Toggle sound");
 	cBind4.AddComponent<SpriteComponent>();
+
+
+	auto gmTitle = pScene->CreateEntity({ 50.f, 500.f, 0.f });
+	gmTitle.AddComponent<TextComponent>("Lingua.otf", 48, "Gamemode: (use directional movmeent to change)");
+	gmTitle.AddComponent<SpriteComponent>();
+
+	auto gmSel = pScene->CreateEntity({50.f, 550.f, 0.f});
+	gmSel.AddComponent<TextComponent>("Lingua.otf", 48, "Singleplayer Keyboard");
+	gmSel.AddComponent<SpriteComponent>();
+	auto& sel = gmSel.AddComponent<UIGameModeSelectorComponent>();
+
+	auto gm0 = pScene->CreateEntity();
+	gm0.AddComponent<UIGameModeComponent>("Singleplayer Keyboard");
+	
+	auto gm1 = pScene->CreateEntity();
+	gm1.AddComponent<UIGameModeComponent>("Singleplayer Controller");
+
+	auto gm2 = pScene->CreateEntity();
+	gm2.AddComponent<UIGameModeComponent>("Multiplayer Keyboard && Controller");
+
+	sel.gamemodeIds.emplace_back(gm0.GetEntityId());
+	sel.gamemodeIds.emplace_back(gm1.GetEntityId());
+	sel.gamemodeIds.emplace_back(gm2.GetEntityId());
 }
 
 void Pengo::GameManager::LoadNextLevel()
@@ -105,6 +130,10 @@ void Pengo::GameManager::LoadNextLevel()
 		SoundData music{ "../Data/Audio/Main BGM (Popcorn).mp3" };
 		music.isLooping = true;
 		m_BackGroundMusicId = ServiceLocator::GetSoundSystem().PlaySound(music);
+
+		ECS& ecs = SceneManager::GetInstance().GetActiveScene()->GetECS();
+		auto selcs = ecs.GetComponents<UIGameModeSelectorComponent>();
+		m_CurrGamemode = static_cast<GameMode>(selcs.begin()->currGameMode);
 	}
 
 	if (m_CurrLevel == 4)
@@ -161,7 +190,9 @@ void Pengo::GameManager::LoadLevel(uint8_t level)
 
 	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
 
-	if (singlePlayerKeyboard)
+	switch (m_CurrGamemode)
+	{
+	case Pengo::GameManager::GameMode::SingleplayerKeyboard:
 	{
 		const auto p = pScene->GetEntity(pScene->GetSceneData().playerUUIDs[CONTROLLER_IDX]);
 		const auto& uIdx = p.GetComponent<PlayerComponent>().userIdx;
@@ -180,10 +211,11 @@ void Pengo::GameManager::LoadLevel(uint8_t level)
 
 		InputManager::GetInstance().UnRegisterUser(uIdx);
 		pScene->RemovePlayer(uIdx);
-		
+
 		pScene->DestroyEntity(p.GetEntityId());
+		break;
 	}
-	else
+	case Pengo::GameManager::GameMode::SingleplayerController:
 	{
 		const auto p = pScene->GetEntity(pScene->GetSceneData().playerUUIDs[KEYBOARD_IDX]);
 		const auto& uIdx = p.GetComponent<PlayerComponent>().userIdx;
@@ -204,8 +236,14 @@ void Pengo::GameManager::LoadLevel(uint8_t level)
 		pScene->RemovePlayer(uIdx);
 
 		pScene->DestroyEntity(p.GetEntityId());
+		break;
 	}
-
+	case Pengo::GameManager::GameMode::Multiplayer:
+		break;
+	default:
+		break;
+	}
+	
 	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs)
 		{
 			sysManager.RegisterSystem<Pengo::PlayerSystem>(std::make_shared<Pengo::PlayerSystem>(ecs));
@@ -559,6 +597,9 @@ void Pengo::GameManager::RegisterKeyboardInputUI(const Pengin::InputData& inpDat
 	assert(userIndex);
 
 	input.MapKeyboardAction(userIndex, KeyBoardKey::SpaceBar, InputState::DownThisFrame, std::make_shared<PengoPlayGame>(userIndex));
+
+	input.MapKeyboardAction(userIndex, KeyBoardKey::Up, InputState::DownThisFrame, std::make_shared<SelectGameMode>(userIndex, glm::vec2{0.f, -1.f}));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::Down, InputState::DownThisFrame, std::make_shared<SelectGameMode>(userIndex, glm::vec2{ 0.f, -1.f }));
 }
 
 void Pengo::GameManager::RegisterControllerInputUI(const Pengin::InputData& inpData)
@@ -571,6 +612,9 @@ void Pengo::GameManager::RegisterControllerInputUI(const Pengin::InputData& inpD
 	assert(userIndex);
 
 	input.MapControllerAction(userIndex, ControllerButton::A, InputState::Pressed, std::make_shared<PengoPlayGame>(userIndex));
+
+	input.MapControllerAction(userIndex, ControllerButton::DPadUp, InputState::DownThisFrame, std::make_shared<SelectGameMode>(userIndex, glm::vec2{ 0.f, -1.f }));
+	input.MapControllerAction(userIndex, ControllerButton::DPadDown, InputState::DownThisFrame, std::make_shared<SelectGameMode>(userIndex, glm::vec2{ 0.f, -1.f }));
 }
 
 void Pengo::GameManager::RegisterKeyboardInputGameEndUI(const Pengin::InputData& inpData)

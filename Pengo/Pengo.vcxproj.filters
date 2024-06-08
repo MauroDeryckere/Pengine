@@ -179,5 +179,11 @@
     <ClInclude Include="UILetterComponent.h">
       <Filter>Header Files\Components\EndScreen</Filter>
     </ClInclude>
+    <ClInclude Include="UIGameModeComponent.h">
+      <Filter>Header Files\Components\EndScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="UIGameModeSelectorComponent.h">
+      <Filter>Header Files\Components\EndScreen</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

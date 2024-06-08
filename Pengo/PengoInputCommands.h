@@ -77,6 +77,26 @@ namespace Pengo
 	};
 	//-------
 
+
+	class SelectGameMode final : public Pengin::InputCommand
+	{
+	public:
+		SelectGameMode(const Pengin::UserIndex& user, const glm::vec2& dir) :
+			Pengin::InputCommand{ user, "SelectGamemode" },
+			m_Direction{ dir }
+		{
+			assert(!(dir.x == 0 && dir.y == 0));
+		}
+
+		void Execute();
+
+		~SelectGameMode() = default;
+
+	private:
+		const glm::vec2 m_Direction;
+	};
+
+
 	//end Screen
 	class Continue final : public Pengin::InputCommand
 	{

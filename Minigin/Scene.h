@@ -60,6 +60,8 @@ namespace Pengin
 		[[nodiscard]] const GameUUID& GetUUID(const EntityId id) const noexcept;
 		[[nodiscard]] const EntityId GetEntityId(const GameUUID& uuid) const noexcept;
 		[[nodiscard]] Entity GetEntity(const GameUUID& uuid) noexcept;
+
+		[[nodiscard]] ECS& GetECS() noexcept { return m_Ecs; }
 		//--------
 
 		//Player

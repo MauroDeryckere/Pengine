@@ -17,13 +17,6 @@ namespace Pengin
 		PlayerState(const UserIndex& userIdx) :
 			m_UserIdx{ userIdx }
 		{
-			if (userIdx == GameUUID::INVALID_UUID)
-			{
-				std::cout << "invalid\n";
-			}
-
-			std::cout << userIdx.GetUUID_PrettyStr() << "\n";
-
 			assert(userIdx);
 		}
 

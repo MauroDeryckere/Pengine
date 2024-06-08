@@ -111,6 +111,7 @@ namespace Pengo
 			SingleplayerController = 1,
 			Multiplayer = 2
 		};
+		GameMode m_CurrGamemode{ GameMode::SingleplayerKeyboard };
 
 		void LoadNextLevel();
 		void LoadLevel(uint8_t level);
