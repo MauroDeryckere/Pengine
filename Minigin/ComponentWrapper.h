@@ -34,6 +34,16 @@ namespace Pengin
             throw std::out_of_range("Component not found for the given entity ID");
         }
 
+        size_t Size() const noexcept
+        {
+            if (!m_ComponentSet)
+            {
+                return 0;
+            }
+
+            return m_ComponentSet->DenseSize();
+        }
+
         using iterator = typename SparseSet<ComponentType, EntityId>::iterator;
         using const_iterator = typename SparseSet<ComponentType, EntityId>::const_iterator;
 

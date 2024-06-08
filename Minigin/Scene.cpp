@@ -68,7 +68,7 @@ namespace Pengin
 		if (m_SceneData.sceneFileData.inputFilePath.empty()) //no path but still provided a function (empty inpData)
 		{
 			auto& input = InputManager::GetInstance();
-			input.Reset();
+			input.Clear();
 
 			if (isKeyboarsFunc)
 			{
@@ -90,7 +90,7 @@ namespace Pengin
 			}
 
 			auto& input = InputManager::GetInstance();
-			input.Reset();
+			input.Clear();
 
 			for (const auto& user : inp.second)
 			{

@@ -533,6 +533,10 @@ void Pengo::GameManager::SaveScores()
 
 void Pengo::GameManager::RegisterKeyboardInputLevel(const Pengin::InputData& inpData)
 {
+	if (m_CurrGamemode == GameMode::SingleplayerController)
+	{
+		return;
+	}
 	using namespace Pengin;
 
 	auto& input = InputManager::GetInstance();
@@ -569,6 +573,10 @@ void Pengo::GameManager::RegisterKeyboardInputLevel(const Pengin::InputData& inp
 
 void Pengo::GameManager::RegisterControllerInputLevel(const Pengin::InputData& inpData)
 {
+	if (m_CurrGamemode == GameMode::SingleplayerKeyboard)
+	{
+		return;
+	}
 	using namespace Pengin;
 
 	auto& input = InputManager::GetInstance();

@@ -19,6 +19,7 @@
 #include "PengoDyingState.h"
 #include "ScoreCollectEvent.h"
 #include "SnobeeDeathEvent.h"
+#include "SnobeeComponent.h"
 
 #include "DeathEvent.h"
 
@@ -45,6 +46,11 @@ namespace Pengo
 				pengoComp.HandleInput(playerComp.userIdx);
 				pengoComp.Update(playerComp.userIdx);
 			}
+		}
+
+		if (m_ECS.GetComponents<SnobeeComponent>().Size() == 0)
+		{
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("LevelWon"));
 		}
 	}
 
