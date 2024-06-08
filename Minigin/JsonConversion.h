@@ -42,7 +42,7 @@ namespace Pengin
 			{"SceneName", sceneData.name},
 
 			{"PlayerUUIDs", sceneData.playerUUIDs },
-			{"UserIds", sceneData.user_UUIDVecIdxMap },
+			{"UserIds", sceneData.userUUID_VecIdxMap },
 
 
 			{"SceneFileData", sceneData.sceneFileData}

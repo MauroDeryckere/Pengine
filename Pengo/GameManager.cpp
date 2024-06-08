@@ -142,6 +142,23 @@ void Pengo::GameManager::LoadLevel(uint8_t level)
 
 	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
 
+	if (singlePlayerKeyboard)
+	{
+		const auto& uIdx = pScene->GetPlayer(pScene->GetSceneData().playerUUIDs[CONTROLLER_IDX]).GetComponent<PlayerComponent>().userIdx;
+		pScene->DestroyEntity(pScene->GetSceneData().playerUUIDs[CONTROLLER_IDX]);
+
+		InputManager::GetInstance().UnRegisterUser(uIdx);
+		pScene->RemovePlayer(uIdx);
+	}
+	else
+	{
+		const auto& uIdx = pScene->GetPlayer(pScene->GetSceneData().playerUUIDs[KEYBOARD_IDX]).GetComponent<PlayerComponent>().userIdx;
+		pScene->DestroyEntity(pScene->GetSceneData().playerUUIDs[KEYBOARD_IDX]);
+
+		InputManager::GetInstance().UnRegisterUser(uIdx);
+		pScene->RemovePlayer(uIdx);
+	}
+
 	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs)
 		{
 			sysManager.RegisterSystem<Pengo::PlayerSystem>(std::make_shared<Pengo::PlayerSystem>(ecs));

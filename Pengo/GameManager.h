@@ -100,6 +100,11 @@ namespace Pengo
 
 		Pengin::ChannelId m_BackGroundMusicId;
 
+		static constexpr size_t KEYBOARD_IDX{ 0 };
+		static constexpr size_t CONTROLLER_IDX{ 1 };
+
+		bool singlePlayerKeyboard{ true };
+
 		void LoadNextLevel();
 		void LoadLevel(uint8_t level);
 

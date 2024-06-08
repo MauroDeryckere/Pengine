@@ -230,7 +230,7 @@ namespace Pengin
 		}
 		for (const auto& user : inpSceneData_Json["UserIds"])
 		{
-			sceneData.user_UUIDVecIdxMap[GameUUID{ user[0].get<std::string>() }] = user[1].get<size_t>();
+			sceneData.userUUID_VecIdxMap[GameUUID{ user[0].get<std::string>() }] = user[1].get<size_t>();
 		}
 		
 		sceneData.sceneFileData.inputFilePath = inpSceneData_Json["SceneFileData"]["InputFilePath"].get<std::string>();

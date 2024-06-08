@@ -68,6 +68,8 @@ namespace Pengin
 		void SetPlayer(const UserIndex& userIdx, const Entity entity) noexcept;
 
 		[[nodiscard]] Entity GetPlayer(const UserIndex& userIdx) noexcept;
+
+		bool RemovePlayer(const UserIndex& userIdx) noexcept;
 		//------
 
 		//Loop

@@ -164,9 +164,9 @@ namespace Pengin
 			const auto& playerComp = entity.GetComponent<PlayerComponent>();
 			const auto userIdx = playerComp.userIdx;
 
-			auto it = m_SceneData.user_UUIDVecIdxMap.find(userIdx);
+			auto it = m_SceneData.userUUID_VecIdxMap.find(userIdx);
 
-			if (it != end(m_SceneData.user_UUIDVecIdxMap))
+			if (it != end(m_SceneData.userUUID_VecIdxMap))
 			{
 				const auto vecIdx = it->second;
 				assert(vecIdx < m_SceneData.playerUUIDs.size());
@@ -177,10 +177,10 @@ namespace Pengin
 					const auto lastPlayerUserIdx = m_Ecs.GetComponent<PlayerComponent>(lastEntityId).userIdx;
 
 					m_SceneData.playerUUIDs[vecIdx] = std::move(m_SceneData.playerUUIDs.back());
-					m_SceneData.user_UUIDVecIdxMap.at(lastPlayerUserIdx) = vecIdx;
+					m_SceneData.userUUID_VecIdxMap.at(lastPlayerUserIdx) = vecIdx;
 				}
 
-				m_SceneData.user_UUIDVecIdxMap.erase(it);
+				m_SceneData.userUUID_VecIdxMap.erase(it);
 				m_SceneData.playerUUIDs.pop_back();
 			}
 			else
@@ -255,6 +255,11 @@ namespace Pengin
 		const EntityId id = GetEntityId(playerUUID);
 
 		return Entity { id, this };
+	}
+
+	bool Scene::RemovePlayer(const UserIndex& userIdx) noexcept
+	{
+		return m_SceneData.RemovePlayer(userIdx);
 	}
 
 	Entity Scene::AddEntityFromFile(const std::filesystem::path& entityLoadPath, bool newUUID)
