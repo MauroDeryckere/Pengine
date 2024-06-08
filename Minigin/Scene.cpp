@@ -90,7 +90,7 @@ namespace Pengin
 			}
 
 			auto& input = InputManager::GetInstance();
-			input.Clear();
+			input.Reset();
 
 			for (const auto& user : inp.second)
 			{

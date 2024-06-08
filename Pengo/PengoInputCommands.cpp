@@ -2,6 +2,7 @@
 
 #include "GameManager.h"
 #include "EventManager.h"
+#include "ServiceLocator.h"
 #include "LevelWonEvent.h"
 
 void Pengo::PengoPlayGame::Execute()
@@ -11,6 +12,12 @@ void Pengo::PengoPlayGame::Execute()
 
 void Pengo::PengoSkipLevel::Execute()
 {
-	std::cout << "skip \n",
 	Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<LevelWonEvent>(GetUserIdx()));
+}
+
+void Pengo::MuteSounds::Execute()
+{
+	auto& pSoundSys = Pengin::ServiceLocator::GetSoundSystem();
+
+	pSoundSys.IsMuted() ? pSoundSys.Unmute() : pSoundSys.Mute();
 }

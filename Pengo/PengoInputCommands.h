@@ -6,6 +6,7 @@
 
 namespace Pengo
 {
+	//Pengo
 	class Movement final : public Pengin::InputCommand
 	{
 	public:
@@ -18,12 +19,7 @@ namespace Pengo
 
 		const glm::vec3& GetDirection() const noexcept { return m_Direction; }
 
-		virtual ~Movement() override = default;
-
-		Movement(const Movement&) = delete;
-		Movement& operator=(const Movement&) = delete;
-		Movement(Movement&&) noexcept = delete;
-		Movement& operator=(Movement&&) noexcept = delete;
+		~Movement() = default;
 
 	private:
 		const glm::vec3 m_Direction;
@@ -38,14 +34,10 @@ namespace Pengo
 
 		void Execute() {}
 
-		virtual ~BreakBlock() override = default;
-
-		BreakBlock(const BreakBlock&) = delete;
-		BreakBlock& operator=(const BreakBlock&) = delete;
-		BreakBlock(BreakBlock&&) noexcept = delete;
-		BreakBlock& operator=(BreakBlock&&) noexcept = delete;
+		~BreakBlock() = default;
 	};
 
+	//Game
 	class PengoPlayGame final : public Pengin::InputCommand
 	{
 	public:
@@ -55,12 +47,7 @@ namespace Pengo
 
 		void Execute();
 
-		virtual ~PengoPlayGame() override = default;
-
-		PengoPlayGame(const PengoPlayGame&) = delete;
-		PengoPlayGame& operator=(const PengoPlayGame&) = delete;
-		PengoPlayGame(PengoPlayGame&&) noexcept = delete;
-		PengoPlayGame& operator=(PengoPlayGame&&) noexcept = delete;
+		~PengoPlayGame() = default;
 	};
 
 	class PengoSkipLevel final : public Pengin::InputCommand
@@ -72,13 +59,21 @@ namespace Pengo
 
 		void Execute();
 
-		virtual ~PengoSkipLevel() override = default;
-
-		PengoSkipLevel(const PengoSkipLevel&) = delete;
-		PengoSkipLevel& operator=(const PengoSkipLevel&) = delete;
-		PengoSkipLevel(PengoSkipLevel&&) noexcept = delete;
-		PengoSkipLevel& operator=(PengoSkipLevel&&) noexcept = delete;
+		~PengoSkipLevel() = default;
 	};
+
+	class MuteSounds final : public Pengin::InputCommand
+	{
+	public:
+		MuteSounds(const Pengin::UserIndex& user) :
+			Pengin::InputCommand{ user, "MuteSound" }
+		{ }
+
+		void Execute();
+
+		~MuteSounds() = default;
+	};
+	//-------
 }
 
 #endif

@@ -62,8 +62,6 @@ namespace Pengo
 						bonusScore = 10;
 					}
 
-					std::cout << "bonus: " << bonusScore << "\n";
-
 					auto pActiveScene = Pengin::SceneManager::GetInstance().GetActiveScene();
 					Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<ScoreCollectEvent>(bonusScore, pActiveScene->GetPlayer(levelWonEv.GetUserIdx()).GetEntityId()));
 					Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("LoadNextLevel")); 
@@ -99,16 +97,13 @@ namespace Pengo
 		Pengin::ChannelId m_BackGroundMusicId;
 
 		void LoadNextLevel();
-
-		void LoadLevel1();
-		void LoadLevel2();
-		void LoadLevel3();
-
-		void RegisterKeyboardInputLevel(const Pengin::InputData& inpData);
-		void RegisterControllerInputLevel(const Pengin::InputData& inpData);
+		void LoadLevel(uint8_t level);
 
 		void RegisterKeyboardInputUI(const Pengin::InputData& inpData);
 		void RegisterControllerInputUI(const Pengin::InputData& inpData);
+
+		void RegisterKeyboardInputLevel(const Pengin::InputData& inpData);
+		void RegisterControllerInputLevel(const Pengin::InputData& inpData);
 	};
 }
 
