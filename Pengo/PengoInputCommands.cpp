@@ -2,6 +2,7 @@
 
 #include "GameManager.h"
 #include "EventManager.h"
+#include "LevelWonEvent.h"
 
 void Pengo::PengoPlayGame::Execute()
 {
@@ -10,5 +11,6 @@ void Pengo::PengoPlayGame::Execute()
 
 void Pengo::PengoSkipLevel::Execute()
 {
-	Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("LevelWon"));
+	std::cout << "skip \n",
+	Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<LevelWonEvent>(GetUserIdx()));
 }

@@ -6,6 +6,10 @@
 #include "SceneManager.h"
 #include "EventManager.h"
 #include "ServiceLocator.h"
+#include "Scene.h"
+#include "ScoreCollectEvent.h"
+#include "LevelWonEvent.h"
+#include "Entity.h"
 
 #include <chrono>
 
@@ -29,7 +33,42 @@ namespace Pengo
 
 		{ 
 			m_pObserver->RegisterForEvent(m_pObserver, "PlayGame", [this](const Pengin::BaseEvent&) { LoadNextLevel(); });
-			m_pObserver->RegisterForEvent(m_pObserver, "LevelWon", [this](const Pengin::BaseEvent&) { Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("LoadNextLevel")); });
+			m_pObserver->RegisterForEvent(m_pObserver, "LevelWon", [this](const Pengin::BaseEvent& event) 
+				{ 
+					const auto& levelWonEv{ static_cast<const LevelWonEvent&>(event) };
+
+					const auto winTime{ std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - m_LevelStartTime).count() };
+					
+					unsigned bonusScore{ 0 };
+
+					if (winTime < 20)
+					{
+						bonusScore = 5000;
+					}					
+					else if (winTime < 30)
+					{
+						bonusScore = 2000;
+					}
+					else if (winTime < 40)
+					{
+						bonusScore = 1000;
+					}
+					else if (winTime < 50)
+					{
+						bonusScore = 500;
+					}
+					else if (winTime < 60)
+					{
+						bonusScore = 10;
+					}
+
+					std::cout << "bonus: " << bonusScore << "\n";
+
+					auto pActiveScene = Pengin::SceneManager::GetInstance().GetActiveScene();
+					Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<ScoreCollectEvent>(bonusScore, pActiveScene->GetPlayer(levelWonEv.GetUserIdx()).GetEntityId()));
+					Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("LoadNextLevel")); 
+				});
+
 			m_pObserver->RegisterForEvent(m_pObserver, "GameOver", [this](const Pengin::BaseEvent&) 
 				{
 					assert(m_BackGroundMusicId != Pengin::GameUUID::INVALID_UUID);

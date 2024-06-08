@@ -2,6 +2,8 @@
 #include <SDL_ttf.h>
 #include "Font.h"
 
+//Unregister in destructor TODO
+
 TTF_Font* dae::Font::GetFont() const {
 	return m_font;
 }

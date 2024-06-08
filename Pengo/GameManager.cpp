@@ -24,6 +24,8 @@
 #include "TxtDisplayComponent.h"
 
 
+#include <iostream>
+
 void Pengo::GameManager::LoadUI()
 {
 	using namespace Pengin;
@@ -188,6 +190,10 @@ void Pengo::GameManager::LoadLevel2()
 		const auto& scoreComp = p.GetComponent<ScoreComponent>();
 		const auto& healthComp = p.GetComponent<HealthComponent>();
 
+		std::cout << player.GetUUID_PrettyStr() << "\n";
+
+		std::cout << scoreComp.score << "\n";
+
 		oldPlayerData.emplace_back(userIdx, scoreComp.score, healthComp.health);
 	}
 
@@ -337,9 +343,9 @@ void Pengo::GameManager::LoadLevel2()
 
 			textComp.SetText(displayComp.prefix + std::to_string(scoreComp.score) + displayComp.postfix);
 		}
-
-		m_LevelStartTime = std::chrono::steady_clock::now();
 	}
+
+	m_LevelStartTime = std::chrono::steady_clock::now();
 }
 
 void Pengo::GameManager::LoadLevel3()
@@ -441,9 +447,7 @@ void Pengo::GameManager::RegisterKeyboardInputLevel(const Pengin::InputData& inp
 	SoundData data{ "../Data/Audio/Act Start.mp3" };
 
 	ServiceLocator::GetSoundSystem().LoadSound(data);
-
-	input.MapKeyboardAction(userIndex, KeyBoardKey::B, InputState::DownThisFrame, std::make_shared<MakeSound>(userIndex, data));
-	input.MapKeyboardAction(userIndex, KeyBoardKey::X, InputState::DownThisFrame, std::make_shared<PengoSkipLevel>(userIndex));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::X, InputState::UpThisFrame, std::make_shared<PengoSkipLevel>(userIndex));
 
 	auto a1 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::T, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "T down"));
 	auto a2 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::Y, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "Y down"));

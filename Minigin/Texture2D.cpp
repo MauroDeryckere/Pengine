@@ -1,6 +1,8 @@
 #include <SDL.h>
 #include "Texture2D.h"
 
+//Unregister in destructor TODO
+
 #include <iostream>
 
 dae::Texture2D::Texture2D(SDL_Texture* texture, const std::string& path):
