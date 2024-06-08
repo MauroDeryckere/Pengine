@@ -44,6 +44,8 @@ namespace Pengin
         [[nodiscard]] const UserIndex RegisterUser(UserType usertype) noexcept;
         void RegisterUser(const UserIndex& index, UserType usertype) noexcept;
 
+        bool UnRegisterUser(const UserIndex& index) noexcept;
+
         std::shared_ptr<InputCommand> MapControllerAction(const UserIndex& userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
         std::shared_ptr<InputCommand> MapKeyboardAction(const UserIndex& userIdx, KeyBoardKey key, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept;
 
@@ -73,6 +75,7 @@ namespace Pengin
         friend class JsonSerializer;
 
         std::unordered_map<UserIndex, size_t> m_UserIdx_VecIdxMap; //Maps the userindex (UUID) to the correspending index in all vectors below
+        std::unordered_map<size_t, UserIndex> m_VecIdx_UserIdxMap; //Maintain a reverse map to make unregistering easier
 
         std::vector<std::pair<UserType, std::vector<std::unique_ptr<InputDevice>>>> m_RegisteredUsers;
         

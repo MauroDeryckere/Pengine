@@ -139,6 +139,7 @@ namespace Pengin
 		m_ExecutedActionsThisFrame.emplace_back();
 
 		m_UserIdx_VecIdxMap[index] = userVecIdx;
+		m_VecIdx_UserIdxMap[userVecIdx] = index;
 
 		switch (usertype)
 		{
@@ -155,6 +156,47 @@ namespace Pengin
 		}
 
 		DEBUG_OUT("registered user UservecIdx: " << userVecIdx << " user uuid: " << index.GetUUID_PrettyStr());
+	}
+
+	bool InputManager::UnRegisterUser(const UserIndex& index) noexcept
+	{
+		auto it = m_UserIdx_VecIdxMap.find(index);
+
+		assert(it != end(m_UserIdx_VecIdxMap) && "user not added");
+
+		if (it == end(m_UserIdx_VecIdxMap))
+		{
+			return false;
+		}
+
+		const auto vecIdx = it->second;
+		const auto& backUUID = m_VecIdx_UserIdxMap.at(m_RegisteredUsers.size() - 1);
+
+		std::swap(m_InputBuffers[vecIdx], m_InputBuffers.back());
+		m_InputBuffers.pop_back();
+
+		std::swap(m_InputCombos[vecIdx], m_InputCombos.back());
+		m_InputCombos.pop_back();
+
+		std::swap(m_ExecutedActionsThisFrame[vecIdx], m_ExecutedActionsThisFrame.back());
+		m_ExecutedActionsThisFrame.pop_back();
+		
+		const UserType uType = m_RegisteredUsers[vecIdx].first;
+		if (uType == UserType::Controller)
+		{
+			--m_RegControllers;
+		}
+	
+		std::swap(m_RegisteredUsers[vecIdx], m_RegisteredUsers.back());
+		m_RegisteredUsers.pop_back();
+		
+		m_UserIdx_VecIdxMap[backUUID] = vecIdx;
+		m_UserIdx_VecIdxMap.erase(it);
+
+		m_VecIdx_UserIdxMap[vecIdx] = backUUID;
+		m_VecIdx_UserIdxMap.erase(m_RegisteredUsers.size());
+
+		return true;
 	}
 
 	std::shared_ptr<InputCommand> InputManager::MapControllerAction(const UserIndex& userIdx, ControllerButton button, InputState inputState, std::shared_ptr<InputCommand> pInputAction) noexcept
