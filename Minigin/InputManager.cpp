@@ -190,8 +190,8 @@ namespace Pengin
 		std::swap(m_RegisteredUsers[vecIdx], m_RegisteredUsers.back());
 		m_RegisteredUsers.pop_back();
 		
-		m_UserIdx_VecIdxMap[backUUID] = vecIdx;
 		m_UserIdx_VecIdxMap.erase(it);
+		m_UserIdx_VecIdxMap[backUUID] = vecIdx;
 
 		m_VecIdx_UserIdxMap[vecIdx] = backUUID;
 		m_VecIdx_UserIdxMap.erase(m_RegisteredUsers.size());

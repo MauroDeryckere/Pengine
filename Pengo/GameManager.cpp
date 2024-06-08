@@ -73,6 +73,25 @@ void Pengo::GameManager::LoadStartUI()
 	auto kbBind4 = pScene->CreateEntity({ 50.f, 260.f, 0.f });
 	kbBind4.AddComponent<TextComponent>("Lingua.otf", 25, "F2: Toggle sound");
 	kbBind4.AddComponent<SpriteComponent>();
+
+
+	auto ctrBinds = pScene->CreateEntity({ 50.f, 300.f, 0.f });
+	ctrBinds.AddComponent<TextComponent>("Lingua.otf", 48, "Controller keybinds");
+	ctrBinds.AddComponent<SpriteComponent>();
+
+	auto cBind1 = pScene->CreateEntity({ 50.f, 350.f, 0.f });
+	cBind1.AddComponent<TextComponent>("Lingua.otf", 25, "Dpad: directional movement");
+	cBind1.AddComponent<SpriteComponent>();
+	auto cBind2 = pScene->CreateEntity({ 50.f, 385.f, 0.f });
+	cBind2.AddComponent<TextComponent>("Lingua.otf", 25, "A: Push/Break block");
+	cBind2.AddComponent<SpriteComponent>();
+
+	auto cBind3 = pScene->CreateEntity({ 50.f, 430.f, 0.f });
+	cBind3.AddComponent<TextComponent>("Lingua.otf", 25, "Ls: Skip level");
+	cBind3.AddComponent<SpriteComponent>();
+	auto cBind4 = pScene->CreateEntity({ 50.f, 460.f, 0.f });
+	cBind4.AddComponent<TextComponent>("Lingua.otf", 25, "Rs: Toggle sound");
+	cBind4.AddComponent<SpriteComponent>();
 }
 
 void Pengo::GameManager::LoadNextLevel()
@@ -144,19 +163,47 @@ void Pengo::GameManager::LoadLevel(uint8_t level)
 
 	if (singlePlayerKeyboard)
 	{
-		const auto& uIdx = pScene->GetPlayer(pScene->GetSceneData().playerUUIDs[CONTROLLER_IDX]).GetComponent<PlayerComponent>().userIdx;
-		pScene->DestroyEntity(pScene->GetSceneData().playerUUIDs[CONTROLLER_IDX]);
+		const auto p = pScene->GetEntity(pScene->GetSceneData().playerUUIDs[CONTROLLER_IDX]);
+		const auto& uIdx = p.GetComponent<PlayerComponent>().userIdx;
+
+		const auto& healthComp = p.GetComponent<HealthComponent>();
+		const auto& scoreComp = p.GetComponent<ScoreComponent>();
+
+		for (const auto dis : healthComp.healthDisplayIds)
+		{
+			pScene->DestroyEntity(dis);
+		}
+		for (const auto dis : scoreComp.scoreDisplays)
+		{
+			pScene->DestroyEntity(dis);
+		}
 
 		InputManager::GetInstance().UnRegisterUser(uIdx);
 		pScene->RemovePlayer(uIdx);
+		
+		pScene->DestroyEntity(p.GetEntityId());
 	}
 	else
 	{
-		const auto& uIdx = pScene->GetPlayer(pScene->GetSceneData().playerUUIDs[KEYBOARD_IDX]).GetComponent<PlayerComponent>().userIdx;
-		pScene->DestroyEntity(pScene->GetSceneData().playerUUIDs[KEYBOARD_IDX]);
+		const auto p = pScene->GetEntity(pScene->GetSceneData().playerUUIDs[KEYBOARD_IDX]);
+		const auto& uIdx = p.GetComponent<PlayerComponent>().userIdx;
+
+		const auto& healthComp = p.GetComponent<HealthComponent>();
+		const auto& scoreComp = p.GetComponent<ScoreComponent>();
+
+		for (const auto dis : healthComp.healthDisplayIds)
+		{
+			pScene->DestroyEntity(dis);
+		}
+		for (const auto dis : scoreComp.scoreDisplays)
+		{
+			pScene->DestroyEntity(dis);
+		}
 
 		InputManager::GetInstance().UnRegisterUser(uIdx);
 		pScene->RemovePlayer(uIdx);
+
+		pScene->DestroyEntity(p.GetEntityId());
 	}
 
 	pScene->RegisterSystems([&](SystemManager& sysManager, ECS& ecs)
@@ -446,6 +493,41 @@ void Pengo::GameManager::SaveScores()
 	outFile.close();
 }
 
+void Pengo::GameManager::RegisterKeyboardInputLevel(const Pengin::InputData& inpData)
+{
+	using namespace Pengin;
+
+	auto& input = InputManager::GetInstance();
+
+	const auto& userIndex = std::get<0>(inpData);
+	assert(userIndex);
+
+	input.MapKeyboardAction(userIndex, KeyBoardKey::Left, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ -1, 0, 0 }));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::Right, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 1, 0, 0 }));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::Up, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, -1, 0 }));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::Down, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, 1, 0 }));
+
+	input.MapKeyboardAction(userIndex, KeyBoardKey::E, InputState::Pressed, std::make_shared<Pengo::BreakBlock>(userIndex));
+
+	input.MapKeyboardAction(userIndex, KeyBoardKey::F1, InputState::UpThisFrame, std::make_shared<PengoSkipLevel>(userIndex));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::F2, InputState::DownThisFrame, std::make_shared<MuteSounds>(userIndex));
+
+	auto a1 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::T, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "T down"));
+	auto a2 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::Y, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "Y down"));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::U, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "U down"));
+
+	//Example of mapping a combo
+	InputCombo combo;
+	combo.pComboActions.emplace_back(a1);
+	combo.pComboActions.emplace_back(a2);
+
+	combo.allowedDelay.emplace_back(1.f);
+
+	auto a3 = std::make_shared<InpDebugCommand>(userIndex, "Resulting action");
+	combo.pResultingAction = a3;
+	input.MapCombo(userIndex, combo);
+}
+
 
 void Pengo::GameManager::RegisterControllerInputLevel(const Pengin::InputData& inpData)
 {
@@ -460,6 +542,11 @@ void Pengo::GameManager::RegisterControllerInputLevel(const Pengin::InputData& i
 	input.MapControllerAction(userIndex, ControllerButton::DPadRight, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 1, 0, 0 }));
 	input.MapControllerAction(userIndex, ControllerButton::DPadUp, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, -1, 0 }));
 	input.MapControllerAction(userIndex, ControllerButton::DPadDown, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, 1, 0 }));
+
+	input.MapControllerAction(userIndex, ControllerButton::A, InputState::Pressed, std::make_shared<Pengo::BreakBlock>(userIndex));
+
+	input.MapControllerAction(userIndex, ControllerButton::LeftShoulder, InputState::Pressed, std::make_shared<PengoSkipLevel>(userIndex));
+	input.MapControllerAction(userIndex, ControllerButton::RightShoulder, InputState::Pressed, std::make_shared<MuteSounds>(userIndex));
 }
 
 void Pengo::GameManager::RegisterKeyboardInputUI(const Pengin::InputData& inpData)
@@ -505,11 +592,6 @@ void Pengo::GameManager::RegisterKeyboardInputGameEndUI(const Pengin::InputData&
 
 void Pengo::GameManager::RegisterControllerInputGameEndUI(const Pengin::InputData& inpData)
 {
-	inpData;
-}
-
-void Pengo::GameManager::RegisterKeyboardInputLevel(const Pengin::InputData& inpData)
-{
 	using namespace Pengin;
 
 	auto& input = InputManager::GetInstance();
@@ -517,28 +599,10 @@ void Pengo::GameManager::RegisterKeyboardInputLevel(const Pengin::InputData& inp
 	const auto& userIndex = std::get<0>(inpData);
 	assert(userIndex);
 
-	input.MapKeyboardAction(userIndex, KeyBoardKey::Left, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ -1, 0, 0 }));
-	input.MapKeyboardAction(userIndex, KeyBoardKey::Right, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 1, 0, 0 }));
-	input.MapKeyboardAction(userIndex, KeyBoardKey::Up, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, -1, 0 }));
-	input.MapKeyboardAction(userIndex, KeyBoardKey::Down, InputState::Pressed, std::make_shared<Movement>(userIndex, glm::vec3{ 0, 1, 0 }));
+	input.MapControllerAction(userIndex, ControllerButton::DPadDown, InputState::DownThisFrame, std::make_shared<SelectLetter>(userIndex, glm::vec3{ -1, 0, 0 }));
+	input.MapControllerAction(userIndex, ControllerButton::DPadRight, InputState::DownThisFrame, std::make_shared<SelectLetter>(userIndex, glm::vec3{ 1, 0, 0 }));
+	input.MapControllerAction(userIndex, ControllerButton::DPadUp, InputState::DownThisFrame, std::make_shared<SelectLetter>(userIndex, glm::vec3{ 0, -1, 0 }));
+	input.MapControllerAction(userIndex, ControllerButton::DPadDown, InputState::DownThisFrame, std::make_shared<SelectLetter>(userIndex, glm::vec3{ 0, 1, 0 }));
 
-	input.MapKeyboardAction(userIndex, KeyBoardKey::E, InputState::Pressed, std::make_shared<Pengo::BreakBlock>(userIndex));
-
-	input.MapKeyboardAction(userIndex, KeyBoardKey::F1, InputState::UpThisFrame, std::make_shared<PengoSkipLevel>(userIndex));
-	input.MapKeyboardAction(userIndex, KeyBoardKey::F2, InputState::DownThisFrame, std::make_shared<MuteSounds>(userIndex));
-
-	auto a1 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::T, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "T down"));
-	auto a2 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::Y, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "Y down"));
-	input.MapKeyboardAction(userIndex, KeyBoardKey::U, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "U down"));
-
-	//Example of mapping a combo
-	InputCombo combo;
-	combo.pComboActions.emplace_back(a1);
-	combo.pComboActions.emplace_back(a2);
-
-	combo.allowedDelay.emplace_back(1.f);
-
-	auto a3 = std::make_shared<InpDebugCommand>(userIndex, "Resulting action");
-	combo.pResultingAction = a3;
-	input.MapCombo(userIndex, combo);
+	input.MapControllerAction(userIndex, ControllerButton::A, InputState::DownThisFrame, std::make_shared<Continue>(userIndex));
 }

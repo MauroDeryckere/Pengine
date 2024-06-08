@@ -1337,6 +1337,9 @@
     <ClCompile Include="GridSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SceneData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\3rdParty\steamworks_sdk_158a\sdk\public\steam\steam_api.json" />

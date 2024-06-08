@@ -3,10 +3,13 @@
 
 #include "CoreIncludes.h"
 #include "SceneFileData.h"
+#include "PlayerComponent.h"
 
 namespace Pengin
 {
 	using UserIndex = GameUUID;
+
+	class Scene;
 
 	struct SceneData final
 	{
@@ -33,47 +36,9 @@ namespace Pengin
 			return GameUUID::INVALID_UUID;
 		}
 
-		void SetPlayerUUID(const UserIndex& userIdx, GameUUID playerUUID) noexcept
-		{
-			auto it = userUUID_VecIdxMap.find(userIdx);
+		void SetPlayerUUID(const UserIndex& userIdx, GameUUID playerUUID) noexcept;
 
-			if (it == end(userUUID_VecIdxMap))
-			{
-				playerUUIDs.emplace_back(playerUUID);
-				userUUID_VecIdxMap[userIdx] = playerUUIDs.size() - 1;
-				vecIdx_userUUIDMap[playerUUIDs.size() - 1] = userIdx;
-			}
-			else
-			{
-				DEBUG_OUT("Adding a player UUID for a userIdx that was already added, replacing it with given UUID");
-				playerUUIDs[(*it).second] = playerUUID;
-				vecIdx_userUUIDMap[it->second] = userIdx;
-
-			}
-		}
-
-		bool RemovePlayer(const UserIndex& userIdx) noexcept
-		{
-			auto it = userUUID_VecIdxMap.find(userIdx);
-			if (it == end(userUUID_VecIdxMap))
-			{
-				return false;
-			}
-
-			const auto& backUUID = playerUUIDs.back();
-			const auto vecIdx = it->second;
-
-			std::swap(playerUUIDs[vecIdx], playerUUIDs.back());
-			playerUUIDs.pop_back();
-
-			userUUID_VecIdxMap[backUUID] = vecIdx;
-			userUUID_VecIdxMap.erase(it);
-
-			vecIdx_userUUIDMap[vecIdx] = backUUID;
-			vecIdx_userUUIDMap.erase(playerUUIDs.size());
-
-			return true;
-		}
+		bool RemovePlayer(const UserIndex& userIdx, Scene* pScene) noexcept;
 	};
 }
 

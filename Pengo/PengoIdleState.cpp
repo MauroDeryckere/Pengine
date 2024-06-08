@@ -63,6 +63,8 @@ namespace Pengo
 
 	std::unique_ptr<Pengin::PlayerState> Pengo::PengoIdleState::HandleInput(const Pengin::UserIndex& userIndex)
 	{
+		userIndex;
+
 		if (m_Cooldown)
 		{
 			m_Cooldown = false;
@@ -70,14 +72,14 @@ namespace Pengo
 		}
 
 		std::shared_ptr<Pengin::InputCommand> pCommand;
-		if (Pengin::InputManager::GetInstance().IsActionExecuted(userIndex, "PengoMovement", &pCommand))
+		if (Pengin::InputManager::GetInstance().IsActionExecuted(GetUserIndex(), "PengoMovement", &pCommand))
 		{
 			assert(pCommand);
 			Pengo::Movement* pMovement{ static_cast<Pengo::Movement*>(pCommand.get()) };
 
-			return std::move(std::make_unique<PengoWalkState>(userIndex, pMovement->GetDirection()));
+			return std::move(std::make_unique<PengoWalkState>(GetUserIndex(), pMovement->GetDirection()));
 		}
-		if (Pengin::InputManager::GetInstance().IsActionExecuted(userIndex, "PengoBreakBlock"))
+		if (Pengin::InputManager::GetInstance().IsActionExecuted(GetUserIndex(), "PengoBreakBlock"))
 		{
 			return ValidateBlockBreak();
 		}

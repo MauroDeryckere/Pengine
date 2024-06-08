@@ -17,8 +17,12 @@ Minigin is a very small project using [SDL2](https://www.libsdl.org/) and [glm](
 ## Features
 
 ### ECS
+The Entity Component System (ECS) is a design pattern that allows for a flexible and modular approach to building game objects. It decouples data (components) from behaviour (systems), enabling efficient data management and processing. Additionally it provides great cache locality which can make the program a lot faster.
+
+P
 
 ### Event Queue
+The EvenManager manages game events, allowing for decoupled communication between different parts of the game. Events can be dispatched and handled asynchronously. 
 
 ### Serialization / Deserialization
 

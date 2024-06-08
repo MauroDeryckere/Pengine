@@ -38,6 +38,8 @@ namespace Pengin
 
 			GameUUID uuid{ uuidStr };
 			comp.gridId = entityMap.at(uuid);
+
+			std::cout << comp.gridId << "\n";
 		}
 	};
 

@@ -618,6 +618,7 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)..\Data" /E /Y
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneData.cpp" />
     <ClCompile Include="SceneInfoPanel.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="JsonSerializer.cpp" />

@@ -259,7 +259,7 @@ namespace Pengin
 
 	bool Scene::RemovePlayer(const UserIndex& userIdx) noexcept
 	{
-		return m_SceneData.RemovePlayer(userIdx);
+		return m_SceneData.RemovePlayer(userIdx, this);
 	}
 
 	Entity Scene::AddEntityFromFile(const std::filesystem::path& entityLoadPath, bool newUUID)

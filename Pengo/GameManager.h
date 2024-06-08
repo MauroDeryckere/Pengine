@@ -103,7 +103,14 @@ namespace Pengo
 		static constexpr size_t KEYBOARD_IDX{ 0 };
 		static constexpr size_t CONTROLLER_IDX{ 1 };
 
-		bool singlePlayerKeyboard{ true };
+		bool singlePlayerKeyboard{ false };
+
+		enum class GameMode : uint8_t
+		{
+			SingleplayerKeyboard = 0,
+			SingleplayerController = 1,
+			Multiplayer = 2
+		};
 
 		void LoadNextLevel();
 		void LoadLevel(uint8_t level);
