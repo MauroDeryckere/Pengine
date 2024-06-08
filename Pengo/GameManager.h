@@ -18,7 +18,7 @@ namespace Pengo
 	class GameManager final : public Pengin::Singleton<GameManager>
 	{
 	public:
-		void LoadUI();
+		void LoadStartUI();
 
 		GameManager(const GameManager&) = delete;
 		GameManager(GameManager&&) = delete;
@@ -33,10 +33,8 @@ namespace Pengo
 
 		{ 
 			m_pObserver->RegisterForEvent(m_pObserver, "PlayGame", [this](const Pengin::BaseEvent&) { LoadNextLevel(); });
-			m_pObserver->RegisterForEvent(m_pObserver, "LevelWon", [this](const Pengin::BaseEvent& event) 
+			m_pObserver->RegisterForEvent(m_pObserver, "LevelWon", [this](const Pengin::BaseEvent& ) 
 				{ 
-					const auto& levelWonEv{ static_cast<const LevelWonEvent&>(event) };
-
 					const auto winTime{ std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - m_LevelStartTime).count() };
 					
 					unsigned bonusScore{ 0 };
@@ -63,7 +61,12 @@ namespace Pengo
 					}
 
 					auto pActiveScene = Pengin::SceneManager::GetInstance().GetActiveScene();
-					Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<ScoreCollectEvent>(bonusScore, pActiveScene->GetPlayer(levelWonEv.GetUserIdx()).GetEntityId()));
+					for (const auto& player : pActiveScene->GetSceneData().playerUUIDs) //all players get bonus score
+					{
+						auto p = pActiveScene->GetEntity(player);
+						Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<ScoreCollectEvent>(bonusScore, p.GetEntityId()));
+					}
+
 					Pengin::EventManager::GetInstance().BroadcoastEvent(std::make_unique<Pengin::BaseEvent>("LoadNextLevel")); 
 				});
 
@@ -72,7 +75,7 @@ namespace Pengo
 					assert(m_BackGroundMusicId != Pengin::GameUUID::INVALID_UUID);
 					Pengin::ServiceLocator::GetSoundSystem().StopPlaying(m_BackGroundMusicId);
 					m_CurrLevel = 0;
-					LoadUI(); 
+					LoadGameEndUI(false);
 				});
 
 			m_pObserver->RegisterForEvent(m_pObserver, "GameWon", [this](const Pengin::BaseEvent&)
@@ -80,11 +83,12 @@ namespace Pengo
 					assert(m_BackGroundMusicId != Pengin::GameUUID::INVALID_UUID);
 					Pengin::ServiceLocator::GetSoundSystem().StopPlaying(m_BackGroundMusicId);
 					m_CurrLevel = 0;
-					LoadUI();
+					LoadGameEndUI(true);
 				});
 
 
 			m_pObserver->RegisterForEvent(m_pObserver, "LoadNextLevel", [this](const Pengin::BaseEvent&) { LoadNextLevel(); });
+			m_pObserver->RegisterForEvent(m_pObserver, "BackToMainMenu", [this](const Pengin::BaseEvent&) { SaveScores(); LoadStartUI(); });
 		}
 
 		~GameManager() = default;
@@ -99,8 +103,15 @@ namespace Pengo
 		void LoadNextLevel();
 		void LoadLevel(uint8_t level);
 
+		void LoadGameEndUI(bool wonGame);
+
+		void SaveScores();
+
 		void RegisterKeyboardInputUI(const Pengin::InputData& inpData);
 		void RegisterControllerInputUI(const Pengin::InputData& inpData);
+
+		void RegisterKeyboardInputGameEndUI(const Pengin::InputData& inpData);
+		void RegisterControllerInputGameEndUI(const Pengin::InputData& inpData);
 
 		void RegisterKeyboardInputLevel(const Pengin::InputData& inpData);
 		void RegisterControllerInputLevel(const Pengin::InputData& inpData);

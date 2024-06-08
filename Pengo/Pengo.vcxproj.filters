@@ -37,6 +37,9 @@
     <Filter Include="Header Files\State\SnoBee">
       <UniqueIdentifier>{4ae8fd86-cff6-4862-a273-c1fb44286a21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\EndScreen">
+      <UniqueIdentifier>{b5d10761-afba-4dcc-962a-c04123b49ecf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -169,6 +172,12 @@
     </ClInclude>
     <ClInclude Include="LevelWonEvent.h">
       <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="UISelectorComponent.h">
+      <Filter>Header Files\Components\EndScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="UILetterComponent.h">
+      <Filter>Header Files\Components\EndScreen</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

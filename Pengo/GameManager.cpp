@@ -27,9 +27,16 @@
 #include "TxtDisplayComponent.h"
 #include "textComponent.h"
 
-#include <iostream>
+#include "UISelectorComponent.h"
+#include "UILetterComponent.h"
 
-void Pengo::GameManager::LoadUI()
+#include <iostream>
+#include <fstream> // Include the header for file I/O
+#include <filesystem>
+#include <algorithm>
+
+
+void Pengo::GameManager::LoadStartUI()
 {
 	using namespace Pengin;
 
@@ -242,6 +249,188 @@ void Pengo::GameManager::LoadLevel(uint8_t level)
 	m_LevelStartTime = std::chrono::steady_clock::now();
 }
 
+void Pengo::GameManager::LoadGameEndUI(bool wonGame)
+{
+	using namespace Pengin;
+	
+	auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
+	
+	std::vector<std::pair<GameUUID, unsigned>> oldScores;
+	for (const auto& player : pActiveScene->GetSceneData().playerUUIDs)
+	{
+		auto p = pActiveScene->GetEntity(player);
+		const auto& userIdx = p.GetComponent<PlayerComponent>().userIdx;
+		const auto& scoreComp = p.GetComponent<ScoreComponent>();
+
+		oldScores.emplace_back(userIdx, scoreComp.score);
+	}
+
+	SceneData sceneData{};
+	sceneData.name = "Pengo EndScreen";
+
+	SceneFileData data{};
+	data.inputFilePath = "../Data/InputData.json";
+
+	data.f_RegKeyboardInput = [this](const Pengin::InputData& data) { RegisterKeyboardInputGameEndUI(data); };
+	data.f_RegControllerInput = [this](const Pengin::InputData& data) { RegisterControllerInputGameEndUI(data); };
+
+	sceneData.sceneFileData = data;
+	auto pScene = SceneManager::GetInstance().CreateScene(sceneData);
+
+	auto ent = pScene->CreateEntity({ 50.f, 20.f, 0.f });
+	if (wonGame)
+	{
+		ent.AddComponent<TextComponent>("Lingua.otf", 56, "Victory");
+	}
+	else
+	{
+		ent.AddComponent<TextComponent>("Lingua.otf", 56, "Game Over");
+	}
+	ent.AddComponent<SpriteComponent>();
+
+
+	for (auto idx = 0; const auto& score : oldScores)
+	{
+		auto scoreDispl = pScene->CreateEntity({ 50.f, 100.f + idx * 50.f, 0.f });
+		scoreDispl.AddComponent<TextComponent>("Lingua.otf", 36, "P" + std::to_string(idx) + " Score: " + std::to_string(score.second));
+		scoreDispl.AddComponent<SpriteComponent>();
+
+		auto player = pScene->CreateEntity();
+		pScene->SetPlayer(score.first, player);
+		auto& uiSelector = player.AddComponent<UISelectorComponent>();
+
+
+		auto letter1 = pScene->CreateEntity({ 400.f, 100.f + idx * 50.f , 0.f });
+		letter1.AddComponent<TextComponent>("Lingua.otf", 36, "A");
+		letter1.AddComponent<SpriteComponent>();
+		letter1.AddComponent<UILetterComponent>();
+		auto letter2 = pScene->CreateEntity({ 425.f, 100.f + idx * 50.f , 0.f });
+		letter2.AddComponent<TextComponent>("Lingua.otf", 36, "A");
+		letter2.AddComponent<SpriteComponent>();
+		letter2.AddComponent<UILetterComponent>();
+		auto letter3 = pScene->CreateEntity({ 450.f, 100.f + idx * 50.f , 0.f });
+		letter3.AddComponent<TextComponent>("Lingua.otf", 36, "A");
+		letter3.AddComponent<SpriteComponent>();
+		letter3.AddComponent<UILetterComponent>();
+
+		uiSelector.score = score.second;
+
+		uiSelector.letters.emplace_back(letter1.GetEntityId());
+		uiSelector.letters.emplace_back(letter2.GetEntityId());
+		uiSelector.letters.emplace_back(letter3.GetEntityId());
+
+		++idx;
+	}
+
+
+	std::ifstream inFile("../Data/Highscores.txt");
+	
+	unsigned idx = 0;
+
+	std::string line;
+	while (std::getline(inFile, line))
+	{
+		++idx;
+
+		if (idx == 11)
+		{
+			break;
+		}
+
+		std::istringstream iss(line);
+
+		std::string name;
+		unsigned score;
+
+		iss >> name >> score;
+
+		auto hs = pScene->CreateEntity({ 50.f, 300.f + idx * 40.f, 0.f });
+		hs.AddComponent<TextComponent>("Lingua.otf", 36, std::to_string(idx) + "    " + name + "    " + std::to_string(score));
+		hs.AddComponent<SpriteComponent>();
+	}
+
+	auto contText = pScene->CreateEntity({ 50.f, 750.f, 0.f });
+	contText.AddComponent<TextComponent>("Lingua.otf", 48, "Press space to continue");
+	contText.AddComponent<SpriteComponent>();
+}
+
+void Pengo::GameManager::SaveScores()
+{
+	using namespace Pengin;
+	namespace fs = std::filesystem;
+
+	struct PlayerScore
+	{
+		std::string name;
+		unsigned score;
+
+		bool operator<(const PlayerScore& other) const
+		{
+			if (score == other.score)
+			{
+				return name < other.name;
+			}
+
+			return score > other.score;
+		}
+	};
+
+	std::vector<PlayerScore> scores;
+
+	std::ifstream inFile("../Data/Highscores.txt");
+	if (inFile.is_open())
+	{
+		std::string line;
+		while (std::getline(inFile, line))
+		{
+			std::istringstream iss(line);
+			std::string name;
+			unsigned score;
+
+			iss >> name >> score;
+
+			scores.emplace_back(name, score);
+		}
+
+		inFile.close();
+	}
+
+	auto pScene = SceneManager::GetInstance().GetActiveScene();
+
+	for (const auto& player : pScene->GetSceneData().playerUUIDs)
+	{
+		auto p = pScene->GetEntity(player);
+
+		const auto& uiSel = p.GetComponent<UISelectorComponent>();
+
+		std::string name;
+
+		for (auto l : uiSel.letters)
+		{
+			name += Entity{ l, pScene }.GetComponent<UILetterComponent>().letter;
+		}
+
+		scores.emplace_back(name, uiSel.score);
+	}
+
+	std::sort(scores.begin(), scores.end());
+
+	std::ofstream outFile("../Data/Highscores.txt");
+	if (!outFile.is_open())
+	{
+		std::cerr << "Failed to open file for writing.\n";
+		return;
+	}
+
+	for (const auto& playerScore : scores)
+	{
+		outFile << playerScore.name << " " << playerScore.score << "\n";
+	}
+
+	outFile.close();
+}
+
+
 void Pengo::GameManager::RegisterControllerInputLevel(const Pengin::InputData& inpData)
 {
 	using namespace Pengin;
@@ -266,7 +455,7 @@ void Pengo::GameManager::RegisterKeyboardInputUI(const Pengin::InputData& inpDat
 	const auto& userIndex = std::get<0>(inpData);
 	assert(userIndex);
 
-	input.MapKeyboardAction(userIndex, KeyBoardKey::SpaceBar, InputState::Pressed, std::make_shared<PengoPlayGame>(userIndex));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::SpaceBar, InputState::DownThisFrame, std::make_shared<PengoPlayGame>(userIndex));
 }
 
 void Pengo::GameManager::RegisterControllerInputUI(const Pengin::InputData& inpData)
@@ -279,6 +468,28 @@ void Pengo::GameManager::RegisterControllerInputUI(const Pengin::InputData& inpD
 	assert(userIndex);
 
 	input.MapControllerAction(userIndex, ControllerButton::A, InputState::Pressed, std::make_shared<PengoPlayGame>(userIndex));
+}
+
+void Pengo::GameManager::RegisterKeyboardInputGameEndUI(const Pengin::InputData& inpData)
+{
+	using namespace Pengin;
+
+	auto& input = InputManager::GetInstance();
+
+	const auto& userIndex = std::get<0>(inpData);
+	assert(userIndex);
+
+	input.MapKeyboardAction(userIndex, KeyBoardKey::Left, InputState::DownThisFrame, std::make_shared<SelectLetter>(userIndex, glm::vec3{ -1, 0, 0 }));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::Right, InputState::DownThisFrame, std::make_shared<SelectLetter>(userIndex, glm::vec3{ 1, 0, 0 }));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::Up, InputState::DownThisFrame, std::make_shared<SelectLetter>(userIndex, glm::vec3{ 0, -1, 0 }));
+	input.MapKeyboardAction(userIndex, KeyBoardKey::Down, InputState::DownThisFrame, std::make_shared<SelectLetter>(userIndex, glm::vec3{ 0, 1, 0 }));
+
+	input.MapKeyboardAction(userIndex, KeyBoardKey::SpaceBar, InputState::DownThisFrame, std::make_shared<Continue>(userIndex));
+}
+
+void Pengo::GameManager::RegisterControllerInputGameEndUI(const Pengin::InputData& inpData)
+{
+	inpData;
 }
 
 void Pengo::GameManager::RegisterKeyboardInputLevel(const Pengin::InputData& inpData)

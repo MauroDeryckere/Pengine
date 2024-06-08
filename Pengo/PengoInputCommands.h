@@ -4,6 +4,8 @@
 #include "InputCommand.h"
 #include <memory>
 
+#include <glm/vec2.hpp>
+
 namespace Pengo
 {
 	//Pengo
@@ -74,6 +76,38 @@ namespace Pengo
 		~MuteSounds() = default;
 	};
 	//-------
+
+	//end Screen
+	class Continue final : public Pengin::InputCommand
+	{
+	public:
+		Continue(const Pengin::UserIndex& user) :
+			Pengin::InputCommand{ user, "BackToMainMenu" }
+		{ }
+
+		void Execute();
+
+		~Continue() = default;
+	};
+
+	class SelectLetter final : public Pengin::InputCommand
+	{
+	public:
+		SelectLetter(const Pengin::UserIndex& user, const glm::vec2& dir) :
+			Pengin::InputCommand{ user, "SelectLetrer" },
+			m_Direction{ dir }
+		{ 
+			assert(!(dir.x == 0 && dir.y == 0));
+		}
+
+		void Execute();
+
+		~SelectLetter() = default;
+
+	private:
+		const glm::vec2 m_Direction;
+	};
+	//----------
 }
 
 #endif

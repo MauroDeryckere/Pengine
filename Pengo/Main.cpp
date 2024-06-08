@@ -65,7 +65,7 @@ void LoadPengo()
 {
 	Pengin::ServiceLocator::GetSoundSystem().LoadSoundsFromFolder("../Data/Audio");
 
-	Pengo::GameManager::GetInstance().LoadUI();
+	Pengo::GameManager::GetInstance().LoadStartUI();
 }
 
 void LoadSceneGraphDemo()

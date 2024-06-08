@@ -1,0 +1,2 @@
+name: AAA, score: 15000
+name: AAA, score: 15000
