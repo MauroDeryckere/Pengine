@@ -116,8 +116,6 @@ namespace Pengin
 		{
 			auto& comp = ecs.AddComponent<AnimationComponent>(id);
 
-			std::cout << "deser animation comp" << "\n";
-
 			fieldSer.DeserializeField("AnimationData", comp.animations, serializedFields, entityMap);
 
 			fieldSer.DeserializeField("FrameTimer", comp.frameTimer, serializedFields, entityMap);

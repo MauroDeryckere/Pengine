@@ -14,7 +14,7 @@ namespace Pengo
 			BaseEvent{ "LevelWon" },
 			m_UserIdx{ userIdx }
 		{
-			assert(entityId != Pengin::GameUUID::INVALID_UUID);
+			assert(userIdx != Pengin::GameUUID::INVALID_UUID);
 		}
 
 		~LevelWonEvent() = default;
