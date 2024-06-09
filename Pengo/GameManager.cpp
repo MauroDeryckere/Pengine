@@ -348,12 +348,16 @@ void Pengo::GameManager::LoadLevel(uint8_t level)
 	levelText.AddComponent<SpriteComponent>();
 
 	m_LevelStartTime = std::chrono::steady_clock::now();
+
+	ServiceLocator::GetSoundSystem().PlaySound(SoundData{ "../Data/Audio/Act Start.mp3" });
 }
 
 void Pengo::GameManager::LoadGameEndUI(bool wonGame)
 {
 	using namespace Pengin;
 	
+	m_NameEnterId = ServiceLocator::GetSoundSystem().PlaySound(SoundData{ "../Data/Audio/Name Entry.mp3" });
+
 	auto pActiveScene = SceneManager::GetInstance().GetActiveScene();
 	
 	std::vector<std::pair<GameUUID, unsigned>> oldScores;

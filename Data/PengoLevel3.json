@@ -1128,7 +1128,7 @@
         "IsVisible": true
       },
       "struct Pengo::SnobeeComponent": {
-        "MovementSpeed": 75
+        "MovementSpeed": 45
       },
       "struct Pengin::RectColliderComponent": {
         "CollRect": [
@@ -1262,7 +1262,7 @@
         "IsVisible": true
       },
       "struct Pengo::SnobeeComponent": {
-        "MovementSpeed": 75
+        "MovementSpeed": 45
       },
       "struct Pengin::RectColliderComponent": {
         "CollRect": [
@@ -1396,7 +1396,7 @@
         "IsVisible": true
       },
       "struct Pengo::SnobeeComponent": {
-        "MovementSpeed": 75
+        "MovementSpeed": 45
       },
       "struct Pengin::RectColliderComponent": {
         "CollRect": [
@@ -1739,7 +1739,7 @@
         "IsPlaying": true
       },
       "struct Pengo::PengoComponent": {
-        "MovementSpeed": 50
+        "MovementSpeed": 65
       },
       "struct Pengo::ScoreComponent": {
         "Score": 0,
@@ -2084,7 +2084,7 @@
         "IsPlaying": true
       },
       "struct Pengo::PengoComponent": {
-        "MovementSpeed": 50
+        "MovementSpeed": 65
       },
       "struct Pengo::ScoreComponent": {
         "Score": 0,

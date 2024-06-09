@@ -1128,7 +1128,7 @@
         "IsVisible": true
       },
       "struct Pengo::SnobeeComponent": {
-        "MovementSpeed": 45
+        "MovementSpeed": 40
       },
       "struct Pengin::RectColliderComponent": {
         "CollRect": [
@@ -1262,7 +1262,7 @@
         "IsVisible": true
       },
       "struct Pengo::SnobeeComponent": {
-        "MovementSpeed": 45
+        "MovementSpeed": 40
       },
       "struct Pengin::RectColliderComponent": {
         "CollRect": [
@@ -1396,7 +1396,7 @@
         "IsVisible": true
       },
       "struct Pengo::SnobeeComponent": {
-        "MovementSpeed": 50
+        "MovementSpeed": 40
       },
       "struct Pengin::RectColliderComponent": {
         "CollRect": [

@@ -79,6 +79,8 @@ namespace Pengo
 			EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("GameOver"));
 ;		}
 
+		ServiceLocator::GetSoundSystem().PlaySound(SoundData{ "../Data/Audio/Touch Snow-Bee.mp3" });
+
 		m_ECS.GetComponent<PengoComponent>(deahtEv.GetEntityId()).SetPlayerState(std::make_unique<PengoDyingState>(m_ECS.GetComponent<PlayerComponent>(deahtEv.GetEntityId()).userIdx));
 	}
 

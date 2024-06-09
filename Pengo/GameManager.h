@@ -35,6 +35,8 @@ namespace Pengo
 			m_pObserver->RegisterForEvent(m_pObserver, "PlayGame", [this](const Pengin::BaseEvent&) { LoadNextLevel(); });
 			m_pObserver->RegisterForEvent(m_pObserver, "LevelWon", [this](const Pengin::BaseEvent& ) 
 				{ 
+					Pengin::ServiceLocator::GetSoundSystem().PlaySound(Pengin::SoundData{ "../Data/Audio/Act Clear.mp3" });
+
 					const auto winTime{ std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - m_LevelStartTime).count() };
 					
 					unsigned bonusScore{ 0 };
@@ -88,7 +90,13 @@ namespace Pengo
 
 
 			m_pObserver->RegisterForEvent(m_pObserver, "LoadNextLevel", [this](const Pengin::BaseEvent&) { LoadNextLevel(); });
-			m_pObserver->RegisterForEvent(m_pObserver, "BackToMainMenu", [this](const Pengin::BaseEvent&) { SaveScores(); LoadStartUI(); });
+			m_pObserver->RegisterForEvent(m_pObserver, "BackToMainMenu", [this](const Pengin::BaseEvent&) 
+				{ 
+					assert(m_NameEnterId != Pengin::GameUUID::INVALID_UUID);
+					Pengin::ServiceLocator::GetSoundSystem().StopPlaying(m_NameEnterId);
+					SaveScores(); 
+					LoadStartUI(); 
+				});
 		}
 
 		~GameManager() = default;
@@ -99,6 +107,7 @@ namespace Pengo
 		std::chrono::steady_clock::time_point m_LevelStartTime;
 
 		Pengin::ChannelId m_BackGroundMusicId;
+		Pengin::ChannelId m_NameEnterId;;
 
 		static constexpr size_t KEYBOARD_IDX{ 0 };
 		static constexpr size_t CONTROLLER_IDX{ 1 };
