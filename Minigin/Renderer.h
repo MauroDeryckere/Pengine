@@ -32,9 +32,9 @@ namespace dae
 		void Render() const;
 		void Destroy();
 
-		void RenderTexture(const Texture2D& texture, int x, int y, const glm::vec3& scale, Rectu16 srcRect = {}) const;
-		void RenderTexture(const Texture2D& texture, const Recti& dstRect, Rectu16 srcRect = {}) const;
-		void RenderTexture(const Texture2D& texture, int x, int y, uint16_t width, uint16_t height, const glm::vec3& scale, Rectu16 srcRect = {}) const;
+		void RenderTexture(const Pengin::Texture2D& texture, int x, int y, const glm::vec3& scale, Rectu16 srcRect = {}) const;
+		void RenderTexture(const Pengin::Texture2D& texture, const Recti& dstRect, Rectu16 srcRect = {}) const;
+		void RenderTexture(const Pengin::Texture2D& texture, int x, int y, uint16_t width, uint16_t height, const glm::vec3& scale, Rectu16 srcRect = {}) const;
 
 		//Debug rendering functions
 		void DrawLine(int x1, int y1, int x2, int y2, SDL_Color color) const;
@@ -59,7 +59,7 @@ namespace dae
 		Renderer() = default;
 		~Renderer() = default;
 
-		void RenderTexture(const Texture2D& texture, SDL_Rect* pDstRect, SDL_Rect* pSrcRect) const;
+		void RenderTexture(const Pengin::Texture2D& texture, SDL_Rect* pDstRect, SDL_Rect* pSrcRect) const;
 	};
 }
 

@@ -13,7 +13,7 @@ namespace Pengin
 {	
 	struct SpriteComponent final
 	{
-		std::shared_ptr<dae::Texture2D> pTexture { nullptr };
+		std::shared_ptr<Texture2D> pTexture { nullptr };
 		UtilStructs::Rectu16 sourceRect{};
 
 		bool isVisible{ true };
@@ -21,12 +21,12 @@ namespace Pengin
 		SpriteComponent() = default;
 
 		SpriteComponent(const std::string& texturePath, UtilStructs::Rectu16 sourceRect = {}) :
-			pTexture{ dae::ResourceManager::GetInstance().LoadTexture(texturePath) },
+			pTexture{ ResourceManager::GetInstance().LoadTexture(texturePath) },
 			sourceRect{ sourceRect },
 			isVisible{ true }
 		{}
 
-		SpriteComponent(std::shared_ptr<dae::Texture2D> pTexture, UtilStructs::Rectu16 sourceRect = {}) :
+		SpriteComponent(std::shared_ptr<Texture2D> pTexture, UtilStructs::Rectu16 sourceRect = {}) :
 			pTexture{ pTexture },
 			sourceRect{ sourceRect },
 			isVisible{ true }

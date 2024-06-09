@@ -15,14 +15,14 @@ namespace Pengin
 	struct TextComponent final
 	{
 		std::string text;
-		std::shared_ptr<dae::Font> pFont;
+		std::shared_ptr<Font> pFont;
 		glm::u8vec4 color{ 255, 255, 255, 255 };
 
 		bool needsTextureChange{ true };
 
 		TextComponent(const std::string& fontPath, unsigned fontSize, const std::string& text = "<EMPTY STRING>", const glm::u8vec4& color = { 255, 255, 255, 255 }) :
 			text{ text },
-			pFont{ dae::ResourceManager::GetInstance().LoadFont(fontPath, fontSize) },
+			pFont{ ResourceManager::GetInstance().LoadFont(fontPath, fontSize) },
 			color{ color },
 			needsTextureChange{ true }
 		{

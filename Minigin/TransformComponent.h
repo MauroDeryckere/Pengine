@@ -40,7 +40,6 @@ namespace Pengin
 		~TransformComponent() = default;
 	};
 
-	//TODO: consider iterative over recursive
 	class SceneGraph final //Static class for easy interface with transform component scene graph
 	{
 	public:

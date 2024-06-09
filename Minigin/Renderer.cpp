@@ -60,7 +60,7 @@ void dae::Renderer::Destroy()
 	m_ImGUIWindow.Destroy();
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, int x, int y, const glm::vec3& scale, Rectu16 srcRect) const
+void dae::Renderer::RenderTexture(const Pengin::Texture2D& texture, int x, int y, const glm::vec3& scale, Rectu16 srcRect) const
 {
 	SDL_Rect dst;
 	const bool isSrcRect{ srcRect };
@@ -89,7 +89,7 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, int x, int y, const 
 	RenderTexture(texture, &dst, nullptr);
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, const Recti& dstRect, Rectu16 srcRect) const
+void dae::Renderer::RenderTexture(const Pengin::Texture2D& texture, const Recti& dstRect, Rectu16 srcRect) const
 {
 	SDL_Rect dst{ dstRect.x, dstRect.y, dstRect.width, dstRect.height };
 
@@ -103,7 +103,7 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const Recti& dstRect
 	RenderTexture(texture, &dst, &src);
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, int x, int y, uint16_t width, uint16_t height, const glm::vec3& scale, Rectu16 srcRect) const
+void dae::Renderer::RenderTexture(const Pengin::Texture2D& texture, int x, int y, uint16_t width, uint16_t height, const glm::vec3& scale, Rectu16 srcRect) const
 {
 	SDL_Rect dst{ x, y, width, height };
 
@@ -148,7 +148,7 @@ SDL_Renderer* dae::Renderer::GetSDLRenderer() const
 	return m_renderer; 
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, SDL_Rect* pDstRect, SDL_Rect* pSrcRect) const
+void dae::Renderer::RenderTexture(const Pengin::Texture2D& texture, SDL_Rect* pDstRect, SDL_Rect* pSrcRect) const
 {
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), pSrcRect, pDstRect);
 }

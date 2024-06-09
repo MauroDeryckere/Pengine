@@ -1,7 +1,5 @@
 #include <SDL.h>
 #include "Texture2D.h"
-#include "ResourceManager.h"
-
 #include <iostream>
 
 namespace Pengin
@@ -13,8 +11,6 @@ namespace Pengin
 
 	Texture2D::~Texture2D()
 	{
-		ResourceManager::GetInstance().ReleaseTexture(m_Path);
-
 		SDL_DestroyTexture(m_texture);
 	}
 

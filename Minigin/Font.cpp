@@ -21,8 +21,6 @@ namespace Pengin
 
 	Font::~Font()
 	{
-		ResourceManager::GetInstance().ReleaseFont(m_FontPath, m_FontSize);
-
 		TTF_CloseFont(m_Font);
 	}
 }

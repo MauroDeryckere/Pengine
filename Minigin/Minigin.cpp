@@ -100,7 +100,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	//SDL_GL_MakeCurrent(g_window, context);
 	//SDL_GL_SetSwapInterval(1); // Enable vsync
 
-	ResourceManager::GetInstance().Init(dataPath);
+	Pengin::ResourceManager::GetInstance().Init(dataPath);
 
 	Pengin::ServiceLocator::RegisterSerializer(std::make_unique<Pengin::JsonSerializer>());
 

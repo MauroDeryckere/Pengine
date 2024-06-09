@@ -19,6 +19,9 @@ namespace Pengin
 		[[nodiscard]] std::shared_ptr<Texture2D> LoadTexture(const std::string& path) const;
 		[[nodiscard]] std::shared_ptr<Font> LoadFont(const std::string& path, unsigned size) const;
 
+		void ReleaseTexture(const std::string& path) noexcept;
+		void ReleaseFont(const std::string& path, unsigned size) noexcept;
+
 		ResourceManager(const ResourceManager&) = delete;
 		ResourceManager(ResourceManager&&) = delete;
 		ResourceManager& operator=(const ResourceManager&) = delete;
@@ -36,9 +39,6 @@ namespace Pengin
 
 		mutable std::unordered_map<std::string, std::shared_ptr<Texture2D>> m_Textures;
 		mutable std::unordered_map<std::string, std::shared_ptr<Font>> m_Fonts;
-
-		void ReleaseTexture(const std::string& path) noexcept;
-		void ReleaseFont(const std::string& path, unsigned size) noexcept;
 	};
 }
 

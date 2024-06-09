@@ -21,9 +21,8 @@ namespace Pengin
 		m_ECS{ecs},
 		m_pObserver{ EventManager::GetInstance().CreateObserver() }
 	{
-
-		//TOOD
-		m_pObserver->RegisterForEvent(m_pObserver, "OnTextChangeEvent", [this](const BaseEvent& event) { std::cout << "text change event\n";  event; });
+		//Could use an event internally for text change
+		//m_pObserver->RegisterForEvent(m_pObserver, "OnTextChangeEvent", [this](const BaseEvent& event) { std::cout << "text change event\n";  event; });
 	}
 
 	void TextSystem::Update()
@@ -47,7 +46,7 @@ namespace Pengin
 				}
 
 				SDL_FreeSurface(surf);
-				auto pTexture = std::make_shared<dae::Texture2D>(texture, "NO PATH"); //TODO
+				auto pTexture = std::make_shared<Texture2D>(texture, "NO PATH");
 
 				auto& textureComp = m_ECS.GetComponent<SpriteComponent>(textComps.GetIdFromIterator(it));
 				textureComp.pTexture = pTexture;
@@ -81,7 +80,7 @@ namespace Pengin
 		}
 
 		SDL_FreeSurface(surf);
-		auto pTexture = std::make_shared<dae::Texture2D>(texture, "NO PATH"); //TODO
+		auto pTexture = std::make_shared<Texture2D>(texture, "NO PATH");
 
 		auto& textureComp = m_ECS.GetComponent<SpriteComponent>(id);
 		textureComp.pTexture = pTexture;
