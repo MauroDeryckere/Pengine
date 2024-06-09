@@ -24,13 +24,13 @@ Minigin is a very small project using [SDL2](https://www.libsdl.org/) and [glm](
 # Features
 
 ## ECS
-The Entity Component System (ECS) is a design pattern that allows for a flexible and modular approach to building game objects. It decouples data (components) from behaviour (systems), enabling efficient data management and processing. Additionally it provides great cache locality which can make the program a lot faster.
+The Entity Component System (ECS) is a design pattern that allows for a flexible and modular approach to building game objects. It decouples data (components) from behaviour (systems), enabling efficient data management and processing.  It also provides great cache locality which can make the program a lot faster.
 
 ### Entities and Components
 Entities and components are stored by the ECS class in a sparse set. This allows for both efficient lookups/removals and fast iteration for components by maintaining cache locality.
 
 ```cpp
-//Create an entity with a position and velcoity: 
+//Create an entity with a position and velocity: 
 struct Position {
     float x, y;
 };
@@ -45,7 +45,7 @@ EntityId ent = ecs.CreateEntity();
 ecs.AddComponent<Position>(ent, 1, 1);
 ecs.AddComponent<Velocity>(ent, 20, 30);
 
-//Iterate over all entities with a positon: 
+//Iterate over all entities with a position: 
 for(auto& e : ecs.GetComponents<Position>()){
     //Do something
 
@@ -55,10 +55,10 @@ ecs.DestroyEntity(ent);
 }
 ```
 
-Entities and components destroys are placed on a queue to ensure no dependencies cause trouble during the update of a frame.
+Entity and component destruction calls are placed on a queue to ensure no dependencies cause trouble during the update of a frame.
 
 ### Systems
-The System Manager allows you to register generic systems which will then be updated, rendered,... in the game loop. There's also an option to add dependencies for a given system if necessary. The Scene class provides an easy to use interface for the System Manager.
+The System Manager allows you to register generic systems which will then be updated, rendered,... in the game loop. There's also an option to add dependencies for a given system if necessary. The Scene class provides an easy-to-use interface for the System Manager.
 
 ```cpp
 auto pSys = make_shared<TestSys>();
@@ -92,10 +92,10 @@ class Movement final : public InputCommand {
 		const vec3 m_Direction;
 };
 
-//Map actions to a keybind
+//Map actions to a key
 input.MapKeyboardAction(user, KeyBoardKey::Up, InputState::Pressed, make_shared<Movement>(user, vec3{ 0, -1, 0 }));
 
-//Poll if an action is executed and request the action pointer
+//Poll if an action is executed and request the actions pointer
 shared_ptr<InputCommand> pCommand;
 if (input.IsActionExecuted(user, "Movement", &pCommand)) {
 	assert(pCommand);
@@ -108,7 +108,7 @@ if (input.IsActionExecuted(user, "Movement", &pCommand)) {
 ```
 
 ### Combo System
-There's also an easy to use combo system, allow the user to create complex behaviour of different actions chained together within a given time frame.
+There's also an easy-to-use combo system. This allows the user to create complex behaviour of different actions chained together within a given time frame.
 
 ```cpp
 auto& input = InputManager::GetInstance();
@@ -141,7 +141,7 @@ The Event Manager manages game events, allowing for decoupled communication betw
 std::shared_ptr<Observer> pObs = EventManager::GetInstance().CreateObserver();
 pObs->RegisterForEvent(pObs, "EnemyKilled", [](const BaseEvent& event){ DoSomething(event); });
 
-//Broadcast en event: 
+//Broadcast an event: 
 //Either non-blocking
 EventManager::GetInstance().BroadcastEvent(std::make_unique<EnemyKilldEvent>(data));
 //Or blocking
@@ -156,7 +156,7 @@ DoSomething(const BaseEvent& event){
 }
 ```
 
-Observers are unregistered automatically when they go out of scope by the eventmanager whenever a call for an event is made that the observer was listening to.
+Observers are unregistered automatically when they go out of scope by the Event Manager whenever a call for an event is made that the observer was listening to.
 
 ## Serialization / Deserialization
 Serialization and deserialization functionalities allow game states to be saved and loaded efficiently. Scenes can be saved and loaded with a single function call given you defined the necessary functions in the components you wish to deserialize and/or serialize.
@@ -170,7 +170,7 @@ You can serialize and deserialize components by adding a static function and reg
 struct Component {
 	int value = 10;
 
-	static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, EntityId id, std::vector<uint8_t>& fieldVector) {
+	static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, EntityId id, vector<uint8_t>& fieldVector) {
 		const auto& comp = ecs.GetComponent<Component>(id);
 
 		fieldSer.SerializeField("ValueName", value, ecs, fieldVector);
@@ -202,8 +202,8 @@ struct Data {
 //Now you can Serialize/Deserialize Data as a field in any component.
 ```
 
-## Sound system
-Pengin provides a SoundSystem which can be accessed through the Service Locator. The soundsystem uses FMOD under the hood and can be used to stream and play audio files of nearly all available types. All sounds are played and loaded via a SoundData struct, which contains all necessary data/modifiers. Playing an unloaded sound will load the sound automatically.
+## Sound System
+Pengin provides a Sound System which can be accessed through the Service Locator. The Sound System uses FMOD under the hood and can be used to stream and play audio files of nearly all available types. All sounds are played and loaded via a SoundData struct, which contains all necessary data/modifiers. Playing an unloaded sound will load the sound automatically.
 
 ```cpp
 //Load a sound
@@ -230,7 +230,7 @@ The engine is by no means finished and 'optimal' in its current state, I will li
 
  - ECS optimizations: the ECS implementation can be improved in many ways.
  - Renderer: The renderer is very simple because the focus was on other aspects of engine programming, but the renderer should eventually be replaced with a better system.
- - More audio support: Supporting 3D audio, FSbank files and audio effects.
+ - More audio support: Supporting 3D audio, FSbank files, and audio effects.
  - Physics Engine: Currently I've only written a simple implementation for the physics engine since not more was needed for the arcade game, the physics should be improved as I want to support bigger games.
  - Binary serializer / deserializer
  - Editor 
