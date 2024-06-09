@@ -285,6 +285,18 @@
             "EntityId": "NULL_UUID"
           },
           {
+            "Type": 1,
+            "EntityId": "NULL_UUID"
+          },
+          {
+            "Type": 0,
+            "EntityId": "NULL_UUID"
+          },
+          {
+            "Type": 1,
+            "EntityId": "NULL_UUID"
+          },
+          {
             "Type": 0,
             "EntityId": "NULL_UUID"
           },
@@ -301,19 +313,19 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -321,7 +333,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -345,7 +357,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -357,11 +369,11 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -381,7 +393,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -393,7 +405,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -401,7 +413,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -417,7 +429,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -441,15 +453,15 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -457,7 +469,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -473,7 +485,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -481,7 +493,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -497,7 +509,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -505,7 +517,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -513,7 +525,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -541,7 +553,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -549,11 +561,11 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -561,7 +573,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -569,11 +581,11 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -589,7 +601,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -601,7 +613,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -609,7 +621,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -617,7 +629,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -649,7 +661,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -661,11 +673,11 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -689,7 +701,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -721,7 +733,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -737,7 +749,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -777,7 +789,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -797,11 +809,11 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -817,7 +829,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -833,7 +845,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -850,10 +862,6 @@
           },
           {
             "Type": 0,
-            "EntityId": "NULL_UUID"
-          },
-          {
-            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -861,11 +869,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
-            "EntityId": "NULL_UUID"
-          },
-          {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -874,10 +878,6 @@
           },
           {
             "Type": 0,
-            "EntityId": "NULL_UUID"
-          },
-          {
-            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -885,7 +885,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -893,7 +893,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -933,15 +933,15 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -949,11 +949,11 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -961,7 +961,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -969,27 +969,27 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -997,7 +997,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 1,
+            "Type": 0,
             "EntityId": "NULL_UUID"
           },
           {
@@ -1005,7 +1005,7 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -1013,39 +1013,39 @@
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
-            "Type": 0,
+            "Type": 1,
             "EntityId": "NULL_UUID"
           },
           {
@@ -1068,13 +1068,13 @@
       "UUID": "123403fa-fc85-4ce9-af04-b9d5b4fe2ead",
       "Transform Component": {
         "worldPos": [
-          24.0,
-          384.0,
+          312.0,
+          96.0,
           0.0
         ],
         "localPos": [
-          24.0,
-          384.0,
+          312.0,
+          96.0,
           0.0
         ],
         "rotation": [
@@ -1103,13 +1103,13 @@
           0
         ],
         "CurrPosition": [
-          24,
-          384,
+          312,
+          96,
           0
         ],
         "LastPosition": [
-          24,
-          384,
+          312,
+          96,
           0
         ],
         "CollType": 2
@@ -1128,7 +1128,7 @@
         "IsVisible": true
       },
       "struct Pengo::SnobeeComponent": {
-        "MovementSpeed": 50
+        "MovementSpeed": 75
       },
       "struct Pengin::RectColliderComponent": {
         "CollRect": [
@@ -1202,13 +1202,13 @@
       "UUID": "432103fa-fc85-4ce9-af04-b9d5b4fe2ead",
       "Transform Component": {
         "worldPos": [
-          504.0,
-          96.0,
+          360.0,
+          624.0,
           0.0
         ],
         "localPos": [
-          504.0,
-          96.0,
+          360.0,
+          624.0,
           0.0
         ],
         "rotation": [
@@ -1237,13 +1237,13 @@
           0
         ],
         "CurrPosition": [
-          504,
-          96,
+          360,
+          624,
           0
         ],
         "LastPosition": [
-          504,
-          96,
+          360,
+          624,
           0
         ],
         "CollType": 2
@@ -1262,7 +1262,141 @@
         "IsVisible": true
       },
       "struct Pengo::SnobeeComponent": {
-        "MovementSpeed": 50
+        "MovementSpeed": 75
+      },
+      "struct Pengin::RectColliderComponent": {
+        "CollRect": [
+          2,
+          2,
+          12,
+          12
+        ]
+      },
+      "struct Pengin::AnimationComponent": {
+        "AnimationData": [
+          {
+            "Frame0SrcRect": [
+              0,
+              128,
+              16,
+              16
+            ],
+            "FrameDuration": 0.5,
+            "FrameCount": 6
+          },
+          {
+            "Frame0SrcRect": [
+              0,
+              144,
+              16,
+              16
+            ],
+            "FrameDuration": 0.5,
+            "FrameCount": 2
+          },
+          {
+            "Frame0SrcRect": [
+              32,
+              144,
+              16,
+              16
+            ],
+            "FrameDuration": 0.5,
+            "FrameCount": 2
+          },
+          {
+            "Frame0SrcRect": [
+              64,
+              144,
+              16,
+              16
+            ],
+            "FrameDuration": 0.5,
+            "FrameCount": 2
+          },
+          {
+            "Frame0SrcRect": [
+              96,
+              144,
+              16,
+              16
+            ],
+            "FrameDuration": 0.5,
+            "FrameCount": 2
+          }
+        ],
+        "FrameTimer": 0,
+        "CurrAnimationIdx": 1,
+        "CurrFrame": 0,
+        "IsPlaying": true
+      }
+    },
+    {
+      "Tag Component": "Snobee",
+      "UUID": "432103fa-fc85-4ce9-aeee-bed5b4fe2ead",
+      "Transform Component": {
+        "worldPos": [
+          552.0,
+          144.0,
+          0.0
+        ],
+        "localPos": [
+          552.0,
+          144.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          3.0,
+          3.0,
+          0.0
+        ],
+        "relation": {
+          "children": 0,
+          "firstChild": "NULL_UUID",
+          "prevSibling": "NULL_UUID",
+          "nextSibling": "NULL_UUID",
+          "parent": "NULL_UUID"
+        },
+        "isPosDirty": false
+      },
+      "struct Pengin::BodyComponent": {
+        "Velocity": [
+          0,
+          0,
+          0
+        ],
+        "CurrPosition": [
+          552,
+          144,
+          0
+        ],
+        "LastPosition": [
+          552,
+          144,
+          0
+        ],
+        "CollType": 2
+      },
+      "struct Pengin::OnGridTag": {
+        "GridId": "cf0f18cb-7425-460b-9221-999f8160d448"
+      },
+      "struct Pengin::SpriteComponent": {
+        "Texturepath": "PengoPlayerAndEnemies.png",
+        "SourceRect": [
+          0,
+          144,
+          16,
+          16
+        ],
+        "IsVisible": true
+      },
+      "struct Pengo::SnobeeComponent": {
+        "MovementSpeed": 75
       },
       "struct Pengin::RectColliderComponent": {
         "CollRect": [

@@ -56,6 +56,8 @@ namespace Pengo
 	private:
 		Pengin::ECS& m_ECS;
 
+		float m_Time{0.f};
+
 		void OnDeathEvent(const Pengin::BaseEvent& event);
 		void OnRespawnEvent(const Pengin::BaseEvent& event);
 

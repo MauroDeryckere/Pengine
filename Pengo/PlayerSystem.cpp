@@ -17,6 +17,7 @@
 #include "OnGridTag.h"
 #include "HealthComponent.h"
 #include "PengoDyingState.h"
+#include "GameTime.h"
 #include "ScoreCollectEvent.h"
 #include "SnobeeDeathEvent.h"
 #include "SnobeeComponent.h"
@@ -51,6 +52,13 @@ namespace Pengo
 		if (m_ECS.GetComponents<SnobeeComponent>().Size() == 0)
 		{
 			EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("LevelWon"));
+		}
+
+		m_Time += GameTime::GetInstance().ElapsedSec();
+
+		if (m_Time >= 120.f)
+		{
+			EventManager::GetInstance().BroadcoastEvent(std::make_unique<BaseEvent>("GameOver"));
 		}
 	}
 
