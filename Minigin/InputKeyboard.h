@@ -6,9 +6,6 @@
 
 namespace Pengin
 {
-	//TODO pimpl in the class 'space'
-	class WindowsKeyboardImpl;
-
 	class InputKeyboard final : public InputDevice
 	{
 	public:
@@ -25,6 +22,7 @@ namespace Pengin
 		virtual void Clear() noexcept override;
 
 	private:
+		class WindowsKeyboardImpl;
 		std::unique_ptr<WindowsKeyboardImpl> m_WinImpl;
 
 		virtual [[nodiscard]] unsigned GetCodeFromKey(unsigned key) const override;
