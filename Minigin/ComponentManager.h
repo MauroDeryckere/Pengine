@@ -41,7 +41,7 @@ namespace Pengin
         template<typename ComponentType, typename... Args>
         std::pair<ComponentType&, bool> AddComponent(const EntityId id, Args&&... args)
         {
-            [[maybe_unused]] UniqueTypesTracker<ComponentType> tracker; //TODO Change this
+            [[maybe_unused]] UniqueTypesTracker<ComponentType> tracker;
 
             const size_t idx{ m_TypeBitMap.at(typeid(ComponentType))};
 
