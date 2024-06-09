@@ -45,6 +45,7 @@ namespace Pengin
 
 
 		~Scene();
+		bool SerializeScene() const noexcept;
 		void Start();
 
 		//Entities
@@ -96,7 +97,6 @@ namespace Pengin
 		Scene(Scene&&) = delete;
 		Scene& operator=(const Scene&) = delete;
 		Scene& operator=(Scene&&) = delete;
-
 	private:
 		friend class SceneManager;
 		
@@ -116,7 +116,6 @@ namespace Pengin
 		std::unique_ptr<InputInfoPanel> m_InputInfoPanel{};
 		//-----------------------------------
 
-		bool SerializeScene() const noexcept;
 		bool DeserializeScene() noexcept;
 		void RegisterEngineSystems();
 	};

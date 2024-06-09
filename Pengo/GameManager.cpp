@@ -553,21 +553,6 @@ void Pengo::GameManager::RegisterKeyboardInputLevel(const Pengin::InputData& inp
 
 	input.MapKeyboardAction(userIndex, KeyBoardKey::F1, InputState::UpThisFrame, std::make_shared<PengoSkipLevel>(userIndex));
 	input.MapKeyboardAction(userIndex, KeyBoardKey::F2, InputState::DownThisFrame, std::make_shared<MuteSounds>(userIndex));
-
-	auto a1 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::T, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "T down"));
-	auto a2 [[maybe_unused]] = input.MapKeyboardAction(userIndex, KeyBoardKey::Y, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "Y down"));
-	input.MapKeyboardAction(userIndex, KeyBoardKey::U, InputState::Pressed, std::make_shared<InpDebugCommand>(userIndex, "U down"));
-
-	//Example of mapping a combo
-	InputCombo combo;
-	combo.pComboActions.emplace_back(a1);
-	combo.pComboActions.emplace_back(a2);
-
-	combo.allowedDelay.emplace_back(1.f);
-
-	auto a3 = std::make_shared<InpDebugCommand>(userIndex, "Resulting action");
-	combo.pResultingAction = a3;
-	input.MapCombo(userIndex, combo);
 }
 
 

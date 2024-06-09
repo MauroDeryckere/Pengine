@@ -74,8 +74,6 @@ std::unique_ptr<Pengin::State> Pengo::SnobeeWalkState::Update()
 
 	if (!pGridSystem->IsPosInGridArea(predPos, gridId))
 	{
-		std::cout << "not in grid\n";
-
 		const auto coords = pGridSystem->GetCellCoords(gridId, GetEntityId());
 		const auto cellPos = pGridSystem->GetCellPos(gridId, coords.first, coords.second);
 
@@ -94,7 +92,6 @@ std::unique_ptr<Pengin::State> Pengo::SnobeeWalkState::Update()
 			auto chance = UtilFuncs::RandomNumber(0, 2);
 			if (chance == 0)
 			{
-				std::cout << "breaking\n";
 				Entity block{ predCellData.entity, pActiveScene };
 
 				EventManager::GetInstance().BroadcastBlockingEvent(std::make_unique<SwitchAnimationEvent>(
@@ -108,7 +105,6 @@ std::unique_ptr<Pengin::State> Pengo::SnobeeWalkState::Update()
 			}
 			else
 			{
-				std::cout << "not breaking\n";
 				const auto cellPos = pGridSystem->GetCellPos(gridId, static_cast<uint16_t>(predCoords.first - m_Direction.y), static_cast<uint16_t>(predCoords.second - m_Direction.x));
 				snobee.SetLocalPosition({ cellPos.x, cellPos.y, 0 });
 

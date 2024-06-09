@@ -78,7 +78,6 @@ void Pengo::SelectGameMode::Execute()
 	using namespace Pengin;
 
 	auto comps = SceneManager::GetInstance().GetActiveScene()->GetECS().GetComponents<UIGameModeSelectorComponent>();
-	assert(player.HasComponent<UISelectorComponent>());
 
 	if (m_Direction.y > 0)
 	{
