@@ -48,11 +48,11 @@ ecs.AddComponent<Velocity>(ent, 20, 30);
 //Iterate over all entities with a position: 
 for(auto& e : ecs.GetComponents<Position>()){
     //Do something
+}
 
 //Removing components and destroying an entity
-ecs.RemoveComponent<Position>(ent);
 ecs.DestroyEntity(ent);
-}
+ecs.RemoveComponent<Position>(ent);
 ```
 
 Entity and component destruction calls are placed on a queue to ensure no dependencies cause trouble during the update of a frame.
@@ -80,16 +80,16 @@ auto user = input.RegisterUser(UserType::Keyboard);
 
 //Define an action
 class Movement final : public InputCommand {
-	public:
-		Movement(const UserIndex& user, const vec3& direction) :
-			InputCommand{ user, "Movement" },
-			m_Direction{ direction }
-		{ }
+public:
+	Movement(const UserIndex& user, const vec3& direction) :
+		InputCommand{ user, "Movement" },
+		m_Direction{ direction }
+	{ }
 
-		void Execute() {};
-		const vec3& GetDirection() { return m_Direction; }
-	private:
-		const vec3 m_Direction;
+	void Execute() {};
+	const vec3& GetDirection() { return m_Direction; }
+private:
+	const vec3 m_Direction;
 };
 
 //Map actions to a key
@@ -100,7 +100,7 @@ shared_ptr<InputCommand> pCommand;
 if (input.IsActionExecuted(user, "Movement", &pCommand)) {
 	assert(pCommand);
 	Movement* pMovement{ static_cast<Movement*>(pCommand.get()) };
-
+	
 	pMovement->GetDirection(); 
 	//Do something with the requested data
 }
@@ -108,7 +108,7 @@ if (input.IsActionExecuted(user, "Movement", &pCommand)) {
 ```
 
 ### Combo System
-There's also an easy-to-use combo system. This allows the user to create complex behaviour of different actions chained together within a given time frame.
+There's also an easy-to-use combo system. This allows the user to create complex behavior of different actions chained together within a given time frame.
 
 ```cpp
 auto& input = InputManager::GetInstance();
@@ -168,17 +168,17 @@ You can serialize and deserialize components by adding a static function and reg
 #include "SerializationRegistry.h"
 
 struct Component {
-	int value = 10;
+int value = 10;
 
-	static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, EntityId id, vector<uint8_t>& fieldVector) {
-		const auto& comp = ecs.GetComponent<Component>(id);
+static void Serialize(const FieldSerializer& fieldSer, const ECS& ecs, EntityId id, vector<uint8_t>& fieldVector) {
+	const auto& comp = ecs.GetComponent<Component>(id);
 
-		fieldSer.SerializeField("ValueName", value, ecs, fieldVector);
-	}
-	static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, EntityId id, const unordered_map<string, vector<uint8_t>>& serFields, const unordered_map<GameUUID, EntityId>& entityMap) {
-		auto& comp = ecs.AddComponent<Component>(id);
-		fieldSer.DeserializeField("ValueName", comp.value, serFields, entityMap);
-	}
+	fieldSer.SerializeField("ValueName", value, ecs, fieldVector);
+}
+static void Deserialize(const FieldSerializer& fieldSer, ECS& ecs, EntityId id, const unordered_map<string, vector<uint8_t>>& serFields, const unordered_map<GameUUID, EntityId>& entityMap) {
+	auto& comp = ecs.AddComponent<Component>(id);
+	fieldSer.DeserializeField("ValueName", comp.value, serFields, entityMap);
+}
 }
 
 
@@ -189,14 +189,14 @@ REGISTER_DESERIALIZATION_FUNCTION(Component, Component::Deserialize);
 ### Struct stored in a component
 ```cpp
 struct Data {
-	float val;
+float val;
 
-	static void Serialize(const FieldSerializer& fieldSer, const Data& serStruct, vector<uint8_t>& fieldVector, const ECS& ecs) {
-			fieldSer.SerializeField("Val", serStruct.val, ecs, fieldVector);
-	}
-	static void Deserialize(const FieldSerializer& fieldSer, Data& deserStruct, const unordered_map<string, vector<uint8_t>>& fields, const unordered_map<GameUUID, EntityId>& entityMap) {
-			fieldSer.DeserializeField("val", deserStruct.val, fields, entityMap);
-	}
+static void Serialize(const FieldSerializer& fieldSer, const Data& serStruct, vector<uint8_t>& fieldVector, const ECS& ecs) {
+		fieldSer.SerializeField("Val", serStruct.val, ecs, fieldVector);
+}
+static void Deserialize(const FieldSerializer& fieldSer, Data& deserStruct, const unordered_map<string, vector<uint8_t>>& fields, const unordered_map<GameUUID, EntityId>& entityMap) {
+		fieldSer.DeserializeField("val", deserStruct.val, fields, entityMap);
+}
 }
 
 //Now you can Serialize/Deserialize Data as a field in any component.
