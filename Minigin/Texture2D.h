@@ -1,25 +1,24 @@
-#pragma once
+#ifndef PENGIN_TEXTURE2D
+#define PENGIN_TEXTURE2D
+
 #include <glm/vec2.hpp>
 
 #include <string>
 #include <string_view>
 
 struct SDL_Texture;
-namespace dae
+namespace Pengin
 {
-	/**
-	 * Simple RAII wrapper for an SDL_Texture
-	 */
 	class Texture2D final
 	{
 	public:
 		Texture2D(SDL_Texture* texture, const std::string& path);
 		~Texture2D();
 
-		SDL_Texture* GetSDLTexture() const;
-		glm::ivec2 GetSize() const;
+		[[nodiscard]] SDL_Texture* GetSDLTexture() const noexcept;
+		[[nodiscard]] glm::ivec2 GetSize() const noexcept;
 
-		[[nodiscard]] const std::string& GetPath() const { return m_Path; }
+		[[nodiscard]] const std::string& GetPath() const noexcept { return m_Path; }
 
 		Texture2D(const Texture2D &) = delete;
 		Texture2D(Texture2D &&) = delete;
@@ -31,3 +30,5 @@ namespace dae
 		const std::string m_Path;
 	};
 }
+
+#endif

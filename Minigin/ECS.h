@@ -9,15 +9,13 @@
 #include "EntityManager.h"
 
 /*ECS Documentation
-* The templated functions that do not cast down to a typeid are templated because the return type is required. The others for uniformity
 * It is recommended to use the Get function whenever you need to acces a specific component because references could become invalid frame - frame as the container changes
 * 
 * TODO: 
-* HasComponent<Types ...>()
-* GetComponents<Type, Type>()  - return All entities with 2 given componennts
-* 
 * Update the sparseSet structure to use a sparse array
-* 
+
+* HasComponent<Types ...>()
+* GetComponents<Type, Type>()  - return All entities with 2 given componennts* 
 */
 
 namespace Pengin
@@ -130,8 +128,6 @@ namespace Pengin
             return m_ComponentManager.GetConstComponentWrapper<ComponentType>();
         } 
         
-        //TODO Clear function
-
         ECS(const ECS&) = delete;
         ECS(ECS&&) = delete;
         ECS& operator=(const ECS&) = delete;

@@ -8,7 +8,7 @@
 
 #include "Texture2D.h"
 
-namespace dae
+namespace Pengin
 {
 	class Font;
 	class ResourceManager final : public Pengin::Singleton<ResourceManager>
@@ -31,8 +31,14 @@ namespace dae
 
 		std::string m_DataPath;
 
+		friend class Texture2D;
+		friend class Font;
+
 		mutable std::unordered_map<std::string, std::shared_ptr<Texture2D>> m_Textures;
 		mutable std::unordered_map<std::string, std::shared_ptr<Font>> m_Fonts;
+
+		void ReleaseTexture(const std::string& path) noexcept;
+		void ReleaseFont(const std::string& path, unsigned size) noexcept;
 	};
 }
 

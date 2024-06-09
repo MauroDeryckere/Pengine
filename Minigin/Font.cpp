@@ -1,22 +1,29 @@
 #include <stdexcept>
 #include <SDL_ttf.h>
+
 #include "Font.h"
+#include "ResourceManager.h"
 
-//Unregister in destructor TODO
-
-TTF_Font* dae::Font::GetFont() const {
-	return m_font;
-}
-
-dae::Font::Font(_TTF_Font* pFont, const std::string& path, unsigned fontSize) :
-	m_font{ pFont },
-	m_FontPath{ path },
-	m_FontSize{ fontSize }
+namespace Pengin
 {
+	TTF_Font* Font::GetFont() const noexcept
+	{
+		return m_Font;
+	}
 
+	Font::Font(_TTF_Font* pFont, const std::string& path, unsigned fontSize) :
+		m_Font{ pFont },
+		m_FontPath{ path },
+		m_FontSize{ fontSize }
+	{
+
+	}
+
+	Font::~Font()
+	{
+		ResourceManager::GetInstance().ReleaseFont(m_FontPath, m_FontSize);
+
+		TTF_CloseFont(m_Font);
+	}
 }
 
-dae::Font::~Font()
-{
-	TTF_CloseFont(m_font);
-}

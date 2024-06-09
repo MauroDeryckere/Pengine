@@ -1,30 +1,36 @@
 #include <SDL.h>
 #include "Texture2D.h"
-
-//Unregister in destructor TODO
+#include "ResourceManager.h"
 
 #include <iostream>
 
-dae::Texture2D::Texture2D(SDL_Texture* texture, const std::string& path):
-	m_texture { texture },
-	m_Path { path }
-{ }
-
-dae::Texture2D::~Texture2D()
+namespace Pengin
 {
-	SDL_DestroyTexture(m_texture);
+	Texture2D::Texture2D(SDL_Texture* texture, const std::string& path) :
+		m_texture{ texture },
+		m_Path{ path }
+	{ }
+
+	Texture2D::~Texture2D()
+	{
+		ResourceManager::GetInstance().ReleaseTexture(m_Path);
+
+		SDL_DestroyTexture(m_texture);
+	}
+
+	glm::ivec2 Texture2D::GetSize() const noexcept
+	{
+		SDL_Rect dst;
+		SDL_QueryTexture(GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
+		return { dst.w,dst.h };
+	}
+
+	SDL_Texture* Texture2D::GetSDLTexture() const noexcept
+	{
+		return m_texture;
+	}
 }
 
-glm::ivec2 dae::Texture2D::GetSize() const
-{
-	SDL_Rect dst;
-	SDL_QueryTexture(GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
-	return { dst.w,dst.h };
-}
 
-SDL_Texture* dae::Texture2D::GetSDLTexture() const
-{
-	return m_texture;
-}
 
 
